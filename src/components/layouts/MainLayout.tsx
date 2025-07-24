@@ -84,12 +84,12 @@ const MainLayout: React.FC = () => {
           position: 'fixed',
           height: '100vh',
           left: 0,
-          top: 0,
-          zIndex: 100,
+          top: 64,
+          zIndex: 50,
           overflow: 'visible',
         }}
       >
-        <div className="side-menu-content">
+        <div className="side-menu-content" style={{ height: 'calc(100vh - 64px)' }}>
           <div className="logo-section">
             <div className="logo-with-text">
               <div className="logo-icon">
@@ -141,8 +141,9 @@ const MainLayout: React.FC = () => {
         top: 0,
         left: 0,
         right: 0,
-        zIndex: 99,
-        width: '100%'
+        zIndex: 200,
+        width: '100%',
+        height: '64px'
       }}>
         <div className="header-left">
           <h1 style={{ margin: 0, fontSize: '24px', fontWeight: 600, color: '#2B4CB8' }}>
