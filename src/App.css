@@ -22,7 +22,7 @@ body {
   width: 100vw;
   overflow: hidden;
   position: relative;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #6B46C1 0%, #4C1D95 100%);
 }
 
 .auth-card {
@@ -249,7 +249,7 @@ body {
   font-weight: 700;
   margin-bottom: 12px;
   color: #2c3e50;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #6B46C1 0%, #4C1D95 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -301,9 +301,9 @@ body {
 .auth-form .ant-input-password:focus,
 .auth-form .ant-input-focused,
 .auth-form .ant-input-password-focused {
-  border-color: #667eea;
+  border-color: #6B46C1;
   background: rgba(255, 255, 255, 1);
-  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1), 0 8px 30px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 0 4px rgba(107, 70, 193, 0.1), 0 8px 30px rgba(0, 0, 0, 0.15);
   transform: translateY(-2px);
 }
 
@@ -319,12 +319,12 @@ body {
   font-size: 16px;
   font-weight: 600;
   border-radius: 12px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #6B46C1 0%, #4C1D95 100%);
   border: none;
   color: white;
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   margin-top: 12px;
-  box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 8px 30px rgba(107, 70, 193, 0.4);
   position: relative;
   overflow: hidden;
 }
@@ -341,9 +341,9 @@ body {
 }
 
 .auth-form .ant-btn:hover {
-  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  background: linear-gradient(135deg, #4C1D95 0%, #6B46C1 100%);
   transform: translateY(-3px);
-  box-shadow: 0 12px 40px rgba(102, 126, 234, 0.5);
+  box-shadow: 0 12px 40px rgba(107, 70, 193, 0.5);
 }
 
 .auth-form .ant-btn:hover::before {
@@ -525,7 +525,7 @@ body {
   gap: 12px;
   font-size: 20px;
   font-weight: 700;
-  color: #1890ff;
+  color: #6B46C1;
 }
 
 .user-section {
@@ -536,7 +536,7 @@ body {
 
 /* Side Menu Styles */
 .side-menu {
-  background: #5A4FCF !important;
+  background: #4C1D95 !important;
   border-right: none !important;
 }
 
@@ -1070,13 +1070,13 @@ body {
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #1890ff, #40a9ff);
+  background: linear-gradient(90deg, #6B46C1, #8B5CF6);
 }
 
 .stat-value {
   font-size: 32px;
   font-weight: 700;
-  color: #1890ff;
+  color: #6B46C1;
   margin-bottom: 8px;
 }
 
@@ -1228,38 +1228,38 @@ body {
 }
 
 .ant-btn-primary {
-  background: linear-gradient(135deg, #1890ff, #40a9ff);
+  background: linear-gradient(135deg, #6B46C1, #8B5CF6);
   border: none;
-  box-shadow: 0 2px 8px rgba(24, 144, 255, 0.3);
+  box-shadow: 0 2px 8px rgba(107, 70, 193, 0.3);
 }
 
 .ant-btn-primary:hover {
-  background: linear-gradient(135deg, #40a9ff, #1890ff);
+  background: linear-gradient(135deg, #8B5CF6, #6B46C1);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.4);
+  box-shadow: 0 4px 12px rgba(107, 70, 193, 0.4);
 }
 
 .ant-input:focus,
 .ant-input-focused {
-  border-color: #1890ff;
-  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+  border-color: #6B46C1;
+  box-shadow: 0 0 0 2px rgba(107, 70, 193, 0.2);
 }
 
 .ant-select:not(.ant-select-disabled):hover .ant-select-selector {
-  border-color: #1890ff;
+  border-color: #6B46C1;
 }
 
 .ant-select-focused .ant-select-selector {
-  border-color: #1890ff !important;
-  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2) !important;
+  border-color: #6B46C1 !important;
+  box-shadow: 0 0 0 2px rgba(107, 70, 193, 0.2) !important;
 }
 
 .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
-  color: #1890ff;
+  color: #6B46C1;
   font-weight: 600;
 }
 
 .ant-tabs-ink-bar {
-  background: linear-gradient(90deg, #1890ff, #40a9ff);
+  background: linear-gradient(90deg, #6B46C1, #8B5CF6);
   height: 3px;
 }
