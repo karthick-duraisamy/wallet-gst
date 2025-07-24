@@ -169,38 +169,12 @@ const Reconciliation: React.FC = () => {
 
       {/* Type Selection */}
       <div style={{ marginBottom: 24 }}>
-        <Radio.Group defaultValue="airline" size="large">
-          <Radio.Button 
-            value="agency"
-            style={{
-              borderRadius: '20px 0 0 20px',
-              border: '1px solid #d9d9d9',
-              backgroundColor: 'white',
-              color: '#666',
-              fontWeight: 500,
-              height: '32px',
-              paddingLeft: '16px',
-              paddingRight: '16px'
-            }}
-          >
-            Agency
-          </Radio.Button>
-          <Radio.Button 
-            value="airline"
-            style={{
-              borderRadius: '0 20px 20px 0',
-              border: '1px solid #1890ff',
-              backgroundColor: '#1890ff',
-              color: 'white',
-              fontWeight: 500,
-              height: '32px',
-              paddingLeft: '16px',
-              paddingRight: '16px',
-              marginLeft: '-1px'
-            }}
-          >
-            Airline
-          </Radio.Button>
+        <Radio.Group 
+          defaultValue="airline" 
+          size="large"
+        >
+          <Radio value="agency" style={{ fontWeight: 500 }}>Agency</Radio>
+          <Radio value="airline" style={{ fontWeight: 500 }}>Airline</Radio>
         </Radio.Group>
       </div>
 
