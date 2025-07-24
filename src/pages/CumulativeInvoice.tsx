@@ -12,9 +12,10 @@ import {
   Empty,
   Table,
   Checkbox,
-  Tag
+  Tag,
+  DatePicker
 } from 'antd';
-import { SearchOutlined, DownloadOutlined } from '@ant-design/icons';
+import { SearchOutlined, DownloadOutlined, CalendarOutlined } from '@ant-design/icons';
 
 const { Title, Text } = Typography;
 const { TextArea } = Input;
@@ -41,19 +42,19 @@ const CumulativeInvoice: React.FC = () => {
   const tabItems = [
     {
       key: 'upload-pnr',
-      label: 'Upload PNR / Ticket No',
+      label: 'Upload PNR / Ticket no',
     },
     {
       key: 'upload-invoice',
-      label: 'Upload Invoice No',
+      label: 'Upload Invoice no',
     },
     {
       key: 'pnr-ticket',
-      label: 'PNR / Ticket No',
+      label: 'PNR / Ticket no',
     },
     {
       key: 'tax-invoice-range',
-      label: 'Show on Tax Invoice Date Range',
+      label: 'Show on Tax Invoice date range',
     },
   ];
 
@@ -67,11 +68,16 @@ const CumulativeInvoice: React.FC = () => {
       render: () => <Checkbox />,
     },
     {
-      title: 'Sl',
-      dataIndex: 'sl',
-      key: 'sl',
-      width: 60,
-      render: (text: string, record: any, index: number) => index + 1,
+      title: 'Supplier Name',
+      dataIndex: 'supplierName',
+      key: 'supplierName',
+      render: (text: string) => text || 'Spice Jet',
+    },
+    {
+      title: 'PNR / Ticket no',
+      dataIndex: 'pnrTicketNo',
+      key: 'pnrTicketNo',
+      render: (text: string) => text || 'ADA',
     },
     {
       title: 'Invoice No',
@@ -109,6 +115,8 @@ const CumulativeInvoice: React.FC = () => {
   const mockData = [
     {
       key: '1',
+      supplierName: 'Spice Jet',
+      pnrTicketNo: 'ADA',
       invoiceNo: 'N/A',
       invoiceDate: 'N/A',
       type: 'Invoice',
@@ -116,6 +124,8 @@ const CumulativeInvoice: React.FC = () => {
     },
     {
       key: '2',
+      supplierName: 'Spice Jet',
+      pnrTicketNo: 'N/A',
       invoiceNo: 'N/A',
       invoiceDate: 'N/A',
       type: 'Credit note',
@@ -123,6 +133,26 @@ const CumulativeInvoice: React.FC = () => {
     },
     {
       key: '3',
+      supplierName: 'Spice Jet',
+      pnrTicketNo: 'ASSA',
+      invoiceNo: 'N/A',
+      invoiceDate: 'N/A',
+      type: 'Invoice',
+      travelVendor: 'AtYourPrice',
+    },
+    {
+      key: '4',
+      supplierName: 'Spice Jet',
+      pnrTicketNo: 'ASAS',
+      invoiceNo: 'N/A',
+      invoiceDate: 'N/A',
+      type: 'Invoice',
+      travelVendor: 'AtYourPrice',
+    },
+    {
+      key: '5',
+      supplierName: 'Vistara',
+      pnrTicketNo: 'ASAS',
       invoiceNo: 'N/A',
       invoiceDate: 'N/A',
       type: 'Invoice',
@@ -137,16 +167,263 @@ const CumulativeInvoice: React.FC = () => {
     },
   };
 
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'upload-pnr':
+        return (
+          <div style={{ 
+            backgroundColor: '#f8f9fa', 
+            border: '1px solid #e9ecef', 
+            borderRadius: 6, 
+            padding: 16, 
+            marginBottom: 24 
+          }}>
+            <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 16 }}>
+              <Select
+                value="upload-multiple-pnr"
+                style={{ width: 250 }}
+                size="large"
+              >
+                <Option value="upload-multiple-pnr">Upload multiple PNR / Ticket no</Option>
+              </Select>
+              <Select
+                value={invoiceType}
+                onChange={setInvoiceType}
+                style={{ width: 120 }}
+                size="large"
+              >
+                <Option value="all">All</Option>
+                <Option value="tax-invoice">Tax Invoice</Option>
+                <Option value="credit-note">Credit Note</Option>
+                <Option value="debit-note">Debit Note</Option>
+              </Select>
+              <Button 
+                type="primary"
+                onClick={handleSubmit}
+                size="large"
+              >
+                Submit
+              </Button>
+              <Button 
+                onClick={handleResetAll}
+                size="large"
+              >
+                Reset all
+              </Button>
+            </div>
+          </div>
+        );
+      
+      case 'upload-invoice':
+        return (
+          <div style={{ 
+            backgroundColor: '#f8f9fa', 
+            border: '1px solid #e9ecef', 
+            borderRadius: 6, 
+            padding: 16, 
+            marginBottom: 24 
+          }}>
+            <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 16 }}>
+              <Select
+                value="upload-multiple-invoice"
+                style={{ width: 250 }}
+                size="large"
+              >
+                <Option value="upload-multiple-invoice">Upload multiple Invoice no</Option>
+              </Select>
+              <Select
+                value={invoiceType}
+                onChange={setInvoiceType}
+                style={{ width: 120 }}
+                size="large"
+              >
+                <Option value="all">All</Option>
+                <Option value="tax-invoice">Tax Invoice</Option>
+                <Option value="credit-note">Credit Note</Option>
+                <Option value="debit-note">Debit Note</Option>
+              </Select>
+              <Button 
+                type="primary"
+                onClick={handleSubmit}
+                size="large"
+              >
+                Submit
+              </Button>
+              <Button 
+                onClick={handleResetAll}
+                size="large"
+              >
+                Reset all
+              </Button>
+            </div>
+          </div>
+        );
+      
+      case 'pnr-ticket':
+        return (
+          <div style={{ 
+            backgroundColor: '#f8f9fa', 
+            border: '1px solid #e9ecef', 
+            borderRadius: 6, 
+            padding: 16, 
+            marginBottom: 24 
+          }}>
+            <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 16 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <span style={{ fontSize: '12px', color: '#666' }}>PNR / Ticket no</span>
+                <Input
+                  placeholder="Enter PNR / Ticket no"
+                  style={{ width: 200 }}
+                  size="large"
+                />
+              </div>
+              <Select
+                value={invoiceType}
+                onChange={setInvoiceType}
+                style={{ width: 120 }}
+                size="large"
+              >
+                <Option value="all">All</Option>
+                <Option value="tax-invoice">Tax Invoice</Option>
+                <Option value="credit-note">Credit Note</Option>
+                <Option value="debit-note">Debit Note</Option>
+              </Select>
+              <Button 
+                type="primary"
+                onClick={handleSubmit}
+                size="large"
+              >
+                Submit
+              </Button>
+              <Button 
+                onClick={handleResetAll}
+                size="large"
+              >
+                Reset all
+              </Button>
+            </div>
+          </div>
+        );
+      
+      case 'tax-invoice-range':
+        return (
+          <div style={{ 
+            backgroundColor: '#f8f9fa', 
+            border: '1px solid #e9ecef', 
+            borderRadius: 6, 
+            padding: 16, 
+            marginBottom: 24 
+          }}>
+            <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 16, flexWrap: 'wrap' }}>
+              <div>
+                <span style={{ fontSize: '12px', color: '#666', display: 'block', marginBottom: 4 }}>Airlines</span>
+                <Select
+                  defaultValue="all"
+                  style={{ width: 120 }}
+                  size="large"
+                >
+                  <Option value="all">All</Option>
+                  <Option value="spicejet">SpiceJet</Option>
+                  <Option value="indigo">IndiGo</Option>
+                </Select>
+              </div>
+              
+              <div>
+                <span style={{ fontSize: '12px', color: '#666', display: 'block', marginBottom: 4 }}>Type</span>
+                <Select
+                  value={invoiceType}
+                  onChange={setInvoiceType}
+                  style={{ width: 120 }}
+                  size="large"
+                >
+                  <Option value="all">All</Option>
+                  <Option value="tax-invoice">Tax Invoice</Option>
+                  <Option value="credit-note">Credit Note</Option>
+                </Select>
+              </div>
+              
+              <div>
+                <span style={{ fontSize: '12px', color: '#666', display: 'block', marginBottom: 4 }}>Travel mode</span>
+                <Select
+                  defaultValue="all"
+                  style={{ width: 120 }}
+                  size="large"
+                >
+                  <Option value="all">All</Option>
+                  <Option value="flight">Flight</Option>
+                  <Option value="train">Train</Option>
+                </Select>
+              </div>
+              
+              <div>
+                <span style={{ fontSize: '12px', color: '#666', display: 'block', marginBottom: 4 }}>Place of supply</span>
+                <Select
+                  defaultValue="all-states"
+                  style={{ width: 120 }}
+                  size="large"
+                >
+                  <Option value="all-states">All states</Option>
+                  <Option value="delhi">Delhi</Option>
+                  <Option value="mumbai">Mumbai</Option>
+                </Select>
+              </div>
+              
+              <div>
+                <span style={{ fontSize: '12px', color: '#666', display: 'block', marginBottom: 4 }}>Start / end date *</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <DatePicker 
+                    placeholder="Start date" 
+                    suffixIcon={<CalendarOutlined />}
+                    style={{ width: 100 }}
+                    size="large"
+                  />
+                  <span style={{ fontSize: '12px' }}>to</span>
+                  <DatePicker 
+                    placeholder="End date" 
+                    suffixIcon={<CalendarOutlined />}
+                    style={{ width: 100 }}
+                    size="large"
+                  />
+                </div>
+              </div>
+              
+              <div style={{ alignSelf: 'flex-end' }}>
+                <Button 
+                  type="primary"
+                  onClick={handleSubmit}
+                  size="large"
+                >
+                  Submit
+                </Button>
+              </div>
+              
+              <div style={{ alignSelf: 'flex-end' }}>
+                <Button 
+                  onClick={handleResetAll}
+                  size="large"
+                >
+                  Reset all
+                </Button>
+              </div>
+            </div>
+          </div>
+        );
+      
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="slide-up" style={{ padding: '24px', background: '#f5f5f5', minHeight: '100vh' }}>
       {/* Breadcrumb */}
       <div style={{ marginBottom: 16 }}>
-        <Text style={{ color: '#666' }}>Home » Cumulative invoice</Text>
+        <Text style={{ color: '#666' }}>Home » Cumulative Invoice (Airline)</Text>
       </div>
 
       {/* Title */}
       <Title level={3} style={{ margin: '0 0 24px 0', color: '#7c4dff' }}>
-        Cumulative Invoices
+        Cumulative Invoice (Airline)
       </Title>
 
       {/* Entity Type Selection */}
@@ -166,93 +443,12 @@ const CumulativeInvoice: React.FC = () => {
         activeKey={activeTab}
         onChange={setActiveTab}
         items={tabItems}
-        type="card"
+        type="line"
         style={{ marginBottom: 24 }}
       />
 
-      {/* Form Section at Top */}
-      <Card style={{ marginBottom: 24 }}>
-        <div style={{ display: 'flex', gap: 16, alignItems: 'flex-end', flexWrap: 'wrap' }}>
-          <div style={{ flex: 1, minWidth: 200 }}>
-            <Select
-              value="upload-multiple-pnr"
-              style={{ width: '100%' }}
-              size="large"
-            >
-              <Option value="upload-multiple-pnr">Upload Multiple PNR / Ticket No</Option>
-            </Select>
-          </div>
-
-          <div style={{ flex: 1, minWidth: 150 }}>
-            <Select
-              value={invoiceType}
-              onChange={setInvoiceType}
-              style={{ width: '100%' }}
-              size="large"
-            >
-              <Option value="all">All</Option>
-              <Option value="tax-invoice">Tax Invoice</Option>
-              <Option value="credit-note">Credit Note</Option>
-              <Option value="debit-note">Debit Note</Option>
-            </Select>
-          </div>
-
-          <Button 
-            type="primary"
-            onClick={handleSubmit}
-            size="large"
-          >
-            Submit
-          </Button>
-          <Button 
-            onClick={handleResetAll}
-            size="large"
-          >
-            Reset All
-          </Button>
-        </div>
-
-        <div style={{ 
-          backgroundColor: '#f8f9fa', 
-          border: '1px solid #e9ecef', 
-          borderRadius: 6, 
-          padding: 16, 
-          marginTop: 16 
-        }}>
-          <div style={{ marginBottom: 16 }}>
-            <Radio.Group 
-              value={uploadType} 
-              onChange={(e) => setUploadType(e.target.value)}
-            >
-              <Radio value="pnr">PNR</Radio>
-              <Radio value="ticket">Ticket Number</Radio>
-            </Radio.Group>
-          </div>
-
-          <div style={{ marginBottom: 16 }}>
-            <Text strong>Enter PNR No</Text>
-            <TextArea
-              value={pnrInput}
-              onChange={(e) => setPnrInput(e.target.value)}
-              placeholder="Enter PNR numbers..."
-              rows={4}
-              style={{ marginTop: 8 }}
-            />
-          </div>
-
-          <div style={{ color: '#666', fontSize: 12, marginBottom: 16 }}>
-            <Text>Example : D3456,D23456</Text>
-          </div>
-
-          <Button 
-            type="primary"
-            onClick={handleSubmit}
-            style={{ minWidth: 120 }}
-          >
-            Submit
-          </Button>
-        </div>
-      </Card>
+      {/* Dynamic Tab Content */}
+      {renderTabContent()}
 
       {/* Data Table Section */}
       <div>
@@ -306,7 +502,7 @@ const CumulativeInvoice: React.FC = () => {
             pagination={{
               current: 1,
               pageSize: 5,
-              total: 3,
+              total: 489,
               showSizeChanger: true,
               showQuickJumper: true,
               showTotal: (total, range) => `Displaying ${range[0]} Out of ${total}`,
@@ -347,7 +543,7 @@ const CumulativeInvoice: React.FC = () => {
             paddingTop: 16,
             borderTop: '1px solid #f0f0f0'
           }}>
-            <span style={{ fontSize: '14px' }}>Go to Page</span>
+            <span style={{ fontSize: '14px' }}>Go to page</span>
             <Input style={{ width: 60 }} />
             <Button 
               type="primary" 
