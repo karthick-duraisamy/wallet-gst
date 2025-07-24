@@ -77,7 +77,7 @@ const MainLayout: React.FC = () => {
   return (
     <Layout className="main-layout" style={{ minHeight: '100vh' }}>
       <Sider 
-        width={70} 
+        width={200} 
         className="side-menu"
         style={{
           background: '#5A4FCF',
@@ -91,8 +91,11 @@ const MainLayout: React.FC = () => {
       >
         <div className="side-menu-content">
           <div className="logo-section">
-            <div className="logo-icon">
-              <FileTextOutlined style={{ color: 'white', fontSize: '24px' }} />
+            <div className="logo-with-text">
+              <div className="logo-icon">
+                <FileTextOutlined style={{ color: 'white', fontSize: '24px' }} />
+              </div>
+              <span className="logo-text">INFINITI</span>
             </div>
           </div>
           
@@ -100,28 +103,27 @@ const MainLayout: React.FC = () => {
             {sideMenuItems.map(item => (
               <div 
                 key={item.key}
-                className={`nav-item ${getCurrentKey() === item.key ? 'active' : ''}`}
+                className={`nav-item-with-label ${getCurrentKey() === item.key ? 'active' : ''}`}
                 onClick={item.onClick}
-                title={item.label}
               >
                 <div className="nav-icon">
                   {item.icon}
                 </div>
-                <div className="nav-tooltip">
+                <span className="nav-label">
                   {item.label}
-                </div>
+                </span>
               </div>
             ))}
           </div>
           
           <div className="menu-footer">
-            <div className="nav-item" title="Settings">
+            <div className="nav-item-with-label">
               <div className="nav-icon">
                 <SettingOutlined />
               </div>
-              <div className="nav-tooltip">
+              <span className="nav-label">
                 Settings
-              </div>
+              </span>
             </div>
           </div>
         </div>
@@ -130,7 +132,7 @@ const MainLayout: React.FC = () => {
       {/* Header spanning full width */}
       <Header className="main-header" style={{
         background: 'white',
-        padding: '0 24px 0 94px', // Left padding to account for sidebar
+        padding: '0 24px 0 224px', // Left padding to account for sidebar
         boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)',
         display: 'flex',
         alignItems: 'center',
@@ -171,7 +173,7 @@ const MainLayout: React.FC = () => {
         </div>
       </Header>
 
-      <Layout style={{ marginLeft: 70, marginTop: 64 }}>
+      <Layout style={{ marginLeft: 200, marginTop: 64 }}>
         <Content style={{ padding: '24px', background: '#f5f5f5', minHeight: 'calc(100vh - 128px)' }}>
           <div className="fade-in">
             <Outlet />
