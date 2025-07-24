@@ -534,6 +534,61 @@ body {
   gap: 16px;
 }
 
+/* Side Menu Styles */
+.side-menu {
+  background: #2B4CB8 !important;
+}
+
+.side-menu-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: center;
+}
+
+.logo-container {
+  padding: 20px 0;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+}
+
+.side-menu-bottom {
+  margin-top: auto;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.side-menu .ant-menu-item {
+  background: transparent !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  border: none !important;
+  margin: 8px 4px !important;
+  border-radius: 8px !important;
+  height: 48px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.side-menu .ant-menu-item:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: white !important;
+}
+
+.side-menu .ant-menu-item-selected {
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: white !important;
+}
+
+.side-menu .ant-menu-item-selected::after {
+  display: none !important;
+}
+
+.side-menu .ant-menu {
+  width: 100%;
+}
+
 .user-avatar {
   width: 36px;
   height: 36px;
