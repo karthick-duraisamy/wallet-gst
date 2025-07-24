@@ -77,10 +77,10 @@ const MainLayout: React.FC = () => {
   return (
     <Layout className="main-layout" style={{ minHeight: '100vh' }}>
       <Sider 
-        width={60} 
+        width={70} 
         className="side-menu"
         style={{
-          background: '#2B4CB8',
+          background: '#5A4FCF',
           position: 'fixed',
           height: '100vh',
           left: 0,
@@ -90,36 +90,36 @@ const MainLayout: React.FC = () => {
         }}
       >
         <div className="side-menu-content">
-          <div className="logo-container">
-            <div className="menu-item-tooltip" title="GST Claim">
-              <FileTextOutlined style={{ color: 'white', fontSize: '24px', margin: '20px 0' }} />
+          <div className="logo-section">
+            <div className="logo-icon">
+              <FileTextOutlined style={{ color: 'white', fontSize: '24px' }} />
             </div>
           </div>
           
-          <div className="menu-items-container">
+          <div className="menu-navigation">
             {sideMenuItems.map(item => (
               <div 
                 key={item.key}
-                className={`menu-item-wrapper ${getCurrentKey() === item.key ? 'selected' : ''}`}
+                className={`nav-item ${getCurrentKey() === item.key ? 'active' : ''}`}
                 onClick={item.onClick}
                 title={item.label}
               >
-                <div className="menu-item-content">
+                <div className="nav-icon">
                   {item.icon}
                 </div>
-                <div className="menu-item-tooltip">
+                <div className="nav-tooltip">
                   {item.label}
                 </div>
               </div>
             ))}
           </div>
           
-          <div className="side-menu-bottom">
-            <div className="menu-item-wrapper" title="Settings">
-              <div className="menu-item-content">
-                <SettingOutlined style={{ color: 'white', fontSize: '20px' }} />
+          <div className="menu-footer">
+            <div className="nav-item" title="Settings">
+              <div className="nav-icon">
+                <SettingOutlined />
               </div>
-              <div className="menu-item-tooltip">
+              <div className="nav-tooltip">
                 Settings
               </div>
             </div>
@@ -127,7 +127,7 @@ const MainLayout: React.FC = () => {
         </div>
       </Sider>
 
-      <Layout style={{ marginLeft: 60 }}>
+      <Layout style={{ marginLeft: 70 }}>
         <Header className="main-header" style={{
           background: 'white',
           padding: '0 24px',
