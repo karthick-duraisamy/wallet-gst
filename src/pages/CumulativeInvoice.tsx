@@ -9,8 +9,12 @@ import {
   Select, 
   Typography, 
   Space,
-  Empty
+  Empty,
+  Table,
+  Checkbox,
+  Tag
 } from 'antd';
+import { SearchOutlined, DownloadOutlined } from '@ant-design/icons';
 
 const { Title, Text } = Typography;
 const { TextArea } = Input;
@@ -22,6 +26,7 @@ const CumulativeInvoice: React.FC = () => {
   const [uploadType, setUploadType] = useState('pnr');
   const [pnrInput, setPnrInput] = useState('');
   const [invoiceType, setInvoiceType] = useState('all');
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
   const handleSubmit = () => {
     console.log('Submit clicked');
@@ -51,6 +56,86 @@ const CumulativeInvoice: React.FC = () => {
       label: 'Show on Tax Invoice Date Range',
     },
   ];
+
+  // Table columns
+  const columns = [
+    {
+      title: '',
+      dataIndex: 'checkbox',
+      key: 'checkbox',
+      width: 40,
+      render: () => <Checkbox />,
+    },
+    {
+      title: 'Sl',
+      dataIndex: 'sl',
+      key: 'sl',
+      width: 60,
+      render: (text: string, record: any, index: number) => index + 1,
+    },
+    {
+      title: 'Invoice No',
+      dataIndex: 'invoiceNo',
+      key: 'invoiceNo',
+      render: (text: string) => text || 'N/A',
+    },
+    {
+      title: 'Invoice Date',
+      dataIndex: 'invoiceDate',
+      key: 'invoiceDate',
+      render: (text: string) => text || 'N/A',
+    },
+    {
+      title: 'Type',
+      dataIndex: 'type',
+      key: 'type',
+      render: (text: string) => text || 'Invoice',
+    },
+    {
+      title: 'Travel Vendor',
+      dataIndex: 'travelVendor',
+      key: 'travelVendor',
+      render: (text: string) => text || 'AtYourPrice',
+    },
+    {
+      title: 'Action',
+      dataIndex: 'action',
+      key: 'action',
+      render: () => '-',
+    },
+  ];
+
+  // Mock data for the table
+  const mockData = [
+    {
+      key: '1',
+      invoiceNo: 'N/A',
+      invoiceDate: 'N/A',
+      type: 'Invoice',
+      travelVendor: 'AtYourPrice',
+    },
+    {
+      key: '2',
+      invoiceNo: 'N/A',
+      invoiceDate: 'N/A',
+      type: 'Credit note',
+      travelVendor: 'AtYourPrice',
+    },
+    {
+      key: '3',
+      invoiceNo: 'N/A',
+      invoiceDate: 'N/A',
+      type: 'Invoice',
+      travelVendor: 'AtYourPrice',
+    },
+  ];
+
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: (newSelectedRowKeys: React.Key[]) => {
+      setSelectedRowKeys(newSelectedRowKeys);
+    },
+  };
 
   return (
     <div className="slide-up" style={{ padding: '24px', background: '#f5f5f5', minHeight: '100vh' }}>
@@ -162,51 +247,116 @@ const CumulativeInvoice: React.FC = () => {
           </Space>
         </div>
 
-        {/* Right Side - Empty State */}
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ textAlign: 'center' }}>
-            <div style={{ 
-              width: 120, 
-              height: 80, 
-              border: '2px dashed #d9d9d9', 
-              borderRadius: 8, 
-              margin: '0 auto 16px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              position: 'relative'
-            }}>
-              <div style={{
-                width: 40,
-                height: 40,
-                borderRadius: '50%',
-                backgroundColor: '#e6f7ff',
+        {/* Right Side - Data Table */}
+        <div style={{ flex: 2 }}>
+          {/* Export Buttons and Search */}
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'flex-end', 
+            gap: 12, 
+            marginBottom: 16,
+            alignItems: 'center'
+          }}>
+            <Button 
+              icon={<DownloadOutlined />}
+              style={{ 
+                backgroundColor: '#1d4ed8', 
+                color: 'white', 
+                border: 'none',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
-              }}>
-                <span style={{ color: '#1890ff', fontSize: 18 }}>📄</span>
-              </div>
-              <div style={{
-                position: 'absolute',
-                bottom: -10,
-                right: 10,
-                width: 30,
-                height: 30,
-                borderRadius: '50%',
-                backgroundColor: '#fff',
-                border: '2px solid #e6f7ff',
+                gap: 4
+              }}
+            >
+              XLS
+            </Button>
+            <Button 
+              icon={<DownloadOutlined />}
+              style={{ 
+                backgroundColor: '#059669', 
+                color: 'white', 
+                border: 'none',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
-              }}>
-                <span style={{ color: '#52c41a', fontSize: 14 }}>😊</span>
-              </div>
-            </div>
-            <Title level={4} style={{ color: '#666', fontWeight: 'normal' }}>
-              No Data Found !
-            </Title>
+                gap: 4
+              }}
+            >
+              CSV
+            </Button>
+            <Input 
+              placeholder="Search" 
+              prefix={<SearchOutlined />}
+              style={{ width: 200 }}
+            />
           </div>
+
+          {/* Data Table */}
+          <Card style={{ borderRadius: 8, boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
+            <Table
+              columns={columns}
+              dataSource={mockData}
+              rowSelection={rowSelection}
+              pagination={{
+                current: 1,
+                pageSize: 5,
+                total: 3,
+                showSizeChanger: true,
+                showQuickJumper: true,
+                showTotal: (total, range) => `Displaying ${range[0]} Out of ${total}`,
+                itemRender: (current, type, originalElement) => {
+                  if (type === 'page') {
+                    return (
+                      <Button 
+                        type={current === 1 ? 'primary' : 'default'}
+                        style={{
+                          backgroundColor: current === 1 ? '#4f46e5' : 'white',
+                          borderColor: current === 1 ? '#4f46e5' : '#d9d9d9',
+                          color: current === 1 ? 'white' : '#000',
+                          borderRadius: '50%',
+                          width: 32,
+                          height: 32,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        }}
+                      >
+                        {current}
+                      </Button>
+                    );
+                  }
+                  return originalElement;
+                },
+              }}
+              scroll={{ x: 800 }}
+              style={{ 
+                '& .ant-table-thead > tr > th': {
+                  backgroundColor: '#f8fafc',
+                  fontWeight: 600,
+                  fontSize: '14px'
+                }
+              }}
+            />
+            
+            {/* Custom Pagination Footer */}
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'flex-end', 
+              alignItems: 'center', 
+              gap: 16,
+              marginTop: 16,
+              paddingTop: 16,
+              borderTop: '1px solid #f0f0f0'
+            }}>
+              <span style={{ fontSize: '14px' }}>Go to Page</span>
+              <Input style={{ width: 60 }} />
+              <Button 
+                type="primary" 
+                style={{ backgroundColor: '#4f46e5', borderRadius: '16px' }}
+              >
+                Go
+              </Button>
+            </div>
+          </Card>
         </div>
       </div>
     </div>
