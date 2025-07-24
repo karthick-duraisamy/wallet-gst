@@ -1,179 +1,359 @@
-import React from 'react';
-import { Row, Col, Card, Statistic, Progress, Table } from 'antd';
+
+import React, { useState } from 'react';
 import { 
-  DollarOutlined, 
-  FileTextOutlined, 
-  ClockCircleOutlined, 
-  CheckCircleOutlined,
-  RiseOutlined
-} from '@ant-design/icons';
+  Row, 
+  Col, 
+  Card, 
+  Select, 
+  Button, 
+  Table, 
+  Progress,
+  Typography,
+  Space,
+  Divider
+} from 'antd';
+import { 
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell
+} from 'recharts';
+import { DownloadOutlined, InfoCircleOutlined } from '@ant-design/icons';
+
+const { Title, Text } = Typography;
+const { Option } = Select;
 
 const Dashboard: React.FC = () => {
-  const statsData = [
+  const [timePeriod, setTimePeriod] = useState('select');
+  const [travelVendor, setTravelVendor] = useState('select');
+
+  // Status cards data
+  const statusCards = [
     {
-      title: 'Total Claims',
-      value: 2456,
-      icon: <FileTextOutlined />,
-      color: '#1890ff',
-      trend: '+12%',
+      title: 'All Travel History',
+      items: [
+        { label: 'Bookings', value: 9, color: '#52c41a' },
+        { label: 'Cancellations', value: 0, color: '#1890ff' }
+      ]
     },
     {
-      title: 'Amount Claimed',
-      value: 8450000,
-      prefix: '₹',
-      icon: <DollarOutlined />,
-      color: '#52c41a',
-      trend: '+8.5%',
+      title: 'Airline Invoices',
+      items: [
+        { label: 'Available', value: 0, color: '#1890ff' },
+        { label: 'GST - Filed', value: 0, color: '#722ed1' },
+        { label: 'Pending to File', value: 0, color: '#fa8c16' }
+      ]
     },
     {
-      title: 'Pending Claims',
-      value: 145,
-      icon: <ClockCircleOutlined />,
-      color: '#faad14',
-      trend: '-5%',
+      title: 'All Invoices',
+      items: [
+        { label: 'Available', value: 0, color: '#1890ff' },
+        { label: 'GST - Filed', value: 0, color: '#722ed1' },
+        { label: 'Pending to File', value: 0, color: '#fa8c16' }
+      ]
     },
     {
-      title: 'Approved Claims',
-      value: 2311,
-      icon: <CheckCircleOutlined />,
-      color: '#52c41a',
-      trend: '+15%',
-    },
+      title: 'Net Claimable Amount(INR)',
+      items: [
+        { label: 'Airlines', value: 364, color: '#ff4d4f' },
+        { label: 'All', value: 30, color: '#ff7875' }
+      ]
+    }
   ];
 
-  const recentClaims = [
+  // Chart data
+  const invoiceStatusData = [
+    { month: 'Apr', Submitted: 180, 'Pending to File': 40, 'Invoice Missing': 20, 'Additional in GSTR -2A': 10 },
+    { month: 'May', Submitted: 200, 'Pending to File': 35, 'Invoice Missing': 25, 'Additional in GSTR -2A': 15 },
+    { month: 'Jun', Submitted: 220, 'Pending to File': 30, 'Invoice Missing': 30, 'Additional in GSTR -2A': 20 },
+    { month: 'Jul', Submitted: 190, 'Pending to File': 45, 'Invoice Missing': 15, 'Additional in GSTR -2A': 25 },
+    { month: 'Aug', Submitted: 210, 'Pending to File': 25, 'Invoice Missing': 35, 'Additional in GSTR -2A': 10 },
+    { month: 'Sep', Submitted: 180, 'Pending to File': 50, 'Invoice Missing': 20, 'Additional in GSTR -2A': 30 },
+    { month: 'Oct', Submitted: 240, 'Pending to File': 20, 'Invoice Missing': 25, 'Additional in GSTR -2A': 15 },
+    { month: 'Nov', Submitted: 200, 'Pending to File': 40, 'Invoice Missing': 30, 'Additional in GSTR -2A': 20 },
+    { month: 'Dec', Submitted: 220, 'Pending to File': 35, 'Invoice Missing': 20, 'Additional in GSTR -2A': 25 },
+    { month: 'Jan', Submitted: 190, 'Pending to File': 30, 'Invoice Missing': 40, 'Additional in GSTR -2A': 15 },
+    { month: 'Feb', Submitted: 210, 'Pending to File': 45, 'Invoice Missing': 25, 'Additional in GSTR -2A': 20 },
+    { month: 'Mar', Submitted: 180, 'Pending to File': 25, 'Invoice Missing': 35, 'Additional in GSTR -2A': 30 }
+  ];
+
+  // Airline data
+  const airlineData = [
     {
       key: '1',
-      invoice: 'INV-2024-001',
-      supplier: 'IndiGo Airlines',
-      amount: 15000,
-      status: 'Approved',
-      date: '2024-01-15',
+      airline: 'SG',
+      code: '6132',
+      bookings: '1024 tickets',
+      cancellations: '11364',
+      amount: 'INR -5232',
+      color: '#ff4d4f'
     },
     {
       key: '2',
-      invoice: 'INV-2024-002',
-      supplier: 'Air India',
-      amount: 8500,
-      status: 'Pending',
-      date: '2024-01-16',
+      airline: 'AI',
+      code: '324',
+      bookings: '324 tickets',
+      cancellations: '1032',
+      amount: 'INR -708',
+      color: '#722ed1'
     },
     {
       key: '3',
-      invoice: 'INV-2024-003',
-      supplier: 'SpiceJet',
-      amount: 12000,
-      status: 'Processing',
-      date: '2024-01-17',
+      airline: '6E',
+      code: '529',
+      bookings: '529 tickets',
+      cancellations: '1356',
+      amount: 'INR -1428',
+      color: '#1890ff'
+    },
+    {
+      key: '4',
+      airline: 'UK',
+      code: '168',
+      bookings: '168 tickets',
+      cancellations: '312',
+      amount: 'INR -144',
+      color: '#fa8c16'
+    },
+    {
+      key: '5',
+      airline: 'IX',
+      code: '96',
+      bookings: '96 tickets',
+      cancellations: '336',
+      amount: 'INR -240',
+      color: '#ff4d4f'
+    },
+    {
+      key: '6',
+      airline: 'G8',
+      code: '348',
+      bookings: '348 tickets',
+      cancellations: '1548',
+      amount: 'INR -1200',
+      color: '#52c41a'
+    }
+  ];
+
+  const airlineColumns = [
+    {
+      title: 'Airline code',
+      dataIndex: 'airline',
+      key: 'airline',
+      render: (text: string, record: any) => (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div 
+            style={{ 
+              width: 16, 
+              height: 16, 
+              backgroundColor: record.color, 
+              borderRadius: 2 
+            }} 
+          />
+          <Text strong>{text}</Text>
+        </div>
+      ),
+    },
+    {
+      title: 'Bookings/Claim',
+      dataIndex: 'code',
+      key: 'code',
+      render: (text: string, record: any) => (
+        <div>
+          <div style={{ fontWeight: 600 }}>{text}</div>
+          <div style={{ fontSize: 12, color: '#666' }}>{record.bookings}</div>
+        </div>
+      ),
+    },
+    {
+      title: 'Cancellations/Claim',
+      dataIndex: 'cancellations',
+      key: 'cancellations',
+      render: (text: string) => (
+        <div>
+          <div style={{ fontWeight: 600 }}>{text}</div>
+          <div style={{ fontSize: 12, color: '#666' }}>1356 tickets</div>
+        </div>
+      ),
+    },
+    {
+      title: 'Net Claimable',
+      dataIndex: 'amount',
+      key: 'amount',
+      render: (text: string) => (
+        <Text style={{ fontWeight: 600, color: text.includes('-') ? '#ff4d4f' : '#52c41a' }}>
+          {text}
+        </Text>
+      ),
     },
   ];
 
-  const columns = [
-    {
-      title: 'Invoice Number',
-      dataIndex: 'invoice',
-      key: 'invoice',
-    },
-    {
-      title: 'Supplier',
-      dataIndex: 'supplier',
-      key: 'supplier',
-    },
-    {
-      title: 'Amount',
-      dataIndex: 'amount',
-      key: 'amount',
-      render: (amount: number) => `₹${amount.toLocaleString()}`,
-    },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
-      render: (status: string) => {
-        const colors: Record<string, string> = {
-          'Approved': '#52c41a',
-          'Pending': '#faad14',
-          'Processing': '#1890ff',
-          'Rejected': '#ff4d4f',
-        };
-        return (
-          <span style={{ color: colors[status], fontWeight: 500 }}>
-            {status}
-          </span>
-        );
-      },
-    },
-    {
-      title: 'Date',
-      dataIndex: 'date',
-      key: 'date',
-    },
+  const pendingFilesData = [
+    { month: 'SG', value: 8 }
   ];
 
   return (
-    <div className="slide-up">
-      <div className="dashboard-stats">
-        {statsData.map((stat, index) => (
-          <Card key={index} className="stat-card">
-            <div className="flex-between mb-16">
-              <div style={{ color: stat.color, fontSize: 24 }}>
-                {stat.icon}
-              </div>
-              <div style={{ color: stat.color, fontSize: 12, fontWeight: 500 }}>
-                <RiseOutlined /> {stat.trend}
-              </div>
-            </div>
-            <Statistic
-              title={stat.title}
-              value={stat.value}
-              prefix={stat.prefix}
-              valueStyle={{ color: stat.color, fontSize: 28, fontWeight: 700 }}
-            />
-          </Card>
-        ))}
+    <div className="slide-up" style={{ padding: '24px', background: '#f5f5f5', minHeight: '100vh' }}>
+      {/* Header */}
+      <div style={{ marginBottom: 24 }}>
+        <Title level={3} style={{ margin: 0, color: '#1890ff' }}>GST dashboard</Title>
       </div>
 
+      {/* Filters */}
+      <div style={{ marginBottom: 24, display: 'flex', gap: 16, alignItems: 'center' }}>
+        <div>
+          <Text style={{ marginRight: 8 }}>Time period:</Text>
+          <Select 
+            value={timePeriod} 
+            onChange={setTimePeriod}
+            style={{ width: 120 }}
+          >
+            <Option value="select">select</Option>
+            <Option value="monthly">Monthly</Option>
+            <Option value="quarterly">Quarterly</Option>
+            <Option value="yearly">Yearly</Option>
+          </Select>
+        </div>
+        <div>
+          <Text style={{ marginRight: 8 }}>Travel Vendors:</Text>
+          <Select 
+            value={travelVendor} 
+            onChange={setTravelVendor}
+            style={{ width: 120 }}
+          >
+            <Option value="select">select</Option>
+            <Option value="all">All Vendors</Option>
+          </Select>
+        </div>
+        <Button type="primary" style={{ marginLeft: 16 }}>
+          Apply
+        </Button>
+      </div>
+
+      {/* Status Cards */}
+      <Row gutter={[16, 16]} style={{ marginBottom: 32 }}>
+        {statusCards.map((card, index) => (
+          <Col xs={24} sm={12} lg={6} key={index}>
+            <Card 
+              title={card.title}
+              size="small"
+              style={{ height: '100%' }}
+              headStyle={{ fontSize: 12, fontWeight: 600 }}
+            >
+              {card.items.map((item, itemIndex) => (
+                <div key={itemIndex} style={{ marginBottom: 8 }}>
+                  <div 
+                    style={{ 
+                      padding: '8px 12px',
+                      backgroundColor: item.color,
+                      color: 'white',
+                      borderRadius: 4,
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      fontSize: 12
+                    }}
+                  >
+                    <span>{item.label}</span>
+                    <span style={{ fontWeight: 600 }}>{item.value}</span>
+                  </div>
+                </div>
+              ))}
+            </Card>
+          </Col>
+        ))}
+      </Row>
+
       <Row gutter={[24, 24]}>
-        <Col xs={24} lg={16}>
+        {/* Invoice Status Chart */}
+        <Col xs={24} lg={12}>
           <Card 
-            title="Recent Claims" 
-            className="content-card"
-            extra={<a href="/reconciliation">View All</a>}
+            title="Invoice status"
+            extra={<DownloadOutlined style={{ cursor: 'pointer' }} />}
+            style={{ height: 400 }}
+          >
+            <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
+              <Button size="small" type="primary">All</Button>
+              <Button size="small">Airlines</Button>
+              <Select size="small" defaultValue="Type" style={{ width: 80 }}>
+                <Option value="Type">Type</Option>
+              </Select>
+              <Select size="small" defaultValue="Invoices Count" style={{ width: 120 }}>
+                <Option value="Invoices Count">Invoices Count</Option>
+              </Select>
+            </div>
+            <ResponsiveContainer width="100%" height={280}>
+              <BarChart data={invoiceStatusData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="Submitted" stackId="a" fill="#1890ff" />
+                <Bar dataKey="Pending to File" stackId="a" fill="#52c41a" />
+                <Bar dataKey="Invoice Missing" stackId="a" fill="#faad14" />
+                <Bar dataKey="Additional in GSTR -2A" stackId="a" fill="#ff4d4f" />
+              </BarChart>
+            </ResponsiveContainer>
+          </Card>
+        </Col>
+
+        {/* Airline wise claimable amount */}
+        <Col xs={24} lg={12}>
+          <Card 
+            title="Airline wise claimable Amount(INR)"
+            extra={
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                <Select size="small" defaultValue="Airlines" style={{ width: 80 }}>
+                  <Option value="Airlines">Airlines</Option>
+                </Select>
+                <DownloadOutlined style={{ cursor: 'pointer' }} />
+              </div>
+            }
+            style={{ height: 400 }}
           >
             <Table
-              columns={columns}
-              dataSource={recentClaims}
+              columns={airlineColumns}
+              dataSource={airlineData}
               pagination={false}
-              size="middle"
+              size="small"
+              scroll={{ y: 280 }}
             />
           </Card>
         </Col>
-        
-        <Col xs={24} lg={8}>
-          <Card title="Claim Status Overview" className="content-card">
-            <div className="mb-24">
-              <div className="flex-between mb-16">
-                <span>Approved</span>
-                <span style={{ fontWeight: 600 }}>94%</span>
+
+        {/* Airlines pending files to GST */}
+        <Col xs={24}>
+          <Card 
+            title="Airlines pending files to GST"
+            extra={
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                <Text>Type:</Text>
+                <Select size="small" defaultValue="Invoices Count" style={{ width: 120 }}>
+                  <Option value="Invoices Count">Invoices Count</Option>
+                </Select>
+                <Text>Airlines:</Text>
+                <Select size="small" defaultValue="All" style={{ width: 80 }}>
+                  <Option value="All">All</Option>
+                </Select>
               </div>
-              <Progress percent={94} strokeColor="#52c41a" />
-            </div>
-            
-            <div className="mb-24">
-              <div className="flex-between mb-16">
-                <span>Processing</span>
-                <span style={{ fontWeight: 600 }}>4%</span>
-              </div>
-              <Progress percent={4} strokeColor="#1890ff" />
-            </div>
-            
-            <div>
-              <div className="flex-between mb-16">
-                <span>Rejected</span>
-                <span style={{ fontWeight: 600 }}>2%</span>
-              </div>
-              <Progress percent={2} strokeColor="#ff4d4f" />
-            </div>
+            }
+            style={{ height: 300 }}
+          >
+            <ResponsiveContainer width="100%" height={200}>
+              <BarChart data={pendingFilesData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="value" fill="#1890ff" />
+              </BarChart>
+            </ResponsiveContainer>
           </Card>
         </Col>
       </Row>
