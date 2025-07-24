@@ -127,49 +127,68 @@ const MainLayout: React.FC = () => {
         </div>
       </Sider>
 
-      <Layout style={{ marginLeft: 70 }}>
-        <Header className="main-header" style={{
-          background: 'white',
-          padding: '0 24px',
-          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}>
-          <div className="header-left">
-            <h1 style={{ margin: 0, fontSize: '24px', fontWeight: 600, color: '#2B4CB8' }}>
-              GST Claim
-            </h1>
+      {/* Header spanning full width */}
+      <Header className="main-header" style={{
+        background: 'white',
+        padding: '0 24px 0 94px', // Left padding to account for sidebar
+        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 99,
+        width: '100%'
+      }}>
+        <div className="header-left">
+          <h1 style={{ margin: 0, fontSize: '24px', fontWeight: 600, color: '#2B4CB8' }}>
+            GST Claim
+          </h1>
+        </div>
+        
+        <div className="header-right" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <Button type="text" icon={<NotificationOutlined />} style={{ color: '#666' }} />
+          <Button type="text" icon={<SettingOutlined />} style={{ color: '#666' }} />
+          
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ color: '#666' }}>India (INR)</span>
+            <Avatar style={{ backgroundColor: '#f56a00' }}>IN</Avatar>
           </div>
           
-          <div className="header-right" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <Button type="text" icon={<NotificationOutlined />} style={{ color: '#666' }} />
-            <Button type="text" icon={<SettingOutlined />} style={{ color: '#666' }} />
-            
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ color: '#666' }}>India (INR)</span>
-              <Avatar style={{ backgroundColor: '#f56a00' }}>IN</Avatar>
-            </div>
-            
-            <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
-              <Button type="text" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Avatar style={{ backgroundColor: '#1890ff' }}>
-                  {user?.name?.charAt(0) || user?.email?.charAt(0) || 'U'}
-                </Avatar>
-                <div style={{ textAlign: 'left' }}>
-                  <div style={{ fontSize: '12px', color: '#666' }}>Mr. {user?.name || 'User'}</div>
-                  <div style={{ fontSize: '10px', color: '#999' }}>Admin</div>
-                </div>
-              </Button>
-            </Dropdown>
-          </div>
-        </Header>
+          <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
+            <Button type="text" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Avatar style={{ backgroundColor: '#1890ff' }}>
+                {user?.name?.charAt(0) || user?.email?.charAt(0) || 'U'}
+              </Avatar>
+              <div style={{ textAlign: 'left' }}>
+                <div style={{ fontSize: '12px', color: '#666' }}>Mr. {user?.name || 'User'}</div>
+                <div style={{ fontSize: '10px', color: '#999' }}>Admin</div>
+              </div>
+            </Button>
+          </Dropdown>
+        </div>
+      </Header>
 
-        <Content style={{ padding: '24px', background: '#f5f5f5', minHeight: 'calc(100vh - 64px)' }}>
+      <Layout style={{ marginLeft: 70, marginTop: 64 }}>
+        <Content style={{ padding: '24px', background: '#f5f5f5', minHeight: 'calc(100vh - 128px)' }}>
           <div className="fade-in">
             <Outlet />
           </div>
         </Content>
+        
+        {/* Footer */}
+        <div style={{
+          background: '#f5f5f5',
+          textAlign: 'center',
+          padding: '16px 24px',
+          borderTop: '1px solid #e8e8e8',
+          fontSize: '14px',
+          color: '#666'
+        }}>
+          @Powered by Infinitisoftware Solution.
+        </div>
       </Layout>
     </Layout>
   );
