@@ -47,25 +47,25 @@ const MainLayout: React.FC = () => {
     {
       key: '/dashboard',
       icon: <DashboardOutlined />,
-      label: '',
+      label: 'Dashboard',
       onClick: () => navigate('/dashboard'),
     },
     {
       key: '/upload',
       icon: <UploadOutlined />,
-      label: '',
+      label: 'Upload',
       onClick: () => navigate('/upload'),
     },
     {
       key: '/reconciliation',
       icon: <ReconciliationOutlined />,
-      label: '',
+      label: 'Reconciliation',
       onClick: () => navigate('/reconciliation'),
     },
     {
       key: '/cumulative-invoice',
       icon: <FileTextOutlined />,
-      label: '',
+      label: 'Cumulative',
       onClick: () => navigate('/cumulative-invoice'),
     },
   ];
@@ -86,36 +86,43 @@ const MainLayout: React.FC = () => {
           left: 0,
           top: 0,
           zIndex: 100,
+          overflow: 'visible',
         }}
       >
         <div className="side-menu-content">
           <div className="logo-container">
-            <FileTextOutlined style={{ color: 'white', fontSize: '24px', margin: '20px 0' }} />
+            <div className="menu-item-tooltip" title="GST Claim">
+              <FileTextOutlined style={{ color: 'white', fontSize: '24px', margin: '20px 0' }} />
+            </div>
           </div>
           
-          <Menu
-            mode="vertical"
-            selectedKeys={[getCurrentKey()]}
-            style={{
-              background: 'transparent',
-              border: 'none',
-              marginTop: '20px',
-            }}
-            items={sideMenuItems.map(item => ({
-              ...item,
-              style: {
-                height: '60px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '8px 0',
-                borderRadius: '8px',
-              },
-            }))}
-          />
+          <div className="menu-items-container">
+            {sideMenuItems.map(item => (
+              <div 
+                key={item.key}
+                className={`menu-item-wrapper ${getCurrentKey() === item.key ? 'selected' : ''}`}
+                onClick={item.onClick}
+                title={item.label}
+              >
+                <div className="menu-item-content">
+                  {item.icon}
+                </div>
+                <div className="menu-item-tooltip">
+                  {item.label}
+                </div>
+              </div>
+            ))}
+          </div>
           
           <div className="side-menu-bottom">
-            <SettingOutlined style={{ color: 'white', fontSize: '20px', margin: '10px 0' }} />
+            <div className="menu-item-wrapper" title="Settings">
+              <div className="menu-item-content">
+                <SettingOutlined style={{ color: 'white', fontSize: '20px' }} />
+              </div>
+              <div className="menu-item-tooltip">
+                Settings
+              </div>
+            </div>
           </div>
         </div>
       </Sider>
