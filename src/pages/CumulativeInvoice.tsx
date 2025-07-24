@@ -170,194 +170,193 @@ const CumulativeInvoice: React.FC = () => {
         style={{ marginBottom: 24 }}
       />
 
-      <div style={{ display: 'flex', gap: 24 }}>
-        {/* Left Side - Form */}
-        <div style={{ flex: 1, maxWidth: 400 }}>
-          <Card style={{ marginBottom: 16 }}>
-            <div style={{ marginBottom: 16 }}>
-              <Select
-                value="upload-multiple-pnr"
-                style={{ width: '100%' }}
-                size="large"
-              >
-                <Option value="upload-multiple-pnr">Upload Multiple PNR / Ticket No</Option>
-              </Select>
-            </div>
-
-            <div style={{ marginBottom: 16 }}>
-              <Select
-                value={invoiceType}
-                onChange={setInvoiceType}
-                style={{ width: '100%' }}
-                size="large"
-              >
-                <Option value="all">All</Option>
-                <Option value="tax-invoice">Tax Invoice</Option>
-                <Option value="credit-note">Credit Note</Option>
-                <Option value="debit-note">Debit Note</Option>
-              </Select>
-            </div>
-
-            <div style={{ backgroundColor: '#fff', border: '1px solid #d9d9d9', borderRadius: 6, padding: 16, marginBottom: 16 }}>
-              <div style={{ marginBottom: 16 }}>
-                <Radio.Group 
-                  value={uploadType} 
-                  onChange={(e) => setUploadType(e.target.value)}
-                >
-                  <Radio value="pnr">PNR</Radio>
-                  <Radio value="ticket">Ticket Number</Radio>
-                </Radio.Group>
-              </div>
-
-              <div style={{ marginBottom: 16 }}>
-                <Text strong>Enter PNR No</Text>
-                <TextArea
-                  value={pnrInput}
-                  onChange={(e) => setPnrInput(e.target.value)}
-                  placeholder="Enter PNR numbers..."
-                  rows={6}
-                  style={{ marginTop: 8 }}
-                />
-              </div>
-
-              <div style={{ color: '#666', fontSize: 12, marginBottom: 16 }}>
-                <Text>Example : D3456,D23456</Text>
-              </div>
-
-              <Button 
-                type="primary"
-                onClick={handleSubmit}
-                style={{ width: '100%', marginBottom: 8 }}
-              >
-                Submit
-              </Button>
-            </div>
-          </Card>
-
-          <Space>
-            <Button 
-              type="primary"
-              onClick={handleSubmit}
+      {/* Form Section at Top */}
+      <Card style={{ marginBottom: 24 }}>
+        <div style={{ display: 'flex', gap: 16, alignItems: 'flex-end', flexWrap: 'wrap' }}>
+          <div style={{ flex: 1, minWidth: 200 }}>
+            <Select
+              value="upload-multiple-pnr"
+              style={{ width: '100%' }}
+              size="large"
             >
-              Submit
-            </Button>
-            <Button onClick={handleResetAll}>
-              Reset All
-            </Button>
-          </Space>
+              <Option value="upload-multiple-pnr">Upload Multiple PNR / Ticket No</Option>
+            </Select>
+          </div>
+
+          <div style={{ flex: 1, minWidth: 150 }}>
+            <Select
+              value={invoiceType}
+              onChange={setInvoiceType}
+              style={{ width: '100%' }}
+              size="large"
+            >
+              <Option value="all">All</Option>
+              <Option value="tax-invoice">Tax Invoice</Option>
+              <Option value="credit-note">Credit Note</Option>
+              <Option value="debit-note">Debit Note</Option>
+            </Select>
+          </div>
+
+          <Button 
+            type="primary"
+            onClick={handleSubmit}
+            size="large"
+          >
+            Submit
+          </Button>
+          <Button 
+            onClick={handleResetAll}
+            size="large"
+          >
+            Reset All
+          </Button>
         </div>
 
-        {/* Right Side - Data Table */}
-        <div style={{ flex: 2 }}>
-          {/* Export Buttons and Search */}
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'flex-end', 
-            gap: 12, 
-            marginBottom: 16,
-            alignItems: 'center'
-          }}>
-            <Button 
-              icon={<DownloadOutlined />}
-              style={{ 
-                backgroundColor: '#1d4ed8', 
-                color: 'white', 
-                border: 'none',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 4
-              }}
+        <div style={{ 
+          backgroundColor: '#f8f9fa', 
+          border: '1px solid #e9ecef', 
+          borderRadius: 6, 
+          padding: 16, 
+          marginTop: 16 
+        }}>
+          <div style={{ marginBottom: 16 }}>
+            <Radio.Group 
+              value={uploadType} 
+              onChange={(e) => setUploadType(e.target.value)}
             >
-              XLS
-            </Button>
-            <Button 
-              icon={<DownloadOutlined />}
-              style={{ 
-                backgroundColor: '#059669', 
-                color: 'white', 
-                border: 'none',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 4
-              }}
-            >
-              CSV
-            </Button>
-            <Input 
-              placeholder="Search" 
-              prefix={<SearchOutlined />}
-              style={{ width: 200 }}
+              <Radio value="pnr">PNR</Radio>
+              <Radio value="ticket">Ticket Number</Radio>
+            </Radio.Group>
+          </div>
+
+          <div style={{ marginBottom: 16 }}>
+            <Text strong>Enter PNR No</Text>
+            <TextArea
+              value={pnrInput}
+              onChange={(e) => setPnrInput(e.target.value)}
+              placeholder="Enter PNR numbers..."
+              rows={4}
+              style={{ marginTop: 8 }}
             />
           </div>
 
-          {/* Data Table */}
-          <Card style={{ borderRadius: 8, boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
-            <Table
-              columns={columns}
-              dataSource={mockData}
-              rowSelection={rowSelection}
-              pagination={{
-                current: 1,
-                pageSize: 5,
-                total: 3,
-                showSizeChanger: true,
-                showQuickJumper: true,
-                showTotal: (total, range) => `Displaying ${range[0]} Out of ${total}`,
-                itemRender: (current, type, originalElement) => {
-                  if (type === 'page') {
-                    return (
-                      <Button 
-                        type={current === 1 ? 'primary' : 'default'}
-                        style={{
-                          backgroundColor: current === 1 ? '#4f46e5' : 'white',
-                          borderColor: current === 1 ? '#4f46e5' : '#d9d9d9',
-                          color: current === 1 ? 'white' : '#000',
-                          borderRadius: '50%',
-                          width: 32,
-                          height: 32,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center'
-                        }}
-                      >
-                        {current}
-                      </Button>
-                    );
-                  }
-                  return originalElement;
-                },
-              }}
-              scroll={{ x: 800 }}
-              style={{ 
-                '& .ant-table-thead > tr > th': {
-                  backgroundColor: '#f8fafc',
-                  fontWeight: 600,
-                  fontSize: '14px'
-                }
-              }}
-            />
-            
-            {/* Custom Pagination Footer */}
-            <div style={{ 
-              display: 'flex', 
-              justifyContent: 'flex-end', 
-              alignItems: 'center', 
-              gap: 16,
-              marginTop: 16,
-              paddingTop: 16,
-              borderTop: '1px solid #f0f0f0'
-            }}>
-              <span style={{ fontSize: '14px' }}>Go to Page</span>
-              <Input style={{ width: 60 }} />
-              <Button 
-                type="primary" 
-                style={{ backgroundColor: '#4f46e5', borderRadius: '16px' }}
-              >
-                Go
-              </Button>
-            </div>
-          </Card>
+          <div style={{ color: '#666', fontSize: 12, marginBottom: 16 }}>
+            <Text>Example : D3456,D23456</Text>
+          </div>
+
+          <Button 
+            type="primary"
+            onClick={handleSubmit}
+            style={{ minWidth: 120 }}
+          >
+            Submit
+          </Button>
         </div>
+      </Card>
+
+      {/* Data Table Section */}
+      <div>
+        {/* Export Buttons and Search */}
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'flex-end', 
+          gap: 12, 
+          marginBottom: 16,
+          alignItems: 'center'
+        }}>
+          <Button 
+            icon={<DownloadOutlined />}
+            style={{ 
+              backgroundColor: '#1d4ed8', 
+              color: 'white', 
+              border: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 4
+            }}
+          >
+            XLS
+          </Button>
+          <Button 
+            icon={<DownloadOutlined />}
+            style={{ 
+              backgroundColor: '#059669', 
+              color: 'white', 
+              border: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 4
+            }}
+          >
+            CSV
+          </Button>
+          <Input 
+            placeholder="Search" 
+            prefix={<SearchOutlined />}
+            style={{ width: 200 }}
+          />
+        </div>
+
+        {/* Data Table */}
+        <Card style={{ borderRadius: 8, boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
+          <Table
+            columns={columns}
+            dataSource={mockData}
+            rowSelection={rowSelection}
+            pagination={{
+              current: 1,
+              pageSize: 5,
+              total: 3,
+              showSizeChanger: true,
+              showQuickJumper: true,
+              showTotal: (total, range) => `Displaying ${range[0]} Out of ${total}`,
+              itemRender: (current, type, originalElement) => {
+                if (type === 'page') {
+                  return (
+                    <Button 
+                      type={current === 1 ? 'primary' : 'default'}
+                      style={{
+                        backgroundColor: current === 1 ? '#4f46e5' : 'white',
+                        borderColor: current === 1 ? '#4f46e5' : '#d9d9d9',
+                        color: current === 1 ? 'white' : '#000',
+                        borderRadius: '50%',
+                        width: 32,
+                        height: 32,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}
+                    >
+                      {current}
+                    </Button>
+                  );
+                }
+                return originalElement;
+              },
+            }}
+            scroll={{ x: 800 }}
+          />
+          
+          {/* Custom Pagination Footer */}
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'flex-end', 
+            alignItems: 'center', 
+            gap: 16,
+            marginTop: 16,
+            paddingTop: 16,
+            borderTop: '1px solid #f0f0f0'
+          }}>
+            <span style={{ fontSize: '14px' }}>Go to Page</span>
+            <Input style={{ width: 60 }} />
+            <Button 
+              type="primary" 
+              style={{ backgroundColor: '#4f46e5', borderRadius: '16px' }}
+            >
+              Go
+            </Button>
+          </div>
+        </Card>
       </div>
     </div>
   );
