@@ -15,10 +15,33 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state: RootState) => state.auth);
+  const [form] = Form.useForm();
+  const [rememberMe, setRememberMe] = React.useState(false);
+
+  // Load saved credentials on component mount
+  React.useEffect(() => {
+    const savedCredentials = localStorage.getItem('gst_saved_credentials');
+    if (savedCredentials) {
+      const { email, password, remember } = JSON.parse(savedCredentials);
+      form.setFieldsValue({ email, password });
+      setRememberMe(remember);
+    }
+  }, [form]);
 
   const onFinish = async (values: LoginForm) => {
     dispatch(loginStart());
     dispatch(clearError());
+
+    // Save credentials to localStorage if remember me is checked
+    if (rememberMe) {
+      localStorage.setItem('gst_saved_credentials', JSON.stringify({
+        email: values.email,
+        password: values.password,
+        remember: true
+      }));
+    } else {
+      localStorage.removeItem('gst_saved_credentials');
+    }
 
     // Simulate API call
     setTimeout(() => {
@@ -128,6 +151,7 @@ const Login: React.FC = () => {
           )}
           
           <Form
+            form={form}
             name="login"
             onFinish={onFinish}
             autoComplete="off"
@@ -161,7 +185,12 @@ const Login: React.FC = () => {
             </Form.Item>
 
             <div className="remember-forgot">
-              <Checkbox>Remember me</Checkbox>
+              <Checkbox 
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+              >
+                Remember me
+              </Checkbox>
               <Link to="/auth/forgot-password">Forgot password?</Link>
             </div>
 
