@@ -10,7 +10,6 @@ import {
   DashboardOutlined,
   UploadOutlined,
   ReconciliationOutlined,
-  FileInvoiceOutlined,
   SettingOutlined,
   NotificationOutlined
 } from '@ant-design/icons';
@@ -65,7 +64,7 @@ const MainLayout: React.FC = () => {
     },
     {
       key: '/cumulative-invoice',
-      icon: <FileInvoiceOutlined />,
+      icon: <FileTextOutlined />,
       label: '',
       onClick: () => navigate('/cumulative-invoice'),
     },
