@@ -878,11 +878,29 @@ body {
   margin-bottom: 32px;
 }
 
-.upload-tabs .ant-tabs-card > .ant-tabs-content {
+.upload-tabs .ant-tabs-tab {
+  background: #f5f5f5 !important;
+  border: 1px solid #d9d9d9 !important;
+  border-radius: 6px 6px 0 0 !important;
+  margin-right: 4px !important;
+  padding: 8px 16px !important;
+}
+
+.upload-tabs .ant-tabs-tab-active {
+  background: #1890ff !important;
+  color: white !important;
+  border-color: #1890ff !important;
+}
+
+.upload-tabs .ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: white !important;
+}
+
+.upload-tabs .ant-tabs-content {
   padding: 24px 0;
 }
 
-.upload-tabs .ant-tabs-card > .ant-tabs-content > .ant-tabs-tabpane {
+.upload-tabs .ant-tabs-tabpane {
   background: transparent;
 }
 
@@ -945,6 +963,11 @@ body {
   background: #fafafa;
   transition: all 0.3s ease;
   margin-bottom: 16px;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .upload-area-main:hover {
