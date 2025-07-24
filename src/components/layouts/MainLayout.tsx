@@ -132,7 +132,7 @@ const MainLayout: React.FC = () => {
       {/* Header spanning full width */}
       <Header className="main-header" style={{
         background: 'white',
-        padding: '0 24px 0 224px', // Left padding to account for sidebar
+        padding: '0 24px',
         boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)',
         display: 'flex',
         alignItems: 'center',
