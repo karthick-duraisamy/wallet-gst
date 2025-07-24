@@ -729,6 +729,165 @@ body {
   font-size: 12px;
 }
 
+/* New Upload Page Styles */
+.upload-page-content {
+  padding: 32px;
+}
+
+.upload-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 32px;
+}
+
+.upload-type-section {
+  margin-bottom: 32px;
+}
+
+.upload-tabs-container {
+  margin-bottom: 32px;
+}
+
+.upload-tabs .ant-tabs-card > .ant-tabs-content {
+  padding: 24px 0;
+}
+
+.upload-tabs .ant-tabs-card > .ant-tabs-content > .ant-tabs-tabpane {
+  background: transparent;
+}
+
+.upload-tab-content {
+  padding: 0;
+}
+
+.upload-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background: #f0f8ff;
+  border: 1px solid #d6f3ff;
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+
+.info-icon {
+  font-size: 16px;
+  color: #1890ff;
+  margin-top: 2px;
+}
+
+.info-text {
+  color: #333;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.upload-section-main {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid #f0f0f0;
+}
+
+.upload-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.supported-files {
+  font-weight: 500;
+  color: #333;
+}
+
+.file-limit {
+  color: #666;
+}
+
+.upload-area-main {
+  border: 2px dashed #d9d9d9;
+  border-radius: 8px;
+  padding: 48px 24px;
+  text-align: center;
+  background: #fafafa;
+  transition: all 0.3s ease;
+  margin-bottom: 16px;
+}
+
+.upload-area-main:hover {
+  border-color: #1890ff;
+  background: #f0f8ff;
+}
+
+.upload-icon-container {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #1890ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+.upload-plus-icon {
+  color: white;
+  font-size: 24px;
+}
+
+.upload-main-text {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.upload-or-text {
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.select-file-btn {
+  color: #1890ff;
+  font-weight: 500;
+  padding: 0;
+  height: auto;
+}
+
+.sample-file-section {
+  text-align: right;
+}
+
+.sample-file-btn {
+  background: #52c41a;
+  border-color: #52c41a;
+  color: white;
+  border-radius: 6px;
+  height: 40px;
+  padding: 0 20px;
+  font-weight: 500;
+}
+
+.sample-file-btn:hover {
+  background: #73d13d;
+  border-color: #73d13d;
+}
+
+.submit-section {
+  text-align: center;
+  margin-top: 32px;
+}
+
+.submit-btn {
+  min-width: 120px;
+  height: 40px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
 /* Table Styles */
 .data-table {
   background: white;

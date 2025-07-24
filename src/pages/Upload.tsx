@@ -1,7 +1,8 @@
+
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Card, Radio, Tabs, Button, Upload as AntUpload, message, Progress } from 'antd';
-import { InboxOutlined, DownloadOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Card, Radio, Button, Upload as AntUpload, message, Progress, Tabs } from 'antd';
+import { InboxOutlined, DownloadOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { RootState } from '../store/store';
 import { 
   setUploadType, 
@@ -91,129 +92,176 @@ const Upload: React.FC = () => {
 
   return (
     <div className="slide-up">
+      {/* Top Navigation Tabs */}
+      <div className="nav-tabs">
+        <Tabs defaultActiveKey="upload" size="large">
+          <TabPane tab="Upload" key="upload" />
+          <TabPane tab="Reconciliation" key="reconciliation" />
+        </Tabs>
+      </div>
+
       <Card className="content-card">
-        <div className="card-header">
-          <h2 className="card-title">Upload Booking Details</h2>
-          <p className="card-description">
-            Upload your booking data in CSV or Excel format. Maximum 3 files, each up to 5MB.
-          </p>
-        </div>
+        <div className="upload-page-content">
+          <h2 className="upload-title">Upload</h2>
+          
+          {/* Upload Type Selection */}
+          <div className="upload-type-section">
+            <Radio.Group 
+              value={uploadType} 
+              onChange={handleUploadTypeChange}
+              size="large"
+            >
+              <Radio.Button value="agency">Agency</Radio.Button>
+              <Radio.Button value="airline">Airline</Radio.Button>
+            </Radio.Group>
+          </div>
 
-        <div className="card-content">
-          <div className="upload-section">
-            <div className="upload-toggle">
-              <Radio.Group 
-                value={uploadType} 
-                onChange={handleUploadTypeChange}
-                size="large"
-              >
-                <Radio.Button value="agency">Agency</Radio.Button>
-                <Radio.Button value="airline">Airline</Radio.Button>
-              </Radio.Group>
-            </div>
-
+          {/* Upload Tabs */}
+          <div className="upload-tabs-container">
             <Tabs
               activeKey={subOption}
               onChange={handleSubOptionChange}
               type="card"
+              className="upload-tabs"
             >
               <TabPane tab="Non-AYP Bookings" key="non-ayp">
-                <div className="mb-24">
-                  <div className="flex-between mb-16">
-                    <h3>Upload Regular Booking Data</h3>
-                    <Button 
-                      icon={<DownloadOutlined />}
-                      onClick={() => handleDownloadSample('Non-AYP Bookings')}
-                    >
-                      Download Sample
-                    </Button>
+                <div className="upload-tab-content">
+                  <div className="upload-info">
+                    <div className="info-icon">ℹ️</div>
+                    <span className="info-text">
+                      You can upload bookings of any other travel agency. Kindly upload the booking data in given sample format.
+                    </span>
                   </div>
-                  
-                  <Dragger {...uploadProps} className="upload-area">
-                    <p className="upload-icon">
-                      <InboxOutlined />
-                    </p>
-                    <p className="upload-text">
-                      Click or drag files to upload
-                    </p>
-                    <p className="upload-hint">
-                      Support CSV, XLS, XLSX files up to 5MB each (Max 3 files)
-                    </p>
-                  </Dragger>
+
+                  <div className="upload-section-main">
+                    <div className="upload-header">
+                      <span className="supported-files">Supported Files: CSV, XLS</span>
+                      <span className="file-limit">Upload up to 3 file. Each max file size 5MB</span>
+                    </div>
+
+                    <Dragger {...uploadProps} className="upload-area-main">
+                      <div className="upload-icon-container">
+                        <PlusOutlined className="upload-plus-icon" />
+                      </div>
+                      <p className="upload-main-text">
+                        Drag & drop your file here
+                      </p>
+                      <p className="upload-or-text">or</p>
+                      <Button type="link" className="select-file-btn">
+                        Select File
+                      </Button>
+                    </Dragger>
+
+                    <div className="sample-file-section">
+                      <Button 
+                        type="primary"
+                        className="sample-file-btn"
+                        icon={<DownloadOutlined />}
+                        onClick={() => handleDownloadSample('Non-AYP Bookings')}
+                      >
+                        Sample file
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               </TabPane>
 
               <TabPane tab="GSTR-2A" key="gstr-2a">
-                <div className="mb-24">
-                  <div className="flex-between mb-16">
-                    <h3>Upload Travel Agency Details</h3>
-                    <Button 
-                      icon={<DownloadOutlined />}
-                      onClick={() => handleDownloadSample('GSTR-2A')}
-                    >
-                      Download Sample
-                    </Button>
+                <div className="upload-tab-content">
+                  <div className="upload-info">
+                    <div className="info-icon">ℹ️</div>
+                    <span className="info-text">
+                      You can upload GSTR-2A data for reconciliation. Kindly upload the data in given sample format.
+                    </span>
                   </div>
-                  
-                  <Dragger {...uploadProps} className="upload-area">
-                    <p className="upload-icon">
-                      <InboxOutlined />
-                    </p>
-                    <p className="upload-text">
-                      Click or drag files to upload
-                    </p>
-                    <p className="upload-hint">
-                      Support CSV, XLS, XLSX files up to 5MB each (Max 3 files)
-                    </p>
-                  </Dragger>
+
+                  <div className="upload-section-main">
+                    <div className="upload-header">
+                      <span className="supported-files">Supported Files: CSV, XLS</span>
+                      <span className="file-limit">Upload up to 3 file. Each max file size 5MB</span>
+                    </div>
+
+                    <Dragger {...uploadProps} className="upload-area-main">
+                      <div className="upload-icon-container">
+                        <PlusOutlined className="upload-plus-icon" />
+                      </div>
+                      <p className="upload-main-text">
+                        Drag & drop your file here
+                      </p>
+                      <p className="upload-or-text">or</p>
+                      <Button type="link" className="select-file-btn">
+                        Select File
+                      </Button>
+                    </Dragger>
+
+                    <div className="sample-file-section">
+                      <Button 
+                        type="primary"
+                        className="sample-file-btn"
+                        icon={<DownloadOutlined />}
+                        onClick={() => handleDownloadSample('GSTR-2A')}
+                      >
+                        Sample file
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               </TabPane>
             </Tabs>
-
-            {files.length > 0 && (
-              <div className="file-list">
-                <h4 className="mb-16">Uploaded Files ({files.length}/3)</h4>
-                {files.map((file) => (
-                  <div key={file.id} className="file-item">
-                    <div className="file-info">
-                      <div>
-                        <div className="file-name">{file.name}</div>
-                        <div className="file-size">{formatFileSize(file.size)}</div>
-                      </div>
-                      {file.status === 'uploading' && (
-                        <Progress percent={60} size="small" status="active" />
-                      )}
-                      {file.status === 'success' && (
-                        <span style={{ color: '#52c41a', fontSize: 12 }}>✓ Uploaded</span>
-                      )}
-                    </div>
-                    <Button
-                      type="text"
-                      danger
-                      icon={<DeleteOutlined />}
-                      onClick={() => handleRemoveFile(file.id)}
-                    />
-                  </div>
-                ))}
-                
-                <div className="mt-16">
-                  <Button 
-                    type="primary" 
-                    disabled={files.some(f => f.status === 'uploading')}
-                    loading={loading}
-                  >
-                    Process Files
-                  </Button>
-                  <Button 
-                    style={{ marginLeft: 8 }} 
-                    onClick={() => dispatch(clearFiles())}
-                  >
-                    Clear All
-                  </Button>
-                </div>
-              </div>
-            )}
           </div>
+
+          {files.length > 0 && (
+            <div className="file-list">
+              <h4 className="mb-16">Uploaded Files ({files.length}/3)</h4>
+              {files.map((file) => (
+                <div key={file.id} className="file-item">
+                  <div className="file-info">
+                    <div>
+                      <div className="file-name">{file.name}</div>
+                      <div className="file-size">{formatFileSize(file.size)}</div>
+                    </div>
+                    {file.status === 'uploading' && (
+                      <Progress percent={60} size="small" status="active" />
+                    )}
+                    {file.status === 'success' && (
+                      <span style={{ color: '#52c41a', fontSize: 12 }}>✓ Uploaded</span>
+                    )}
+                  </div>
+                  <Button
+                    type="text"
+                    danger
+                    icon={<DeleteOutlined />}
+                    onClick={() => handleRemoveFile(file.id)}
+                  />
+                </div>
+              ))}
+              
+              <div className="submit-section">
+                <Button 
+                  type="primary" 
+                  size="large"
+                  disabled={files.some(f => f.status === 'uploading')}
+                  loading={loading}
+                  className="submit-btn"
+                >
+                  Submit
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {files.length === 0 && (
+            <div className="submit-section">
+              <Button 
+                type="primary" 
+                size="large"
+                disabled
+                className="submit-btn"
+              >
+                Submit
+              </Button>
+            </div>
+          )}
         </div>
       </Card>
     </div>
