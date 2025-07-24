@@ -90,16 +90,7 @@ const MainLayout: React.FC = () => {
         }}
       >
         <div className="side-menu-content" style={{ height: 'calc(100vh - 64px)' }}>
-          <div className="logo-section">
-            <div className="logo-with-text">
-              <div className="logo-icon">
-                <FileTextOutlined style={{ color: 'white', fontSize: '24px' }} />
-              </div>
-              <span className="logo-text">INFINITI</span>
-            </div>
-          </div>
-          
-          <div className="menu-navigation">
+          <div className="menu-navigation" style={{ paddingTop: '24px' }}>
             {sideMenuItems.map(item => (
               <div 
                 key={item.key}
