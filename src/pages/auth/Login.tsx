@@ -25,6 +25,11 @@ const Login: React.FC = () => {
       const { email, password, remember } = JSON.parse(savedCredentials);
       form.setFieldsValue({ email, password });
       setRememberMe(remember);
+      
+      // Auto-login if remember me was checked
+      if (remember) {
+        onFinish({ email, password });
+      }
     }
   }, [form]);
 
