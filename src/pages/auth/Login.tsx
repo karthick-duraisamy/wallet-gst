@@ -15,6 +15,7 @@ import {
   loginFailure,
   clearError,
 } from "../../store/slices/authSlice";
+import { useTheme } from "../../contexts/ThemeContext";
 
 interface LoginForm {
   email: string;
@@ -25,6 +26,7 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state: RootState) => state.auth);
+  const { translate } = useTheme();
   const [form] = Form.useForm();
   const [rememberMe, setRememberMe] = React.useState(false);
 
@@ -319,7 +321,7 @@ const Login: React.FC = () => {
 
       <div className="auth-right">
         <div className="auth-header">
-          <h1>Login</h1>
+          <h1>{translate('login')}</h1>
           <p>Enter your credentials to access your dashboard</p>
         </div>
 
@@ -342,7 +344,7 @@ const Login: React.FC = () => {
             layout="vertical"
           >
             <Form.Item
-              label="Email Address"
+              label={translate('email')}
               name="email"
               rules={[
                 { required: true, message: "Please input your email!" },
@@ -358,7 +360,7 @@ const Login: React.FC = () => {
             </Form.Item>
 
             <Form.Item
-              label="Password"
+              label={translate('password')}
               name="password"
               rules={[
                 { required: true, message: "Please input your password!" },
@@ -378,21 +380,21 @@ const Login: React.FC = () => {
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
               >
-                Remember me
+                {translate('rememberMe')}
               </Checkbox>
-              <Link to="/auth/forgot-password">Forgot password?</Link>
+              <Link to="/auth/forgot-password">{translate('forgotPassword')}</Link>
             </div>
 
             <Form.Item>
               <Button type="primary" htmlType="submit" loading={loading}>
-                Login
+                {translate('login')}
               </Button>
             </Form.Item>
           </Form>
         </div>
 
         <div className="footer-text">
-          Powered by Infiniti Software Solutions
+          {translate('poweredBy')}
         </div>
       </div>
     </div>

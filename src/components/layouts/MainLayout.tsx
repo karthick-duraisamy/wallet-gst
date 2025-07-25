@@ -208,7 +208,7 @@ const MainLayout: React.FC = () => {
                   label: (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <Avatar size={16} style={{ backgroundColor: '#52c41a' }}>🇺🇸</Avatar>
-                      English
+                      {translate('english')}
                     </div>
                   ),
                   onClick: () => setLanguage('en')
@@ -218,7 +218,7 @@ const MainLayout: React.FC = () => {
                   label: (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <Avatar size={16} style={{ backgroundColor: '#ff7a45' }}>🇮🇳</Avatar>
-                      हिंदी
+                      {translate('hindi')}
                     </div>
                   ),
                   onClick: () => setLanguage('hi')
@@ -243,7 +243,7 @@ const MainLayout: React.FC = () => {
               <Avatar size={16} style={{ backgroundColor: language === 'en' ? '#52c41a' : '#ff7a45' }}>
                 {language === 'en' ? '🇺🇸' : '🇮🇳'}
               </Avatar>
-              {language === 'en' ? 'English' : 'हिंदी'}
+              {language === 'en' ? translate('english') : translate('hindi')}
               <span style={{ fontSize: '12px' }}>▼</span>
             </Button>
           </Dropdown>
@@ -297,7 +297,7 @@ const MainLayout: React.FC = () => {
                   color: isDarkMode ? '#ffffff' : '#1a1a1a',
                   fontWeight: '500'
                 }}>
-                  Superadmin
+                  {translate('superadmin')}
                 </div>
               </div>
               <span style={{ fontSize: '12px', color: isDarkMode ? '#a6a6a6' : '#666' }}>▼</span>
