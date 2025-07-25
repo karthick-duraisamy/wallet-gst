@@ -970,8 +970,6 @@ body {
 .upload-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 24px;
-  background: white;
   min-height: 100vh;
 }
 
@@ -1670,4 +1668,7 @@ body {
 
 :where(.css-dev-only-do-not-override-1336i4k).ant-btn-variant-solid:not(:disabled):not(.ant-btn-disabled):hover {
   background-color: rgba(102, 126, 234, 0.9);
+}
+.ant-drawer-content-wrapper{
+  width: 300px !important;
 }

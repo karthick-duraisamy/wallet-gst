@@ -102,7 +102,7 @@ const MainLayout: React.FC = () => {
           }}>
             <div className="header-left" style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <img src="/src/assets/gst-logo.png" alt="GST Claim" style={{ width: '40px', height: '40px' }} />
+                <img src="/src/assets/gst-logo.svg" alt="GST Claim" />
               </div>
             </div>
             
@@ -170,22 +170,6 @@ const MainLayout: React.FC = () => {
                 onClick={() => setSettingsModalOpen(true)}
               >
                 🎨
-              </Button>
-
-              <Button 
-                type="text" 
-                style={{ 
-                  color: isDarkMode ? '#a6a6a6' : '#666',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '40px',
-                  height: '40px',
-                  border: 'none',
-                  fontSize: '18px'
-                }} 
-              >
-                ⛶
               </Button>
               
               <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
@@ -351,7 +335,7 @@ const MainLayout: React.FC = () => {
       }}>
         <div className="header-left" style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <img src="/src/assets/gst-logo.svg" alt="GST Claim" style={{ width: '40px', height: '40px' }} />
+            <img src="/src/assets/gst-logo.svg" alt="GST Claim"/>
           </div>
           
           <div style={{ 

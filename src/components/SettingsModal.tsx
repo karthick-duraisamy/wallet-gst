@@ -161,7 +161,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
         </div>
 
         {/* Sidemenu bg color */}
-        <div>
+        {/* <div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
             <Title level={5} style={{ margin: 0, color: isDarkMode ? '#ffffff' : '#000000' }}>
               Sidemenu bg color
@@ -187,17 +187,17 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
               cursor: 'pointer'
             }}></div>
           </div>
-        </div>
+        </div> */}
 
         {/* Notifications */}
-        <div>
+        {/* <div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <Title level={5} style={{ margin: 0, color: isDarkMode ? '#ffffff' : '#000000' }}>
               Notifications
             </Title>
             <Switch checked={true} />
           </div>
-        </div>
+        </div> */}
 
         {/* Menu Layout */}
         <div>
