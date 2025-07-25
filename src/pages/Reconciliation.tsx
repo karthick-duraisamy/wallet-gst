@@ -157,11 +157,11 @@ const Reconciliation: React.FC = () => {
   return (
     <div className="slide-up" style={{ padding: '24px', background: '#f5f5f5', minHeight: '100vh' }}>
       {/* Breadcrumb */}
-      <div style={{ marginBottom: 16, fontSize: '14px', color: '#666' }}>
+      {/* <div style={{ marginBottom: 16, fontSize: '14px', color: '#666' }}>
         <span>Home</span>
         <span style={{ margin: '0 8px' }}>»</span>
         <span>Reconciliation history</span>
-      </div>
+      </div> */}
 
       {/* Page Title */}
       <h2 style={{ fontSize: '24px', fontWeight: 600, color: '#722ed1', marginBottom: 24 }}>

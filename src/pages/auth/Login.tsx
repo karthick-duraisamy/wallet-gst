@@ -94,7 +94,7 @@ const Login: React.FC = () => {
       <div className="auth-left">
         <div className="auth-brand">
           <div className="auth-brand-icon">
-            <img src="/src/assets/gst-logo.png" alt="GST Claim" style={{ width: '80px', height: '80px' }} />
+            <img src="/src/assets/gst-logo.svg" alt="GST Claim" style={{ width: '80px', height: '80px' }} />
           </div>
           <p>
             Streamline your GST claim process with our comprehensive management

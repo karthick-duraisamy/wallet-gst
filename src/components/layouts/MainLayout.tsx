@@ -143,7 +143,7 @@ const MainLayout: React.FC = () => {
       }}>
         <div className="header-left" style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <img src="/src/assets/gst-logo.png" alt="GST Claim" style={{ width: '40px', height: '40px' }} />
+            <img src="/src/assets/gst-logo.svg" alt="GST Claim" style={{ width: '40px', height: '40px' }} />
           </div>
           
           <div style={{ 
