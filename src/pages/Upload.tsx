@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Card, Radio, Button, Upload as AntUpload, message, Progress, Tabs } from 'antd';
-import { InboxOutlined, DownloadOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { Card, Radio, Button, Upload as AntUpload, message, Progress } from 'antd';
+import { InboxOutlined, CloseOutlined, FileOutlined, StarOutlined } from '@ant-design/icons';
 import { RootState } from '../store/store';
 import { 
   setUploadType, 
@@ -14,43 +14,38 @@ import {
 import { useTheme } from '../contexts/ThemeContext';
 
 const { Dragger } = AntUpload;
-const { TabPane } = Tabs;
 
 const Upload: React.FC = () => {
   const dispatch = useDispatch();
   const { files, uploadType, subOption, loading } = useSelector((state: RootState) => state.upload);
   const { translate } = useTheme();
+  const [dragOver, setDragOver] = useState(false);
 
   const handleUploadTypeChange = (e: any) => {
     dispatch(setUploadType(e.target.value));
   };
 
-  const handleSubOptionChange = (key: string) => {
-    dispatch(setSubOption(key as 'non-ayp' | 'gstr-2a'));
-  };
-
   const uploadProps = {
     name: 'file',
     multiple: true,
-    accept: '.csv,.xls,.xlsx',
+    accept: '.csv,.xls,.xlsx,.pdf,.doc,.docx',
+    showUploadList: false,
     beforeUpload: (file: File) => {
       const isValidType = file.type === 'text/csv' || 
                          file.type === 'application/vnd.ms-excel' ||
-                         file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+                         file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
+                         file.type === 'application/pdf' ||
+                         file.type === 'application/msword' ||
+                         file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 
       if (!isValidType) {
-        message.error('You can only upload CSV or Excel files!');
+        message.error('You can only upload CSV, Excel, PDF, or Word files!');
         return false;
       }
 
-      const isValidSize = file.size / 1024 / 1024 < 5;
+      const isValidSize = file.size / 1024 / 1024 < 50;
       if (!isValidSize) {
-        message.error('File must be smaller than 5MB!');
-        return false;
-      }
-
-      if (files.length >= 3) {
-        message.error('You can only upload maximum 3 files!');
+        message.error('File must be smaller than 50MB!');
         return false;
       }
 
@@ -64,23 +59,27 @@ const Upload: React.FC = () => {
 
       dispatch(addFiles([newFile]));
 
-      // Simulate upload
-      setTimeout(() => {
-        dispatch(updateFileStatus({ id: newFile.id, status: 'success' }));
-        message.success(`${file.name} uploaded successfully!`);
-      }, 2000);
+      // Simulate upload progress
+      let progress = 0;
+      const interval = setInterval(() => {
+        progress += Math.random() * 30;
+        if (progress >= 100) {
+          progress = 100;
+          clearInterval(interval);
+          dispatch(updateFileStatus({ id: newFile.id, status: 'success' }));
+          message.success(`${file.name} uploaded successfully!`);
+        }
+      }, 500);
 
-      return false; // Prevent default upload
+      return false;
     },
+    onDragEnter: () => setDragOver(true),
+    onDragLeave: () => setDragOver(false),
+    onDrop: () => setDragOver(false),
   };
 
   const handleRemoveFile = (fileId: string) => {
     dispatch(removeFile(fileId));
-  };
-
-  const handleDownloadSample = (type: string) => {
-    message.info(`Downloading ${type} sample file...`);
-    // In a real app, this would trigger a file download
   };
 
   const formatFileSize = (bytes: number) => {
@@ -88,181 +87,115 @@ const Upload: React.FC = () => {
     const k = 1024;
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(0)) + ' ' + sizes[i];
+  };
+
+  const handleCancel = () => {
+    dispatch(clearFiles());
+  };
+
+  const handleAttachFiles = () => {
+    message.success('Files attached successfully!');
+    // Handle file attachment logic here
   };
 
   return (
-    <div className="upload-page">
-      <div className="upload-container">
-        {/* Header */}
-        <div className="upload-header-section">
-          <h1 className="upload-main-title">{translate('upload')}</h1>
-          <div className="upload-nav-tabs">
-            <span className="upload-nav-active">{translate('upload')}</span>
-            <span className="upload-nav-inactive">{translate('reconciliation')}</span>
+    <div className="upload-page-container">
+      <div className="upload-main-card">
+        <div className="upload-card-header">
+          <div className="upload-title-section">
+            <h2 className="upload-title">Upload and attach files</h2>
+            <StarOutlined className="upload-star-icon" />
           </div>
+          <p className="upload-subtitle">Upload and attach files to this project.</p>
         </div>
 
-        {/* Radio Selection */}
-        <div className="upload-radio-section">
-          <Radio.Group 
-            value={uploadType} 
-            onChange={handleUploadTypeChange}
-            className="upload-radio-group"
+        <div className="upload-content">
+          <Dragger 
+            {...uploadProps} 
+            className={`upload-drag-area ${dragOver ? 'drag-over' : ''}`}
           >
-            <Radio value="agency" className="upload-radio-item">{translate('agency')}</Radio>
-            <Radio value="airline" className="upload-radio-item">{translate('airline')}</Radio>
-          </Radio.Group>
-        </div>
+            <div className="upload-drag-content">
+              <div className="upload-icon-container">
+                <InboxOutlined className="upload-icon" />
+              </div>
+              <div className="upload-text-section">
+                <p className="upload-main-text">
+                  <span className="upload-link">Click to upload</span> or drag and drop
+                </p>
+                <p className="upload-limit-text">Maximum file size 50 MB.</p>
+              </div>
+            </div>
+          </Dragger>
 
-        {/* Tabs */}
-        <div className="upload-content-wrapper">
-          <Tabs
-            activeKey={subOption}
-            onChange={handleSubOptionChange}
-            className="upload-content-tabs"
-            items={[
-              {
-                key: 'non-ayp',
-                label: translate('nonAYPBookings'),
-                children: (
-                  <div className="upload-tab-panel">
-                    {/* Info Banner */}
-                    <div className="upload-info-banner">
-                      <span className="upload-info-icon">ℹ️</span>
-                      <span className="upload-info-text">
-                        {translate('nonAYPInfo')}
-                      </span>
-                    </div>
-
-                    {/* Upload Card */}
-                    <div className="upload-card">
-                      <div className="upload-card-header">
-                        <span className="upload-file-types">{translate('supportedFilesCSVXLS')}</span>
-                        <span className="upload-file-limit">{translate('uploadLimit')}</span>
-                      </div>
-
-                      <Dragger {...uploadProps} className="upload-dragger">
-                        <div className="upload-dragger-content">
-                          <div className="upload-icon-wrapper">
-                            <PlusOutlined className="upload-icon" />
-                          </div>
-                          <p className="upload-text-main">
-                            {translate('dragDropFileHere')}
-                          </p>
-                          <p className="upload-text-or">{translate('or')}</p>
-                          <Button type="link" className="upload-select-btn">
-                            {translate('selectFile')}
-                          </Button>
-                        </div>
-                      </Dragger>
-
-                      <div className="upload-sample-section">
-                        <Button 
-                          type="primary"
-                          className="upload-sample-btn"
-                          icon={<DownloadOutlined />}
-                          onClick={() => handleDownloadSample('Non-AYP Bookings')}
-                        >
-                          {translate('sampleFile')}
-                        </Button>
-                      </div>
+          {/* Files being uploaded */}
+          {files.length > 0 && (
+            <div className="upload-files-list">
+              {files.map((file, index) => (
+                <div key={file.id} className="upload-file-card" style={{ animationDelay: `${index * 0.1}s` }}>
+                  <div className="upload-file-info">
+                    <FileOutlined className="upload-file-icon" />
+                    <div className="upload-file-details">
+                      <div className="upload-file-name">{file.name}</div>
+                      <div className="upload-file-size">{formatFileSize(file.size)}</div>
                     </div>
                   </div>
-                )
-              },
-              {
-                key: 'gstr-2a',
-                label: translate('gstr2A'),
-                children: (
-                  <div className="upload-tab-panel">
-                    {/* Info Banner */}
-                    <div className="upload-info-banner">
-                      <span className="upload-info-icon">ℹ️</span>
-                      <span className="upload-info-text">
-                        {translate('gstr2AInfo')}
-                      </span>
-                    </div>
-
-                    {/* Upload Card */}
-                    <div className="upload-card">
-                      <div className="upload-card-header">
-                        <span className="upload-file-types">{translate('supportedFilesCSVXLS')}</span>
-                        <span className="upload-file-limit">{translate('uploadLimit')}</span>
-                      </div>
-
-                      <Dragger {...uploadProps} className="upload-dragger">
-                        <div className="upload-dragger-content">
-                          <div className="upload-icon-wrapper">
-                            <PlusOutlined className="upload-icon" />
-                          </div>
-                          <p className="upload-text-main">
-                            {translate('dragDropFileHere')}
-                          </p>
-                          <p className="upload-text-or">{translate('or')}</p>
-                          <Button type="link" className="upload-select-btn">
-                            {translate('selectFile')}
-                          </Button>
-                        </div>
-                      </Dragger>
-
-                      <div className="upload-sample-section">
-                        <Button 
-                          type="primary"
-                          className="upload-sample-btn"
-                          icon={<DownloadOutlined />}
-                          onClick={() => handleDownloadSample('GSTR-2A')}
-                        >
-                          {translate('sampleFile')}
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                )
-              }
-            ]}
-          />
-        </div>
-
-        {/* File List */}
-        {files.length > 0 && (
-          <div className="upload-file-list">
-            <h4 className="upload-file-list-title">{translate('uploadedFiles')} ({files.length}/3)</h4>
-            {files.map((file) => (
-              <div key={file.id} className="upload-file-item">
-                <div className="upload-file-info">
-                  <div>
-                    <div className="upload-file-name">{file.name}</div>
-                    <div className="upload-file-size">{formatFileSize(file.size)}</div>
+                  <div className="upload-file-actions">
+                    <CloseOutlined 
+                      className="upload-remove-icon" 
+                      onClick={() => handleRemoveFile(file.id)}
+                    />
                   </div>
                   {file.status === 'uploading' && (
-                    <Progress percent={60} size="small" status="active" />
+                    <div className="upload-progress-section">
+                      <Progress 
+                        percent={Math.floor(Math.random() * 100)} 
+                        showInfo={true}
+                        size="small"
+                        className="upload-progress-bar"
+                      />
+                    </div>
                   )}
                   {file.status === 'success' && (
-                    <span className="upload-file-success">{translate('uploaded')}</span>
+                    <div className="upload-progress-section">
+                      <Progress 
+                        percent={100} 
+                        showInfo={true}
+                        size="small"
+                        className="upload-progress-bar"
+                        status="success"
+                      />
+                    </div>
                   )}
                 </div>
-                <Button
-                  type="text"
-                  danger
-                  icon={<DeleteOutlined />}
-                  onClick={() => handleRemoveFile(file.id)}
-                />
-              </div>
-            ))}
-          </div>
-        )}
+              ))}
+            </div>
+          )}
 
-        {/* Submit Button */}
-        <div className="upload-submit-section">
+          {/* File tags (simulated) */}
+          <div className="upload-file-tags">
+            <div className="upload-tag">Prototype recording 03.mp4</div>
+            <div className="upload-tag">Prototype recording 04.mp4</div>
+            <div className="upload-tag">Prototype recording 05.mp4</div>
+          </div>
+        </div>
+
+        <div className="upload-actions">
+          <Button 
+            size="large" 
+            className="upload-cancel-btn"
+            onClick={handleCancel}
+          >
+            Cancel
+          </Button>
           <Button 
             type="primary" 
             size="large"
-            disabled={files.length === 0 || files.some(f => f.status === 'uploading')}
-            loading={loading}
-            className="upload-submit-btn"
+            className="upload-attach-btn"
+            onClick={handleAttachFiles}
+            disabled={files.length === 0}
           >
-            {translate('submit')}
+            Attach files
           </Button>
         </div>
       </div>
