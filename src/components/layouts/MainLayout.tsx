@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Layout, Menu, Dropdown, Button, Avatar } from 'antd';
@@ -15,6 +15,8 @@ import {
 } from '@ant-design/icons';
 import { RootState } from '../../store/store';
 import { logout } from '../../store/slices/authSlice';
+import { useTheme } from '../../contexts/ThemeContext';
+import SettingsModal from '../SettingsModal';
 
 const { Header, Content, Sider } = Layout;
 
@@ -23,6 +25,8 @@ const MainLayout: React.FC = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
+  const { isDarkMode, language } = useTheme();
+  const [settingsModalOpen, setSettingsModalOpen] = useState(false);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -80,7 +84,7 @@ const MainLayout: React.FC = () => {
         width={200} 
         className="side-menu"
         style={{
-          background: '#5A4FCF',
+          background: isDarkMode ? '#262626' : '#5A4FCF',
           position: 'fixed',
           height: '100vh',
           left: 0,
@@ -122,9 +126,9 @@ const MainLayout: React.FC = () => {
 
       {/* Header spanning full width */}
       <Header className="main-header" style={{
-        background: 'white',
+        background: isDarkMode ? '#1f1f1f' : 'white',
         padding: '0 24px',
-        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)',
+        boxShadow: isDarkMode ? '0 2px 8px rgba(0, 0, 0, 0.3)' : '0 2px 8px rgba(0, 0, 0, 0.06)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -134,7 +138,8 @@ const MainLayout: React.FC = () => {
         right: 0,
         zIndex: 200,
         width: '100%',
-        height: '64px'
+        height: '64px',
+        borderBottom: isDarkMode ? '1px solid #424242' : '1px solid #f0f0f0'
       }}>
         <div className="header-left">
           <h1 style={{ margin: 0, fontSize: '24px', fontWeight: 600, color: '#2B4CB8' }}>
@@ -143,8 +148,13 @@ const MainLayout: React.FC = () => {
         </div>
         
         <div className="header-right" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <Button type="text" icon={<NotificationOutlined />} style={{ color: '#666' }} />
-          <Button type="text" icon={<SettingOutlined />} style={{ color: '#666' }} />
+          <Button type="text" icon={<NotificationOutlined />} style={{ color: isDarkMode ? '#a6a6a6' : '#666' }} />
+          <Button 
+            type="text" 
+            icon={<SettingOutlined />} 
+            style={{ color: isDarkMode ? '#a6a6a6' : '#666' }} 
+            onClick={() => setSettingsModalOpen(true)}
+          />
           
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span style={{ color: '#666' }}>India (INR)</span>
@@ -166,7 +176,11 @@ const MainLayout: React.FC = () => {
       </Header>
 
       <Layout style={{ marginLeft: 200, marginTop: 64 }}>
-        <Content style={{ padding: '24px', background: '#f5f5f5', minHeight: 'calc(100vh - 128px)' }}>
+        <Content style={{ 
+          padding: '24px', 
+          background: isDarkMode ? '#141414' : '#f5f5f5', 
+          minHeight: 'calc(100vh - 128px)' 
+        }}>
           <div className="fade-in">
             <Outlet />
           </div>
@@ -174,15 +188,21 @@ const MainLayout: React.FC = () => {
         
         {/* Footer */}
         <div style={{
-          background: '#f5f5f5',
+          background: isDarkMode ? '#141414' : '#f5f5f5',
           textAlign: 'center',
           padding: '16px 24px',
-          borderTop: '1px solid #e8e8e8',
+          borderTop: isDarkMode ? '1px solid #424242' : '1px solid #e8e8e8',
           fontSize: '14px',
-          color: '#666'
+          color: isDarkMode ? '#a6a6a6' : '#666'
         }}>
           @Powered by Infinitisoftware Solution.
         </div>
+        
+        {/* Settings Modal */}
+        <SettingsModal 
+          open={settingsModalOpen} 
+          onClose={() => setSettingsModalOpen(false)} 
+        /></div>
       </Layout>
     </Layout>
   );

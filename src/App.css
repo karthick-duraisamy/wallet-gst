@@ -1351,5 +1351,5 @@ body {
 }
 
 :where(.css-dev-only-do-not-override-1336i4k).ant-btn-variant-solid:not(:disabled):not(.ant-btn-disabled):hover {
-  background: #4d309c;
+  background-color: rgba(102, 126, 234, 0.9);
 }
