@@ -104,37 +104,6 @@ const MainLayout: React.FC = () => {
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <img src="/src/assets/gst-logo.png" alt="GST Claim" style={{ width: '40px', height: '40px' }} />
               </div>
-              
-              {/* Horizontal navigation menu */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
-                {sideMenuItems.map(item => (
-                  <div 
-                    key={item.key}
-                    className={`nav-item-horizontal ${getCurrentKey() === item.key ? 'active' : ''}`}
-                    onClick={item.onClick}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      cursor: 'pointer',
-                      padding: '8px 16px',
-                      borderRadius: '8px',
-                      backgroundColor: getCurrentKey() === item.key ? 
-                        (isDarkMode ? 'rgba(24, 144, 255, 0.2)' : 'rgba(24, 144, 255, 0.1)') : 'transparent',
-                      color: getCurrentKey() === item.key ? 
-                        '#1890ff' : (isDarkMode ? '#ffffff' : '#1a1a1a'),
-                      transition: 'all 0.2s ease'
-                    }}
-                  >
-                    <div style={{ fontSize: '16px' }}>
-                      {item.icon}
-                    </div>
-                    <span style={{ fontSize: '14px', fontWeight: '500' }}>
-                      {item.label}
-                    </span>
-                  </div>
-                ))}
-              </div>
             </div>
             
             <div className="header-right" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -247,11 +216,56 @@ const MainLayout: React.FC = () => {
             </div>
           </Header>
 
-          <Layout style={{ marginTop: 64 }}>
+          {/* Horizontal Navigation Menu Below Header */}
+          <div style={{
+            position: 'fixed',
+            top: '64px',
+            left: 0,
+            right: 0,
+            zIndex: 199,
+            background: isDarkMode ? '#262626' : '#f8f9fa',
+            borderBottom: isDarkMode ? '1px solid #424242' : '1px solid #e8e8e8',
+            height: '60px',
+            display: 'flex',
+            alignItems: 'center',
+            padding: '0 24px'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
+              {sideMenuItems.map(item => (
+                <div 
+                  key={item.key}
+                  className={`nav-item-horizontal ${getCurrentKey() === item.key ? 'active' : ''}`}
+                  onClick={item.onClick}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    cursor: 'pointer',
+                    padding: '8px 16px',
+                    borderRadius: '8px',
+                    backgroundColor: getCurrentKey() === item.key ? 
+                      (isDarkMode ? 'rgba(24, 144, 255, 0.2)' : 'rgba(24, 144, 255, 0.1)') : 'transparent',
+                    color: getCurrentKey() === item.key ? 
+                      '#1890ff' : (isDarkMode ? '#ffffff' : '#1a1a1a'),
+                    transition: 'all 0.2s ease'
+                  }}
+                >
+                  <div style={{ fontSize: '16px' }}>
+                    {item.icon}
+                  </div>
+                  <span style={{ fontSize: '14px', fontWeight: '500' }}>
+                    {item.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <Layout style={{ marginTop: 124 }}>
             <Content style={{ 
               padding: '24px', 
               background: isDarkMode ? '#141414' : '#f5f5f5', 
-              minHeight: 'calc(100vh - 128px)' 
+              minHeight: 'calc(100vh - 188px)' 
             }}>
               <div className="fade-in">
                 <Outlet />
