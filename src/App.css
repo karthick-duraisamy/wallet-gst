@@ -578,6 +578,70 @@ body {
   border-right: none !important;
 }
 
+/* Settings Drawer Styles */
+.ant-drawer-header {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.dark-theme .ant-drawer-header {
+  background: #1f1f1f !important;
+  border-bottom: 1px solid #424242 !important;
+}
+
+.dark-theme .ant-drawer-body {
+  background: #1f1f1f !important;
+  color: #ffffff !important;
+}
+
+.dark-theme .ant-drawer-header .ant-drawer-title {
+  color: #ffffff !important;
+}
+
+.dark-theme .ant-select-selector {
+  background: #262626 !important;
+  border-color: #424242 !important;
+  color: #ffffff !important;
+}
+
+.dark-theme .ant-select-arrow {
+  color: #a6a6a6 !important;
+}
+
+.dark-theme .ant-select-dropdown {
+  background: #262626 !important;
+  border: 1px solid #424242 !important;
+}
+
+.dark-theme .ant-select-item {
+  color: #ffffff !important;
+}
+
+.dark-theme .ant-select-item:hover {
+  background: #424242 !important;
+}
+
+.dark-theme .ant-select-item-option-selected {
+  background: #1890ff !important;
+}
+
+.dark-theme .ant-switch {
+  background: #424242 !important;
+}
+
+.dark-theme .ant-switch-checked {
+  background: #1890ff !important;
+}
+
+/* Theme card hover effects */
+.theme-card {
+  transition: all 0.2s ease;
+}
+
+.theme-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
 .side-menu-content {
   display: flex;
   flex-direction: column;
