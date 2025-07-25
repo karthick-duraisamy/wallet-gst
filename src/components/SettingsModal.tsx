@@ -13,32 +13,13 @@ interface SettingsModalProps {
 }
 
 const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
-  const { isDarkMode, language, toggleTheme } = useTheme();
-
-  const translations = {
-    en: {
-      settings: 'Theme settings',
-      theme: 'Theme',
-      sidemenuBgColor: 'Sidemenu bg color',
-      notifications: 'Notifications',
-      menuLayout: 'Menu layout',
-    },
-    hi: {
-      settings: 'थीम सेटिंग्स',
-      theme: 'थीम',
-      sidemenuBgColor: 'साइड मेन्यू बैकग्राउंड रंग',
-      notifications: 'सूचनाएं',
-      menuLayout: 'मेन्यू लेआउट',
-    },
-  };
-
-  const t = translations[language];
+  const { isDarkMode, toggleTheme, translate } = useTheme();
 
   return (
     <Drawer
       title={
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <span>{t.settings}</span>
+          <span>{translate('themeSettings')}</span>
           <CloseOutlined 
             onClick={onClose} 
             style={{ 
@@ -70,7 +51,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
           <Space align="center" style={{ marginBottom: 12 }}>
             {isDarkMode ? <MoonOutlined /> : <SunOutlined />}
             <Title level={5} style={{ margin: 0, color: isDarkMode ? '#ffffff' : '#000000' }}>
-              {t.theme}
+              {translate('theme')}
             </Title>
           </Space>
           
@@ -99,7 +80,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
                   border: '1px solid #e8e8e8'
                 }}></div>
               </div>
-              <Text style={{ fontSize: '11px', color: '#000' }}>Default</Text>
+              <Text style={{ fontSize: '11px', color: '#000' }}>{translate('default')}</Text>
             </div>
             
             <div 
@@ -125,7 +106,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
                   border: '1px solid #424242'
                 }}></div>
               </div>
-              <Text style={{ fontSize: '11px', color: '#fff' }}>Dark</Text>
+              <Text style={{ fontSize: '11px', color: '#fff' }}>{translate('dark')}</Text>
             </div>
 
             <div 
@@ -150,14 +131,14 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
                   border: '1px solid #d9d9d9'
                 }}></div>
               </div>
-              <Text style={{ fontSize: '11px', color: isDarkMode ? '#a6a6a6' : '#666' }}>Side Menu</Text>
+              <Text style={{ fontSize: '11px', color: isDarkMode ? '#a6a6a6' : '#666' }}>{translate('sideMenu')}</Text>
             </div>
           </div>
 
           {/* Additional Theme Controls */}
           <div style={{ marginBottom: '16px' }}>
             <Text style={{ display: 'block', marginBottom: '8px', color: isDarkMode ? '#a6a6a6' : '#666' }}>
-              {t.sidemenuBgColor}
+              {translate('sidemenuBgColor')}
             </Text>
             <Switch checked={true} style={{ marginRight: '8px' }} />
           </div>
@@ -169,7 +150,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
         <div>
           <Space align="center" style={{ marginBottom: 12, justifyContent: 'space-between', width: '100%' }}>
             <Title level={5} style={{ margin: 0, color: isDarkMode ? '#ffffff' : '#000000' }}>
-              {t.notifications}
+              {translate('notifications')}
             </Title>
             <Switch checked={true} />
           </Space>
@@ -180,7 +161,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
         {/* Menu Layout */}
         <div>
           <Title level={5} style={{ margin: '0 0 16px 0', color: isDarkMode ? '#ffffff' : '#000000' }}>
-            {t.menuLayout}
+            {translate('menuLayout')}
           </Title>
           <div style={{ display: 'flex', gap: '12px' }}>
             <div style={{

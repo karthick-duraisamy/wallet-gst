@@ -25,7 +25,7 @@ const MainLayout: React.FC = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
-  const { isDarkMode, language, setLanguage } = useTheme();
+  const { isDarkMode, language, setLanguage, translate } = useTheme();
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
 
   const handleLogout = () => {
@@ -37,12 +37,12 @@ const MainLayout: React.FC = () => {
     {
       key: 'profile',
       icon: <UserOutlined />,
-      label: 'Profile',
+      label: translate('profile'),
     },
     {
       key: 'logout',
       icon: <LogoutOutlined />,
-      label: 'Logout',
+      label: translate('logout'),
       onClick: handleLogout,
     },
   ];
@@ -51,25 +51,25 @@ const MainLayout: React.FC = () => {
     {
       key: '/dashboard',
       icon: <DashboardOutlined />,
-      label: 'Dashboard',
+      label: translate('dashboard'),
       onClick: () => navigate('/dashboard'),
     },
     {
       key: '/upload',
       icon: <UploadOutlined />,
-      label: 'Upload',
+      label: translate('upload'),
       onClick: () => navigate('/upload'),
     },
     {
       key: '/reconciliation',
       icon: <ReconciliationOutlined />,
-      label: 'Reconciliation',
+      label: translate('reconciliation'),
       onClick: () => navigate('/reconciliation'),
     },
     {
       key: '/cumulative-invoice',
       icon: <FileTextOutlined />,
-      label: 'Cumulative',
+      label: translate('cumulative'),
       onClick: () => navigate('/cumulative-invoice'),
     },
   ];
@@ -117,7 +117,7 @@ const MainLayout: React.FC = () => {
                 <SettingOutlined />
               </div>
               <span className="nav-label">
-                Settings
+                {translate('settings')}
               </span>
             </div>
           </div>
@@ -141,29 +141,113 @@ const MainLayout: React.FC = () => {
         height: '64px',
         borderBottom: isDarkMode ? '1px solid #424242' : '1px solid #f0f0f0'
       }}>
-        <div className="header-left" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <div className="header-left" style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <FileTextOutlined style={{ fontSize: '24px', color: '#2B4CB8' }} />
-            <h1 style={{ margin: 0, fontSize: '24px', fontWeight: 600, color: '#2B4CB8' }}>
-              GST Claim
+            <h1 style={{ 
+              margin: 0, 
+              fontSize: '20px', 
+              fontWeight: 700, 
+              color: isDarkMode ? '#ffffff' : '#1a1a1a',
+              letterSpacing: '0.5px'
+            }}>
+              INFINITI
             </h1>
+          </div>
+          
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '8px',
+            color: isDarkMode ? '#a6a6a6' : '#8c8c8c',
+            fontSize: '14px'
+          }}>
+            <span style={{ cursor: 'pointer' }}>{translate('home')}</span>
+            <span>/</span>
+            <span style={{ color: isDarkMode ? '#ffffff' : '#1a1a1a' }}>
+              {location.pathname === '/dashboard' ? translate('dashboard') : 
+               location.pathname === '/upload' ? translate('upload') :
+               location.pathname === '/reconciliation' ? translate('reconciliation') :
+               location.pathname === '/cumulative-invoice' ? translate('cumulative') : translate('dashboard')}
+            </span>
           </div>
         </div>
         
-        <div className="header-right" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <Button 
-            type="text" 
-            icon={<NotificationOutlined />} 
-            style={{ 
-              color: isDarkMode ? '#a6a6a6' : '#666',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '32px',
-              height: '32px'
+        <div className="header-right" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <Dropdown 
+            menu={{ 
+              items: [
+                { key: 'cleartrip', label: 'ClearTrip' },
+                { key: 'other', label: 'Other Projects' }
+              ]
             }} 
-          />
-          
+            placement="bottomRight"
+          >
+            <Button 
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                border: 'none',
+                background: 'transparent',
+                color: isDarkMode ? '#ffffff' : '#1a1a1a',
+                fontSize: '14px',
+                fontWeight: '500',
+                padding: '4px 8px'
+              }}
+            >
+              ClearTrip
+              <span style={{ fontSize: '12px' }}>▼</span>
+            </Button>
+          </Dropdown>
+
+          <Dropdown 
+            menu={{ 
+              items: [
+                {
+                  key: 'en',
+                  label: (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <Avatar size={16} style={{ backgroundColor: '#52c41a' }}>🇺🇸</Avatar>
+                      English
+                    </div>
+                  ),
+                  onClick: () => setLanguage('en')
+                },
+                {
+                  key: 'hi', 
+                  label: (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <Avatar size={16} style={{ backgroundColor: '#ff7a45' }}>🇮🇳</Avatar>
+                      हिंदी
+                    </div>
+                  ),
+                  onClick: () => setLanguage('hi')
+                }
+              ]
+            }} 
+            placement="bottomRight"
+          >
+            <Button 
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                border: 'none',
+                background: 'transparent',
+                color: isDarkMode ? '#ffffff' : '#1a1a1a',
+                fontSize: '14px',
+                fontWeight: '500',
+                padding: '4px 8px'
+              }}
+            >
+              <Avatar size={16} style={{ backgroundColor: language === 'en' ? '#52c41a' : '#ff7a45' }}>
+                {language === 'en' ? '🇺🇸' : '🇮🇳'}
+              </Avatar>
+              {language === 'en' ? 'English' : 'हिंदी'}
+              <span style={{ fontSize: '12px' }}>▼</span>
+            </Button>
+          </Dropdown>
+
           <Button 
             type="text" 
             icon={<SettingOutlined />} 
@@ -173,77 +257,50 @@ const MainLayout: React.FC = () => {
               alignItems: 'center',
               justifyContent: 'center',
               width: '32px',
-              height: '32px'
+              height: '32px',
+              border: 'none'
             }} 
             onClick={() => setSettingsModalOpen(true)}
           />
-          
-          <Dropdown 
-            menu={{ 
-              items: [
-                {
-                  key: 'en',
-                  label: 'English',
-                  onClick: () => setLanguage('en')
-                },
-                {
-                  key: 'hi', 
-                  label: 'हिंदी',
-                  onClick: () => setLanguage('hi')
-                }
-              ]
+
+          <Button 
+            type="text" 
+            style={{ 
+              color: isDarkMode ? '#a6a6a6' : '#666',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '32px',
+              height: '32px',
+              border: 'none'
             }} 
-            placement="bottomRight"
           >
-            <div style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '8px',
-              padding: '4px 12px',
-              borderRadius: '6px',
-              background: isDarkMode ? '#262626' : '#f5f5f5',
-              cursor: 'pointer',
-              transition: 'all 0.2s'
-            }}>
-              <span style={{ 
-                color: isDarkMode ? '#a6a6a6' : '#666',
-                fontSize: '12px',
-                fontWeight: '500'
-              }}>
-                {language === 'en' ? 'English' : 'हिंदी'}
-              </span>
-              <Avatar size="small" style={{ backgroundColor: '#f56a00', fontSize: '10px' }}>
-                {language === 'en' ? 'EN' : 'हि'}
-              </Avatar>
-            </div>
-          </Dropdown>
+            ⛶
+          </Button>
           
           <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
-            <Button type="text" style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '8px',
-              padding: '4px 8px',
-              height: 'auto'
-            }}>
-              <Avatar size="small" style={{ backgroundColor: '#1890ff' }}>
-                {user?.name?.charAt(0) || user?.email?.charAt(0) || 'U'}
-              </Avatar>
+            <Button 
+              type="text" 
+              style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '8px',
+                padding: '4px 8px',
+                height: 'auto',
+                border: 'none'
+              }}
+            >
+              <Avatar size="small" style={{ backgroundColor: '#87d068' }}>S</Avatar>
               <div style={{ textAlign: 'left' }}>
                 <div style={{ 
-                  fontSize: '12px', 
-                  color: isDarkMode ? '#ffffff' : '#666',
+                  fontSize: '14px', 
+                  color: isDarkMode ? '#ffffff' : '#1a1a1a',
                   fontWeight: '500'
                 }}>
-                  Mr. {user?.name || 'User'}
-                </div>
-                <div style={{ 
-                  fontSize: '10px', 
-                  color: isDarkMode ? '#a6a6a6' : '#999'
-                }}>
-                  Admin
+                  Superadmin
                 </div>
               </div>
+              <span style={{ fontSize: '12px', color: isDarkMode ? '#a6a6a6' : '#666' }}>▼</span>
             </Button>
           </Dropdown>
         </div>
@@ -269,7 +326,7 @@ const MainLayout: React.FC = () => {
           fontSize: '14px',
           color: isDarkMode ? '#a6a6a6' : '#666'
         }}>
-          @Powered by Infinitisoftware Solution.
+          {translate('poweredBy')}
         </div>
         
         {/* Settings Modal */}

@@ -9,6 +9,7 @@ interface ThemeContextType {
   language: 'en' | 'hi';
   toggleTheme: () => void;
   setLanguage: (lang: 'en' | 'hi') => void;
+  translate: (key: string) => string;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -24,6 +25,102 @@ export const useTheme = () => {
 interface ThemeProviderProps {
   children: React.ReactNode;
 }
+
+// Comprehensive translations object
+const translations = {
+  en: {
+    // Navigation
+    dashboard: 'Dashboard',
+    upload: 'Upload',
+    reconciliation: 'Reconciliation',
+    cumulative: 'Cumulative',
+    home: 'Home',
+    settings: 'Settings',
+    
+    // User menu
+    profile: 'Profile',
+    logout: 'Logout',
+    
+    // Theme settings
+    themeSettings: 'Theme settings',
+    theme: 'Theme',
+    default: 'Default',
+    dark: 'Dark',
+    sideMenu: 'Side Menu',
+    sidemenuBgColor: 'Sidemenu bg color',
+    notifications: 'Notifications',
+    menuLayout: 'Menu layout',
+    
+    // Common
+    english: 'English',
+    hindi: 'हिंदी',
+    superadmin: 'Superadmin',
+    
+    // Login
+    login: 'Login',
+    email: 'Email Address',
+    password: 'Password',
+    rememberMe: 'Remember me',
+    forgotPassword: 'Forgot password?',
+    
+    // Dashboard
+    overallSummary: 'Overall summary',
+    recentFailures: 'Recent failures',
+    
+    // Upload
+    uploadFiles: 'Upload Files',
+    selectFiles: 'Select Files',
+    
+    // Footer
+    poweredBy: '@Powered by Infinitisoftware Solution.'
+  },
+  hi: {
+    // Navigation
+    dashboard: 'डैशबोर्ड',
+    upload: 'अपलोड',
+    reconciliation: 'सुलह',
+    cumulative: 'संचयी',
+    home: 'होम',
+    settings: 'सेटिंग्स',
+    
+    // User menu
+    profile: 'प्रोफ़ाइल',
+    logout: 'लॉग आउट',
+    
+    // Theme settings
+    themeSettings: 'थीम सेटिंग्स',
+    theme: 'थीम',
+    default: 'डिफ़ॉल्ट',
+    dark: 'डार्क',
+    sideMenu: 'साइड मेन्यू',
+    sidemenuBgColor: 'साइड मेन्यू बैकग्राउंड रंग',
+    notifications: 'सूचनाएं',
+    menuLayout: 'मेन्यू लेआउट',
+    
+    // Common
+    english: 'English',
+    hindi: 'हिंदी',
+    superadmin: 'सुपरएडमिन',
+    
+    // Login
+    login: 'लॉगिन',
+    email: 'ईमेल पता',
+    password: 'पासवर्ड',
+    rememberMe: 'मुझे याद रखें',
+    forgotPassword: 'पासवर्ड भूल गए?',
+    
+    // Dashboard
+    overallSummary: 'समग्र सारांश',
+    recentFailures: 'हाल की असफलताएं',
+    
+    // Upload
+    uploadFiles: 'फ़ाइलें अपलोड करें',
+    selectFiles: 'फ़ाइलें चुनें',
+    
+    // Footer
+    poweredBy: '@इन्फिनिटिसॉफ्टवेयर सोल्यूशन द्वारा संचालित।'
+  }
+};
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -54,6 +151,11 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     localStorage.setItem('gst_language', lang);
   };
 
+  // Translation helper function
+  const translate = (key: string): string => {
+    return translations[language][key as keyof typeof translations['en']] || key;
+  };
+
   const antdTheme = {
     token: {
       colorPrimary: '#6B46C1',
@@ -76,7 +178,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const locale: Locale = enUS;
 
   return (
-    <ThemeContext.Provider value={{ isDarkMode, language, toggleTheme, setLanguage }}>
+    <ThemeContext.Provider value={{ isDarkMode, language, toggleTheme, setLanguage, translate }}>
       <ConfigProvider theme={antdTheme} locale={locale}>
         <div className={isDarkMode ? 'dark-theme' : 'light-theme'}>
           {children}
