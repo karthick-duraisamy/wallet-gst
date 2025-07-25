@@ -7,8 +7,10 @@ import { Locale } from 'antd/lib/locale-provider';
 interface ThemeContextType {
   isDarkMode: boolean;
   language: 'en' | 'hi';
+  menuLayout: 'horizontal' | 'vertical';
   toggleTheme: () => void;
   setLanguage: (lang: 'en' | 'hi') => void;
+  setMenuLayout: (layout: 'horizontal' | 'vertical') => void;
   translate: (key: string) => string;
 }
 
@@ -72,7 +74,13 @@ const translations = {
     selectFiles: 'Select Files',
     
     // Footer
-    poweredBy: '@Powered by Infinitisoftware Solution.'
+    poweredBy: '@Powered by Infinitisoftware Solution.',
+    
+    // Menu Layout
+    horizontal: 'Horizontal',
+    vertical: 'Vertical',
+    topHorizontal: 'Top Horizontal',
+    sideVertical: 'Side Vertical'
   },
   hi: {
     // Navigation
@@ -118,18 +126,26 @@ const translations = {
     selectFiles: 'फ़ाइलें चुनें',
     
     // Footer
-    poweredBy: '@इन्फिनिटिसॉफ्टवेयर सोल्यूशन द्वारा संचालित।'
+    poweredBy: '@इन्फिनिटिसॉफ्टवेयर सोल्यूशन द्वारा संचालित।',
+    
+    // Menu Layout
+    horizontal: 'क्षैतिज',
+    vertical: 'खड़ा',
+    topHorizontal: 'शीर्ष क्षैतिज',
+    sideVertical: 'साइड वर्टिकल'
   }
 };
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [language, setLanguageState] = useState<'en' | 'hi'>('en');
+  const [menuLayout, setMenuLayoutState] = useState<'horizontal' | 'vertical'>('vertical');
 
   // Load settings from localStorage on mount
   useEffect(() => {
     const savedTheme = localStorage.getItem('gst_theme');
     const savedLanguage = localStorage.getItem('gst_language');
+    const savedMenuLayout = localStorage.getItem('gst_menu_layout');
     
     if (savedTheme) {
       setIsDarkMode(savedTheme === 'dark');
@@ -137,6 +153,10 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     
     if (savedLanguage) {
       setLanguageState(savedLanguage as 'en' | 'hi');
+    }
+    
+    if (savedMenuLayout) {
+      setMenuLayoutState(savedMenuLayout as 'horizontal' | 'vertical');
     }
   }, []);
 
@@ -149,6 +169,11 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const setLanguage = (lang: 'en' | 'hi') => {
     setLanguageState(lang);
     localStorage.setItem('gst_language', lang);
+  };
+
+  const setMenuLayout = (layout: 'horizontal' | 'vertical') => {
+    setMenuLayoutState(layout);
+    localStorage.setItem('gst_menu_layout', layout);
   };
 
   // Translation helper function
@@ -178,7 +203,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const locale: Locale = enUS;
 
   return (
-    <ThemeContext.Provider value={{ isDarkMode, language, toggleTheme, setLanguage, translate }}>
+    <ThemeContext.Provider value={{ isDarkMode, language, menuLayout, toggleTheme, setLanguage, setMenuLayout, translate }}>
       <ConfigProvider theme={antdTheme} locale={locale}>
         <div className={isDarkMode ? 'dark-theme' : 'light-theme'}>
           {children}
