@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { ConfigProvider } from 'antd';
 import { store } from './store/store';
+import { ThemeProvider } from './contexts/ThemeContext';
 import AuthLayout from './components/layouts/AuthLayout';
 import MainLayout from './components/layouts/MainLayout';
 import Login from './pages/auth/Login';
@@ -15,21 +15,10 @@ import CumulativeInvoice from './pages/CumulativeInvoice';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
-const theme = {
-  token: {
-    colorPrimary: '#6B46C1',
-    colorSuccess: '#52c41a',
-    colorWarning: '#faad14',
-    colorError: '#ff4d4f',
-    borderRadius: 8,
-    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-  },
-};
-
 function App() {
   return (
     <Provider store={store}>
-      <ConfigProvider theme={theme}>
+      <ThemeProvider>
         <Router>
           <div className="app">
             <Routes>
@@ -54,7 +43,7 @@ function App() {
             </Routes>
           </div>
         </Router>
-      </ConfigProvider>
+      </ThemeProvider>
     </Provider>
   );
 }
