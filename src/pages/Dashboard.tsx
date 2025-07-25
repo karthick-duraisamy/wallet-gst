@@ -44,32 +44,37 @@ const Dashboard: React.FC = () => {
   // Overview summary data
   const overviewData = [
     {
-      title: 'Email',
-      icon: <MailOutlined style={{ fontSize: 32, color: '#FFB020' }} />,
-      total: 0,
-      stats: [
-        { label: 'Sent', value: 0, color: '#52c41a' },
-        { label: 'Queue', value: 0, color: '#faad14' },
-        { label: 'Not - Sent', value: 0, color: '#ff4d4f' }
+      title: 'All Travel History',
+      backgroundColor: '#4CAF50',
+      sections: [
+        { label: 'Bookings', value: 0, backgroundColor: '#4CAF50' },
+        { label: 'Cancellations', value: 0, backgroundColor: '#2E7D32' }
       ]
     },
     {
-      title: 'WhatsApp',
-      icon: <WhatsAppOutlined style={{ fontSize: 32, color: '#25D366' }} />,
-      total: 0,
-      stats: [
-        { label: 'Sent', value: 0, color: '#52c41a' },
-        { label: 'Queue', value: 0, color: '#faad14' },
-        { label: 'Not - Sent', value: 0, color: '#ff4d4f' }
+      title: 'Airline Invoices',
+      backgroundColor: '#3F51B5',
+      sections: [
+        { label: 'Available', value: 0, backgroundColor: '#3F51B5' },
+        { label: 'GST - Filed', value: 0, backgroundColor: '#1A237E' },
+        { label: 'Pending to File', value: 0, backgroundColor: '#3F51B5', variant: 'light' }
       ]
     },
     {
-      title: 'Push notification',
-      icon: <BellOutlined style={{ fontSize: 32, color: '#1890ff' }} />,
-      total: 400,
-      stats: [
-        { label: 'Total mail', value: 400, color: '#52c41a' },
-        { label: 'AI Response', value: 35, color: '#ff4d4f' }
+      title: 'All Invoices',
+      backgroundColor: '#9C27B0',
+      sections: [
+        { label: 'Available', value: 0, backgroundColor: '#9C27B0' },
+        { label: 'GST - Filed', value: 0, backgroundColor: '#4A148C' },
+        { label: 'Pending to File', value: 0, backgroundColor: '#9C27B0', variant: 'light' }
+      ]
+    },
+    {
+      title: 'Net Claimable Amount(INR)',
+      backgroundColor: '#F44336',
+      sections: [
+        { label: 'Airlines', value: 0, backgroundColor: '#F44336' },
+        { label: 'All', value: 0, backgroundColor: '#C62828' }
       ]
     }
   ];
@@ -223,50 +228,85 @@ const Dashboard: React.FC = () => {
       {/* Overall Summary Section */}
       <div style={{ marginBottom: 32 }}>
         <Title level={4} style={{ marginBottom: 16, color: '#333' }}>Overall summary</Title>
-        <Row gutter={[24, 24]}>
+        <Row gutter={[16, 16]}>
           {overviewData.map((item, index) => (
-            <Col xs={24} md={8} key={index}>
-              <Card 
+            <Col xs={24} sm={12} lg={6} key={index}>
+              <div 
                 style={{ 
-                  borderRadius: 12, 
-                  border: 'none',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                  borderRadius: 8,
+                  overflow: 'hidden',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                  height: '120px',
+                  display: 'flex',
+                  flexDirection: 'column'
                 }}
-                bodyStyle={{ padding: '24px' }}
               >
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16, marginBottom: 20 }}>
-                  <div style={{ 
-                    width: 60, 
-                    height: 60, 
-                    borderRadius: 12, 
-                    backgroundColor: '#f5f5f5',
+                {/* Header */}
+                <div style={{ 
+                  backgroundColor: 'white',
+                  padding: '12px 16px',
+                  borderBottom: '1px solid #f0f0f0',
+                  flex: '0 0 auto'
+                }}>
+                  <Text style={{ 
+                    fontSize: 14, 
+                    fontWeight: 600, 
+                    color: '#333',
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center'
+                    gap: '8px'
                   }}>
-                    {item.icon}
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <Text style={{ fontSize: 16, fontWeight: 500, color: '#333', display: 'block' }}>
-                      {item.title}
-                    </Text>
-                    <Text style={{ fontSize: 24, fontWeight: 600, color: '#1890ff' }}>
-                      Total: {item.total}
-                    </Text>
-                  </div>
+                    {item.title}
+                    {(item.title.includes('Amount') || item.title.includes('Airlines')) && (
+                      <InfoCircleOutlined style={{ fontSize: 12, color: '#999' }} />
+                    )}
+                  </Text>
                 </div>
                 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                  {item.stats.map((stat, statIndex) => (
-                    <div key={statIndex} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <Text style={{ color: '#666', fontSize: 14 }}>{stat.label}</Text>
-                      <Text style={{ color: stat.color, fontWeight: 600, fontSize: 16 }}>
-                        {stat.value}
+                {/* Sections */}
+                <div style={{ 
+                  display: 'flex', 
+                  flex: 1,
+                  height: '80px'
+                }}>
+                  {item.sections.map((section, sectionIndex) => (
+                    <div 
+                      key={sectionIndex}
+                      style={{ 
+                        flex: 1,
+                        backgroundColor: section.variant === 'light' 
+                          ? `${section.backgroundColor}33` 
+                          : section.backgroundColor,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        color: section.variant === 'light' ? section.backgroundColor : 'white',
+                        padding: '8px',
+                        position: 'relative'
+                      }}
+                    >
+                      <Text style={{ 
+                        color: section.variant === 'light' ? section.backgroundColor : 'white',
+                        fontSize: 12,
+                        fontWeight: 500,
+                        textAlign: 'center',
+                        lineHeight: '14px',
+                        marginBottom: 4
+                      }}>
+                        {section.label}
+                      </Text>
+                      <Text style={{ 
+                        color: section.variant === 'light' ? section.backgroundColor : 'white',
+                        fontSize: 18,
+                        fontWeight: 700
+                      }}>
+                        {section.value}
                       </Text>
                     </div>
                   ))}
                 </div>
-              </Card>
+              </div>
             </Col>
           ))}
         </Row>
