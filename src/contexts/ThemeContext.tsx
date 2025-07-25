@@ -64,7 +64,6 @@ const translations = {
 
     // Dashboard
     overallSummary: "Overall summary",
-    recentFailures: "Recent failures",
 
     // Upload
     uploadFiles: "Upload Files",
@@ -204,7 +203,6 @@ const translations = {
 
     // Dashboard
     overallSummary: "समग्र सारांश",
-    recentFailures: "हाल की असफलताएं",
 
     // Upload
     uploadFiles: "फ़ाइलें अपलोड करें",
