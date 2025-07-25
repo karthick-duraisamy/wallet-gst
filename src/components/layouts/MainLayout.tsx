@@ -176,33 +176,6 @@ const MainLayout: React.FC = () => {
           <Dropdown 
             menu={{ 
               items: [
-                { key: 'cleartrip', label: 'ClearTrip' },
-                { key: 'other', label: 'Other Projects' }
-              ]
-            }} 
-            placement="bottomRight"
-          >
-            <Button 
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                border: 'none',
-                background: 'transparent',
-                color: isDarkMode ? '#ffffff' : '#1a1a1a',
-                fontSize: '14px',
-                fontWeight: '500',
-                padding: '4px 8px'
-              }}
-            >
-              ClearTrip
-              <span style={{ fontSize: '12px' }}>▼</span>
-            </Button>
-          </Dropdown>
-
-          <Dropdown 
-            menu={{ 
-              items: [
                 {
                   key: 'en',
                   label: (
@@ -250,18 +223,20 @@ const MainLayout: React.FC = () => {
 
           <Button 
             type="text" 
-            icon={<SettingOutlined />} 
             style={{ 
               color: isDarkMode ? '#a6a6a6' : '#666',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              width: '32px',
-              height: '32px',
-              border: 'none'
+              width: '40px',
+              height: '40px',
+              border: 'none',
+              fontSize: '18px'
             }} 
             onClick={() => setSettingsModalOpen(true)}
-          />
+          >
+            🎨
+          </Button>
 
           <Button 
             type="text" 
@@ -270,9 +245,10 @@ const MainLayout: React.FC = () => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              width: '32px',
-              height: '32px',
-              border: 'none'
+              width: '40px',
+              height: '40px',
+              border: 'none',
+              fontSize: '18px'
             }} 
           >
             ⛶

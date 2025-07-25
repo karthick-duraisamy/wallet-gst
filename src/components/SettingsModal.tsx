@@ -49,7 +49,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
         {/* Theme Settings */}
         <div>
           <Space align="center" style={{ marginBottom: 12 }}>
-            {isDarkMode ? <MoonOutlined /> : <SunOutlined />}
+            <span style={{ fontSize: '16px' }}>🎨</span>
             <Title level={5} style={{ margin: 0, color: isDarkMode ? '#ffffff' : '#000000' }}>
               {translate('theme')}
             </Title>
