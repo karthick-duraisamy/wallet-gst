@@ -143,16 +143,7 @@ const MainLayout: React.FC = () => {
       }}>
         <div className="header-left" style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <img src="/src/assets/gst-logo.png" alt="GST Claim" style={{ width: '32px', height: '32px' }} />
-            <h1 style={{ 
-              margin: 0, 
-              fontSize: '20px', 
-              fontWeight: 700, 
-              color: isDarkMode ? '#ffffff' : '#1a1a1a',
-              letterSpacing: '0.5px'
-            }}>
-              GST Claim
-            </h1>
+            <img src="/src/assets/gst-logo.png" alt="GST Claim" style={{ width: '40px', height: '40px' }} />
           </div>
           
           <div style={{ 
