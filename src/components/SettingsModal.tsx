@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Drawer, Select, Switch, Typography, Space, Divider } from 'antd';
 import { MoonOutlined, SunOutlined, GlobalOutlined, CloseOutlined } from '@ant-design/icons';
@@ -54,7 +53,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
               {translate('theme')}
             </Title>
           </Space>
-          
+
           {/* Theme Toggle Cards */}
           <div style={{ display: 'flex', gap: '8px', marginBottom: '24px' }}>
             <div 
@@ -82,7 +81,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
               </div>
               <Text style={{ fontSize: '11px', color: '#000' }}>{translate('default')}</Text>
             </div>
-            
+
             <div 
               onClick={() => isDarkMode || toggleTheme()}
               style={{
@@ -146,6 +145,90 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
 
         <Divider style={{ borderColor: isDarkMode ? '#424242' : '#f0f0f0' }} />
 
+        {/* Menu Layout */}
+        <div>
+          <Space align="center" style={{ marginBottom: 12 }}>
+            <span style={{ fontSize: '16px' }}>📱</span>
+            <Title level={5} style={{ margin: 0, color: isDarkMode ? '#ffffff' : '#000000' }}>
+              {translate('menuLayout')}
+            </Title>
+          </Space>
+
+          <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
+            {/* Top Horizontal Layout */}
+            <div 
+              onClick={() => setMenuLayout('horizontal')}
+              style={{
+                flex: 1,
+                padding: '12px',
+                border: menuLayout === 'horizontal' ? '2px solid #1890ff' : `1px solid ${isDarkMode ? '#424242' : '#d9d9d9'}`,
+                borderRadius: '8px',
+                background: isDarkMode ? '#262626' : '#f8f9fa',
+                textAlign: 'center',
+                cursor: 'pointer',
+                transition: 'all 0.2s'
+              }}
+            >
+              {/* Horizontal menu visualization */}
+              <div style={{ marginBottom: '8px' }}>
+                <div style={{ 
+                  width: '40px', 
+                  height: '6px', 
+                  background: isDarkMode ? '#424242' : '#e9ecef',
+                  borderRadius: '1px',
+                  margin: '0 auto 2px'
+                }}></div>
+                <div style={{ 
+                  width: '40px', 
+                  height: '16px', 
+                  background: isDarkMode ? '#424242' : '#e9ecef',
+                  borderRadius: '2px',
+                  margin: '0 auto'
+                }}></div>
+              </div>
+              <Text style={{ fontSize: '11px', color: isDarkMode ? '#a6a6a6' : '#666' }}>
+                {translate('topHorizontal')}
+              </Text>
+            </div>
+
+            {/* Side Vertical Layout */}
+            <div 
+              onClick={() => setMenuLayout('vertical')}
+              style={{
+                flex: 1,
+                padding: '12px',
+                border: menuLayout === 'vertical' ? '2px solid #1890ff' : `1px solid ${isDarkMode ? '#424242' : '#d9d9d9'}`,
+                borderRadius: '8px',
+                background: isDarkMode ? '#262626' : '#f8f9fa',
+                textAlign: 'center',
+                cursor: 'pointer',
+                transition: 'all 0.2s'
+              }}
+            >
+              {/* Vertical menu visualization */}
+              <div style={{ marginBottom: '8px', display: 'flex', justifyContent: 'center', gap: '2px' }}>
+                <div style={{ 
+                  width: '8px', 
+                  height: '20px', 
+                  background: isDarkMode ? '#424242' : '#e9ecef',
+                  borderRadius: '1px'
+                }}></div>
+                <div style={{ 
+                  width: '28px', 
+                  height: '20px', 
+                  background: isDarkMode ? '#424242' : '#e9ecef',
+                  borderRadius: '2px'
+                }}></div>
+              </div>
+              <Text style={{ fontSize: '11px', color: isDarkMode ? '#a6a6a6' : '#666' }}>
+                {translate('sideVertical')}
+              </Text>
+            </div>
+          </div>
+        </div>
+
+        <Divider style={{ borderColor: isDarkMode ? '#424242' : '#f0f0f0' }} />
+
         {/* Notifications */}
         <div>
           <Space align="center" style={{ marginBottom: 12, justifyContent: 'space-between', width: '100%' }}>
@@ -199,7 +282,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
                 {translate('topHorizontal')}
               </Text>
             </div>
-            
+
             {/* Side Vertical Layout */}
             <div 
               onClick={() => setMenuLayout('vertical')}
@@ -236,7 +319,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
           </div>
         </div>
 
-        
+
       </Space>
     </Drawer>
   );
