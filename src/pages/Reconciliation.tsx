@@ -22,13 +22,14 @@ const Reconciliation: React.FC = () => {
     dispatch(clearFilters());
   };
 
-  const statusBadges = [
-    { label: 'New', count: 0, color: '#1890ff' },
-    { label: 'Matched', count: 0, color: '#52c41a' },
-    { label: 'Pending to file', count: 0, color: '#faad14' },
-    { label: 'Invoice missing', count: 0, color: '#ff4d4f' },
-    { label: 'Additional in GSTR-2A', count: 917, color: '#722ed1' },
-    { label: 'Invoice received', count: 0, color: '#13c2c2' },
+  const statusOptions = [
+    { label: 'All', count: 76 },
+    { label: 'New', count: 0 },
+    { label: 'Matched', count: 0 },
+    { label: 'Pending to file', count: 0 },
+    { label: 'Invoice missing', count: 0 },
+    { label: 'Additional in GSTR-2A', count: 917 },
+    { label: 'Invoice received', count: 0 },
   ];
 
   const columns = [
@@ -169,9 +170,12 @@ const Reconciliation: React.FC = () => {
 
       {/* Type Selection */}
       <div style={{ marginBottom: 24 }}>
-        <Radio.Group defaultValue="airline" size="large">
-          <Radio.Button value="agency">Agency</Radio.Button>
-          <Radio.Button value="airline">Airline</Radio.Button>
+        <Radio.Group 
+          defaultValue="airline" 
+          size="large"
+        >
+          <Radio value="agency" style={{ fontWeight: 500 }}>Agency</Radio>
+          <Radio value="airline" style={{ fontWeight: 500 }}>Airline</Radio>
         </Radio.Group>
       </div>
 
@@ -200,12 +204,17 @@ const Reconciliation: React.FC = () => {
           <label style={{ display: 'block', marginBottom: 4, fontSize: '14px' }}>Status</label>
           <Select
             placeholder="All"
-            style={{ width: 120 }}
+            style={{ width: 200 }}
             defaultValue="all"
           >
-            <Option value="all">All</Option>
-            <Option value="pending">Pending</Option>
-            <Option value="approved">Approved</Option>
+            {statusOptions.map((status, index) => (
+              <Option key={index} value={status.label.toLowerCase().replace(/\s+/g, '-')}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span>{status.label}</span>
+                  <span style={{ color: '#666', fontSize: '12px' }}>{status.count}</span>
+                </div>
+              </Option>
+            ))}
           </Select>
         </div>
 
@@ -258,27 +267,7 @@ const Reconciliation: React.FC = () => {
         </Button>
       </div>
 
-      {/* Status Badges */}
-      <div style={{ 
-        display: 'flex', 
-        gap: 24, 
-        marginBottom: 24,
-        flexWrap: 'wrap'
-      }}>
-        {statusBadges.map((badge, index) => (
-          <div key={index} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span style={{ fontSize: '14px' }}>{badge.label}:</span>
-            <Badge 
-              count={badge.count} 
-              style={{ 
-                backgroundColor: badge.color,
-                fontSize: '12px',
-                fontWeight: 600
-              }}
-            />
-          </div>
-        ))}
-      </div>
+      
 
       {/* Export Buttons */}
       <div style={{ 

@@ -17,7 +17,7 @@ import './App.css';
 
 const theme = {
   token: {
-    colorPrimary: '#1890ff',
+    colorPrimary: '#6B46C1',
     colorSuccess: '#52c41a',
     colorWarning: '#faad14',
     colorError: '#ff4d4f',
