@@ -960,24 +960,278 @@ body {
   font-size: 12px;
 }
 
-/* New Upload Page Styles */
-.upload-page-content {
-  padding: 32px;
+/* Upload Page Redesign */
+.upload-page {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding: 0;
 }
 
-.upload-title {
-  font-size: 24px;
+.upload-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  background: white;
+  min-height: 100vh;
+}
+
+.upload-header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+}
+
+.upload-main-title {
+  font-size: 28px;
   font-weight: 600;
   color: #333;
-  margin-bottom: 32px;
+  margin: 0;
 }
 
-.upload-type-section {
-  margin-bottom: 32px;
+.upload-nav-tabs {
+  display: flex;
+  gap: 32px;
+  font-size: 16px;
 }
 
-.upload-tabs-container {
-  margin-bottom: 32px;
+.upload-nav-active {
+  color: #1890ff;
+  font-weight: 500;
+  border-bottom: 2px solid #1890ff;
+  padding-bottom: 4px;
+}
+
+.upload-nav-inactive {
+  color: #666;
+  font-weight: 400;
+}
+
+.upload-radio-section {
+  margin-bottom: 24px;
+}
+
+.upload-radio-group .ant-radio-wrapper {
+  font-size: 16px;
+  font-weight: 500;
+  margin-right: 32px;
+}
+
+.upload-content-wrapper {
+  background: white;
+}
+
+.upload-content-tabs .ant-tabs-nav {
+  margin-bottom: 0;
+}
+
+.upload-content-tabs .ant-tabs-tab {
+  background: #f5f5f5;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px 6px 0 0;
+  margin-right: 8px;
+  padding: 12px 24px;
+  font-weight: 500;
+}
+
+.upload-content-tabs .ant-tabs-tab-active {
+  background: #1890ff;
+  border-color: #1890ff;
+}
+
+.upload-content-tabs .ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: white !important;
+}
+
+.upload-content-tabs .ant-tabs-content-holder {
+  border-top: 1px solid #f0f0f0;
+  background: #fafafa;
+}
+
+.upload-tab-panel {
+  padding: 24px;
+}
+
+.upload-info-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #e6f3ff;
+  border: 1px solid #91d5ff;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.upload-info-icon {
+  color: #1890ff;
+  font-size: 16px;
+  margin-top: 2px;
+}
+
+.upload-info-text {
+  color: #333;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.upload-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #f0f0f0;
+  padding: 24px;
+}
+
+.upload-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.upload-file-types {
+  font-weight: 500;
+  color: #333;
+}
+
+.upload-file-limit {
+  color: #666;
+}
+
+.upload-dragger {
+  border: 2px dashed #d9d9d9 !important;
+  border-radius: 8px !important;
+  background: #fafafa !important;
+  margin-bottom: 16px;
+  min-height: 200px;
+}
+
+.upload-dragger:hover {
+  border-color: #1890ff !important;
+  background: #f0f8ff !important;
+}
+
+.upload-dragger-content {
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.upload-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  background: #1890ff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+.upload-icon {
+  color: white;
+  font-size: 24px;
+}
+
+.upload-text-main {
+  font-size: 16px;
+  color: #333;
+  margin: 16px 0 8px;
+}
+
+.upload-text-or {
+  color: #666;
+  margin: 8px 0;
+}
+
+.upload-select-btn {
+  color: #1890ff !important;
+  font-weight: 500;
+  padding: 0;
+  height: auto;
+}
+
+.upload-sample-section {
+  text-align: right;
+}
+
+.upload-sample-btn {
+  background: #52c41a !important;
+  border-color: #52c41a !important;
+  border-radius: 6px;
+  height: 40px;
+  padding: 0 20px;
+  font-weight: 500;
+}
+
+.upload-sample-btn:hover {
+  background: #73d13d !important;
+  border-color: #73d13d !important;
+}
+
+.upload-file-list {
+  margin-top: 24px;
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid #f0f0f0;
+}
+
+.upload-file-list-title {
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+.upload-file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  background: #fafafa;
+  border: 1px solid #e8e8e8;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.upload-file-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.upload-file-name {
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.upload-file-size {
+  color: #666;
+  font-size: 12px;
+}
+
+.upload-file-success {
+  color: #52c41a;
+  font-size: 12px;
+}
+
+.upload-submit-section {
+  text-align: center;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.upload-submit-btn {
+  min-width: 120px;
+  height: 40px;
+  border-radius: 6px;
+  font-weight: 500;
+  padding: 0 32px;
 }
 
 .upload-tabs .ant-tabs-tab {
