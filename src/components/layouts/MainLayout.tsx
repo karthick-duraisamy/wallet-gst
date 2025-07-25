@@ -202,7 +202,7 @@ const MainLayout: React.FC = () => {
         <SettingsModal 
           open={settingsModalOpen} 
           onClose={() => setSettingsModalOpen(false)} 
-        /></div>
+        />
       </Layout>
     </Layout>
   );
