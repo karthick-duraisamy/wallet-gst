@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   Row, 
@@ -33,6 +32,7 @@ import {
   BellOutlined,
   EyeOutlined
 } from '@ant-design/icons';
+import { useTheme } from '../contexts/ThemeContext';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -40,6 +40,7 @@ const { Option } = Select;
 const Dashboard: React.FC = () => {
   const [timePeriod, setTimePeriod] = useState('select');
   const [travelVendor, setTravelVendor] = useState('select');
+  const { translate, isDarkMode } = useTheme();
 
   // Overview summary data
   const overviewData = [
@@ -217,17 +218,17 @@ const Dashboard: React.FC = () => {
     <div className="slide-up" style={{ padding: '24px', background: '#f5f5f5', minHeight: '100vh' }}>
       {/* Header */}
       <div style={{ marginBottom: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Title level={3} style={{ margin: 0, color: '#333' }}>Dashboard</Title>
+        <Title level={3} style={{ margin: 0, color: '#333' }}>{translate('dashboard')}</Title>
         <Select defaultValue="This month" style={{ width: 120 }}>
-          <Option value="This month">This month</Option>
-          <Option value="Last month">Last month</Option>
-          <Option value="This year">This year</Option>
+          <Option value="This month">{translate('thisMonth')}</Option>
+          <Option value="Last month">{translate('lastMonth')}</Option>
+          <Option value="This year">{translate('thisYear')}</Option>
         </Select>
       </div>
 
       {/* Overall Summary Section */}
       <div style={{ marginBottom: 32 }}>
-        <Title level={4} style={{ marginBottom: 16, color: '#333' }}>Overall summary</Title>
+        <Title level={4} style={{ marginBottom: 16, color: '#333' }}>{translate('overallSummary')}</Title>
         <Row gutter={[16, 16]}>
           {overviewData.map((item, index) => (
             <Col xs={24} sm={12} lg={6} key={index}>
@@ -262,7 +263,7 @@ const Dashboard: React.FC = () => {
                     )}
                   </Text>
                 </div>
-                
+
                 {/* Sections */}
                 <div style={{ 
                   display: 'flex', 
@@ -318,9 +319,9 @@ const Dashboard: React.FC = () => {
           <Card 
             title={
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Text style={{ fontSize: 16, fontWeight: 600 }}>Recent failures</Text>
+                <Text style={{ fontSize: 16, fontWeight: 600 }}>{translate('recentFailures')}</Text>
                 <Button type="link" icon={<EyeOutlined />} style={{ color: '#1890ff' }}>
-                  View all failures
+                  {translate('viewAllFailures')}
                 </Button>
               </div>
             }
@@ -345,7 +346,7 @@ const Dashboard: React.FC = () => {
                     <rect x="30" y="55" width="20" height="8" rx="4" fill="#f0f0f0"/>
                   </svg>
                 </div>
-                <Text style={{ fontSize: 16, color: '#999' }}>No data available</Text>
+                <Text style={{ fontSize: 16, color: '#999' }}>{translate('noDataAvailable')}</Text>
               </div>
             ) : (
               <Table
@@ -362,12 +363,12 @@ const Dashboard: React.FC = () => {
             )}
           </Card>
         </Col>
-        
+
         <Col xs={24} lg={8}>
           <Card 
             title={
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Text style={{ fontSize: 16, fontWeight: 600 }}>Top sent notifications</Text>
+                <Text style={{ fontSize: 16, fontWeight: 600 }}>{translate('topSentNotifications')}</Text>
               </div>
             }
             style={{ 
@@ -379,10 +380,10 @@ const Dashboard: React.FC = () => {
           >
             <div style={{ textAlign: 'center', padding: '20px' }}>
               <div style={{ marginBottom: 16 }}>
-                <Text style={{ fontSize: 14, color: '#666' }}>AI Mail Agent</Text>
+                <Text style={{ fontSize: 14, color: '#666' }}>{translate('aiMailAgent')}</Text>
               </div>
               <Button type="primary" style={{ marginBottom: 20 }}>
-                Push Notification
+                {translate('pushNotification')}
               </Button>
               <div style={{ 
                 textAlign: 'center', 
@@ -409,7 +410,7 @@ const Dashboard: React.FC = () => {
         {/* Invoice Status Chart */}
         <Col xs={24} lg={12}>
           <Card 
-            title="Invoice status"
+            title={translate('invoiceStatus')}
             extra={<DownloadOutlined style={{ cursor: 'pointer' }} />}
             style={{ 
               borderRadius: 12, 
@@ -446,7 +447,7 @@ const Dashboard: React.FC = () => {
         {/* Airline wise claimable amount */}
         <Col xs={24} lg={12}>
           <Card 
-            title="Airline wise claimable Amount(INR)"
+            title={translate('airlineWiseClaimable')}
             extra={
               <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                 <Select size="small" defaultValue="Airlines" style={{ width: 80 }}>
@@ -475,7 +476,7 @@ const Dashboard: React.FC = () => {
         {/* Airlines pending files to GST */}
         <Col xs={24}>
           <Card 
-            title="Airlines pending files to GST"
+            title={translate('airlinesPendingFiles')}
             extra={
               <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                 <Text>Type:</Text>

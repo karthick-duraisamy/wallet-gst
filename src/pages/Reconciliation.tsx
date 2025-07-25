@@ -1,10 +1,10 @@
-
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, Table, Button, Select, DatePicker, Input, Space, Tag, Radio, Badge, Checkbox } from 'antd';
 import { SearchOutlined, DownloadOutlined, FilterOutlined, CalendarOutlined } from '@ant-design/icons';
 import { RootState } from '../store/store';
 import { setFilters, clearFilters } from '../store/slices/reconciliationSlice';
+import { useTheme } from '../contexts/ThemeContext';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -13,6 +13,7 @@ const Reconciliation: React.FC = () => {
   const dispatch = useDispatch();
   const { records, filters, loading, pagination } = useSelector((state: RootState) => state.reconciliation);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const { translate } = useTheme();
 
   const handleFilterChange = (key: string, value: any) => {
     dispatch(setFilters({ [key]: value }));
@@ -41,38 +42,38 @@ const Reconciliation: React.FC = () => {
       render: () => <Checkbox />,
     },
     {
-      title: 'Supplier name',
+      title: translate('supplierName'),
       dataIndex: 'supplierName',
       key: 'supplierName',
       sorter: true,
       render: (text: string) => text || 'N/A',
     },
     {
-      title: 'PNR / Ticket no',
+      title: translate('pnrTicketNumber'),
       dataIndex: 'pnrTicketNumber',
       key: 'pnrTicketNumber',
       render: (text: string) => text || 'N/A',
     },
     {
-      title: 'Invoice/Credit note no',
+      title: translate('invoiceNumber'),
       dataIndex: 'invoiceNumber',
       key: 'invoiceNumber',
       render: (text: string) => text || 'N/A',
     },
     {
-      title: 'Invoice date',
+      title: translate('invoiceDate'),
       dataIndex: 'invoiceDate',
       key: 'invoiceDate',
       sorter: true,
     },
     {
-      title: 'Type',
+      title: translate('type'),
       dataIndex: 'type',
       key: 'type',
-      render: (type: string) => type || 'Tax invoice',
+      render: (type: string) => type || translate('taxInvoice'),
     },
     {
-      title: 'Tax claimable',
+      title: translate('taxClaimable'),
       dataIndex: 'taxClaimable',
       key: 'taxClaimable',
       render: (amount: number) => (
@@ -83,12 +84,12 @@ const Reconciliation: React.FC = () => {
       sorter: true,
     },
     {
-      title: 'Status',
+      title: translate('status'),
       dataIndex: 'status',
       key: 'status',
       render: (status: string) => (
         <Tag color="#722ed1" style={{ borderRadius: '12px' }}>
-          Additional in GS...
+          {translate('additionalInGSTR2A')}
         </Tag>
       ),
     },
@@ -165,7 +166,7 @@ const Reconciliation: React.FC = () => {
 
       {/* Page Title */}
       <h2 style={{ fontSize: '24px', fontWeight: 600, color: '#722ed1', marginBottom: 24 }}>
-        Reconciliation history (Airline)
+        {translate('reconciliationHistory')}
       </h2>
 
       {/* Type Selection */}
@@ -174,8 +175,8 @@ const Reconciliation: React.FC = () => {
           defaultValue="airline" 
           size="large"
         >
-          <Radio value="agency" style={{ fontWeight: 500 }}>Agency</Radio>
-          <Radio value="airline" style={{ fontWeight: 500 }}>Airline</Radio>
+          <Radio value="agency" style={{ fontWeight: 500 }}>{translate('agency')}</Radio>
+          <Radio value="airline" style={{ fontWeight: 500 }}>{translate('airline')}</Radio>
         </Radio.Group>
       </div>
 
@@ -188,20 +189,20 @@ const Reconciliation: React.FC = () => {
         flexWrap: 'wrap'
       }}>
         <div>
-          <label style={{ display: 'block', marginBottom: 4, fontSize: '14px' }}>Airline</label>
+          <label style={{ display: 'block', marginBottom: 4, fontSize: '14px' }}>{translate('airline')}</label>
           <Select
-            placeholder="All"
+            placeholder={translate('all')}
             style={{ width: 120 }}
             defaultValue="all"
           >
-            <Option value="all">All</Option>
+            <Option value="all">{translate('all')}</Option>
             <Option value="indigo">IndiGo</Option>
             <Option value="airindia">Air India</Option>
           </Select>
         </div>
 
         <div>
-          <label style={{ display: 'block', marginBottom: 4, fontSize: '14px' }}>Status</label>
+          <label style={{ display: 'block', marginBottom: 4, fontSize: '14px' }}>{translate('status')}</label>
           <Select
             placeholder="All"
             style={{ width: 200 }}
@@ -219,20 +220,20 @@ const Reconciliation: React.FC = () => {
         </div>
 
         <div>
-          <label style={{ display: 'block', marginBottom: 4, fontSize: '14px' }}>Type</label>
+          <label style={{ display: 'block', marginBottom: 4, fontSize: '14px' }}>{translate('type')}</label>
           <Select
-            placeholder="All"
+            placeholder={translate('all')}
             style={{ width: 120 }}
             defaultValue="all"
           >
-            <Option value="all">All</Option>
-            <Option value="tax-invoice">Tax Invoice</Option>
-            <Option value="credit-note">Credit Note</Option>
+            <Option value="all">{translate('all')}</Option>
+            <Option value="tax-invoice">{translate('taxInvoice')}</Option>
+            <Option value="credit-note">{translate('creditNote')}</Option>
           </Select>
         </div>
 
         <div>
-          <label style={{ display: 'block', marginBottom: 4, fontSize: '14px' }}>Start / End Date</label>
+          <label style={{ display: 'block', marginBottom: 4, fontSize: '14px' }}>{translate('startEndDate')}</label>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <DatePicker 
               placeholder="Start Date" 
@@ -249,25 +250,25 @@ const Reconciliation: React.FC = () => {
         </div>
 
         <div>
-          <label style={{ display: 'block', marginBottom: 4, fontSize: '14px' }}>Travel Vendor</label>
+          <label style={{ display: 'block', marginBottom: 4, fontSize: '14px' }}>{translate('travelVendor')}</label>
           <Select
-            placeholder="All"
+            placeholder={translate('all')}
             style={{ width: 120 }}
             defaultValue="all"
           >
-            <Option value="all">All</Option>
+            <Option value="all">{translate('all')}</Option>
           </Select>
         </div>
 
         <Button type="primary" style={{ backgroundColor: '#4f46e5' }}>
-          Submit
+          {translate('submit')}
         </Button>
         <Button onClick={handleClearFilters}>
-          Reset All
+          {translate('resetAll')}
         </Button>
       </div>
 
-      
+
 
       {/* Export Buttons */}
       <div style={{ 
@@ -321,7 +322,7 @@ const Reconciliation: React.FC = () => {
             total: 917,
             showSizeChanger: true,
             showQuickJumper: true,
-            showTotal: (total, range) => `Displaying ${range[0]} Out of ${total}`,
+            showTotal: (total, range) => `${translate('displaying')} ${range[0]} ${translate('outOf')} ${total}`,
             itemRender: (current, type, originalElement) => {
               if (type === 'page') {
                 return (
@@ -355,7 +356,7 @@ const Reconciliation: React.FC = () => {
             }
           }}
         />
-        
+
         {/* Custom Pagination Footer */}
         <div style={{ 
           display: 'flex', 
@@ -366,13 +367,13 @@ const Reconciliation: React.FC = () => {
           paddingTop: 16,
           borderTop: '1px solid #f0f0f0'
         }}>
-          <span style={{ fontSize: '14px' }}>Go to Page</span>
+          <span style={{ fontSize: '14px' }}>{translate('goToPage')}</span>
           <Input style={{ width: 60 }} />
           <Button 
             type="primary" 
             style={{ backgroundColor: '#4f46e5', borderRadius: '16px' }}
           >
-            Go
+            {translate('go')}
           </Button>
         </div>
       </Card>

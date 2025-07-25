@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   Card, 
@@ -16,6 +15,7 @@ import {
   DatePicker
 } from 'antd';
 import { SearchOutlined, DownloadOutlined, CalendarOutlined } from '@ant-design/icons';
+import { useTheme } from '../contexts/ThemeContext';
 
 const { Title, Text } = Typography;
 const { TextArea } = Input;
@@ -28,6 +28,7 @@ const CumulativeInvoice: React.FC = () => {
   const [pnrInput, setPnrInput] = useState('');
   const [invoiceType, setInvoiceType] = useState('all');
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const { translate } = useTheme();
 
   const handleSubmit = () => {
     console.log('Submit clicked');
@@ -42,19 +43,19 @@ const CumulativeInvoice: React.FC = () => {
   const tabItems = [
     {
       key: 'upload-pnr',
-      label: 'Upload PNR / Ticket no',
+      label: translate('uploadPNRTicket'),
     },
     {
       key: 'upload-invoice',
-      label: 'Upload Invoice no',
+      label: translate('uploadInvoiceNo'),
     },
     {
       key: 'pnr-ticket',
-      label: 'PNR / Ticket no',
+      label: translate('pnrTicket'),
     },
     {
       key: 'tax-invoice-range',
-      label: 'Show on Tax Invoice date range',
+      label: translate('showOnTaxInvoiceRange'),
     },
   ];
 
@@ -68,37 +69,37 @@ const CumulativeInvoice: React.FC = () => {
       render: () => <Checkbox />,
     },
     {
-      title: 'Supplier Name',
+      title: translate('supplierName'),
       dataIndex: 'supplierName',
       key: 'supplierName',
       render: (text: string) => text || 'Spice Jet',
     },
     {
-      title: 'PNR / Ticket no',
+      title: translate('pnrTicketNumber'),
       dataIndex: 'pnrTicketNo',
       key: 'pnrTicketNo',
       render: (text: string) => text || 'ADA',
     },
     {
-      title: 'Invoice No',
+      title: translate('invoiceNumber'),
       dataIndex: 'invoiceNo',
       key: 'invoiceNo',
       render: (text: string) => text || 'N/A',
     },
     {
-      title: 'Invoice Date',
+      title: translate('invoiceDate'),
       dataIndex: 'invoiceDate',
       key: 'invoiceDate',
       render: (text: string) => text || 'N/A',
     },
     {
-      title: 'Type',
+      title: translate('type'),
       dataIndex: 'type',
       key: 'type',
       render: (text: string) => text || 'Invoice',
     },
     {
-      title: 'Travel Vendor',
+      title: translate('travelVendor'),
       dataIndex: 'travelVendor',
       key: 'travelVendor',
       render: (text: string) => text || 'AtYourPrice',
@@ -184,7 +185,7 @@ const CumulativeInvoice: React.FC = () => {
                 style={{ width: 250 }}
                 size="large"
               >
-                <Option value="upload-multiple-pnr">Upload multiple PNR / Ticket no</Option>
+                <Option value="upload-multiple-pnr">{translate('uploadMultiplePNR')}</Option>
               </Select>
               <Select
                 value={invoiceType}
@@ -192,28 +193,28 @@ const CumulativeInvoice: React.FC = () => {
                 style={{ width: 120 }}
                 size="large"
               >
-                <Option value="all">All</Option>
-                <Option value="tax-invoice">Tax Invoice</Option>
-                <Option value="credit-note">Credit Note</Option>
-                <Option value="debit-note">Debit Note</Option>
+                <Option value="all">{translate('all')}</Option>
+                <Option value="tax-invoice">{translate('taxInvoice')}</Option>
+                <Option value="credit-note">{translate('creditNote')}</Option>
+                <Option value="debit-note">{translate('debitNote')}</Option>
               </Select>
               <Button 
                 type="primary"
                 onClick={handleSubmit}
                 size="large"
               >
-                Submit
+                {translate('submit')}
               </Button>
               <Button 
                 onClick={handleResetAll}
                 size="large"
               >
-                Reset all
+                {translate('resetAll')}
               </Button>
             </div>
           </div>
         );
-      
+
       case 'upload-invoice':
         return (
           <div style={{ 
@@ -258,7 +259,7 @@ const CumulativeInvoice: React.FC = () => {
             </div>
           </div>
         );
-      
+
       case 'pnr-ticket':
         return (
           <div style={{ 
@@ -304,7 +305,7 @@ const CumulativeInvoice: React.FC = () => {
             </div>
           </div>
         );
-      
+
       case 'tax-invoice-range':
         return (
           <div style={{ 
@@ -327,7 +328,7 @@ const CumulativeInvoice: React.FC = () => {
                   <Option value="indigo">IndiGo</Option>
                 </Select>
               </div>
-              
+
               <div>
                 <span style={{ fontSize: '12px', color: '#666', display: 'block', marginBottom: 4 }}>Type</span>
                 <Select
@@ -341,7 +342,7 @@ const CumulativeInvoice: React.FC = () => {
                   <Option value="credit-note">Credit Note</Option>
                 </Select>
               </div>
-              
+
               <div>
                 <span style={{ fontSize: '12px', color: '#666', display: 'block', marginBottom: 4 }}>Travel mode</span>
                 <Select
@@ -354,7 +355,7 @@ const CumulativeInvoice: React.FC = () => {
                   <Option value="train">Train</Option>
                 </Select>
               </div>
-              
+
               <div>
                 <span style={{ fontSize: '12px', color: '#666', display: 'block', marginBottom: 4 }}>Place of supply</span>
                 <Select
@@ -367,7 +368,7 @@ const CumulativeInvoice: React.FC = () => {
                   <Option value="mumbai">Mumbai</Option>
                 </Select>
               </div>
-              
+
               <div>
                 <span style={{ fontSize: '12px', color: '#666', display: 'block', marginBottom: 4 }}>Start / end date *</span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -386,7 +387,7 @@ const CumulativeInvoice: React.FC = () => {
                   />
                 </div>
               </div>
-              
+
               <div style={{ alignSelf: 'flex-end' }}>
                 <Button 
                   type="primary"
@@ -396,7 +397,7 @@ const CumulativeInvoice: React.FC = () => {
                   Submit
                 </Button>
               </div>
-              
+
               <div style={{ alignSelf: 'flex-end' }}>
                 <Button 
                   onClick={handleResetAll}
@@ -408,7 +409,7 @@ const CumulativeInvoice: React.FC = () => {
             </div>
           </div>
         );
-      
+
       default:
         return null;
     }
@@ -423,7 +424,7 @@ const CumulativeInvoice: React.FC = () => {
 
       {/* Title */}
       <Title level={3} style={{ margin: '0 0 24px 0', color: '#7c4dff' }}>
-        Cumulative Invoice (Airline)
+        {translate('cumulativeInvoice')}
       </Title>
 
       {/* Entity Type Selection */}
@@ -433,8 +434,8 @@ const CumulativeInvoice: React.FC = () => {
           onChange={(e) => setEntityType(e.target.value)}
           size="large"
         >
-          <Radio value="agency" style={{ fontWeight: 500 }}>Agency</Radio>
-          <Radio value="airline" style={{ fontWeight: 500 }}>Airline</Radio>
+          <Radio value="agency" style={{ fontWeight: 500 }}>{translate('agency')}</Radio>
+          <Radio value="airline" style={{ fontWeight: 500 }}>{translate('airline')}</Radio>
         </Radio.Group>
       </div>
 
@@ -532,7 +533,7 @@ const CumulativeInvoice: React.FC = () => {
             }}
             scroll={{ x: 800 }}
           />
-          
+
           {/* Custom Pagination Footer */}
           <div style={{ 
             display: 'flex', 
