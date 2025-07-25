@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, Radio, Button, Upload as AntUpload, message, Progress, Tabs } from 'antd';
@@ -12,6 +11,7 @@ import {
   updateFileStatus,
   clearFiles 
 } from '../store/slices/uploadSlice';
+import { useTheme } from '../contexts/ThemeContext';
 
 const { Dragger } = AntUpload;
 const { TabPane } = Tabs;
@@ -19,6 +19,7 @@ const { TabPane } = Tabs;
 const Upload: React.FC = () => {
   const dispatch = useDispatch();
   const { files, uploadType, subOption, loading } = useSelector((state: RootState) => state.upload);
+  const { translate } = useTheme();
 
   const handleUploadTypeChange = (e: any) => {
     dispatch(setUploadType(e.target.value));
@@ -36,7 +37,7 @@ const Upload: React.FC = () => {
       const isValidType = file.type === 'text/csv' || 
                          file.type === 'application/vnd.ms-excel' ||
                          file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-      
+
       if (!isValidType) {
         message.error('You can only upload CSV or Excel files!');
         return false;
@@ -95,10 +96,10 @@ const Upload: React.FC = () => {
       <div className="upload-container">
         {/* Header */}
         <div className="upload-header-section">
-          <h1 className="upload-main-title">Upload</h1>
+          <h1 className="upload-main-title">{translate('upload')}</h1>
           <div className="upload-nav-tabs">
-            <span className="upload-nav-active">Upload</span>
-            <span className="upload-nav-inactive">Reconciliation</span>
+            <span className="upload-nav-active">{translate('upload')}</span>
+            <span className="upload-nav-inactive">{translate('reconciliation')}</span>
           </div>
         </div>
 
@@ -109,8 +110,8 @@ const Upload: React.FC = () => {
             onChange={handleUploadTypeChange}
             className="upload-radio-group"
           >
-            <Radio value="agency" className="upload-radio-item">Agency</Radio>
-            <Radio value="airline" className="upload-radio-item">Airline</Radio>
+            <Radio value="agency" className="upload-radio-item">{translate('agency')}</Radio>
+            <Radio value="airline" className="upload-radio-item">{translate('airline')}</Radio>
           </Radio.Group>
         </div>
 
@@ -123,22 +124,22 @@ const Upload: React.FC = () => {
             items={[
               {
                 key: 'non-ayp',
-                label: 'Non-AYP Bookings',
+                label: translate('nonAYPBookings'),
                 children: (
                   <div className="upload-tab-panel">
                     {/* Info Banner */}
                     <div className="upload-info-banner">
                       <span className="upload-info-icon">ℹ️</span>
                       <span className="upload-info-text">
-                        You can upload bookings of any other travel agency. Kindly upload the booking data in given sample format.
+                        {translate('nonAYPInfo')}
                       </span>
                     </div>
 
                     {/* Upload Card */}
                     <div className="upload-card">
                       <div className="upload-card-header">
-                        <span className="upload-file-types">Supported Files: CSV, XLS</span>
-                        <span className="upload-file-limit">Upload up to 3 file. Each max file size 5MB</span>
+                        <span className="upload-file-types">{translate('supportedFilesCSVXLS')}</span>
+                        <span className="upload-file-limit">{translate('uploadLimit')}</span>
                       </div>
 
                       <Dragger {...uploadProps} className="upload-dragger">
@@ -147,11 +148,11 @@ const Upload: React.FC = () => {
                             <PlusOutlined className="upload-icon" />
                           </div>
                           <p className="upload-text-main">
-                            Drag & drop your file here
+                            {translate('dragDropFileHere')}
                           </p>
-                          <p className="upload-text-or">or</p>
+                          <p className="upload-text-or">{translate('or')}</p>
                           <Button type="link" className="upload-select-btn">
-                            Select File
+                            {translate('selectFile')}
                           </Button>
                         </div>
                       </Dragger>
@@ -163,7 +164,7 @@ const Upload: React.FC = () => {
                           icon={<DownloadOutlined />}
                           onClick={() => handleDownloadSample('Non-AYP Bookings')}
                         >
-                          Sample file
+                          {translate('sampleFile')}
                         </Button>
                       </div>
                     </div>
@@ -172,22 +173,22 @@ const Upload: React.FC = () => {
               },
               {
                 key: 'gstr-2a',
-                label: 'GSTR-2A',
+                label: translate('gstr2A'),
                 children: (
                   <div className="upload-tab-panel">
                     {/* Info Banner */}
                     <div className="upload-info-banner">
                       <span className="upload-info-icon">ℹ️</span>
                       <span className="upload-info-text">
-                        You can upload GSTR-2A data for reconciliation. Kindly upload the data in given sample format.
+                        {translate('gstr2AInfo')}
                       </span>
                     </div>
 
                     {/* Upload Card */}
                     <div className="upload-card">
                       <div className="upload-card-header">
-                        <span className="upload-file-types">Supported Files: CSV, XLS</span>
-                        <span className="upload-file-limit">Upload up to 3 file. Each max file size 5MB</span>
+                        <span className="upload-file-types">{translate('supportedFilesCSVXLS')}</span>
+                        <span className="upload-file-limit">{translate('uploadLimit')}</span>
                       </div>
 
                       <Dragger {...uploadProps} className="upload-dragger">
@@ -196,11 +197,11 @@ const Upload: React.FC = () => {
                             <PlusOutlined className="upload-icon" />
                           </div>
                           <p className="upload-text-main">
-                            Drag & drop your file here
+                            {translate('dragDropFileHere')}
                           </p>
-                          <p className="upload-text-or">or</p>
+                          <p className="upload-text-or">{translate('or')}</p>
                           <Button type="link" className="upload-select-btn">
-                            Select File
+                            {translate('selectFile')}
                           </Button>
                         </div>
                       </Dragger>
@@ -212,7 +213,7 @@ const Upload: React.FC = () => {
                           icon={<DownloadOutlined />}
                           onClick={() => handleDownloadSample('GSTR-2A')}
                         >
-                          Sample file
+                          {translate('sampleFile')}
                         </Button>
                       </div>
                     </div>
@@ -226,7 +227,7 @@ const Upload: React.FC = () => {
         {/* File List */}
         {files.length > 0 && (
           <div className="upload-file-list">
-            <h4 className="upload-file-list-title">Uploaded Files ({files.length}/3)</h4>
+            <h4 className="upload-file-list-title">{translate('uploadedFiles')} ({files.length}/3)</h4>
             {files.map((file) => (
               <div key={file.id} className="upload-file-item">
                 <div className="upload-file-info">
@@ -238,7 +239,7 @@ const Upload: React.FC = () => {
                     <Progress percent={60} size="small" status="active" />
                   )}
                   {file.status === 'success' && (
-                    <span className="upload-file-success">✓ Uploaded</span>
+                    <span className="upload-file-success">{translate('uploaded')}</span>
                   )}
                 </div>
                 <Button
@@ -261,7 +262,7 @@ const Upload: React.FC = () => {
             loading={loading}
             className="upload-submit-btn"
           >
-            Submit
+            {translate('submit')}
           </Button>
         </div>
       </div>

@@ -1,10 +1,10 @@
-
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, Table, Button, Select, DatePicker, Input, Space, Tag, Radio, Badge, Checkbox } from 'antd';
 import { SearchOutlined, DownloadOutlined, FilterOutlined, CalendarOutlined } from '@ant-design/icons';
 import { RootState } from '../store/store';
 import { setFilters, clearFilters } from '../store/slices/reconciliationSlice';
+import { useTheme } from '../contexts/ThemeContext';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -13,6 +13,7 @@ const Reconciliation: React.FC = () => {
   const dispatch = useDispatch();
   const { records, filters, loading, pagination } = useSelector((state: RootState) => state.reconciliation);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const { translate } = useTheme();
 
   const handleFilterChange = (key: string, value: any) => {
     dispatch(setFilters({ [key]: value }));
@@ -267,7 +268,7 @@ const Reconciliation: React.FC = () => {
         </Button>
       </div>
 
-      
+
 
       {/* Export Buttons */}
       <div style={{ 
@@ -355,7 +356,7 @@ const Reconciliation: React.FC = () => {
             }
           }}
         />
-        
+
         {/* Custom Pagination Footer */}
         <div style={{ 
           display: 'flex', 

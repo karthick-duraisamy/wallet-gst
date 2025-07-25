@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   Row, 
@@ -33,6 +32,7 @@ import {
   BellOutlined,
   EyeOutlined
 } from '@ant-design/icons';
+import { useTheme } from '../contexts/ThemeContext';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -40,6 +40,7 @@ const { Option } = Select;
 const Dashboard: React.FC = () => {
   const [timePeriod, setTimePeriod] = useState('select');
   const [travelVendor, setTravelVendor] = useState('select');
+  const { translate, isDarkMode } = useTheme();
 
   // Overview summary data
   const overviewData = [
@@ -262,7 +263,7 @@ const Dashboard: React.FC = () => {
                     )}
                   </Text>
                 </div>
-                
+
                 {/* Sections */}
                 <div style={{ 
                   display: 'flex', 
@@ -362,7 +363,7 @@ const Dashboard: React.FC = () => {
             )}
           </Card>
         </Col>
-        
+
         <Col xs={24} lg={8}>
           <Card 
             title={

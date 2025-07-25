@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   Card, 
@@ -16,6 +15,7 @@ import {
   DatePicker
 } from 'antd';
 import { SearchOutlined, DownloadOutlined, CalendarOutlined } from '@ant-design/icons';
+import { useTheme } from '../contexts/ThemeContext';
 
 const { Title, Text } = Typography;
 const { TextArea } = Input;
@@ -28,6 +28,7 @@ const CumulativeInvoice: React.FC = () => {
   const [pnrInput, setPnrInput] = useState('');
   const [invoiceType, setInvoiceType] = useState('all');
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const { translate } = useTheme();
 
   const handleSubmit = () => {
     console.log('Submit clicked');
@@ -213,7 +214,7 @@ const CumulativeInvoice: React.FC = () => {
             </div>
           </div>
         );
-      
+
       case 'upload-invoice':
         return (
           <div style={{ 
@@ -258,7 +259,7 @@ const CumulativeInvoice: React.FC = () => {
             </div>
           </div>
         );
-      
+
       case 'pnr-ticket':
         return (
           <div style={{ 
@@ -304,7 +305,7 @@ const CumulativeInvoice: React.FC = () => {
             </div>
           </div>
         );
-      
+
       case 'tax-invoice-range':
         return (
           <div style={{ 
@@ -327,7 +328,7 @@ const CumulativeInvoice: React.FC = () => {
                   <Option value="indigo">IndiGo</Option>
                 </Select>
               </div>
-              
+
               <div>
                 <span style={{ fontSize: '12px', color: '#666', display: 'block', marginBottom: 4 }}>Type</span>
                 <Select
@@ -341,7 +342,7 @@ const CumulativeInvoice: React.FC = () => {
                   <Option value="credit-note">Credit Note</Option>
                 </Select>
               </div>
-              
+
               <div>
                 <span style={{ fontSize: '12px', color: '#666', display: 'block', marginBottom: 4 }}>Travel mode</span>
                 <Select
@@ -354,7 +355,7 @@ const CumulativeInvoice: React.FC = () => {
                   <Option value="train">Train</Option>
                 </Select>
               </div>
-              
+
               <div>
                 <span style={{ fontSize: '12px', color: '#666', display: 'block', marginBottom: 4 }}>Place of supply</span>
                 <Select
@@ -367,7 +368,7 @@ const CumulativeInvoice: React.FC = () => {
                   <Option value="mumbai">Mumbai</Option>
                 </Select>
               </div>
-              
+
               <div>
                 <span style={{ fontSize: '12px', color: '#666', display: 'block', marginBottom: 4 }}>Start / end date *</span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -386,7 +387,7 @@ const CumulativeInvoice: React.FC = () => {
                   />
                 </div>
               </div>
-              
+
               <div style={{ alignSelf: 'flex-end' }}>
                 <Button 
                   type="primary"
@@ -396,7 +397,7 @@ const CumulativeInvoice: React.FC = () => {
                   Submit
                 </Button>
               </div>
-              
+
               <div style={{ alignSelf: 'flex-end' }}>
                 <Button 
                   onClick={handleResetAll}
@@ -408,7 +409,7 @@ const CumulativeInvoice: React.FC = () => {
             </div>
           </div>
         );
-      
+
       default:
         return null;
     }
@@ -532,7 +533,7 @@ const CumulativeInvoice: React.FC = () => {
             }}
             scroll={{ x: 800 }}
           />
-          
+
           {/* Custom Pagination Footer */}
           <div style={{ 
             display: 'flex', 

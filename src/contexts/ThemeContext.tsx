@@ -80,7 +80,15 @@ const translations = {
     horizontal: 'Horizontal',
     vertical: 'Vertical',
     topHorizontal: 'Top Horizontal',
-    sideVertical: 'Side Vertical'
+    sideVertical: 'Side Vertical',
+    
+    // Dashboard specific
+    email: 'Email',
+    pushNotification: 'Push Notification',
+    
+    // Upload specific
+    clickDragFiles: 'Click or drag files to this area to upload',
+    uploadHint: 'Support for a single or bulk upload. Strictly prohibited from uploading company data or other banned files.'
   },
   hi: {
     // Navigation
@@ -132,7 +140,15 @@ const translations = {
     horizontal: 'क्षैतिज',
     vertical: 'खड़ा',
     topHorizontal: 'शीर्ष क्षैतिज',
-    sideVertical: 'साइड वर्टिकल'
+    sideVertical: 'साइड वर्टिकल',
+    
+    // Dashboard specific
+    email: 'ईमेल',
+    pushNotification: 'पुश सूचना',
+    
+    // Upload specific
+    clickDragFiles: 'अपलोड करने के लिए इस क्षेत्र में फ़ाइलों को क्लिक करें या खींचें',
+    uploadHint: 'एकल या बल्क अपलोड के लिए समर्थन। कंपनी डेटा या अन्य प्रतिबंधित फ़ाइलों को अपलोड करना सख्त वर्जित है।'
   }
 };
 
