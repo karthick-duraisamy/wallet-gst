@@ -280,7 +280,7 @@ const MainLayout: React.FC = () => {
             style={{
               background: isDarkMode ? '#262626' : '#5A4FCF',
               position: 'fixed',
-              height: '100vh',
+              height: 'calc(100vh - 64px)',
               left: 0,
               top: 64,
               zIndex: 50,
@@ -491,14 +491,16 @@ const MainLayout: React.FC = () => {
           {translate('poweredBy')}
         </div>
         
-        {/* Settings Modal */}
-        <SettingsModal 
-          open={settingsModalOpen} 
-          onClose={() => setSettingsModalOpen(false)} 
-        />
+        
       </Layout>
         </>
       )}
+      
+      {/* Settings Modal - moved outside conditional rendering */}
+      <SettingsModal 
+        open={settingsModalOpen} 
+        onClose={() => setSettingsModalOpen(false)} 
+      />
     </Layout>
   );
 };
