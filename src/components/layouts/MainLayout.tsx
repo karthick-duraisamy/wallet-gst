@@ -142,7 +142,8 @@ const MainLayout: React.FC = () => {
         borderBottom: isDarkMode ? '1px solid #424242' : '1px solid #f0f0f0'
       }}>
         <div className="header-left" style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <img src="/src/assets/gst-logo.png" alt="GST Claim" style={{ width: '32px', height: '32px' }} />
             <h1 style={{ 
               margin: 0, 
               fontSize: '20px', 
@@ -150,7 +151,7 @@ const MainLayout: React.FC = () => {
               color: isDarkMode ? '#ffffff' : '#1a1a1a',
               letterSpacing: '0.5px'
             }}>
-              INFINITI
+              GST Claim
             </h1>
           </div>
           

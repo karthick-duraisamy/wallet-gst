@@ -94,7 +94,7 @@ const Login: React.FC = () => {
       <div className="auth-left">
         <div className="auth-brand">
           <div className="auth-brand-icon">
-            <FileTextOutlined />
+            <img src="/src/assets/gst-logo.png" alt="GST Claim" style={{ width: '60px', height: '60px' }} />
           </div>
           <h1>GST Claim Tool</h1>
           <p>
