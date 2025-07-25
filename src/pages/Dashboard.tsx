@@ -10,8 +10,7 @@ import {
   Progress,
   Typography,
   Space,
-  Divider,
-  Statistic
+  Divider
 } from 'antd';
 import { 
   BarChart,
@@ -25,14 +24,7 @@ import {
   Pie,
   Cell
 } from 'recharts';
-import { 
-  DownloadOutlined, 
-  InfoCircleOutlined, 
-  MailOutlined,
-  WhatsAppOutlined,
-  BellOutlined,
-  EyeOutlined
-} from '@ant-design/icons';
+import { DownloadOutlined, InfoCircleOutlined } from '@ant-design/icons';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -41,35 +33,36 @@ const Dashboard: React.FC = () => {
   const [timePeriod, setTimePeriod] = useState('select');
   const [travelVendor, setTravelVendor] = useState('select');
 
-  // Overview summary data
-  const overviewData = [
+  // Status cards data
+  const statusCards = [
     {
-      title: 'Email',
-      icon: <MailOutlined style={{ fontSize: 32, color: '#FFB020' }} />,
-      total: 0,
-      stats: [
-        { label: 'Sent', value: 0, color: '#52c41a' },
-        { label: 'Queue', value: 0, color: '#faad14' },
-        { label: 'Not - Sent', value: 0, color: '#ff4d4f' }
+      title: 'All Travel History',
+      items: [
+        { label: 'Bookings', value: 9, color: '#52c41a' },
+        { label: 'Cancellations', value: 0, color: '#1890ff' }
       ]
     },
     {
-      title: 'WhatsApp',
-      icon: <WhatsAppOutlined style={{ fontSize: 32, color: '#25D366' }} />,
-      total: 0,
-      stats: [
-        { label: 'Sent', value: 0, color: '#52c41a' },
-        { label: 'Queue', value: 0, color: '#faad14' },
-        { label: 'Not - Sent', value: 0, color: '#ff4d4f' }
+      title: 'Airline Invoices',
+      items: [
+        { label: 'Available', value: 0, color: '#1890ff' },
+        { label: 'GST - Filed', value: 0, color: '#722ed1' },
+        { label: 'Pending to File', value: 0, color: '#fa8c16' }
       ]
     },
     {
-      title: 'Push notification',
-      icon: <BellOutlined style={{ fontSize: 32, color: '#1890ff' }} />,
-      total: 400,
-      stats: [
-        { label: 'Total mail', value: 400, color: '#52c41a' },
-        { label: 'AI Response', value: 35, color: '#ff4d4f' }
+      title: 'All Invoices',
+      items: [
+        { label: 'Available', value: 0, color: '#1890ff' },
+        { label: 'GST - Filed', value: 0, color: '#722ed1' },
+        { label: 'Pending to File', value: 0, color: '#fa8c16' }
+      ]
+    },
+    {
+      title: 'Net Claimable Amount(INR)',
+      items: [
+        { label: 'Airlines', value: 364, color: '#ff4d4f' },
+        { label: 'All', value: 30, color: '#ff7875' }
       ]
     }
   ];
@@ -89,9 +82,6 @@ const Dashboard: React.FC = () => {
     { month: 'Feb', Submitted: 210, 'Pending to File': 45, 'Invoice Missing': 25, 'Additional in GSTR -2A': 20 },
     { month: 'Mar', Submitted: 180, 'Pending to File': 25, 'Invoice Missing': 35, 'Additional in GSTR -2A': 30 }
   ];
-
-  // Recent failures data
-  const recentFailures = [];
 
   // Airline data
   const airlineData = [
@@ -211,158 +201,73 @@ const Dashboard: React.FC = () => {
   return (
     <div className="slide-up" style={{ padding: '24px', background: '#f5f5f5', minHeight: '100vh' }}>
       {/* Header */}
-      <div style={{ marginBottom: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Title level={3} style={{ margin: 0, color: '#333' }}>Dashboard</Title>
-        <Select defaultValue="This month" style={{ width: 120 }}>
-          <Option value="This month">This month</Option>
-          <Option value="Last month">Last month</Option>
-          <Option value="This year">This year</Option>
-        </Select>
+      <div style={{ marginBottom: 24 }}>
+        <Title level={3} style={{ margin: 0, color: '#1890ff' }}>GST dashboard</Title>
       </div>
 
-      {/* Overall Summary Section */}
-      <div style={{ marginBottom: 32 }}>
-        <Title level={4} style={{ marginBottom: 16, color: '#333' }}>Overall summary</Title>
-        <Row gutter={[24, 24]}>
-          {overviewData.map((item, index) => (
-            <Col xs={24} md={8} key={index}>
-              <Card 
-                style={{ 
-                  borderRadius: 12, 
-                  border: 'none',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-                }}
-                bodyStyle={{ padding: '24px' }}
-              >
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16, marginBottom: 20 }}>
-                  <div style={{ 
-                    width: 60, 
-                    height: 60, 
-                    borderRadius: 12, 
-                    backgroundColor: '#f5f5f5',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}>
-                    {item.icon}
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <Text style={{ fontSize: 16, fontWeight: 500, color: '#333', display: 'block' }}>
-                      {item.title}
-                    </Text>
-                    <Text style={{ fontSize: 24, fontWeight: 600, color: '#1890ff' }}>
-                      Total: {item.total}
-                    </Text>
-                  </div>
-                </div>
-                
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                  {item.stats.map((stat, statIndex) => (
-                    <div key={statIndex} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <Text style={{ color: '#666', fontSize: 14 }}>{stat.label}</Text>
-                      <Text style={{ color: stat.color, fontWeight: 600, fontSize: 16 }}>
-                        {stat.value}
-                      </Text>
-                    </div>
-                  ))}
-                </div>
-              </Card>
-            </Col>
-          ))}
-        </Row>
+      {/* Filters */}
+      <div style={{ marginBottom: 24, display: 'flex', gap: 16, alignItems: 'center' }}>
+        <div>
+          <Text style={{ marginRight: 8 }}>Time period:</Text>
+          <Select 
+            value={timePeriod} 
+            onChange={setTimePeriod}
+            style={{ width: 120 }}
+          >
+            <Option value="select">select</Option>
+            <Option value="monthly">Monthly</Option>
+            <Option value="quarterly">Quarterly</Option>
+            <Option value="yearly">Yearly</Option>
+          </Select>
+        </div>
+        <div>
+          <Text style={{ marginRight: 8 }}>Travel Vendors:</Text>
+          <Select 
+            value={travelVendor} 
+            onChange={setTravelVendor}
+            style={{ width: 120 }}
+          >
+            <Option value="select">select</Option>
+            <Option value="all">All Vendors</Option>
+          </Select>
+        </div>
+        <Button type="primary" style={{ marginLeft: 16 }}>
+          Apply
+        </Button>
       </div>
 
-      {/* Recent failures section */}
-      <Row gutter={[24, 24]} style={{ marginBottom: 32 }}>
-        <Col xs={24} lg={16}>
-          <Card 
-            title={
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Text style={{ fontSize: 16, fontWeight: 600 }}>Recent failures</Text>
-                <Button type="link" icon={<EyeOutlined />} style={{ color: '#1890ff' }}>
-                  View all failures
-                </Button>
-              </div>
-            }
-            style={{ 
-              borderRadius: 12, 
-              border: 'none',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-              minHeight: 300
-            }}
-          >
-            {recentFailures.length === 0 ? (
-              <div style={{ 
-                textAlign: 'center', 
-                padding: '60px 20px',
-                color: '#999'
-              }}>
-                <div style={{ marginBottom: 16 }}>
-                  <svg width="80" height="80" viewBox="0 0 80 80" fill="none" style={{ margin: '0 auto' }}>
-                    <rect x="20" y="20" width="40" height="30" rx="4" stroke="#e0e0e0" strokeWidth="2" fill="none"/>
-                    <rect x="25" y="25" width="30" height="20" rx="2" fill="#f5f5f5"/>
-                    <circle cx="40" cy="35" r="3" fill="#e0e0e0"/>
-                    <rect x="30" y="55" width="20" height="8" rx="4" fill="#f0f0f0"/>
-                  </svg>
+      {/* Status Cards */}
+      <Row gutter={[16, 16]} style={{ marginBottom: 32 }}>
+        {statusCards.map((card, index) => (
+          <Col xs={24} sm={12} lg={6} key={index}>
+            <Card 
+              title={card.title}
+              size="small"
+              style={{ height: '100%' }}
+              headStyle={{ fontSize: 12, fontWeight: 600 }}
+            >
+              {card.items.map((item, itemIndex) => (
+                <div key={itemIndex} style={{ marginBottom: 8 }}>
+                  <div 
+                    style={{ 
+                      padding: '8px 12px',
+                      backgroundColor: item.color,
+                      color: 'white',
+                      borderRadius: 4,
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      fontSize: 12
+                    }}
+                  >
+                    <span>{item.label}</span>
+                    <span style={{ fontWeight: 600 }}>{item.value}</span>
+                  </div>
                 </div>
-                <Text style={{ fontSize: 16, color: '#999' }}>No data available</Text>
-              </div>
-            ) : (
-              <Table
-                columns={[
-                  { title: 'Tracking ID', dataIndex: 'trackingId', key: 'trackingId' },
-                  { title: 'Details', dataIndex: 'details', key: 'details' },
-                  { title: 'Status', dataIndex: 'status', key: 'status' },
-                  { title: 'Created At', dataIndex: 'createdAt', key: 'createdAt' },
-                  { title: 'Action', dataIndex: 'action', key: 'action' },
-                ]}
-                dataSource={recentFailures}
-                pagination={false}
-              />
-            )}
-          </Card>
-        </Col>
-        
-        <Col xs={24} lg={8}>
-          <Card 
-            title={
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Text style={{ fontSize: 16, fontWeight: 600 }}>Top sent notifications</Text>
-              </div>
-            }
-            style={{ 
-              borderRadius: 12, 
-              border: 'none',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-              minHeight: 300
-            }}
-          >
-            <div style={{ textAlign: 'center', padding: '20px' }}>
-              <div style={{ marginBottom: 16 }}>
-                <Text style={{ fontSize: 14, color: '#666' }}>AI Mail Agent</Text>
-              </div>
-              <Button type="primary" style={{ marginBottom: 20 }}>
-                Push Notification
-              </Button>
-              <div style={{ 
-                textAlign: 'center', 
-                padding: '20px',
-                color: '#999'
-              }}>
-                <div style={{ marginBottom: 16 }}>
-                  <svg width="120" height="80" viewBox="0 0 120 80" fill="none" style={{ margin: '0 auto' }}>
-                    <rect x="20" y="15" width="80" height="50" rx="8" stroke="#e0e0e0" strokeWidth="2" fill="white"/>
-                    <rect x="30" y="25" width="60" height="4" rx="2" fill="#f0f0f0"/>
-                    <rect x="30" y="35" width="40" height="4" rx="2" fill="#f0f0f0"/>
-                    <rect x="30" y="45" width="50" height="4" rx="2" fill="#f0f0f0"/>
-                    <text x="60" y="75" fontSize="10" fill="#ccc" textAnchor="middle">Empty</text>
-                  </svg>
-                </div>
-                <Text style={{ fontSize: 14, color: '#999' }}>Notification not sent</Text>
-              </div>
-            </div>
-          </Card>
-        </Col>
+              ))}
+            </Card>
+          </Col>
+        ))}
       </Row>
 
       <Row gutter={[24, 24]}>
@@ -371,12 +276,7 @@ const Dashboard: React.FC = () => {
           <Card 
             title="Invoice status"
             extra={<DownloadOutlined style={{ cursor: 'pointer' }} />}
-            style={{ 
-              borderRadius: 12, 
-              border: 'none',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-              height: 400 
-            }}
+            style={{ height: 400 }}
           >
             <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
               <Button size="small" type="primary">All</Button>
@@ -415,12 +315,7 @@ const Dashboard: React.FC = () => {
                 <DownloadOutlined style={{ cursor: 'pointer' }} />
               </div>
             }
-            style={{ 
-              borderRadius: 12, 
-              border: 'none',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-              height: 400 
-            }}
+            style={{ height: 400 }}
           >
             <Table
               columns={airlineColumns}
@@ -448,12 +343,7 @@ const Dashboard: React.FC = () => {
                 </Select>
               </div>
             }
-            style={{ 
-              borderRadius: 12, 
-              border: 'none',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-              height: 300 
-            }}
+            style={{ height: 300 }}
           >
             <ResponsiveContainer width="100%" height={200}>
               <BarChart data={pendingFilesData}>
