@@ -1856,6 +1856,34 @@ body {
   overflow: hidden;
 }
 
+.custom-table .ant-table-thead > tr > th {
+  background-color: #f8fafc !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  border-bottom: 2px solid #e2e8f0 !important;
+  padding: 12px 16px !important;
+  white-space: nowrap !important;
+}
+
+.custom-table .ant-table-tbody > tr > td {
+  padding: 12px 16px !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+}
+
+.custom-table .ant-table-tbody > tr:hover > td {
+  background-color: #f8fafc !important;
+}
+
+.custom-table .ant-table-selection-column {
+  padding-left: 16px !important;
+  padding-right: 8px !important;
+}
+
+.custom-table .ant-table-cell-ellipsis {
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+}
+
 .table-header {
   padding: 24px;
   border-bottom: 1px solid #f0f0f0;

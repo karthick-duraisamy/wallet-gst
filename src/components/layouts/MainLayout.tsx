@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -105,7 +104,7 @@ const MainLayout: React.FC = () => {
                 <img src="/src/assets/gst-logo.svg" alt="GST Claim" />
               </div>
             </div>
-            
+
             <div className="header-right" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <Dropdown 
                 menu={{ 
@@ -114,7 +113,19 @@ const MainLayout: React.FC = () => {
                       key: 'en',
                       label: (
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                          <Avatar size={16} style={{ backgroundColor: '#52c41a' }}>🇺🇸</Avatar>
+                          <div style={{ 
+                            width: '20px', 
+                            height: '14px', 
+                            borderRadius: '2px', 
+                            overflow: 'hidden',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '14px',
+                            lineHeight: '1'
+                          }}>
+                            🇺🇸
+                          </div>
                           {translate('english')}
                         </div>
                       ),
@@ -124,7 +135,19 @@ const MainLayout: React.FC = () => {
                       key: 'hi', 
                       label: (
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                          <Avatar size={16} style={{ backgroundColor: '#ff7a45' }}>🇮🇳</Avatar>
+                          <div style={{ 
+                            width: '20px', 
+                            height: '14px', 
+                            borderRadius: '2px', 
+                            overflow: 'hidden',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '14px',
+                            lineHeight: '1'
+                          }}>
+                            🇮🇳
+                          </div>
                           {translate('hindi')}
                         </div>
                       ),
@@ -147,9 +170,19 @@ const MainLayout: React.FC = () => {
                     padding: '4px 8px'
                   }}
                 >
-                  <Avatar size={16} style={{ backgroundColor: language === 'en' ? '#52c41a' : '#ff7a45' }}>
+                  <div style={{ 
+                    width: '20px', 
+                    height: '14px', 
+                    borderRadius: '2px', 
+                    overflow: 'hidden',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '14px',
+                    lineHeight: '1'
+                  }}>
                     {language === 'en' ? '🇺🇸' : '🇮🇳'}
-                  </Avatar>
+                  </div>
                   {language === 'en' ? translate('english') : translate('hindi')}
                   <span style={{ fontSize: '12px' }}>▼</span>
                 </Button>
@@ -255,7 +288,7 @@ const MainLayout: React.FC = () => {
                 <Outlet />
               </div>
             </Content>
-            
+
             {/* Footer */}
             <div style={{
               background: isDarkMode ? '#141414' : '#f5f5f5',
@@ -302,7 +335,7 @@ const MainLayout: React.FC = () => {
               </div>
             ))}
           </div>
-          
+
           <div className="menu-footer">
             <div className="nav-item-with-label">
               <div className="nav-icon">
@@ -337,7 +370,7 @@ const MainLayout: React.FC = () => {
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <img src="/src/assets/gst-logo.svg" alt="GST Claim"/>
           </div>
-          
+
           <div style={{ 
             display: 'flex', 
             alignItems: 'center', 
@@ -355,7 +388,7 @@ const MainLayout: React.FC = () => {
             </span>
           </div>
         </div>
-        
+
         <div className="header-right" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <Dropdown 
             menu={{ 
@@ -364,7 +397,19 @@ const MainLayout: React.FC = () => {
                   key: 'en',
                   label: (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <Avatar size={16} style={{ backgroundColor: '#52c41a' }}>🇺🇸</Avatar>
+                      <div style={{ 
+                        width: '20px', 
+                        height: '14px', 
+                        borderRadius: '2px', 
+                        overflow: 'hidden',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '14px',
+                        lineHeight: '1'
+                      }}>
+                        🇺🇸
+                      </div>
                       {translate('english')}
                     </div>
                   ),
@@ -374,7 +419,19 @@ const MainLayout: React.FC = () => {
                   key: 'hi', 
                   label: (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <Avatar size={16} style={{ backgroundColor: '#ff7a45' }}>🇮🇳</Avatar>
+                      <div style={{ 
+                        width: '20px', 
+                        height: '14px', 
+                        borderRadius: '2px', 
+                        overflow: 'hidden',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '14px',
+                        lineHeight: '1'
+                      }}>
+                        🇮🇳
+                      </div>
                       {translate('hindi')}
                     </div>
                   ),
@@ -397,9 +454,19 @@ const MainLayout: React.FC = () => {
                 padding: '4px 8px'
               }}
             >
-              <Avatar size={16} style={{ backgroundColor: language === 'en' ? '#52c41a' : '#ff7a45' }}>
+              <div style={{ 
+                width: '20px', 
+                height: '14px', 
+                borderRadius: '2px', 
+                overflow: 'hidden',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '14px',
+                lineHeight: '1'
+              }}>
                 {language === 'en' ? '🇺🇸' : '🇮🇳'}
-              </Avatar>
+              </div>
               {language === 'en' ? translate('english') : translate('hindi')}
               <span style={{ fontSize: '12px' }}>▼</span>
             </Button>
@@ -476,7 +543,7 @@ const MainLayout: React.FC = () => {
             <Outlet />
           </div>
         </Content>
-        
+
         {/* Footer */}
         <div style={{
           background: isDarkMode ? '#141414' : '#f5f5f5',
@@ -488,12 +555,12 @@ const MainLayout: React.FC = () => {
         }}>
           {translate('poweredBy')}
         </div>
-        
-        
+
+
       </Layout>
         </>
       )}
-      
+
       {/* Settings Modal - moved outside conditional rendering */}
       <SettingsModal 
         open={settingsModalOpen} 
