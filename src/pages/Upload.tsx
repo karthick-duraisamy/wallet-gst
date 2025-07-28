@@ -107,9 +107,10 @@ const Upload: React.FC = () => {
           textAlign: 'left', 
           color: '#666', 
           fontSize: '14px', 
-          marginTop: 16,
-          marginBottom: 16,
-          padding: '12px 16px',
+          marginTop: 24,
+          marginBottom: 24,
+          margin: '24px 0',
+          padding: '16px 20px',
           background: '#e6f3ff',
           borderRadius: '8px',
           border: '1px solid #91d5ff'
@@ -228,7 +229,7 @@ const Upload: React.FC = () => {
               borderRadius: 8,
               background: '#fafafa',
               marginBottom: 16,
-              minHeight: 160,
+              minHeight: 120,
               position: 'relative',
               overflow: 'hidden',
               transition: 'all 0.3s ease',
@@ -247,32 +248,14 @@ const Upload: React.FC = () => {
               e.currentTarget.style.boxShadow = 'none';
             }}
           >
-            {/* Files are uploading section */}
-            {files.length > 0 && (
-              <div style={{
-                position: 'absolute',
-                top: 16,
-                right: 16,
-                background: 'rgba(255, 255, 255, 0.95)',
-                padding: '8px 12px',
-                borderRadius: 4,
-                fontSize: '14px',
-                color: '#666',
-                fontWeight: 500,
-                border: '1px solid #f0f0f0'
-              }}>
-                Files are uploading -
-              </div>
-            )}
-
             <div style={{
-              padding: '30px 20px',
+              padding: '24px 20px',
               textAlign: 'center',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              minHeight: 120
+              position: 'relative'
             }}>
               <div style={{
                 width: 48,
@@ -288,7 +271,7 @@ const Upload: React.FC = () => {
                 <PlusOutlined style={{ color: 'white', fontSize: 20 }} />
               </div>
               
-              <div style={{ fontSize: '16px', color: '#333', marginBottom: 12 }}>
+              <div style={{ fontSize: '16px', color: '#333', marginBottom: 8 }}>
                 Drag & drop your file here
               </div>
               
@@ -309,6 +292,29 @@ const Upload: React.FC = () => {
                   Select File
                 </Button>
               </Dragger>
+
+              {/* Sample File Button inside upload area */}
+              <Button 
+                style={{ 
+                  position: 'absolute',
+                  bottom: 12,
+                  right: 12,
+                  background: '#52c41a', 
+                  borderColor: '#52c41a', 
+                  color: 'white',
+                  borderRadius: 6,
+                  fontWeight: 500,
+                  fontSize: '12px',
+                  height: 32,
+                  padding: '0 12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 6
+                }}
+              >
+                <DownloadOutlined style={{ fontSize: 12 }} />
+                Sample file
+              </Button>
             </div>
 
             {/* Inline file display */}
@@ -404,24 +410,7 @@ const Upload: React.FC = () => {
             )}
           </div>
 
-          {/* Sample File Button */}
-          <div style={{ textAlign: 'right' }}>
-            <Button 
-              style={{ 
-                background: '#52c41a', 
-                borderColor: '#52c41a', 
-                color: 'white',
-                borderRadius: 6,
-                fontWeight: 500,
-                display: 'flex',
-                alignItems: 'center',
-                gap: 8
-              }}
-            >
-              <DownloadOutlined />
-              Sample file
-            </Button>
-          </div>
+          
         </div>
       </Card>
 
