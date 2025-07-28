@@ -497,6 +497,80 @@ body {
     margin-top: 30px;
   }
 
+
+/* Upload Dragger Hover Effects */
+.upload-dragger-hover:hover {
+  border-color: #4f46e5 !important;
+  background: #f8f9ff !important;
+  transform: translateY(-4px) !important;
+  box-shadow: 0 12px 28px rgba(79, 70, 229, 0.15) !important;
+}
+
+.upload-dragger-hover:hover .anticon {
+  transform: scale(1.1);
+  color: #4f46e5 !important;
+}
+
+.upload-dragger-hover:hover .ant-upload-text {
+  color: #4f46e5 !important;
+}
+
+.upload-dragger-hover .anticon {
+  transition: all 0.3s ease;
+}
+
+.upload-dragger-hover .ant-upload-text {
+  transition: all 0.3s ease;
+}
+
+/* Card hover effects */
+.ant-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+  transition: all 0.3s ease;
+}
+
+/* Button hover enhancements */
+.ant-btn:hover {
+  transform: translateY(-1px);
+  transition: all 0.2s ease;
+}
+
+.ant-btn-primary:hover {
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+/* Upload icon container animation */
+.upload-dragger-hover:hover .upload-icon-container {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* File card hover effects */
+.upload-file-card:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  border-color: #4f46e5;
+}
+
+/* Smooth transitions for all interactive elements */
+.ant-card,
+.ant-btn,
+.upload-file-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
   .auth-illustration svg {
     width: 300px;
     height: 200px;

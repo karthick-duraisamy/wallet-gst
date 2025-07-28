@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, Radio, Button, Upload as AntUpload, message, Progress } from 'antd';
@@ -155,8 +154,11 @@ const Upload: React.FC = () => {
               background: '#fafafa',
               border: '2px dashed #d9d9d9',
               borderRadius: 8,
-              minHeight: 160
+              minHeight: 160,
+              transition: 'all 0.3s ease',
+              cursor: 'pointer'
             }}
+            className="upload-dragger-hover"
           >
             <div style={{ padding: '20px' }}>
               <InboxOutlined style={{ fontSize: '48px', color: '#1890ff', marginBottom: 16 }} />
@@ -217,8 +219,11 @@ const Upload: React.FC = () => {
               background: '#fafafa',
               border: '2px dashed #d9d9d9',
               borderRadius: 8,
-              minHeight: 160
+              minHeight: 160,
+              transition: 'all 0.3s ease',
+              cursor: 'pointer'
             }}
+            className="upload-dragger-hover"
           >
             <div style={{ padding: '20px' }}>
               <InboxOutlined style={{ fontSize: '48px', color: '#1890ff', marginBottom: 16 }} />
