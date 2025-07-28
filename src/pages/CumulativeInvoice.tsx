@@ -417,136 +417,153 @@ const CumulativeInvoice: React.FC = () => {
               <div style={{ minWidth: 320, width: '100%', maxWidth: 400 }}>
                 <Button
                   onClick={handleInvoiceToggle}
-                  type="text"
                   style={{ 
-                    padding: 0,
-                    height: 'auto',
+                    width: '100%',
+                    height: 40,
+                    textAlign: 'left',
                     border: 'none',
-                    background: 'transparent',
+                    background: '#f5f5f5',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: 6,
-                    boxShadow: 'none'
+                    justifyContent: 'space-between',
+                    boxShadow: 'none',
+                    borderRadius: 6
                   }}
                 >
-                  <span style={{ color: '#4f46e5', fontWeight: 500, fontSize: '14px' }}>
-                    {translate('uploadMultipleInvoice')}
-                  </span>
+                  <span style={{ color: '#4f46e5', fontWeight: 500 }}>{translate('uploadMultipleInvoice')}</span>
                   <span style={{ 
                     transform: isInvoiceExpanded ? 'rotate(0deg)' : 'rotate(180deg)',
                     transition: 'transform 0.3s ease',
-                    color: '#ff4d4f',
-                    fontSize: '12px'
+                    color: '#4f46e5'
                   }}>▲</span>
                 </Button>
 
-                {/* Modal-style popup */}
+                {/* Count display below button */}
+                <div style={{ 
+                  fontSize: '14px', 
+                  color: '#8B949E', 
+                  marginTop: 8,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 6
+                }}>
+                  <span>60 Ticket No Submitted</span>
+                  <span style={{ 
+                    width: 18, 
+                    height: 18, 
+                    borderRadius: '50%', 
+                    background: '#8B949E',
+                    color: 'white',
+                    fontSize: '12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                    fontWeight: 'bold'
+                  }}>i</span>
+                </div>
+
+                {/* Expanding content below */}
                 {isInvoiceExpanded && (
-                  <>
-                    {/* Backdrop */}
-                    <div style={{
-                      position: 'fixed',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                      zIndex: 1000,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center'
-                    }}>
-                      {/* Modal */}
-                      <div style={{
-                        background: 'white',
-                        borderRadius: 12,
-                        padding: 24,
-                        boxShadow: '0 10px 40px rgba(0,0,0,0.2)',
-                        position: 'relative',
-                        width: 400,
-                        maxWidth: '90vw'
+                  <div style={{
+                    marginTop: 20,
+                    background: 'white',
+                    border: '1px solid #e1e5e9',
+                    borderRadius: 8,
+                    padding: 20,
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                    position: 'relative',
+                    width: '100%'
+                  }}>
+                    {/* Close button */}
+                    <Button 
+                      type="text"
+                      onClick={() => setIsInvoiceExpanded(false)}
+                      style={{
+                        position: 'absolute',
+                        top: 12,
+                        right: 12,
+                        color: '#ff4d4f',
+                        fontSize: '18px',
+                        width: 24,
+                        height: 24,
+                        padding: 0,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        border: 'none',
+                        background: 'transparent'
+                      }}
+                    >
+                      ×
+                    </Button>
+
+                    <div style={{ marginBottom: 20, marginTop: 8 }}>
+                      <div style={{ 
+                        fontSize: '16px', 
+                        fontWeight: 500, 
+                        marginBottom: 12,
+                        color: '#24292f'
                       }}>
-                        {/* Close button */}
-                        <Button 
-                          type="text" 
-                          onClick={() => setIsInvoiceExpanded(false)}
-                          style={{
-                            position: 'absolute',
-                            top: 12,
-                            right: 12,
-                            color: '#ff4d4f',
-                            fontSize: '18px',
-                            width: 24,
-                            height: 24,
-                            padding: 0,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            border: 'none',
-                            background: 'transparent'
-                          }}
-                        >
-                          ×
-                        </Button>
+                        Enter Invoice No
+                      </div>
+                      <TextArea
+                        value={invoiceText}
+                        onChange={(e) => setInvoiceText(e.target.value)}
+                        placeholder=""
+                        rows={6}
+                        style={{ 
+                          resize: 'none',
+                          borderRadius: 6,
+                          border: '1px solid #d0d7de',
+                          fontSize: '14px'
+                        }}
+                      />
+                    </div>
 
-                        <div style={{ marginBottom: 20, marginTop: 8 }}>
-                          <div style={{ 
-                            fontSize: '18px', 
-                            fontWeight: 600, 
-                            marginBottom: 20,
-                            color: '#24292f'
-                          }}>
-                            Enter Invoice No
-                          </div>
-                          <TextArea
-                            value={invoiceText}
-                            onChange={(e) => setInvoiceText(e.target.value)}
-                            placeholder=""
-                            rows={6}
-                            style={{ 
-                              resize: 'none',
-                              borderRadius: 6,
-                              border: '1px solid #d0d7de',
-                              fontSize: '14px'
-                            }}
-                          />
-                        </div>
-
-                        <div style={{ marginBottom: 20 }}>
-                          <div style={{ 
-                            fontSize: '14px', 
-                            color: '#656d76',
-                            padding: '12px 16px',
-                            background: '#f6f8fa',
-                            borderRadius: 6,
-                            border: '1px solid #d0d7de'
-                          }}>
-                            <span style={{ fontWeight: 600, color: '#24292f' }}>Example : </span>
-                            123456,123456
-                          </div>
-                        </div>
-
-                        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                          <Button 
-                            type="primary" 
-                            onClick={handleInvoiceSubmit}
-                            style={{ 
-                              backgroundColor: '#8b5cf6',
-                              borderColor: '#8b5cf6',
-                              borderRadius: 6,
-                              height: 40,
-                              paddingLeft: 20,
-                              paddingRight: 20,
-                              fontWeight: 500,
-                              fontSize: '14px'
-                            }}
-                          >
-                            Submit
-                          </Button>
-                        </div>
+                    <div style={{ marginBottom: 20 }}>
+                      <div style={{ 
+                        fontSize: '14px', 
+                        color: '#656d76',
+                        padding: '12px 16px',
+                        background: '#f6f8fa',
+                        borderRadius: 6,
+                        border: '1px solid #d0d7de'
+                      }}>
+                        <span style={{ fontWeight: 600, color: '#24292f' }}>Example : </span>
+                        123456,123456
                       </div>
                     </div>
-                  </>
+
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12 }}>
+                      <Button 
+                        onClick={() => setIsInvoiceExpanded(false)}
+                        style={{
+                          borderRadius: 6,
+                          height: 36,
+                          paddingLeft: 16,
+                          paddingRight: 16
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                      <Button 
+                        type="primary" 
+                        onClick={handleInvoiceSubmit}
+                        style={{ 
+                          backgroundColor: '#4f46e5',
+                          borderColor: '#4f46e5',
+                          borderRadius: 6,
+                          height: 36,
+                          paddingLeft: 16,
+                          paddingRight: 16,
+                          fontWeight: 500
+                        }}
+                      >
+                        Submit
+                      </Button>
+                    </div>
+                  </div>
                 )}
               </div>
 
