@@ -540,26 +540,6 @@ const CumulativeInvoice: React.FC = () => {
             bordered={false}
             className="custom-table"
           />
-
-          {/* Custom Pagination Footer */}
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'flex-end', 
-            alignItems: 'center', 
-            gap: 16,
-            marginTop: 16,
-            paddingTop: 16,
-            borderTop: '1px solid #f0f0f0'
-          }}>
-            <span style={{ fontSize: '14px' }}>Go to page</span>
-            <Input style={{ width: 60 }} />
-            <Button 
-              type="primary" 
-              style={{ backgroundColor: '#4f46e5', borderRadius: '16px' }}
-            >
-              Go
-            </Button>
-          </div>
         </Card>
       </div>
     </div>
