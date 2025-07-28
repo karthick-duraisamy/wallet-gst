@@ -144,7 +144,7 @@ const Upload: React.FC = () => {
   ];
 
   return (
-    <div className="slide-up" style={{ padding: '24px', background: '#f5f5f5', minHeight: '100vh' }}>
+    <div className="slide-up" style={{ padding: '24px', background: '#f5f5f5', minHeight: '100vh', paddingTop: '0px'}}>
       {/* Page Title */}
       <h2 style={{ fontSize: '24px', fontWeight: 600, color: '#722ed1', marginBottom: 24 }}>
         {translate('uploadFiles')}
@@ -233,12 +233,12 @@ const Upload: React.FC = () => {
               minHeight: 120,
               position: 'relative',
               overflow: 'hidden',
-              transition: 'all 0.3s ease',
+              transition: 'all 0.3s ease-in-out',
               cursor: 'pointer',
-              width: '600px',
-              margin: 'auto'
+              width: '800px',
+              margin: 'auto',
             }}
-            onMouseEnter={(e) => {
+           onMouseEnter={(e) => {
               e.currentTarget.style.borderColor = '#4f46e5';
               e.currentTarget.style.background = '#f8f9ff';
               e.currentTarget.style.transform = 'translateY(-2px)';
@@ -248,7 +248,7 @@ const Upload: React.FC = () => {
               e.currentTarget.style.borderColor = '#d9d9d9';
               e.currentTarget.style.background = '#fafafa';
               e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = 'none';
+              e.currentTarget.  style.boxShadow = 'none';
             }}
           >
             <div style={{

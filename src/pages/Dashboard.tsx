@@ -215,7 +215,7 @@ const Dashboard: React.FC = () => {
   ];
 
   return (
-    <div className="slide-up" style={{ padding: '24px', background: '#f5f5f5', minHeight: '100vh' }}>
+    <div className="slide-up" style={{ padding: '24px', background: '#f5f5f5', minHeight: '100vh',paddingTop: '0px' }}>
       {/* Header */}
       <div style={{ marginBottom: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Title level={3} style={{ margin: 0, color: '#333' }}>{translate('dashboard')}</Title>

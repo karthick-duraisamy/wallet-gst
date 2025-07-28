@@ -156,7 +156,7 @@ const Reconciliation: React.FC = () => {
   };
 
   return (
-    <div className="slide-up" style={{ padding: '24px', background: '#f5f5f5', minHeight: '100vh' }}>
+    <div className="slide-up" style={{ padding: '24px', background: '#f5f5f5', minHeight: '100vh',paddingTop: '0px' }}>
       {/* Breadcrumb */}
       {/* <div style={{ marginBottom: 16, fontSize: '14px', color: '#666' }}>
         <span>Home</span>
@@ -263,7 +263,14 @@ const Reconciliation: React.FC = () => {
         <Button type="primary" style={{ backgroundColor: '#4f46e5' }}>
           {translate('submit')}
         </Button>
-        <Button onClick={handleClearFilters}>
+        <Button onClick={handleClearFilters} style={{
+              border: 'unset',
+              background: 'unset',
+              color: '#734cce',
+              textDecoration: 'underline',
+              padding: '0px',
+              boxShadow: 'unset',
+        }}  >
           {translate('resetAll')}
         </Button>
       </div>
