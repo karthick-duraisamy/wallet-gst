@@ -109,11 +109,11 @@ const Upload: React.FC = () => {
           fontSize: '14px', 
           marginTop: 24,
           marginBottom: 24,
-          margin: '24px 0',
-          padding: '16px 20px',
+          margin: '25px 15px',
+          padding: '8px 14px',
           background: '#e6f3ff',
           borderRadius: '8px',
-          border: '1px solid #91d5ff'
+          border: '1px solid #91d5ff',
         }}>
           <InfoCircleOutlined style={{ color: '#1890ff', marginRight: 8 }} />
           Kindly upload the file downloaded from GSTR-2A of respective travel agencies for reconciliation of the booking fees.
@@ -130,7 +130,8 @@ const Upload: React.FC = () => {
           fontSize: '14px', 
           marginTop: 16,
           marginBottom: 16,
-          padding: '12px 16px',
+          margin: '25px 15px',
+          padding: '8px 14px',
           background: '#e6f3ff',
           borderRadius: '8px',
           border: '1px solid #91d5ff'
@@ -205,7 +206,7 @@ const Upload: React.FC = () => {
           }}
         />
         
-        <div style={{ padding: '24px' }}>
+        <div style={{ padding: '24px', paddingTop: '0px' }}>
           {/* File Type and Limit Info */}
           <div style={{ 
             textAlign: 'center', 
@@ -233,7 +234,9 @@ const Upload: React.FC = () => {
               position: 'relative',
               overflow: 'hidden',
               transition: 'all 0.3s ease',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              width: '600px',
+              margin: 'auto'
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.borderColor = '#4f46e5';
@@ -297,22 +300,21 @@ const Upload: React.FC = () => {
               <Button 
                 style={{ 
                   position: 'absolute',
-                  bottom: 12,
-                  right: 12,
+                  bottom: 0,
+                  right: 0,
                   background: '#52c41a', 
                   borderColor: '#52c41a', 
                   color: 'white',
-                  borderRadius: 6,
+                  borderRadius: '20px 0px 0px 0px',
                   fontWeight: 500,
-                  fontSize: '12px',
-                  height: 32,
-                  padding: '0 12px',
-                  display: 'flex',
+                  fontSize: '14px',
+                  height: 45,
+                  padding: '15px',
                   alignItems: 'center',
-                  gap: 6
+                  gap: 6,
                 }}
               >
-                <DownloadOutlined style={{ fontSize: 12 }} />
+                <DownloadOutlined style={{ fontSize: 16 }} />
                 Sample file
               </Button>
             </div>

@@ -422,7 +422,7 @@ const MainLayout: React.FC = () => {
             🎨
           </Button>
 
-          <Button 
+          {/* <Button 
             type="text" 
             style={{ 
               color: isDarkMode ? '#a6a6a6' : '#666',
@@ -436,7 +436,7 @@ const MainLayout: React.FC = () => {
             }} 
           >
             ⛶
-          </Button>
+          </Button> */}
           
           <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
             <Button 
