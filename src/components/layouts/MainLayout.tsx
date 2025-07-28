@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -105,7 +104,7 @@ const MainLayout: React.FC = () => {
                 <img src="/src/assets/gst-logo.png" alt="GST Claim" style={{ width: '40px', height: '40px' }} />
               </div>
             </div>
-            
+
             <div className="header-right" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <Dropdown 
                 menu={{ 
@@ -116,13 +115,14 @@ const MainLayout: React.FC = () => {
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                           <div style={{ 
                             width: '20px', 
-                            height: '20px', 
-                            borderRadius: '50%', 
+                            height: '14px', 
+                            borderRadius: '2px', 
                             overflow: 'hidden',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            fontSize: '12px'
+                            fontSize: '14px',
+                            lineHeight: '1'
                           }}>
                             🇺🇸
                           </div>
@@ -137,13 +137,14 @@ const MainLayout: React.FC = () => {
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                           <div style={{ 
                             width: '20px', 
-                            height: '20px', 
-                            borderRadius: '50%', 
+                            height: '14px', 
+                            borderRadius: '2px', 
                             overflow: 'hidden',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            fontSize: '12px'
+                            fontSize: '14px',
+                            lineHeight: '1'
                           }}>
                             🇮🇳
                           </div>
@@ -171,13 +172,14 @@ const MainLayout: React.FC = () => {
                 >
                   <div style={{ 
                     width: '20px', 
-                    height: '20px', 
-                    borderRadius: '50%', 
+                    height: '14px', 
+                    borderRadius: '2px', 
                     overflow: 'hidden',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: '12px'
+                    fontSize: '14px',
+                    lineHeight: '1'
                   }}>
                     {language === 'en' ? '🇺🇸' : '🇮🇳'}
                   </div>
@@ -218,7 +220,7 @@ const MainLayout: React.FC = () => {
               >
                 ⛶
               </Button>
-              
+
               <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
                 <Button 
                   type="text" 
@@ -302,7 +304,7 @@ const MainLayout: React.FC = () => {
                 <Outlet />
               </div>
             </Content>
-            
+
             {/* Footer */}
             <div style={{
               background: isDarkMode ? '#141414' : '#f5f5f5',
@@ -349,7 +351,7 @@ const MainLayout: React.FC = () => {
               </div>
             ))}
           </div>
-          
+
           <div className="menu-footer">
             <div className="nav-item-with-label">
               <div className="nav-icon">
@@ -384,7 +386,7 @@ const MainLayout: React.FC = () => {
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <img src="/src/assets/gst-logo.png" alt="GST Claim" style={{ width: '40px', height: '40px' }} />
           </div>
-          
+
           <div style={{ 
             display: 'flex', 
             alignItems: 'center', 
@@ -402,7 +404,7 @@ const MainLayout: React.FC = () => {
             </span>
           </div>
         </div>
-        
+
         <div className="header-right" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <Dropdown 
             menu={{ 
@@ -413,13 +415,14 @@ const MainLayout: React.FC = () => {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <div style={{ 
                         width: '20px', 
-                        height: '20px', 
-                        borderRadius: '50%', 
+                        height: '14px', 
+                        borderRadius: '2px', 
                         overflow: 'hidden',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        fontSize: '12px'
+                        fontSize: '14px',
+                        lineHeight: '1'
                       }}>
                         🇺🇸
                       </div>
@@ -434,13 +437,14 @@ const MainLayout: React.FC = () => {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <div style={{ 
                         width: '20px', 
-                        height: '20px', 
-                        borderRadius: '50%', 
+                        height: '14px', 
+                        borderRadius: '2px', 
                         overflow: 'hidden',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        fontSize: '12px'
+                        fontSize: '14px',
+                        lineHeight: '1'
                       }}>
                         🇮🇳
                       </div>
@@ -468,13 +472,14 @@ const MainLayout: React.FC = () => {
             >
               <div style={{ 
                 width: '20px', 
-                height: '20px', 
-                borderRadius: '50%', 
+                height: '14px', 
+                borderRadius: '2px', 
                 overflow: 'hidden',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '12px'
+                fontSize: '14px',
+                lineHeight: '1'
               }}>
                 {language === 'en' ? '🇺🇸' : '🇮🇳'}
               </div>
@@ -515,7 +520,7 @@ const MainLayout: React.FC = () => {
           >
             ⛶
           </Button>
-          
+
           <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
             <Button 
               type="text" 
@@ -554,7 +559,7 @@ const MainLayout: React.FC = () => {
             <Outlet />
           </div>
         </Content>
-        
+
         {/* Footer */}
         <div style={{
           background: isDarkMode ? '#141414' : '#f5f5f5',
@@ -566,12 +571,12 @@ const MainLayout: React.FC = () => {
         }}>
           {translate('poweredBy')}
         </div>
-        
-        
+
+
       </Layout>
         </>
       )}
-      
+
       {/* Settings Modal - moved outside conditional rendering */}
       <SettingsModal 
         open={settingsModalOpen} 
