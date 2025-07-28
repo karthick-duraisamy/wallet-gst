@@ -211,50 +211,166 @@ const Upload: React.FC = () => {
           <div style={{
             border: '2px dashed #d9d9d9',
             borderRadius: 8,
-            padding: '40px 20px',
-            textAlign: 'center',
             background: '#fafafa',
             marginBottom: 16,
             minHeight: 200,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center'
+            position: 'relative',
+            overflow: 'hidden'
           }}>
+            {/* Files are uploading section */}
+            {files.length > 0 && (
+              <div style={{
+                position: 'absolute',
+                top: 16,
+                right: 16,
+                background: 'rgba(255, 255, 255, 0.95)',
+                padding: '8px 12px',
+                borderRadius: 4,
+                fontSize: '14px',
+                color: '#666',
+                fontWeight: 500,
+                border: '1px solid #f0f0f0'
+              }}>
+                Files are uploading -
+              </div>
+            )}
+
             <div style={{
-              width: 60,
-              height: 60,
-              background: '#1890ff',
-              borderRadius: '50%',
+              padding: '40px 20px',
+              textAlign: 'center',
               display: 'flex',
+              flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              marginBottom: 16
+              minHeight: 160
             }}>
-              <PlusOutlined style={{ color: 'white', fontSize: 24 }} />
+              <div style={{
+                width: 60,
+                height: 60,
+                background: '#1890ff',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: 16
+              }}>
+                <PlusOutlined style={{ color: 'white', fontSize: 24 }} />
+              </div>
+              
+              <div style={{ fontSize: '16px', color: '#333', marginBottom: 16 }}>
+                Drag & drop your file here
+              </div>
+              
+              <div style={{ fontSize: '14px', color: '#666', marginBottom: 16 }}>
+                or
+              </div>
+              
+              <Dragger {...uploadProps} style={{ background: 'transparent', border: 'none', padding: 0 }}>
+                <Button 
+                  type="link" 
+                  style={{ 
+                    color: '#1890ff', 
+                    fontWeight: 500,
+                    fontSize: '14px',
+                    textDecoration: 'underline'
+                  }}
+                >
+                  Select File
+                </Button>
+              </Dragger>
             </div>
-            
-            <div style={{ fontSize: '16px', color: '#333', marginBottom: 16 }}>
-              Drag & drop your file here
-            </div>
-            
-            <div style={{ fontSize: '14px', color: '#666', marginBottom: 16 }}>
-              or
-            </div>
-            
-            <Dragger {...uploadProps} style={{ background: 'transparent', border: 'none', padding: 0 }}>
-              <Button 
-                type="link" 
-                style={{ 
-                  color: '#1890ff', 
-                  fontWeight: 500,
-                  fontSize: '14px',
-                  textDecoration: 'underline'
-                }}
-              >
-                Select File
-              </Button>
-            </Dragger>
+
+            {/* Inline file display */}
+            {files.length > 0 && (
+              <div style={{
+                borderTop: '1px solid #e8e8e8',
+                background: 'white',
+                padding: '16px 20px'
+              }}>
+                {files.map((file) => (
+                  <div 
+                    key={file.id}
+                    style={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'space-between',
+                      marginBottom: files.length > 1 ? 12 : 0
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, flex: 1 }}>
+                      <div style={{
+                        width: 32,
+                        height: 32,
+                        background: '#1890ff',
+                        borderRadius: 4,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}>
+                        <FileOutlined style={{ color: 'white', fontSize: 14 }} />
+                      </div>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ 
+                          fontWeight: 500, 
+                          color: '#333',
+                          fontSize: '14px',
+                          marginBottom: 4
+                        }}>
+                          {file.name}
+                        </div>
+                        <div style={{ 
+                          color: '#666', 
+                          fontSize: '12px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 8
+                        }}>
+                          {formatFileSize(file.size)}
+                          {file.status === 'success' && (
+                            <span style={{ color: '#52c41a', fontWeight: 500 }}>
+                              Upload Successful!
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                      {file.status === 'uploading' && (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                          <Progress 
+                            percent={Math.floor(Math.random() * 100)} 
+                            size="small"
+                            style={{ width: 100 }}
+                            showInfo={false}
+                          />
+                          <span style={{ fontSize: '12px', fontWeight: 500, color: '#666', minWidth: '35px' }}>
+                            {Math.floor(Math.random() * 100)}%
+                          </span>
+                        </div>
+                      )}
+                      {file.status === 'success' && (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                          <Progress 
+                            percent={100} 
+                            size="small"
+                            status="success"
+                            style={{ width: 100 }}
+                            showInfo={false}
+                          />
+                          <span style={{ fontSize: '12px', fontWeight: 500, color: '#52c41a', minWidth: '35px' }}>
+                            100%
+                          </span>
+                        </div>
+                      )}
+                      <CloseOutlined 
+                        style={{ color: '#ff4d4f', cursor: 'pointer', fontSize: 12 }}
+                        onClick={() => handleRemoveFile(file.id)}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Sample File Button */}
@@ -278,79 +394,7 @@ const Upload: React.FC = () => {
         </div>
       </Card>
 
-      {/* Uploaded Files */}
-      {files.length > 0 && (
-        <Card 
-          title={translate('uploadedFiles')} 
-          style={{ 
-            borderRadius: 12, 
-            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-            marginBottom: 24
-          }}
-        >
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            {files.map((file, index) => (
-              <div 
-                key={file.id} 
-                className="upload-file-item"
-                style={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'space-between',
-                  padding: '12px 16px',
-                  background: '#fafafa',
-                  borderRadius: 8,
-                  border: '1px solid #f0f0f0',
-                  transition: 'all 0.3s ease'
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <FileOutlined style={{ color: '#1890ff', fontSize: '16px' }} />
-                  <div>
-                    <div style={{ fontWeight: 500, color: '#333' }}>{file.name}</div>
-                    <div style={{ color: '#666', fontSize: '12px' }}>
-                      {file.status === 'success' ? 'Upload Successful!' : formatFileSize(file.size)}
-                    </div>
-                  </div>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  {file.status === 'uploading' && (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                      <Progress 
-                        percent={Math.floor(Math.random() * 100)} 
-                        size="small"
-                        style={{ width: 120 }}
-                        showInfo={false}
-                      />
-                      <span style={{ fontSize: '12px', fontWeight: 500, color: '#666', minWidth: '35px' }}>
-                        {Math.floor(Math.random() * 100)}%
-                      </span>
-                    </div>
-                  )}
-                  {file.status === 'success' && (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                      <Progress 
-                        percent={100} 
-                        size="small"
-                        status="success"
-                        style={{ width: 120 }}
-                        showInfo={false}
-                      />
-                      <span style={{ fontSize: '12px', fontWeight: 500, color: '#52c41a', minWidth: '35px' }}>
-                        100%
-                      </span>
-                    </div>
-                  )}
-                  <CloseOutlined 
-                    style={{ color: '#ff4d4f', cursor: 'pointer' }}
-                    onClick={() => handleRemoveFile(file.id)}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </Card>
-      )}
+      
 
       {/* Submit Section */}
       <div style={{ textAlign: 'center' }}>
