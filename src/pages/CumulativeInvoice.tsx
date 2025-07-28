@@ -235,7 +235,7 @@ const CumulativeInvoice: React.FC = () => {
                     color: '#4f46e5'
                   }}>▲</span>
                 </Button>
-                
+
                 {/* Count display below button */}
                 <div style={{ 
                   fontSize: '14px', 
@@ -260,7 +260,7 @@ const CumulativeInvoice: React.FC = () => {
                     fontWeight: 'bold'
                   }}>i</span>
                 </div>
-                
+
                 {/* Expanding content below */}
                 {isPnrDropdownOpen && (
                   <div style={{
@@ -375,7 +375,7 @@ const CumulativeInvoice: React.FC = () => {
                   </div>
                 )}
               </div>
-              
+
               <Select
                 value={invoiceType}
                 onChange={setInvoiceType}
@@ -414,105 +414,98 @@ const CumulativeInvoice: React.FC = () => {
             marginBottom: 24 
           }}>
             <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', marginBottom: 16 }}>
-              <div style={{ minWidth: 250, position: 'relative' }}>
-                <Button
-                  onClick={handleInvoiceToggle}
-                  style={{ 
-                    width: 250,
-                    height: 40,
-                    textAlign: 'left',
-                    border: '1px solid #d9d9d9',
-                    background: 'white',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between'
-                  }}
-                >
-                  <span>Upload Multiple Invoice No</span>
-                  <span style={{ 
-                    transform: isInvoiceExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
-                    transition: 'transform 0.3s ease'
-                  }}>▲</span>
-                </Button>
-                
-                {invoiceText && !isInvoiceExpanded && (
-                  <div style={{ 
-                    fontSize: '12px', 
-                    color: '#666', 
-                    marginTop: 4,
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 4
-                  }}>
-                    <span>{invoiceText.split(',').filter(item => item.trim()).length} Ticket No Submitted</span>
-                    <span style={{ 
-                      width: 16, 
-                      height: 16, 
-                      borderRadius: '50%', 
-                      background: '#666',
-                      color: 'white',
-                      fontSize: '10px',
+              <div style={{ minWidth: 320, width: '100%', maxWidth: 400 }}>
+                {/* Upload Multiple Invoice No and count on same line */}
+                <div style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: 12,
+                  marginBottom: 8
+                }}>
+                  <Button
+                    onClick={handleInvoiceToggle}
+                    type="text"
+                    style={{ 
+                      padding: 0,
+                      height: 'auto',
+                      border: 'none',
+                      background: 'transparent',
                       display: 'flex',
                       alignItems: 'center',
-                      justifyContent: 'center'
-                    }}>i</span>
-                  </div>
-                )}
+                      gap: 6,
+                      boxShadow: 'none'
+                    }}
+                  >
+                    <span style={{ color: '#4f46e5', fontWeight: 500, fontSize: '14px' }}>
+                      {translate('uploadMultipleInvoice')}
+                    </span>
+                    <span style={{ 
+                      transform: isInvoiceExpanded ? 'rotate(0deg)' : 'rotate(180deg)',
+                      transition: 'transform 0.3s ease',
+                      color: '#ff4d4f',
+                      fontSize: '12px'
+                    }}>▲</span>
+                  </Button>
 
-                {/* Modal-like overlay when expanded */}
-                {isInvoiceExpanded && (
-                  <>
-                    {/* Backdrop */}
-                    <div 
-                      style={{
-                        position: 'fixed',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        backgroundColor: 'rgba(0, 0, 0, 0.45)',
-                        zIndex: 1000
-                      }}
-                      onClick={() => setIsInvoiceExpanded(false)}
-                    />
-                    
-                    {/* Modal Card */}
-                    <div style={{
-                      position: 'fixed',
-                      top: '50%',
-                      left: '50%',
-                      transform: 'translate(-50%, -50%)',
-                      background: 'white',
-                      borderRadius: 8,
-                      boxShadow: '0 4px 24px rgba(0, 0, 0, 0.15)',
-                      width: 432,
-                      maxHeight: '80vh',
-                      overflow: 'auto',
-                      zIndex: 1001
+                  {/* Count display on same line */}
+                  {invoiceText && !isInvoiceExpanded && (
+                    <div style={{ 
+                      fontSize: '14px', 
+                      color: '#8B949E',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 6
                     }}>
-                      {/* Header with close button */}
-                      <div style={{
+                      <span>{invoiceText.split(',').filter(item => item.trim()).length} Invoice No Submitted</span>
+                      <span style={{ 
+                        width: 18, 
+                        height: 18, 
+                        borderRadius: '50%', 
+                        background: '#8B949E',
+                        color: 'white',
+                        fontSize: '12px',
                         display: 'flex',
-                        justifyContent: 'flex-end',
-                        padding: '16px 16px 0 16px'
-                      }}>
-                        <Button 
-                          type="text"
-                          onClick={() => setIsInvoiceExpanded(false)}
-                          style={{
-                            color: '#999',
-                            fontSize: '16px',
-                            width: 24,
-                            height: 24,
-                            padding: 0,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                          }}
-                        >
-                          ×
-                        </Button>
-                      </div>
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer',
+                        fontWeight: 'bold'
+                      }}>×</span>
+                    </div>
+                  )}
+
+                {/* Expanding content below */}
+                {isInvoiceExpanded && (
+                  <div style={{
+                    marginTop: 8,
+                    background: 'white',
+                    border: '1px solid #e1e5e9',
+                    borderRadius: 8,
+                    padding: 20,
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                    position: 'relative',
+                    width: '450px',
+                    maxWidth: '450px'
+                  }}>
+                    {/* Close button */}
+                    <Button 
+                      type="text" 
+                      onClick={() => setIsInvoiceExpanded(false)}
+                      style={{
+                        position: 'absolute',
+                        top: 12,
+                        right: 12,
+                        color: '#ff4d4f',
+                        fontSize: '16px',
+                        width: 24,
+                        height: 24,
+                        padding: 0,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}
+                    >
+                      ×
+                    </Button>
 
                       {/* Content */}
                       <div style={{ padding: '0 24px 24px 24px' }}>
@@ -571,10 +564,10 @@ const CumulativeInvoice: React.FC = () => {
                         </div>
                       </div>
                     </div>
-                  </>
-                )}
-              </div>
-              
+                  )}
+                  </div>
+                </div>
+
               <Select
                 value={invoiceType}
                 onChange={setInvoiceType}
@@ -901,7 +894,7 @@ const CumulativeInvoice: React.FC = () => {
         </Card>
       </div>
 
-      
+
     </div>
   );
 };
