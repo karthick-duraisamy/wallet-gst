@@ -212,7 +212,7 @@ const CumulativeInvoice: React.FC = () => {
             marginBottom: 24 
           }}>
             <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', marginBottom: 16 }}>
-              <div style={{ position: 'relative', minWidth: 250 }}>
+              <div style={{ minWidth: 250 }}>
                 <Button
                   onClick={handlePnrDropdownClick}
                   style={{ 
@@ -228,100 +228,105 @@ const CumulativeInvoice: React.FC = () => {
                 >
                   <span>{translate('uploadMultiplePNR')}</span>
                   <span style={{ 
-                    transform: isPnrDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                    transform: isPnrDropdownOpen ? 'rotate(0deg)' : 'rotate(180deg)',
                     transition: 'transform 0.3s ease'
-                  }}>▼</span>
+                  }}>▲</span>
                 </Button>
                 
-                {/* Animated Dropdown */}
-                <div style={{
-                  position: 'absolute',
-                  top: '100%',
-                  left: 0,
-                  right: 0,
-                  background: 'white',
-                  border: isPnrDropdownOpen ? '1px solid #d9d9d9' : 'none',
-                  borderTop: 'none',
-                  borderRadius: '0 0 6px 6px',
-                  maxHeight: isPnrDropdownOpen ? '400px' : '0px',
-                  overflow: 'hidden',
-                  transition: 'all 0.3s ease',
-                  zIndex: 1000,
-                  boxShadow: isPnrDropdownOpen ? '0 4px 12px rgba(0,0,0,0.1)' : 'none'
+                {/* Count display below button */}
+                <div style={{ 
+                  fontSize: '12px', 
+                  color: '#666', 
+                  marginTop: 4,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 4
                 }}>
-                  {isPnrDropdownOpen && (
-                    <div style={{ padding: '16px' }}>
-                      <div style={{ marginBottom: 16 }}>
-                        <Radio.Group 
-                          value={pnrTicketType} 
-                          onChange={(e) => setPnrTicketType(e.target.value)}
-                          style={{ display: 'flex', gap: 16 }}
-                        >
-                          <Radio value="pnr">PNR</Radio>
-                          <Radio value="ticket">Ticket Number</Radio>
-                        </Radio.Group>
-                      </div>
-
-                      <div style={{ marginBottom: 16 }}>
-                        <div style={{ 
-                          fontSize: '14px', 
-                          fontWeight: 500, 
-                          marginBottom: 8,
-                          color: '#333'
-                        }}>
-                          Enter Multiple Ticket No
-                        </div>
-                        <Input.TextArea
-                          value={pnrTicketText}
-                          onChange={(e) => setPnrTicketText(e.target.value)}
-                          placeholder="Enter ticket numbers..."
-                          rows={4}
-                          style={{ 
-                            resize: 'none',
-                            borderRadius: 6
-                          }}
-                        />
-                      </div>
-
-                      <div style={{ marginBottom: 16 }}>
-                        <div style={{ 
-                          fontSize: '12px', 
-                          color: '#666',
-                          padding: '8px 12px',
-                          background: '#f5f5f5',
-                          borderRadius: 4,
-                          border: '1px solid #e0e0e0'
-                        }}>
-                          <strong>Example:</strong> 123456,123456
-                        </div>
-                      </div>
-
-                      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
-                        <Button onClick={() => setIsPnrDropdownOpen(false)}>
-                          Cancel
-                        </Button>
-                        <Button 
-                          type="primary" 
-                          onClick={handlePnrDropdownSubmit}
-                          style={{ 
-                            backgroundColor: '#1a37f0',
-                            borderColor: '#1a37f0'
-                          }}
-                        >
-                          Submit
-                        </Button>
-                      </div>
-                    </div>
-                  )}
+                  <span>60 Ticket No Submitted</span>
+                  <span style={{ 
+                    width: 16, 
+                    height: 16, 
+                    borderRadius: '50%', 
+                    background: '#666',
+                    color: 'white',
+                    fontSize: '10px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer'
+                  }}>i</span>
                 </div>
                 
-                {pnrTicketText && (
-                  <div style={{ 
-                    fontSize: '12px', 
-                    color: '#666', 
-                    marginTop: 4 
+                {/* Expanding content below */}
+                {isPnrDropdownOpen && (
+                  <div style={{
+                    marginTop: 16,
+                    background: 'white',
+                    border: '1px solid #d9d9d9',
+                    borderRadius: 6,
+                    padding: 16,
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
                   }}>
-                    {pnrTicketText.split('\n').filter(line => line.trim()).length} Ticket No Submitted
+                    <div style={{ marginBottom: 16 }}>
+                      <Radio.Group 
+                        value={pnrTicketType} 
+                        onChange={(e) => setPnrTicketType(e.target.value)}
+                        style={{ display: 'flex', gap: 16 }}
+                      >
+                        <Radio value="pnr">PNR</Radio>
+                        <Radio value="ticket">Ticket Number</Radio>
+                      </Radio.Group>
+                    </div>
+
+                    <div style={{ marginBottom: 16 }}>
+                      <div style={{ 
+                        fontSize: '14px', 
+                        fontWeight: 500, 
+                        marginBottom: 8,
+                        color: '#333'
+                      }}>
+                        Enter Multiple Ticket No
+                      </div>
+                      <Input.TextArea
+                        value={pnrTicketText}
+                        onChange={(e) => setPnrTicketText(e.target.value)}
+                        placeholder="Enter ticket numbers..."
+                        rows={4}
+                        style={{ 
+                          resize: 'none',
+                          borderRadius: 6
+                        }}
+                      />
+                    </div>
+
+                    <div style={{ marginBottom: 16 }}>
+                      <div style={{ 
+                        fontSize: '12px', 
+                        color: '#666',
+                        padding: '8px 12px',
+                        background: '#f5f5f5',
+                        borderRadius: 4,
+                        border: '1px solid #e0e0e0'
+                      }}>
+                        <strong>Example:</strong> 123456,123456
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                      <Button onClick={() => setIsPnrDropdownOpen(false)}>
+                        Cancel
+                      </Button>
+                      <Button 
+                        type="primary" 
+                        onClick={handlePnrDropdownSubmit}
+                        style={{ 
+                          backgroundColor: '#4f46e5',
+                          borderColor: '#4f46e5'
+                        }}
+                      >
+                        Submit
+                      </Button>
+                    </div>
                   </div>
                 )}
               </div>
