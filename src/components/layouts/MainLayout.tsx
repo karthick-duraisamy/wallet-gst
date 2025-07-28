@@ -114,7 +114,18 @@ const MainLayout: React.FC = () => {
                       key: 'en',
                       label: (
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                          <Avatar size={16} style={{ backgroundColor: '#52c41a' }}>🇺🇸</Avatar>
+                          <div style={{ 
+                            width: '20px', 
+                            height: '20px', 
+                            borderRadius: '50%', 
+                            overflow: 'hidden',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '12px'
+                          }}>
+                            🇺🇸
+                          </div>
                           {translate('english')}
                         </div>
                       ),
@@ -124,7 +135,18 @@ const MainLayout: React.FC = () => {
                       key: 'hi', 
                       label: (
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                          <Avatar size={16} style={{ backgroundColor: '#ff7a45' }}>🇮🇳</Avatar>
+                          <div style={{ 
+                            width: '20px', 
+                            height: '20px', 
+                            borderRadius: '50%', 
+                            overflow: 'hidden',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '12px'
+                          }}>
+                            🇮🇳
+                          </div>
                           {translate('hindi')}
                         </div>
                       ),
@@ -147,9 +169,18 @@ const MainLayout: React.FC = () => {
                     padding: '4px 8px'
                   }}
                 >
-                  <Avatar size={16} style={{ backgroundColor: language === 'en' ? '#52c41a' : '#ff7a45' }}>
+                  <div style={{ 
+                    width: '20px', 
+                    height: '20px', 
+                    borderRadius: '50%', 
+                    overflow: 'hidden',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '12px'
+                  }}>
                     {language === 'en' ? '🇺🇸' : '🇮🇳'}
-                  </Avatar>
+                  </div>
                   {language === 'en' ? translate('english') : translate('hindi')}
                   <span style={{ fontSize: '12px' }}>▼</span>
                 </Button>
@@ -380,7 +411,18 @@ const MainLayout: React.FC = () => {
                   key: 'en',
                   label: (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <Avatar size={16} style={{ backgroundColor: '#52c41a' }}>🇺🇸</Avatar>
+                      <div style={{ 
+                        width: '20px', 
+                        height: '20px', 
+                        borderRadius: '50%', 
+                        overflow: 'hidden',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '12px'
+                      }}>
+                        🇺🇸
+                      </div>
                       {translate('english')}
                     </div>
                   ),
@@ -390,7 +432,18 @@ const MainLayout: React.FC = () => {
                   key: 'hi', 
                   label: (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <Avatar size={16} style={{ backgroundColor: '#ff7a45' }}>🇮🇳</Avatar>
+                      <div style={{ 
+                        width: '20px', 
+                        height: '20px', 
+                        borderRadius: '50%', 
+                        overflow: 'hidden',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '12px'
+                      }}>
+                        🇮🇳
+                      </div>
                       {translate('hindi')}
                     </div>
                   ),
@@ -413,9 +466,18 @@ const MainLayout: React.FC = () => {
                 padding: '4px 8px'
               }}
             >
-              <Avatar size={16} style={{ backgroundColor: language === 'en' ? '#52c41a' : '#ff7a45' }}>
+              <div style={{ 
+                width: '20px', 
+                height: '20px', 
+                borderRadius: '50%', 
+                overflow: 'hidden',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '12px'
+              }}>
                 {language === 'en' ? '🇺🇸' : '🇮🇳'}
-              </Avatar>
+              </div>
               {language === 'en' ? translate('english') : translate('hindi')}
               <span style={{ fontSize: '12px' }}>▼</span>
             </Button>
