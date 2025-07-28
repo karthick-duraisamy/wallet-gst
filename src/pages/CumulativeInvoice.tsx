@@ -12,9 +12,10 @@ import {
   Table,
   Checkbox,
   Tag,
-  DatePicker
+  DatePicker,
+  Modal
 } from 'antd';
-import { SearchOutlined, DownloadOutlined, CalendarOutlined } from '@ant-design/icons';
+import { SearchOutlined, DownloadOutlined, CalendarOutlined, CloseOutlined } from '@ant-design/icons';
 import { useTheme } from '../contexts/ThemeContext';
 
 const { Title, Text } = Typography;
@@ -30,6 +31,15 @@ const CumulativeInvoice: React.FC = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const { translate } = useTheme();
 
+  // Modal states
+  const [isPnrModalVisible, setIsPnrModalVisible] = useState(false);
+  const [isInvoiceModalVisible, setIsInvoiceModalVisible] = useState(false);
+  
+  // Form states
+  const [pnrTicketType, setPnrTicketType] = useState('pnr');
+  const [pnrTicketText, setPnrTicketText] = useState('');
+  const [invoiceText, setInvoiceText] = useState('');
+
   const handleSubmit = () => {
     console.log('Submit clicked');
   };
@@ -38,6 +48,26 @@ const CumulativeInvoice: React.FC = () => {
     setPnrInput('');
     setInvoiceType('all');
     setUploadType('pnr');
+  };
+
+  const handlePnrDropdownClick = () => {
+    setIsPnrModalVisible(true);
+  };
+
+  const handleInvoiceDropdownClick = () => {
+    setIsInvoiceModalVisible(true);
+  };
+
+  const handlePnrModalSubmit = () => {
+    setIsPnrModalVisible(false);
+    // Process the pnrTicketText data here
+    console.log('PNR/Ticket data:', pnrTicketText);
+  };
+
+  const handleInvoiceModalSubmit = () => {
+    setIsInvoiceModalVisible(false);
+    // Process the invoiceText data here
+    console.log('Invoice data:', invoiceText);
   };
 
   const tabItems = [
@@ -185,13 +215,33 @@ const CumulativeInvoice: React.FC = () => {
             marginBottom: 24 
           }}>
             <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 16 }}>
-              <Select
-                value="upload-multiple-pnr"
-                style={{ width: 250 }}
-                size="large"
-              >
-                <Option value="upload-multiple-pnr">{translate('uploadMultiplePNR')}</Option>
-              </Select>
+              <div style={{ position: 'relative' }}>
+                <Button
+                  onClick={handlePnrDropdownClick}
+                  style={{ 
+                    width: 250,
+                    height: 40,
+                    textAlign: 'left',
+                    border: '1px solid #d9d9d9',
+                    background: 'white',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
+                  }}
+                >
+                  <span>{translate('uploadMultiplePNR')}</span>
+                  <span>▼</span>
+                </Button>
+                {pnrTicketText && (
+                  <div style={{ 
+                    fontSize: '12px', 
+                    color: '#666', 
+                    marginTop: 4 
+                  }}>
+                    {pnrTicketText.split('\n').length} Ticket No Submitted
+                  </div>
+                )}
+              </div>
               <Select
                 value={invoiceType}
                 onChange={setInvoiceType}
@@ -230,13 +280,33 @@ const CumulativeInvoice: React.FC = () => {
             marginBottom: 24 
           }}>
             <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 16 }}>
-              <Select
-                value="upload-multiple-invoice"
-                style={{ width: 250 }}
-                size="large"
-              >
-                <Option value="upload-multiple-invoice">Upload multiple Invoice no</Option>
-              </Select>
+              <div style={{ position: 'relative' }}>
+                <Button
+                  onClick={handleInvoiceDropdownClick}
+                  style={{ 
+                    width: 250,
+                    height: 40,
+                    textAlign: 'left',
+                    border: '1px solid #d9d9d9',
+                    background: 'white',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
+                  }}
+                >
+                  <span>Upload Multiple Invoice No</span>
+                  <span>▼</span>
+                </Button>
+                {invoiceText && (
+                  <div style={{ 
+                    fontSize: '12px', 
+                    color: '#666', 
+                    marginTop: 4 
+                  }}>
+                    {invoiceText.split('\n').length} Ticket No Submitted
+                  </div>
+                )}
+              </div>
               <Select
                 value={invoiceType}
                 onChange={setInvoiceType}
@@ -562,6 +632,137 @@ const CumulativeInvoice: React.FC = () => {
           </div>
         </Card>
       </div>
+
+      {/* PNR/Ticket Modal */}
+      <Modal
+        open={isPnrModalVisible}
+        onCancel={() => setIsPnrModalVisible(false)}
+        footer={null}
+        width={400}
+        centered
+        closeIcon={<CloseOutlined style={{ color: '#ff4d4f' }} />}
+        bodyStyle={{ padding: '24px' }}
+      >
+        <div style={{ marginBottom: 20 }}>
+          <Radio.Group 
+            value={pnrTicketType} 
+            onChange={(e) => setPnrTicketType(e.target.value)}
+            style={{ display: 'flex', gap: 16 }}
+          >
+            <Radio value="pnr">PNR</Radio>
+            <Radio value="ticket">Ticket Number</Radio>
+          </Radio.Group>
+        </div>
+
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ 
+            fontSize: '14px', 
+            fontWeight: 500, 
+            marginBottom: 8,
+            color: '#333'
+          }}>
+            Enter Multiple Ticket No
+          </div>
+          <Input.TextArea
+            value={pnrTicketText}
+            onChange={(e) => setPnrTicketText(e.target.value)}
+            placeholder="Enter ticket numbers..."
+            rows={6}
+            style={{ 
+              resize: 'none',
+              borderRadius: 6
+            }}
+          />
+        </div>
+
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ 
+            fontSize: '12px', 
+            color: '#666',
+            padding: '8px 12px',
+            background: '#f5f5f5',
+            borderRadius: 4,
+            border: '1px solid #e0e0e0'
+          }}>
+            <strong>Example:</strong> 123456,123456
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Button 
+            type="primary" 
+            onClick={handlePnrModalSubmit}
+            style={{ 
+              backgroundColor: '#1a37f0',
+              borderColor: '#1a37f0',
+              borderRadius: 4,
+              fontWeight: 500
+            }}
+          >
+            Submit
+          </Button>
+        </div>
+      </Modal>
+
+      {/* Invoice Modal */}
+      <Modal
+        open={isInvoiceModalVisible}
+        onCancel={() => setIsInvoiceModalVisible(false)}
+        footer={null}
+        width={400}
+        centered
+        closeIcon={<CloseOutlined style={{ color: '#ff4d4f' }} />}
+        bodyStyle={{ padding: '24px' }}
+      >
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ 
+            fontSize: '14px', 
+            fontWeight: 500, 
+            marginBottom: 8,
+            color: '#333'
+          }}>
+            Enter Invoice No
+          </div>
+          <Input.TextArea
+            value={invoiceText}
+            onChange={(e) => setInvoiceText(e.target.value)}
+            placeholder="Enter invoice numbers..."
+            rows={6}
+            style={{ 
+              resize: 'none',
+              borderRadius: 6
+            }}
+          />
+        </div>
+
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ 
+            fontSize: '12px', 
+            color: '#666',
+            padding: '8px 12px',
+            background: '#f5f5f5',
+            borderRadius: 4,
+            border: '1px solid #e0e0e0'
+          }}>
+            <strong>Example:</strong> 123456,123456
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Button 
+            type="primary" 
+            onClick={handleInvoiceModalSubmit}
+            style={{ 
+              backgroundColor: '#1a37f0',
+              borderColor: '#1a37f0',
+              borderRadius: 4,
+              fontWeight: 500
+            }}
+          >
+            Submit
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 };
