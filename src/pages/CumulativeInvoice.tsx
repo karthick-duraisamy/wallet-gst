@@ -33,6 +33,9 @@ const CumulativeInvoice: React.FC = () => {
   // Form states
   const [isInvoiceExpanded, setIsInvoiceExpanded] = useState(false);
   const [invoiceText, setInvoiceText] = useState('');
+  const [isPnrDropdownOpen, setIsPnrDropdownOpen] = useState(false);
+  const [pnrTicketType, setPnrTicketType] = useState('pnr');
+  const [pnrTicketText, setPnrTicketText] = useState('');
 
   const handleSubmit = () => {
     console.log('Submit clicked');
@@ -52,6 +55,16 @@ const CumulativeInvoice: React.FC = () => {
     // Process the invoiceText data here
     console.log('Invoice data:', invoiceText);
     setIsInvoiceExpanded(false);
+  };
+
+  const handlePnrDropdownClick = () => {
+    setIsPnrDropdownOpen(!isPnrDropdownOpen);
+  };
+
+  const handlePnrDropdownSubmit = () => {
+    // Process the pnrTicketText data here
+    console.log('PNR/Ticket data:', pnrTicketText);
+    setIsPnrDropdownOpen(false);
   };
 
   const tabItems = [
