@@ -12,10 +12,9 @@ import {
   Table,
   Checkbox,
   Tag,
-  DatePicker,
-  Modal
+  DatePicker
 } from 'antd';
-import { SearchOutlined, DownloadOutlined, CalendarOutlined, CloseOutlined } from '@ant-design/icons';
+import { SearchOutlined, DownloadOutlined, CalendarOutlined } from '@ant-design/icons';
 import { useTheme } from '../contexts/ThemeContext';
 
 const { Title, Text } = Typography;
@@ -31,9 +30,9 @@ const CumulativeInvoice: React.FC = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const { translate } = useTheme();
 
-  // Modal states
-  const [isPnrModalVisible, setIsPnrModalVisible] = useState(false);
-  const [isInvoiceModalVisible, setIsInvoiceModalVisible] = useState(false);
+  // Dropdown states
+  const [isPnrDropdownOpen, setIsPnrDropdownOpen] = useState(false);
+  const [isInvoiceDropdownOpen, setIsInvoiceDropdownOpen] = useState(false);
   
   // Form states
   const [pnrTicketType, setPnrTicketType] = useState('pnr');
@@ -51,23 +50,23 @@ const CumulativeInvoice: React.FC = () => {
   };
 
   const handlePnrDropdownClick = () => {
-    setIsPnrModalVisible(true);
+    setIsPnrDropdownOpen(!isPnrDropdownOpen);
   };
 
   const handleInvoiceDropdownClick = () => {
-    setIsInvoiceModalVisible(true);
+    setIsInvoiceDropdownOpen(!isInvoiceDropdownOpen);
   };
 
-  const handlePnrModalSubmit = () => {
-    setIsPnrModalVisible(false);
+  const handlePnrDropdownSubmit = () => {
     // Process the pnrTicketText data here
     console.log('PNR/Ticket data:', pnrTicketText);
+    setIsPnrDropdownOpen(false);
   };
 
-  const handleInvoiceModalSubmit = () => {
-    setIsInvoiceModalVisible(false);
+  const handleInvoiceDropdownSubmit = () => {
     // Process the invoiceText data here
     console.log('Invoice data:', invoiceText);
+    setIsInvoiceDropdownOpen(false);
   };
 
   const tabItems = [
@@ -214,8 +213,8 @@ const CumulativeInvoice: React.FC = () => {
             padding: 16, 
             marginBottom: 24 
           }}>
-            <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 16 }}>
-              <div style={{ position: 'relative' }}>
+            <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', marginBottom: 16 }}>
+              <div style={{ position: 'relative', minWidth: 250 }}>
                 <Button
                   onClick={handlePnrDropdownClick}
                   style={{ 
@@ -230,18 +229,105 @@ const CumulativeInvoice: React.FC = () => {
                   }}
                 >
                   <span>{translate('uploadMultiplePNR')}</span>
-                  <span>▼</span>
+                  <span style={{ 
+                    transform: isPnrDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                    transition: 'transform 0.3s ease'
+                  }}>▼</span>
                 </Button>
+                
+                {/* Animated Dropdown */}
+                <div style={{
+                  position: 'absolute',
+                  top: '100%',
+                  left: 0,
+                  right: 0,
+                  background: 'white',
+                  border: isPnrDropdownOpen ? '1px solid #d9d9d9' : 'none',
+                  borderTop: 'none',
+                  borderRadius: '0 0 6px 6px',
+                  maxHeight: isPnrDropdownOpen ? '400px' : '0px',
+                  overflow: 'hidden',
+                  transition: 'all 0.3s ease',
+                  zIndex: 1000,
+                  boxShadow: isPnrDropdownOpen ? '0 4px 12px rgba(0,0,0,0.1)' : 'none'
+                }}>
+                  {isPnrDropdownOpen && (
+                    <div style={{ padding: '16px' }}>
+                      <div style={{ marginBottom: 16 }}>
+                        <Radio.Group 
+                          value={pnrTicketType} 
+                          onChange={(e) => setPnrTicketType(e.target.value)}
+                          style={{ display: 'flex', gap: 16 }}
+                        >
+                          <Radio value="pnr">PNR</Radio>
+                          <Radio value="ticket">Ticket Number</Radio>
+                        </Radio.Group>
+                      </div>
+
+                      <div style={{ marginBottom: 16 }}>
+                        <div style={{ 
+                          fontSize: '14px', 
+                          fontWeight: 500, 
+                          marginBottom: 8,
+                          color: '#333'
+                        }}>
+                          Enter Multiple Ticket No
+                        </div>
+                        <Input.TextArea
+                          value={pnrTicketText}
+                          onChange={(e) => setPnrTicketText(e.target.value)}
+                          placeholder="Enter ticket numbers..."
+                          rows={4}
+                          style={{ 
+                            resize: 'none',
+                            borderRadius: 6
+                          }}
+                        />
+                      </div>
+
+                      <div style={{ marginBottom: 16 }}>
+                        <div style={{ 
+                          fontSize: '12px', 
+                          color: '#666',
+                          padding: '8px 12px',
+                          background: '#f5f5f5',
+                          borderRadius: 4,
+                          border: '1px solid #e0e0e0'
+                        }}>
+                          <strong>Example:</strong> 123456,123456
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                        <Button onClick={() => setIsPnrDropdownOpen(false)}>
+                          Cancel
+                        </Button>
+                        <Button 
+                          type="primary" 
+                          onClick={handlePnrDropdownSubmit}
+                          style={{ 
+                            backgroundColor: '#1a37f0',
+                            borderColor: '#1a37f0'
+                          }}
+                        >
+                          Submit
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                
                 {pnrTicketText && (
                   <div style={{ 
                     fontSize: '12px', 
                     color: '#666', 
                     marginTop: 4 
                   }}>
-                    {pnrTicketText.split('\n').length} Ticket No Submitted
+                    {pnrTicketText.split('\n').filter(line => line.trim()).length} Ticket No Submitted
                   </div>
                 )}
               </div>
+              
               <Select
                 value={invoiceType}
                 onChange={setInvoiceType}
@@ -279,8 +365,8 @@ const CumulativeInvoice: React.FC = () => {
             padding: 16, 
             marginBottom: 24 
           }}>
-            <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 16 }}>
-              <div style={{ position: 'relative' }}>
+            <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', marginBottom: 16 }}>
+              <div style={{ position: 'relative', minWidth: 250 }}>
                 <Button
                   onClick={handleInvoiceDropdownClick}
                   style={{ 
@@ -295,18 +381,94 @@ const CumulativeInvoice: React.FC = () => {
                   }}
                 >
                   <span>Upload Multiple Invoice No</span>
-                  <span>▼</span>
+                  <span style={{ 
+                    transform: isInvoiceDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                    transition: 'transform 0.3s ease'
+                  }}>▼</span>
                 </Button>
+                
+                {/* Animated Dropdown */}
+                <div style={{
+                  position: 'absolute',
+                  top: '100%',
+                  left: 0,
+                  right: 0,
+                  background: 'white',
+                  border: isInvoiceDropdownOpen ? '1px solid #d9d9d9' : 'none',
+                  borderTop: 'none',
+                  borderRadius: '0 0 6px 6px',
+                  maxHeight: isInvoiceDropdownOpen ? '300px' : '0px',
+                  overflow: 'hidden',
+                  transition: 'all 0.3s ease',
+                  zIndex: 1000,
+                  boxShadow: isInvoiceDropdownOpen ? '0 4px 12px rgba(0,0,0,0.1)' : 'none'
+                }}>
+                  {isInvoiceDropdownOpen && (
+                    <div style={{ padding: '16px' }}>
+                      <div style={{ marginBottom: 16 }}>
+                        <div style={{ 
+                          fontSize: '14px', 
+                          fontWeight: 500, 
+                          marginBottom: 8,
+                          color: '#333'
+                        }}>
+                          Enter Invoice No
+                        </div>
+                        <Input.TextArea
+                          value={invoiceText}
+                          onChange={(e) => setInvoiceText(e.target.value)}
+                          placeholder="Enter invoice numbers..."
+                          rows={4}
+                          style={{ 
+                            resize: 'none',
+                            borderRadius: 6
+                          }}
+                        />
+                      </div>
+
+                      <div style={{ marginBottom: 16 }}>
+                        <div style={{ 
+                          fontSize: '12px', 
+                          color: '#666',
+                          padding: '8px 12px',
+                          background: '#f5f5f5',
+                          borderRadius: 4,
+                          border: '1px solid #e0e0e0'
+                        }}>
+                          <strong>Example:</strong> 123456,123456
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                        <Button onClick={() => setIsInvoiceDropdownOpen(false)}>
+                          Cancel
+                        </Button>
+                        <Button 
+                          type="primary" 
+                          onClick={handleInvoiceDropdownSubmit}
+                          style={{ 
+                            backgroundColor: '#1a37f0',
+                            borderColor: '#1a37f0'
+                          }}
+                        >
+                          Submit
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                
                 {invoiceText && (
                   <div style={{ 
                     fontSize: '12px', 
                     color: '#666', 
                     marginTop: 4 
                   }}>
-                    {invoiceText.split('\n').length} Ticket No Submitted
+                    {invoiceText.split('\n').filter(line => line.trim()).length} Invoice No Submitted
                   </div>
                 )}
               </div>
+              
               <Select
                 value={invoiceType}
                 onChange={setInvoiceType}
@@ -633,136 +795,7 @@ const CumulativeInvoice: React.FC = () => {
         </Card>
       </div>
 
-      {/* PNR/Ticket Modal */}
-      <Modal
-        open={isPnrModalVisible}
-        onCancel={() => setIsPnrModalVisible(false)}
-        footer={null}
-        width={400}
-        centered
-        closeIcon={<CloseOutlined style={{ color: '#ff4d4f' }} />}
-        bodyStyle={{ padding: '24px' }}
-      >
-        <div style={{ marginBottom: 20 }}>
-          <Radio.Group 
-            value={pnrTicketType} 
-            onChange={(e) => setPnrTicketType(e.target.value)}
-            style={{ display: 'flex', gap: 16 }}
-          >
-            <Radio value="pnr">PNR</Radio>
-            <Radio value="ticket">Ticket Number</Radio>
-          </Radio.Group>
-        </div>
-
-        <div style={{ marginBottom: 20 }}>
-          <div style={{ 
-            fontSize: '14px', 
-            fontWeight: 500, 
-            marginBottom: 8,
-            color: '#333'
-          }}>
-            Enter Multiple Ticket No
-          </div>
-          <Input.TextArea
-            value={pnrTicketText}
-            onChange={(e) => setPnrTicketText(e.target.value)}
-            placeholder="Enter ticket numbers..."
-            rows={6}
-            style={{ 
-              resize: 'none',
-              borderRadius: 6
-            }}
-          />
-        </div>
-
-        <div style={{ marginBottom: 20 }}>
-          <div style={{ 
-            fontSize: '12px', 
-            color: '#666',
-            padding: '8px 12px',
-            background: '#f5f5f5',
-            borderRadius: 4,
-            border: '1px solid #e0e0e0'
-          }}>
-            <strong>Example:</strong> 123456,123456
-          </div>
-        </div>
-
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Button 
-            type="primary" 
-            onClick={handlePnrModalSubmit}
-            style={{ 
-              backgroundColor: '#1a37f0',
-              borderColor: '#1a37f0',
-              borderRadius: 4,
-              fontWeight: 500
-            }}
-          >
-            Submit
-          </Button>
-        </div>
-      </Modal>
-
-      {/* Invoice Modal */}
-      <Modal
-        open={isInvoiceModalVisible}
-        onCancel={() => setIsInvoiceModalVisible(false)}
-        footer={null}
-        width={400}
-        centered
-        closeIcon={<CloseOutlined style={{ color: '#ff4d4f' }} />}
-        bodyStyle={{ padding: '24px' }}
-      >
-        <div style={{ marginBottom: 20 }}>
-          <div style={{ 
-            fontSize: '14px', 
-            fontWeight: 500, 
-            marginBottom: 8,
-            color: '#333'
-          }}>
-            Enter Invoice No
-          </div>
-          <Input.TextArea
-            value={invoiceText}
-            onChange={(e) => setInvoiceText(e.target.value)}
-            placeholder="Enter invoice numbers..."
-            rows={6}
-            style={{ 
-              resize: 'none',
-              borderRadius: 6
-            }}
-          />
-        </div>
-
-        <div style={{ marginBottom: 20 }}>
-          <div style={{ 
-            fontSize: '12px', 
-            color: '#666',
-            padding: '8px 12px',
-            background: '#f5f5f5',
-            borderRadius: 4,
-            border: '1px solid #e0e0e0'
-          }}>
-            <strong>Example:</strong> 123456,123456
-          </div>
-        </div>
-
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Button 
-            type="primary" 
-            onClick={handleInvoiceModalSubmit}
-            style={{ 
-              backgroundColor: '#1a37f0',
-              borderColor: '#1a37f0',
-              borderRadius: 4,
-              fontWeight: 500
-            }}
-          >
-            Submit
-          </Button>
-        </div>
-      </Modal>
+      
     </div>
   );
 };
