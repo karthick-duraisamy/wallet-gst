@@ -65,49 +65,62 @@ const CumulativeInvoice: React.FC = () => {
       title: '',
       dataIndex: 'checkbox',
       key: 'checkbox',
-      width: 40,
+      width: 50,
+      fixed: 'left' as const,
       render: () => <Checkbox />,
     },
     {
       title: translate('supplierName'),
       dataIndex: 'supplierName',
       key: 'supplierName',
+      width: 140,
+      ellipsis: true,
       render: (text: string) => text || 'Spice Jet',
     },
     {
       title: translate('pnrTicketNumber'),
       dataIndex: 'pnrTicketNo',
       key: 'pnrTicketNo',
+      width: 120,
+      ellipsis: true,
       render: (text: string) => text || 'ADA',
     },
     {
       title: translate('invoiceNumber'),
       dataIndex: 'invoiceNo',
       key: 'invoiceNo',
+      width: 130,
+      ellipsis: true,
       render: (text: string) => text || 'N/A',
     },
     {
       title: translate('invoiceDate'),
       dataIndex: 'invoiceDate',
       key: 'invoiceDate',
+      width: 110,
       render: (text: string) => text || 'N/A',
     },
     {
       title: translate('type'),
       dataIndex: 'type',
       key: 'type',
+      width: 100,
       render: (text: string) => text || 'Invoice',
     },
     {
       title: translate('travelVendor'),
       dataIndex: 'travelVendor',
       key: 'travelVendor',
+      width: 120,
+      ellipsis: true,
       render: (text: string) => text || 'AtYourPrice',
     },
     {
       title: 'Action',
       dataIndex: 'action',
       key: 'action',
+      width: 80,
+      align: 'center' as const,
       render: () => '-',
     },
   ];
@@ -531,7 +544,10 @@ const CumulativeInvoice: React.FC = () => {
                 return originalElement;
               },
             }}
-            scroll={{ x: 800 }}
+            scroll={{ x: 900, y: 400 }}
+            size="middle"
+            bordered={false}
+            className="custom-table"
           />
 
           {/* Custom Pagination Footer */}

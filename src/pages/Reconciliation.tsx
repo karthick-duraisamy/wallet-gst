@@ -38,44 +38,55 @@ const Reconciliation: React.FC = () => {
       title: '',
       dataIndex: 'checkbox',
       key: 'checkbox',
-      width: 40,
+      width: 50,
+      fixed: 'left' as const,
       render: () => <Checkbox />,
     },
     {
       title: translate('supplierName'),
       dataIndex: 'supplierName',
       key: 'supplierName',
+      width: 150,
       sorter: true,
+      ellipsis: true,
       render: (text: string) => text || 'N/A',
     },
     {
       title: translate('pnrTicketNumber'),
       dataIndex: 'pnrTicketNumber',
       key: 'pnrTicketNumber',
+      width: 120,
+      ellipsis: true,
       render: (text: string) => text || 'N/A',
     },
     {
       title: translate('invoiceNumber'),
       dataIndex: 'invoiceNumber',
       key: 'invoiceNumber',
+      width: 150,
+      ellipsis: true,
       render: (text: string) => text || 'N/A',
     },
     {
       title: translate('invoiceDate'),
       dataIndex: 'invoiceDate',
       key: 'invoiceDate',
+      width: 110,
       sorter: true,
     },
     {
       title: translate('type'),
       dataIndex: 'type',
       key: 'type',
+      width: 100,
       render: (type: string) => type || translate('taxInvoice'),
     },
     {
       title: translate('taxClaimable'),
       dataIndex: 'taxClaimable',
       key: 'taxClaimable',
+      width: 120,
+      align: 'right' as const,
       render: (amount: number) => (
         <span style={{ color: '#52c41a', fontWeight: 600 }}>
           ₹ {amount ? amount.toLocaleString() : '0'}
@@ -87,6 +98,7 @@ const Reconciliation: React.FC = () => {
       title: translate('status'),
       dataIndex: 'status',
       key: 'status',
+      width: 180,
       render: (status: string) => (
         <Tag color="#722ed1" style={{ borderRadius: '12px' }}>
           {translate('additionalInGSTR2A')}
@@ -347,14 +359,10 @@ const Reconciliation: React.FC = () => {
               return originalElement;
             },
           }}
-          scroll={{ x: 1000 }}
-          style={{ 
-            '& .ant-table-thead > tr > th': {
-              backgroundColor: '#f8fafc',
-              fontWeight: 600,
-              fontSize: '14px'
-            }
-          }}
+          scroll={{ x: 1100, y: 400 }}
+          size="middle"
+          bordered={false}
+          className="custom-table"
         />
 
         {/* Custom Pagination Footer */}
