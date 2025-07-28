@@ -30,13 +30,8 @@ const CumulativeInvoice: React.FC = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const { translate } = useTheme();
 
-  // Dropdown states
-  const [isPnrDropdownOpen, setIsPnrDropdownOpen] = useState(false);
-  const [isInvoiceDropdownOpen, setIsInvoiceDropdownOpen] = useState(false);
-  
   // Form states
-  const [pnrTicketType, setPnrTicketType] = useState('pnr');
-  const [pnrTicketText, setPnrTicketText] = useState('');
+  const [isInvoiceExpanded, setIsInvoiceExpanded] = useState(false);
   const [invoiceText, setInvoiceText] = useState('');
 
   const handleSubmit = () => {
@@ -49,24 +44,14 @@ const CumulativeInvoice: React.FC = () => {
     setUploadType('pnr');
   };
 
-  const handlePnrDropdownClick = () => {
-    setIsPnrDropdownOpen(!isPnrDropdownOpen);
+  const handleInvoiceToggle = () => {
+    setIsInvoiceExpanded(!isInvoiceExpanded);
   };
 
-  const handleInvoiceDropdownClick = () => {
-    setIsInvoiceDropdownOpen(!isInvoiceDropdownOpen);
-  };
-
-  const handlePnrDropdownSubmit = () => {
-    // Process the pnrTicketText data here
-    console.log('PNR/Ticket data:', pnrTicketText);
-    setIsPnrDropdownOpen(false);
-  };
-
-  const handleInvoiceDropdownSubmit = () => {
+  const handleInvoiceSubmit = () => {
     // Process the invoiceText data here
     console.log('Invoice data:', invoiceText);
-    setIsInvoiceDropdownOpen(false);
+    setIsInvoiceExpanded(false);
   };
 
   const tabItems = [
@@ -366,9 +351,9 @@ const CumulativeInvoice: React.FC = () => {
             marginBottom: 24 
           }}>
             <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', marginBottom: 16 }}>
-              <div style={{ position: 'relative', minWidth: 250 }}>
+              <div style={{ minWidth: 250 }}>
                 <Button
-                  onClick={handleInvoiceDropdownClick}
+                  onClick={handleInvoiceToggle}
                   style={{ 
                     width: 250,
                     height: 40,
@@ -382,89 +367,32 @@ const CumulativeInvoice: React.FC = () => {
                 >
                   <span>Upload Multiple Invoice No</span>
                   <span style={{ 
-                    transform: isInvoiceDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                    transform: isInvoiceExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
                     transition: 'transform 0.3s ease'
-                  }}>▼</span>
+                  }}>▲</span>
                 </Button>
                 
-                {/* Animated Dropdown */}
-                <div style={{
-                  position: 'absolute',
-                  top: '100%',
-                  left: 0,
-                  right: 0,
-                  background: 'white',
-                  border: isInvoiceDropdownOpen ? '1px solid #d9d9d9' : 'none',
-                  borderTop: 'none',
-                  borderRadius: '0 0 6px 6px',
-                  maxHeight: isInvoiceDropdownOpen ? '300px' : '0px',
-                  overflow: 'hidden',
-                  transition: 'all 0.3s ease',
-                  zIndex: 1000,
-                  boxShadow: isInvoiceDropdownOpen ? '0 4px 12px rgba(0,0,0,0.1)' : 'none'
-                }}>
-                  {isInvoiceDropdownOpen && (
-                    <div style={{ padding: '16px' }}>
-                      <div style={{ marginBottom: 16 }}>
-                        <div style={{ 
-                          fontSize: '14px', 
-                          fontWeight: 500, 
-                          marginBottom: 8,
-                          color: '#333'
-                        }}>
-                          Enter Invoice No
-                        </div>
-                        <Input.TextArea
-                          value={invoiceText}
-                          onChange={(e) => setInvoiceText(e.target.value)}
-                          placeholder="Enter invoice numbers..."
-                          rows={4}
-                          style={{ 
-                            resize: 'none',
-                            borderRadius: 6
-                          }}
-                        />
-                      </div>
-
-                      <div style={{ marginBottom: 16 }}>
-                        <div style={{ 
-                          fontSize: '12px', 
-                          color: '#666',
-                          padding: '8px 12px',
-                          background: '#f5f5f5',
-                          borderRadius: 4,
-                          border: '1px solid #e0e0e0'
-                        }}>
-                          <strong>Example:</strong> 123456,123456
-                        </div>
-                      </div>
-
-                      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
-                        <Button onClick={() => setIsInvoiceDropdownOpen(false)}>
-                          Cancel
-                        </Button>
-                        <Button 
-                          type="primary" 
-                          onClick={handleInvoiceDropdownSubmit}
-                          style={{ 
-                            backgroundColor: '#1a37f0',
-                            borderColor: '#1a37f0'
-                          }}
-                        >
-                          Submit
-                        </Button>
-                      </div>
-                    </div>
-                  )}
-                </div>
-                
-                {invoiceText && (
+                {invoiceText && !isInvoiceExpanded && (
                   <div style={{ 
                     fontSize: '12px', 
                     color: '#666', 
-                    marginTop: 4 
+                    marginTop: 4,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 4
                   }}>
-                    {invoiceText.split('\n').filter(line => line.trim()).length} Invoice No Submitted
+                    <span>{invoiceText.split(',').filter(item => item.trim()).length} Ticket No Submitted</span>
+                    <span style={{ 
+                      width: 16, 
+                      height: 16, 
+                      borderRadius: '50%', 
+                      background: '#666',
+                      color: 'white',
+                      fontSize: '10px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}>i</span>
                   </div>
                 )}
               </div>
@@ -494,6 +422,64 @@ const CumulativeInvoice: React.FC = () => {
                 Reset all
               </Button>
             </div>
+
+            {/* Expanded Form */}
+            {isInvoiceExpanded && (
+              <div style={{
+                background: 'white',
+                border: '1px solid #d9d9d9',
+                borderRadius: 6,
+                padding: 16,
+                marginTop: 16
+              }}>
+                <div style={{ marginBottom: 16 }}>
+                  <div style={{ 
+                    fontSize: '14px', 
+                    fontWeight: 500, 
+                    marginBottom: 8,
+                    color: '#333'
+                  }}>
+                    Enter Invoice No
+                  </div>
+                  <Input.TextArea
+                    value={invoiceText}
+                    onChange={(e) => setInvoiceText(e.target.value)}
+                    placeholder=""
+                    rows={4}
+                    style={{ 
+                      resize: 'none',
+                      borderRadius: 6
+                    }}
+                  />
+                </div>
+
+                <div style={{ marginBottom: 16 }}>
+                  <div style={{ 
+                    fontSize: '12px', 
+                    color: '#666',
+                    padding: '8px 12px',
+                    background: '#f5f5f5',
+                    borderRadius: 4,
+                    border: '1px solid #e0e0e0'
+                  }}>
+                    <strong>Example :</strong> 123456,123456
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                  <Button 
+                    type="primary" 
+                    onClick={handleInvoiceSubmit}
+                    style={{ 
+                      backgroundColor: '#4f46e5',
+                      borderColor: '#4f46e5'
+                    }}
+                  >
+                    Submit
+                  </Button>
+                </div>
+              </div>
+            )}
           </div>
         );
 
