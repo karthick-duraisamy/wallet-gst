@@ -14,7 +14,7 @@ import {
   Tag,
   DatePicker
 } from 'antd';
-import { SearchOutlined, DownloadOutlined, CalendarOutlined } from '@ant-design/icons';
+import { SearchOutlined, DownloadOutlined, CalendarOutlined, FilterOutlined } from '@ant-design/icons';
 import { useTheme } from '../contexts/ThemeContext';
 
 const { Title, Text } = Typography;
@@ -86,108 +86,158 @@ const CumulativeInvoice: React.FC = () => {
     },
   ];
 
-  // Table columns
-  const columns = [
+  // Column visibility state
+  const [visibleColumns, setVisibleColumns] = useState({
+    supplierName: true,
+    pnrTicketNo: true,
+    invoiceNo: true,
+    invoiceDate: true,
+    type: true,
+    travelVendor: true,
+    action: true,
+  });
+  const [filterDropdownVisible, setFilterDropdownVisible] = useState(false);
+
+  // All available columns
+  const allColumns = [
     {
       title: translate('supplierName'),
       dataIndex: 'supplierName',
       key: 'supplierName',
-      width: 140,
-      ellipsis: true,
       render: (text: string) => text || 'Spice Jet',
     },
     {
       title: translate('pnrTicketNumber'),
       dataIndex: 'pnrTicketNo',
       key: 'pnrTicketNo',
-      width: 120,
-      ellipsis: true,
-      render: (text: string) => text || 'ADA',
+      render: (text: string) => text || 'ADA123',
     },
     {
       title: translate('invoiceNumber'),
       dataIndex: 'invoiceNo',
       key: 'invoiceNo',
-      width: 130,
-      ellipsis: true,
-      render: (text: string) => text || 'N/A',
+      render: (text: string) => text || 'INV123456',
     },
     {
       title: translate('invoiceDate'),
       dataIndex: 'invoiceDate',
       key: 'invoiceDate',
-      width: 110,
-      render: (text: string) => text || 'N/A',
+      render: (text: string) => text || '15-Jan-2024',
     },
     {
       title: translate('type'),
       dataIndex: 'type',
       key: 'type',
-      width: 100,
       render: (text: string) => text || 'Invoice',
     },
     {
       title: translate('travelVendor'),
       dataIndex: 'travelVendor',
       key: 'travelVendor',
-      width: 120,
-      ellipsis: true,
       render: (text: string) => text || 'AtYourPrice',
     },
     {
       title: 'Action',
       dataIndex: 'action',
       key: 'action',
-      width: 80,
       align: 'center' as const,
-      render: () => '-',
+      render: () => 'Edit',
+    },
+    {
+      title: (
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Button
+            type="text"
+            icon={<FilterOutlined />}
+            onClick={() => setFilterDropdownVisible(!filterDropdownVisible)}
+            style={{ border: 'none', padding: 0, background: 'transparent' }}
+          />
+          {filterDropdownVisible && (
+            <div style={{
+              position: 'absolute',
+              top: '100%',
+              right: 0,
+              background: 'white',
+              border: '1px solid #d9d9d9',
+              borderRadius: 6,
+              padding: 16,
+              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+              zIndex: 1000,
+              minWidth: 200
+            }}>
+              <div style={{ marginBottom: 8, fontWeight: 600 }}>Show/Hide Columns</div>
+              {Object.keys(visibleColumns).map((key) => (
+                <div key={key} style={{ marginBottom: 8 }}>
+                  <Checkbox
+                    checked={visibleColumns[key as keyof typeof visibleColumns]}
+                    onChange={(e) => setVisibleColumns(prev => ({
+                      ...prev,
+                      [key]: e.target.checked
+                    }))}
+                  >
+                    {allColumns.find(col => col.key === key)?.title}
+                  </Checkbox>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      ),
+      key: 'filter',
+      width: 60,
+      render: () => null,
     },
   ];
+
+  // Filter visible columns
+  const visibleColumnsData = allColumns.filter(col => 
+    col.key === 'filter' || visibleColumns[col.key as keyof typeof visibleColumns]
+  );
 
   // Mock data for the table
   const mockData = [
     {
       key: '1',
       supplierName: 'Spice Jet',
-      pnrTicketNo: 'ADA',
-      invoiceNo: 'N/A',
-      invoiceDate: 'N/A',
+      pnrTicketNo: 'ADA123',
+      invoiceNo: 'INV001234',
+      invoiceDate: '15-Jan-2024',
       type: 'Invoice',
       travelVendor: 'AtYourPrice',
     },
     {
       key: '2',
-      supplierName: 'Spice Jet',
-      pnrTicketNo: 'N/A',
-      invoiceNo: 'N/A',
-      invoiceDate: 'N/A',
+      supplierName: 'IndiGo',
+      pnrTicketNo: 'BCD456',
+      invoiceNo: 'CNT002345',
+      invoiceDate: '16-Jan-2024',
       type: 'Credit note',
       travelVendor: 'AtYourPrice',
     },
     {
       key: '3',
-      supplierName: 'Spice Jet',
-      pnrTicketNo: 'ASSA',
-      invoiceNo: 'N/A',
-      invoiceDate: 'N/A',
+      supplierName: 'Air India',
+      pnrTicketNo: 'ASSA789',
+      invoiceNo: 'INV003456',
+      invoiceDate: '17-Jan-2024',
       type: 'Invoice',
       travelVendor: 'AtYourPrice',
     },
     {
       key: '4',
-      supplierName: 'Spice Jet',
-      pnrTicketNo: 'ASAS',
-      invoiceNo: 'N/A',
-      invoiceDate: 'N/A',
+      supplierName: 'Vistara',
+      pnrTicketNo: 'ASAS012',
+      invoiceNo: 'INV004567',
+      invoiceDate: '18-Jan-2024',
       type: 'Invoice',
       travelVendor: 'AtYourPrice',
     },
     {
       key: '5',
-      supplierName: 'Vistara',
-      pnrTicketNo: 'ASAS',
-      invoiceNo: 'N/A',
-      invoiceDate: 'N/A',
+      supplierName: 'GoAir',
+      pnrTicketNo: 'WXYZ345',
+      invoiceNo: 'INV005678',
+      invoiceDate: '19-Jan-2024',
       type: 'Invoice',
       travelVendor: 'AtYourPrice',
     },
@@ -832,7 +882,7 @@ const CumulativeInvoice: React.FC = () => {
         {/* Data Table */}
         <Card style={{ borderRadius: 8, boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
           <Table
-            columns={columns}
+            columns={visibleColumnsData}
             dataSource={mockData}
             pagination={{
               current: 1,
@@ -865,10 +915,10 @@ const CumulativeInvoice: React.FC = () => {
                 return originalElement;
               },
             }}
-            scroll={{ x: 900, y: 400 }}
             size="middle"
             bordered={false}
             className="custom-table"
+            tableLayout="fixed"
           />
 
           {/* Custom Pagination Footer */}
