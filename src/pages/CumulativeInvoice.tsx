@@ -415,110 +415,90 @@ const CumulativeInvoice: React.FC = () => {
           }}>
             <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', marginBottom: 16 }}>
               <div style={{ minWidth: 320, width: '100%', maxWidth: 400 }}>
-                {/* Upload Multiple Invoice No and count on same line */}
-                <div style={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  gap: 12,
-                  marginBottom: 8
-                }}>
-                  <Button
-                    onClick={handleInvoiceToggle}
-                    type="text"
-                    style={{ 
-                      padding: 0,
-                      height: 'auto',
-                      border: 'none',
-                      background: 'transparent',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 6,
-                      boxShadow: 'none'
-                    }}
-                  >
-                    <span style={{ color: '#4f46e5', fontWeight: 500, fontSize: '14px' }}>
-                      {translate('uploadMultipleInvoice')}
-                    </span>
-                    <span style={{ 
-                      transform: isInvoiceExpanded ? 'rotate(0deg)' : 'rotate(180deg)',
-                      transition: 'transform 0.3s ease',
-                      color: '#ff4d4f',
-                      fontSize: '12px'
-                    }}>▲</span>
-                  </Button>
+                <Button
+                  onClick={handleInvoiceToggle}
+                  type="text"
+                  style={{ 
+                    padding: 0,
+                    height: 'auto',
+                    border: 'none',
+                    background: 'transparent',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 6,
+                    boxShadow: 'none'
+                  }}
+                >
+                  <span style={{ color: '#4f46e5', fontWeight: 500, fontSize: '14px' }}>
+                    {translate('uploadMultipleInvoice')}
+                  </span>
+                  <span style={{ 
+                    transform: isInvoiceExpanded ? 'rotate(0deg)' : 'rotate(180deg)',
+                    transition: 'transform 0.3s ease',
+                    color: '#ff4d4f',
+                    fontSize: '12px'
+                  }}>▲</span>
+                </Button>
 
-                  {/* Count display on same line */}
-                  {invoiceText && !isInvoiceExpanded && (
-                    <div style={{ 
-                      fontSize: '14px', 
-                      color: '#8B949E',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 6
-                    }}>
-                      <span>{invoiceText.split(',').filter(item => item.trim()).length} Invoice No Submitted</span>
-                      <span style={{ 
-                        width: 18, 
-                        height: 18, 
-                        borderRadius: '50%', 
-                        background: '#8B949E',
-                        color: 'white',
-                        fontSize: '12px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                        fontWeight: 'bold'
-                      }}>×</span>
-                    </div>
-                  )}
-
-                {/* Expanding content below */}
+                {/* Modal-style popup */}
                 {isInvoiceExpanded && (
-                  <div style={{
-                    marginTop: 8,
-                    background: 'white',
-                    border: '1px solid #e1e5e9',
-                    borderRadius: 8,
-                    padding: 20,
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                    position: 'relative',
-                    width: '450px',
-                    maxWidth: '450px'
-                  }}>
-                    {/* Close button */}
-                    <Button 
-                      type="text" 
-                      onClick={() => setIsInvoiceExpanded(false)}
-                      style={{
-                        position: 'absolute',
-                        top: 12,
-                        right: 12,
-                        color: '#ff4d4f',
-                        fontSize: '16px',
-                        width: 24,
-                        height: 24,
-                        padding: 0,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}
-                    >
-                      ×
-                    </Button>
+                  <>
+                    {/* Backdrop */}
+                    <div style={{
+                      position: 'fixed',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                      zIndex: 1000,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}>
+                      {/* Modal */}
+                      <div style={{
+                        background: 'white',
+                        borderRadius: 12,
+                        padding: 24,
+                        boxShadow: '0 10px 40px rgba(0,0,0,0.2)',
+                        position: 'relative',
+                        width: 400,
+                        maxWidth: '90vw'
+                      }}>
+                        {/* Close button */}
+                        <Button 
+                          type="text" 
+                          onClick={() => setIsInvoiceExpanded(false)}
+                          style={{
+                            position: 'absolute',
+                            top: 12,
+                            right: 12,
+                            color: '#ff4d4f',
+                            fontSize: '18px',
+                            width: 24,
+                            height: 24,
+                            padding: 0,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            border: 'none',
+                            background: 'transparent'
+                          }}
+                        >
+                          ×
+                        </Button>
 
-                      {/* Content */}
-                      <div style={{ padding: '0 24px 24px 24px' }}>
-                        <div style={{ marginBottom: 16 }}>
+                        <div style={{ marginBottom: 20, marginTop: 8 }}>
                           <div style={{ 
-                            fontSize: '16px', 
-                            fontWeight: 500, 
-                            marginBottom: 16,
-                            color: '#000'
+                            fontSize: '18px', 
+                            fontWeight: 600, 
+                            marginBottom: 20,
+                            color: '#24292f'
                           }}>
                             Enter Invoice No
                           </div>
-                          <Input.TextArea
+                          <TextArea
                             value={invoiceText}
                             onChange={(e) => setInvoiceText(e.target.value)}
                             placeholder=""
@@ -526,21 +506,22 @@ const CumulativeInvoice: React.FC = () => {
                             style={{ 
                               resize: 'none',
                               borderRadius: 6,
+                              border: '1px solid #d0d7de',
                               fontSize: '14px'
                             }}
                           />
                         </div>
 
-                        <div style={{ marginBottom: 24 }}>
+                        <div style={{ marginBottom: 20 }}>
                           <div style={{ 
                             fontSize: '14px', 
-                            color: '#666',
-                            padding: '12px',
-                            background: '#f8f9fa',
+                            color: '#656d76',
+                            padding: '12px 16px',
+                            background: '#f6f8fa',
                             borderRadius: 6,
-                            border: '1px solid #e9ecef'
+                            border: '1px solid #d0d7de'
                           }}>
-                            <span style={{ fontWeight: 600, color: '#000' }}>Example : </span>
+                            <span style={{ fontWeight: 600, color: '#24292f' }}>Example : </span>
                             123456,123456
                           </div>
                         </div>
@@ -550,13 +531,14 @@ const CumulativeInvoice: React.FC = () => {
                             type="primary" 
                             onClick={handleInvoiceSubmit}
                             style={{ 
-                              backgroundColor: '#4f46e5',
-                              borderColor: '#4f46e5',
+                              backgroundColor: '#8b5cf6',
+                              borderColor: '#8b5cf6',
                               borderRadius: 6,
-                              fontWeight: 500,
                               height: 40,
-                              paddingLeft: 24,
-                              paddingRight: 24
+                              paddingLeft: 20,
+                              paddingRight: 20,
+                              fontWeight: 500,
+                              fontSize: '14px'
                             }}
                           >
                             Submit
@@ -564,9 +546,9 @@ const CumulativeInvoice: React.FC = () => {
                         </div>
                       </div>
                     </div>
-                  )}
-                  </div>
-                </div>
+                  </>
+                )}
+              </div>
 
               <Select
                 value={invoiceType}
