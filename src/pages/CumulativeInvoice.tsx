@@ -98,8 +98,8 @@ const CumulativeInvoice: React.FC = () => {
   });
   const [filterDropdownVisible, setFilterDropdownVisible] = useState(false);
 
-  // All available columns
-  const allColumns = [
+  // All available columns - defined as a function to avoid initialization issues
+  const getAllColumns = () => [
     {
       title: translate('supplierName'),
       dataIndex: 'supplierName',
@@ -188,6 +188,9 @@ const CumulativeInvoice: React.FC = () => {
       render: () => null,
     },
   ];
+
+  // Get all columns
+  const allColumns = getAllColumns();
 
   // Filter visible columns
   const visibleColumnsData = allColumns.filter(col => 
