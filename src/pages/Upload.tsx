@@ -1,7 +1,8 @@
+
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Card, Radio, Button, Upload as AntUpload, message, Progress, Alert } from 'antd';
-import { InboxOutlined, CloseOutlined, FileOutlined, DownloadOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { Card, Radio, Button, Upload as AntUpload, message, Progress, Alert, Tabs } from 'antd';
+import { InboxOutlined, CloseOutlined, FileOutlined, DownloadOutlined, InfoCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { RootState } from '../store/store';
 import { 
   setUploadType, 
@@ -21,6 +22,7 @@ const Upload: React.FC = () => {
   const { translate } = useTheme();
   const [dragOver, setDragOver] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+  const [activeTab, setActiveTab] = useState('non-ayp');
 
   const handleUploadTypeChange = (e: any) => {
     dispatch(setUploadType(e.target.value));
@@ -96,6 +98,29 @@ const Upload: React.FC = () => {
     message.success('Files submitted successfully!');
   };
 
+  const tabItems = [
+    {
+      key: 'non-ayp',
+      label: 'Non-AYP Bookings',
+      children: (
+        <div style={{ textAlign: 'center', color: '#666', fontSize: '14px', marginBottom: 16 }}>
+          <InfoCircleOutlined style={{ color: '#1890ff', marginRight: 8 }} />
+          Kindly upload the file downloaded from GSTR-2A of respective travel agencies for reconciliation of the booking fees.
+        </div>
+      )
+    },
+    {
+      key: 'gstr-2a',
+      label: 'GSTR-2A',
+      children: (
+        <div style={{ textAlign: 'center', color: '#666', fontSize: '14px', marginBottom: 16 }}>
+          <InfoCircleOutlined style={{ color: '#1890ff', marginRight: 8 }} />
+          Upload GSTR-2A data for tax reconciliation purposes.
+        </div>
+      )
+    }
+  ];
+
   return (
     <div className="slide-up" style={{ padding: '24px', background: '#f5f5f5', minHeight: '100vh' }}>
       {/* Breadcrumb */}
@@ -138,138 +163,120 @@ const Upload: React.FC = () => {
         </Radio.Group>
       </div>
 
-      {/* Upload Sections */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: 24 }}>
-        {/* Non-AYP Bookings Section */}
-        <Card 
+      {/* Single Upload Card with Tabs */}
+      <Card 
+        style={{ 
+          borderRadius: 12, 
+          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+          marginBottom: 24,
+          overflow: 'hidden'
+        }}
+        bodyStyle={{ padding: 0 }}
+      >
+        <Tabs 
+          activeKey={activeTab}
+          onChange={setActiveTab}
+          items={tabItems}
           style={{ 
-            borderRadius: 12, 
-            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-            background: '#fff9f0'
+            '.ant-tabs-nav': { 
+              margin: 0,
+              background: '#fafafa',
+              borderBottom: '1px solid #f0f0f0'
+            }
           }}
-        >
-          <div style={{ textAlign: 'center', marginBottom: 16 }}>
-            <h3 style={{ fontSize: '18px', fontWeight: 600, color: '#333', marginBottom: 8 }}>
-              {translate('nonAYPBookings')}
-            </h3>
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8, justifyContent: 'center', marginBottom: 16 }}>
-              <InfoCircleOutlined style={{ color: '#1890ff', fontSize: '16px', marginTop: 2 }} />
-              <span style={{ color: '#666', fontSize: '14px', textAlign: 'left' }}>
-                {translate('nonAYPInfo')}
-              </span>
+          tabBarStyle={{
+            margin: 0,
+            padding: '0 24px',
+            background: '#fafafa'
+          }}
+        />
+        
+        <div style={{ padding: '24px' }}>
+          {/* File Type and Limit Info */}
+          <div style={{ 
+            textAlign: 'center', 
+            marginBottom: 16,
+            fontSize: '14px',
+            color: '#666'
+          }}>
+            <div style={{ marginBottom: 4 }}>
+              Supported Files: <strong>CSV, XLS</strong>
             </div>
-            <div style={{ color: '#666', fontSize: '13px', marginBottom: 4 }}>
-              {translate('supportedFilesCSVXLS')}
-            </div>
-            <div style={{ color: '#666', fontSize: '13px', marginBottom: 16 }}>
-              {translate('uploadLimit')}
+            <div>
+              Upload up to 3 file. Each max file size 5MB
             </div>
           </div>
 
-          <Dragger 
-            {...uploadProps}
-            style={{ 
-              background: '#fafafa',
-              border: '2px dashed #d9d9d9',
-              borderRadius: 8,
-              minHeight: 160,
-              transition: 'all 0.3s ease',
-              cursor: 'pointer'
-            }}
-            className="upload-dragger-hover"
-          >
-            <div style={{ padding: '20px' }}>
-              <InboxOutlined style={{ fontSize: '48px', color: '#1890ff', marginBottom: 16 }} />
-              <p style={{ fontSize: '16px', color: '#333', marginBottom: 8 }}>
-                {translate('dragDropFileHere')}
-              </p>
-              <p style={{ color: '#666', marginBottom: 8 }}>{translate('or')}</p>
-              <Button type="link" style={{ color: '#1890ff', fontWeight: 500, padding: 0 }}>
-                {translate('selectFile')}
-              </Button>
+          {/* Upload Area */}
+          <div style={{
+            border: '2px dashed #d9d9d9',
+            borderRadius: 8,
+            padding: '40px 20px',
+            textAlign: 'center',
+            background: '#fafafa',
+            marginBottom: 16,
+            minHeight: 200,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <div style={{
+              width: 60,
+              height: 60,
+              background: '#1890ff',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: 16
+            }}>
+              <PlusOutlined style={{ color: 'white', fontSize: 24 }} />
             </div>
-          </Dragger>
+            
+            <div style={{ fontSize: '16px', color: '#333', marginBottom: 16 }}>
+              Drag & drop your file here
+            </div>
+            
+            <div style={{ fontSize: '14px', color: '#666', marginBottom: 16 }}>
+              or
+            </div>
+            
+            <Dragger {...uploadProps} style={{ background: 'transparent', border: 'none', padding: 0 }}>
+              <Button 
+                type="link" 
+                style={{ 
+                  color: '#1890ff', 
+                  fontWeight: 500,
+                  fontSize: '14px',
+                  textDecoration: 'underline'
+                }}
+              >
+                Select File
+              </Button>
+            </Dragger>
+          </div>
 
-          <div style={{ textAlign: 'right', marginTop: 16 }}>
+          {/* Sample File Button */}
+          <div style={{ textAlign: 'right' }}>
             <Button 
               style={{ 
                 background: '#52c41a', 
                 borderColor: '#52c41a', 
                 color: 'white',
                 borderRadius: 6,
-                fontWeight: 500
+                fontWeight: 500,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8
               }}
             >
-              {translate('sampleFile')}
+              <DownloadOutlined />
+              Sample file
             </Button>
           </div>
-        </Card>
-
-        {/* GSTR-2A Section */}
-        <Card 
-          style={{ 
-            borderRadius: 12, 
-            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-            background: '#f0f9ff'
-          }}
-        >
-          <div style={{ textAlign: 'center', marginBottom: 16 }}>
-            <h3 style={{ fontSize: '18px', fontWeight: 600, color: '#333', marginBottom: 8 }}>
-              {translate('gstr2A')}
-            </h3>
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8, justifyContent: 'center', marginBottom: 16 }}>
-              <InfoCircleOutlined style={{ color: '#1890ff', fontSize: '16px', marginTop: 2 }} />
-              <span style={{ color: '#666', fontSize: '14px', textAlign: 'left' }}>
-                {translate('gstr2AInfo')}
-              </span>
-            </div>
-            <div style={{ color: '#666', fontSize: '13px', marginBottom: 4 }}>
-              {translate('supportedFilesCSVXLS')}
-            </div>
-            <div style={{ color: '#666', fontSize: '13px', marginBottom: 16 }}>
-              {translate('uploadLimit')}
-            </div>
-          </div>
-
-          <Dragger 
-            {...uploadProps}
-            style={{ 
-              background: '#fafafa',
-              border: '2px dashed #d9d9d9',
-              borderRadius: 8,
-              minHeight: 160,
-              transition: 'all 0.3s ease',
-              cursor: 'pointer'
-            }}
-            className="upload-dragger-hover"
-          >
-            <div style={{ padding: '20px' }}>
-              <InboxOutlined style={{ fontSize: '48px', color: '#1890ff', marginBottom: 16 }} />
-              <p style={{ fontSize: '16px', color: '#333', marginBottom: 8 }}>
-                {translate('dragDropFileHere')}
-              </p>
-              <p style={{ color: '#666', marginBottom: 8 }}>{translate('or')}</p>
-              <Button type="link" style={{ color: '#1890ff', fontWeight: 500, padding: 0 }}>
-                {translate('selectFile')}
-              </Button>
-            </div>
-          </Dragger>
-
-          <div style={{ textAlign: 'right', marginTop: 16 }}>
-            <Button 
-              style={{ 
-                background: '#52c41a', 
-                borderColor: '#52c41a', 
-                color: 'white',
-                borderRadius: 6,
-                fontWeight: 500
-              }}
-            >
-              {translate('sampleFile')}
-            </Button>
-          </div>
-        </Card>
-      </div>
+        </div>
+      </Card>
 
       {/* Uploaded Files */}
       {files.length > 0 && (
