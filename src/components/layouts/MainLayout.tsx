@@ -352,16 +352,7 @@ const MainLayout: React.FC = () => {
             ))}
           </div>
 
-          <div className="menu-footer">
-            <div className="nav-item-with-label">
-              <div className="nav-icon">
-                <SettingOutlined />
-              </div>
-              <span className="nav-label">
-                {translate('settings')}
-              </span>
-            </div>
-          </div>
+          
         </div>
       </Sider>
 
