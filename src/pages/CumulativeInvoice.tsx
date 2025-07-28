@@ -213,65 +213,75 @@ const CumulativeInvoice: React.FC = () => {
           }}>
             <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', marginBottom: 16 }}>
               <div style={{ minWidth: 320, width: '100%', maxWidth: 400 }}>
-                <Button
-                  onClick={handlePnrDropdownClick}
-                  style={{ 
-                    width: '100%',
-                    height: 40,
-                    textAlign: 'left',
-                    border: 'none',
-                    background: '#f5f5f5',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    boxShadow: 'none',
-                    borderRadius: 6
-                  }}
-                >
-                  <span style={{ color: '#4f46e5', fontWeight: 500 }}>{translate('uploadMultiplePNR')}</span>
-                  <span style={{ 
-                    transform: isPnrDropdownOpen ? 'rotate(0deg)' : 'rotate(180deg)',
-                    transition: 'transform 0.3s ease',
-                    color: '#4f46e5'
-                  }}>▲</span>
-                </Button>
-                
-                {/* Count display below button */}
+                {/* Upload Multiple PNR and count on same line */}
                 <div style={{ 
-                  fontSize: '14px', 
-                  color: '#8B949E', 
-                  marginTop: 8,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 6
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: 12,
+                  marginBottom: 8
                 }}>
-                  <span>60 Ticket No Submitted</span>
-                  <span style={{ 
-                    width: 18, 
-                    height: 18, 
-                    borderRadius: '50%', 
-                    background: '#8B949E',
-                    color: 'white',
-                    fontSize: '12px',
+                  <Button
+                    onClick={handlePnrDropdownClick}
+                    type="text"
+                    style={{ 
+                      padding: 0,
+                      height: 'auto',
+                      border: 'none',
+                      background: 'transparent',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 6,
+                      boxShadow: 'none'
+                    }}
+                  >
+                    <span style={{ color: '#4f46e5', fontWeight: 500, fontSize: '14px' }}>
+                      {translate('uploadMultiplePNR')}
+                    </span>
+                    <span style={{ 
+                      transform: isPnrDropdownOpen ? 'rotate(0deg)' : 'rotate(180deg)',
+                      transition: 'transform 0.3s ease',
+                      color: '#ff4d4f',
+                      fontSize: '12px'
+                    }}>▲</span>
+                  </Button>
+                  
+                  {/* Count display on same line */}
+                  <div style={{ 
+                    fontSize: '14px', 
+                    color: '#8B949E',
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                    fontWeight: 'bold'
-                  }}>i</span>
+                    gap: 6
+                  }}>
+                    <span>60 Ticket No Submitted</span>
+                    <span style={{ 
+                      width: 18, 
+                      height: 18, 
+                      borderRadius: '50%', 
+                      background: '#8B949E',
+                      color: 'white',
+                      fontSize: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: 'pointer',
+                      fontWeight: 'bold'
+                    }}>×</span>
+                  </div>
                 </div>
                 
                 {/* Expanding content below */}
                 {isPnrDropdownOpen && (
                   <div style={{
-                    marginTop: 20,
+                    marginTop: 8,
                     background: 'white',
                     border: '1px solid #e1e5e9',
                     borderRadius: 8,
                     padding: 20,
                     boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
                     position: 'relative',
-                    width: '100%'
+                    width: '450px',
+                    maxWidth: '450px'
                   }}>
                     {/* Close button */}
                     <Button 
