@@ -509,9 +509,14 @@ body {
 .upload-dragger-hover:hover .anticon {
   transform: scale(1.1);
   color: #4f46e5 !important;
+  transition: all 0.3s ease;
 }
 
-.upload-dragger-hover:hover .ant-upload-text {
+.upload-dragger-hover:hover p {
+  color: #4f46e5 !important;
+}
+
+.upload-dragger-hover:hover .ant-btn-link {
   color: #4f46e5 !important;
 }
 
@@ -519,7 +524,11 @@ body {
   transition: all 0.3s ease;
 }
 
-.upload-dragger-hover .ant-upload-text {
+.upload-dragger-hover p {
+  transition: all 0.3s ease;
+}
+
+.upload-dragger-hover .ant-btn-link {
   transition: all 0.3s ease;
 }
 
@@ -558,6 +567,14 @@ body {
 }
 
 /* File card hover effects */
+.upload-file-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  border-color: #4f46e5;
+  background: #f8f9ff;
+  transition: all 0.3s ease;
+}
+
 .upload-file-card:hover {
   transform: translateY(-2px) scale(1.01);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);

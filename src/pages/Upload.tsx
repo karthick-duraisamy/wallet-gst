@@ -267,6 +267,7 @@ const Upload: React.FC = () => {
             {files.map((file, index) => (
               <div 
                 key={file.id} 
+                className="upload-file-item"
                 style={{ 
                   display: 'flex', 
                   alignItems: 'center', 
@@ -274,31 +275,46 @@ const Upload: React.FC = () => {
                   padding: '12px 16px',
                   background: '#fafafa',
                   borderRadius: 8,
-                  border: '1px solid #f0f0f0'
+                  border: '1px solid #f0f0f0',
+                  transition: 'all 0.3s ease'
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                   <FileOutlined style={{ color: '#1890ff', fontSize: '16px' }} />
                   <div>
                     <div style={{ fontWeight: 500, color: '#333' }}>{file.name}</div>
-                    <div style={{ color: '#666', fontSize: '12px' }}>{formatFileSize(file.size)}</div>
+                    <div style={{ color: '#666', fontSize: '12px' }}>
+                      {file.status === 'success' ? 'Upload Successful!' : formatFileSize(file.size)}
+                    </div>
                   </div>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                   {file.status === 'uploading' && (
-                    <Progress 
-                      percent={Math.floor(Math.random() * 100)} 
-                      size="small"
-                      style={{ width: 100 }}
-                    />
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <Progress 
+                        percent={Math.floor(Math.random() * 100)} 
+                        size="small"
+                        style={{ width: 120 }}
+                        showInfo={false}
+                      />
+                      <span style={{ fontSize: '12px', fontWeight: 500, color: '#666', minWidth: '35px' }}>
+                        {Math.floor(Math.random() * 100)}%
+                      </span>
+                    </div>
                   )}
                   {file.status === 'success' && (
-                    <Progress 
-                      percent={100} 
-                      size="small"
-                      status="success"
-                      style={{ width: 100 }}
-                    />
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <Progress 
+                        percent={100} 
+                        size="small"
+                        status="success"
+                        style={{ width: 120 }}
+                        showInfo={false}
+                      />
+                      <span style={{ fontSize: '12px', fontWeight: 500, color: '#52c41a', minWidth: '35px' }}>
+                        100%
+                      </span>
+                    </div>
                   )}
                   <CloseOutlined 
                     style={{ color: '#ff4d4f', cursor: 'pointer' }}
