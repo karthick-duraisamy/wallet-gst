@@ -35,14 +35,6 @@ const Reconciliation: React.FC = () => {
 
   const columns = [
     {
-      title: '',
-      dataIndex: 'checkbox',
-      key: 'checkbox',
-      width: 50,
-      fixed: 'left' as const,
-      render: () => <Checkbox />,
-    },
-    {
       title: translate('supplierName'),
       dataIndex: 'supplierName',
       key: 'supplierName',
@@ -327,7 +319,6 @@ const Reconciliation: React.FC = () => {
         <Table
           columns={columns}
           dataSource={mockData}
-          rowSelection={rowSelection}
           pagination={{
             current: 1,
             pageSize: 5,

@@ -62,14 +62,6 @@ const CumulativeInvoice: React.FC = () => {
   // Table columns
   const columns = [
     {
-      title: '',
-      dataIndex: 'checkbox',
-      key: 'checkbox',
-      width: 50,
-      fixed: 'left' as const,
-      render: () => <Checkbox />,
-    },
-    {
       title: translate('supplierName'),
       dataIndex: 'supplierName',
       key: 'supplierName',
@@ -512,7 +504,6 @@ const CumulativeInvoice: React.FC = () => {
           <Table
             columns={columns}
             dataSource={mockData}
-            rowSelection={rowSelection}
             pagination={{
               current: 1,
               pageSize: 5,
