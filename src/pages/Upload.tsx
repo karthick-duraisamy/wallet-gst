@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Card, Radio, Button, Upload as AntUpload, message, Progress } from 'antd';
+import { Card, Radio, Button, Upload as AntUpload, message, Progress, Alert } from 'antd';
 import { InboxOutlined, CloseOutlined, FileOutlined, DownloadOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import { RootState } from '../store/store';
 import { 
@@ -20,6 +20,7 @@ const Upload: React.FC = () => {
   const { files, uploadType, subOption, loading } = useSelector((state: RootState) => state.upload);
   const { translate } = useTheme();
   const [dragOver, setDragOver] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
 
   const handleUploadTypeChange = (e: any) => {
     dispatch(setUploadType(e.target.value));
@@ -67,7 +68,8 @@ const Upload: React.FC = () => {
           progress = 100;
           clearInterval(interval);
           dispatch(updateFileStatus({ id: newFile.id, status: 'success' }));
-          message.success(`${file.name} uploaded successfully!`);
+          setSuccessMessage('Uploaded successfully!');
+          setTimeout(() => setSuccessMessage(''), 5000);
         }
       }, 500);
 
@@ -107,6 +109,22 @@ const Upload: React.FC = () => {
       <h2 style={{ fontSize: '24px', fontWeight: 600, color: '#722ed1', marginBottom: 24 }}>
         {translate('uploadFiles')}
       </h2>
+
+      {/* Success Message */}
+      {successMessage && (
+        <Alert
+          message={successMessage}
+          type="success"
+          showIcon
+          closable
+          onClose={() => setSuccessMessage('')}
+          style={{
+            marginBottom: 24,
+            borderRadius: 8,
+            animation: 'slideInDown 0.5s ease-out'
+          }}
+        />
+      )}
 
       {/* Type Selection */}
       <div style={{ marginBottom: 24 }}>
