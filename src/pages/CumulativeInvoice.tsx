@@ -364,7 +364,7 @@ const CumulativeInvoice: React.FC = () => {
             marginBottom: 24 
           }}>
             <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', marginBottom: 16 }}>
-              <div style={{ minWidth: 250 }}>
+              <div style={{ minWidth: 250, position: 'relative' }}>
                 <Button
                   onClick={handleInvoiceToggle}
                   style={{ 
@@ -408,6 +408,121 @@ const CumulativeInvoice: React.FC = () => {
                     }}>i</span>
                   </div>
                 )}
+
+                {/* Modal-like overlay when expanded */}
+                {isInvoiceExpanded && (
+                  <>
+                    {/* Backdrop */}
+                    <div 
+                      style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundColor: 'rgba(0, 0, 0, 0.45)',
+                        zIndex: 1000
+                      }}
+                      onClick={() => setIsInvoiceExpanded(false)}
+                    />
+                    
+                    {/* Modal Card */}
+                    <div style={{
+                      position: 'fixed',
+                      top: '50%',
+                      left: '50%',
+                      transform: 'translate(-50%, -50%)',
+                      background: 'white',
+                      borderRadius: 8,
+                      boxShadow: '0 4px 24px rgba(0, 0, 0, 0.15)',
+                      width: 432,
+                      maxHeight: '80vh',
+                      overflow: 'auto',
+                      zIndex: 1001
+                    }}>
+                      {/* Header with close button */}
+                      <div style={{
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        padding: '16px 16px 0 16px'
+                      }}>
+                        <Button 
+                          type="text"
+                          onClick={() => setIsInvoiceExpanded(false)}
+                          style={{
+                            color: '#999',
+                            fontSize: '16px',
+                            width: 24,
+                            height: 24,
+                            padding: 0,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                          }}
+                        >
+                          ×
+                        </Button>
+                      </div>
+
+                      {/* Content */}
+                      <div style={{ padding: '0 24px 24px 24px' }}>
+                        <div style={{ marginBottom: 16 }}>
+                          <div style={{ 
+                            fontSize: '16px', 
+                            fontWeight: 500, 
+                            marginBottom: 16,
+                            color: '#000'
+                          }}>
+                            Enter Invoice No
+                          </div>
+                          <Input.TextArea
+                            value={invoiceText}
+                            onChange={(e) => setInvoiceText(e.target.value)}
+                            placeholder=""
+                            rows={6}
+                            style={{ 
+                              resize: 'none',
+                              borderRadius: 6,
+                              fontSize: '14px'
+                            }}
+                          />
+                        </div>
+
+                        <div style={{ marginBottom: 24 }}>
+                          <div style={{ 
+                            fontSize: '14px', 
+                            color: '#666',
+                            padding: '12px',
+                            background: '#f8f9fa',
+                            borderRadius: 6,
+                            border: '1px solid #e9ecef'
+                          }}>
+                            <span style={{ fontWeight: 600, color: '#000' }}>Example : </span>
+                            123456,123456
+                          </div>
+                        </div>
+
+                        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                          <Button 
+                            type="primary" 
+                            onClick={handleInvoiceSubmit}
+                            style={{ 
+                              backgroundColor: '#4f46e5',
+                              borderColor: '#4f46e5',
+                              borderRadius: 6,
+                              fontWeight: 500,
+                              height: 40,
+                              paddingLeft: 24,
+                              paddingRight: 24
+                            }}
+                          >
+                            Submit
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
               
               <Select
@@ -435,64 +550,6 @@ const CumulativeInvoice: React.FC = () => {
                 Reset all
               </Button>
             </div>
-
-            {/* Expanded Form */}
-            {isInvoiceExpanded && (
-              <div style={{
-                background: 'white',
-                border: '1px solid #d9d9d9',
-                borderRadius: 6,
-                padding: 16,
-                marginTop: 16
-              }}>
-                <div style={{ marginBottom: 16 }}>
-                  <div style={{ 
-                    fontSize: '14px', 
-                    fontWeight: 500, 
-                    marginBottom: 8,
-                    color: '#333'
-                  }}>
-                    Enter Invoice No
-                  </div>
-                  <Input.TextArea
-                    value={invoiceText}
-                    onChange={(e) => setInvoiceText(e.target.value)}
-                    placeholder=""
-                    rows={4}
-                    style={{ 
-                      resize: 'none',
-                      borderRadius: 6
-                    }}
-                  />
-                </div>
-
-                <div style={{ marginBottom: 16 }}>
-                  <div style={{ 
-                    fontSize: '12px', 
-                    color: '#666',
-                    padding: '8px 12px',
-                    background: '#f5f5f5',
-                    borderRadius: 4,
-                    border: '1px solid #e0e0e0'
-                  }}>
-                    <strong>Example :</strong> 123456,123456
-                  </div>
-                </div>
-
-                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
-                  <Button 
-                    type="primary" 
-                    onClick={handleInvoiceSubmit}
-                    style={{ 
-                      backgroundColor: '#4f46e5',
-                      borderColor: '#4f46e5'
-                    }}
-                  >
-                    Submit
-                  </Button>
-                </div>
-              </div>
-            )}
           </div>
         );
 
