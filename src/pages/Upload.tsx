@@ -103,7 +103,17 @@ const Upload: React.FC = () => {
       key: 'non-ayp',
       label: 'Non-AYP Bookings',
       children: (
-        <div style={{ textAlign: 'center', color: '#666', fontSize: '14px', marginBottom: 16 }}>
+        <div style={{ 
+          textAlign: 'left', 
+          color: '#666', 
+          fontSize: '14px', 
+          marginTop: 16,
+          marginBottom: 16,
+          padding: '12px 16px',
+          background: '#e6f3ff',
+          borderRadius: '8px',
+          border: '1px solid #91d5ff'
+        }}>
           <InfoCircleOutlined style={{ color: '#1890ff', marginRight: 8 }} />
           Kindly upload the file downloaded from GSTR-2A of respective travel agencies for reconciliation of the booking fees.
         </div>
@@ -113,7 +123,17 @@ const Upload: React.FC = () => {
       key: 'gstr-2a',
       label: 'GSTR-2A',
       children: (
-        <div style={{ textAlign: 'center', color: '#666', fontSize: '14px', marginBottom: 16 }}>
+        <div style={{ 
+          textAlign: 'left', 
+          color: '#666', 
+          fontSize: '14px', 
+          marginTop: 16,
+          marginBottom: 16,
+          padding: '12px 16px',
+          background: '#e6f3ff',
+          borderRadius: '8px',
+          border: '1px solid #91d5ff'
+        }}>
           <InfoCircleOutlined style={{ color: '#1890ff', marginRight: 8 }} />
           Upload GSTR-2A data for tax reconciliation purposes.
         </div>
@@ -123,13 +143,6 @@ const Upload: React.FC = () => {
 
   return (
     <div className="slide-up" style={{ padding: '24px', background: '#f5f5f5', minHeight: '100vh' }}>
-      {/* Breadcrumb */}
-      <div style={{ marginBottom: 16, fontSize: '14px', color: '#666' }}>
-        <span>{translate('home')}</span>
-        <span style={{ margin: '0 8px' }}>»</span>
-        <span>{translate('upload')}</span>
-      </div>
-
       {/* Page Title */}
       <h2 style={{ fontSize: '24px', fontWeight: 600, color: '#722ed1', marginBottom: 24 }}>
         {translate('uploadFiles')}
@@ -208,15 +221,32 @@ const Upload: React.FC = () => {
           </div>
 
           {/* Upload Area */}
-          <div style={{
-            border: '2px dashed #d9d9d9',
-            borderRadius: 8,
-            background: '#fafafa',
-            marginBottom: 16,
-            minHeight: 200,
-            position: 'relative',
-            overflow: 'hidden'
-          }}>
+          <div 
+            className="upload-area-hover"
+            style={{
+              border: '2px dashed #d9d9d9',
+              borderRadius: 8,
+              background: '#fafafa',
+              marginBottom: 16,
+              minHeight: 160,
+              position: 'relative',
+              overflow: 'hidden',
+              transition: 'all 0.3s ease',
+              cursor: 'pointer'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = '#4f46e5';
+              e.currentTarget.style.background = '#f8f9ff';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(79, 70, 229, 0.15)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = '#d9d9d9';
+              e.currentTarget.style.background = '#fafafa';
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+          >
             {/* Files are uploading section */}
             {files.length > 0 && (
               <div style={{
@@ -236,32 +266,33 @@ const Upload: React.FC = () => {
             )}
 
             <div style={{
-              padding: '40px 20px',
+              padding: '30px 20px',
               textAlign: 'center',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              minHeight: 160
+              minHeight: 120
             }}>
               <div style={{
-                width: 60,
-                height: 60,
+                width: 48,
+                height: 48,
                 background: '#1890ff',
                 borderRadius: '50%',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                marginBottom: 16
+                marginBottom: 12,
+                transition: 'all 0.3s ease'
               }}>
-                <PlusOutlined style={{ color: 'white', fontSize: 24 }} />
+                <PlusOutlined style={{ color: 'white', fontSize: 20 }} />
               </div>
               
-              <div style={{ fontSize: '16px', color: '#333', marginBottom: 16 }}>
+              <div style={{ fontSize: '16px', color: '#333', marginBottom: 12 }}>
                 Drag & drop your file here
               </div>
               
-              <div style={{ fontSize: '14px', color: '#666', marginBottom: 16 }}>
+              <div style={{ fontSize: '14px', color: '#666', marginBottom: 12 }}>
                 or
               </div>
               
