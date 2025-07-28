@@ -148,7 +148,12 @@ const Reconciliation: React.FC = () => {
     },
   ];
 
-  // Function to generate all columns
+  // Filter visible columns
+  const visibleColumnsData = allColumns.filter(col => 
+    col.key === 'filter' || visibleColumns[col.key as keyof typeof visibleColumns]
+  );
+
+  // Function to generate all columns (moved after allColumns definition)
   const getAllColumns = () => {
     return [
       'supplierName',
@@ -160,11 +165,6 @@ const Reconciliation: React.FC = () => {
       'status'
     ].map(key => allColumns.find(col => col.key === key)).filter(Boolean);
   };
-
-  // Filter visible columns
-  const visibleColumnsData = allColumns.filter(col => 
-    col.key === 'filter' || visibleColumns[col.key as keyof typeof visibleColumns]
-  );
 
   const mockData = [
     {
