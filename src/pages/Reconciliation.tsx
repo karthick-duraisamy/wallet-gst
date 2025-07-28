@@ -33,6 +33,7 @@ const Reconciliation: React.FC = () => {
     { label: 'Invoice received', count: 0 },
   ];
 
+  // Initialize visible columns state with all columns visible by default
   const [visibleColumns, setVisibleColumns] = useState({
     supplierName: true,
     pnrTicketNumber: true,
@@ -42,8 +43,10 @@ const Reconciliation: React.FC = () => {
     taxClaimable: true,
     status: true,
   });
+
   const [filterDropdownVisible, setFilterDropdownVisible] = useState(false);
 
+  // Define all available columns first
   const allColumns = [
     {
       title: translate('supplierName'),
@@ -145,6 +148,20 @@ const Reconciliation: React.FC = () => {
     },
   ];
 
+  // Function to generate all columns
+  const getAllColumns = () => {
+    return [
+      'supplierName',
+      'pnrTicketNumber', 
+      'invoiceNumber',
+      'invoiceDate',
+      'type',
+      'taxClaimable',
+      'status'
+    ].map(key => allColumns.find(col => col.key === key)).filter(Boolean);
+  };
+
+  // Filter visible columns
   const visibleColumnsData = allColumns.filter(col => 
     col.key === 'filter' || visibleColumns[col.key as keyof typeof visibleColumns]
   );
