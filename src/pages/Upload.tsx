@@ -329,30 +329,34 @@ const Upload: React.FC = () => {
               {/* Right side - Progress display */}
               {files.length > 0 && (
                 <div style={{
-                  width: '200px',
-                  padding: '16px',
-                  background: 'white',
-                  borderRadius: '8px',
+                  width: '220px',
+                  padding: '20px',
+                  background: 'rgba(255, 255, 255, 0.95)',
+                  borderRadius: '12px',
                   border: '1px solid #e8e8e8',
-                  marginRight: '16px'
+                  marginRight: '20px',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                  backdropFilter: 'blur(8px)'
                 }}>
                   <div style={{ 
                     fontSize: '14px', 
-                    fontWeight: 500, 
+                    fontWeight: 600, 
                     color: '#333',
-                    marginBottom: '12px' 
+                    marginBottom: '16px',
+                    textAlign: 'center'
                   }}>
                     Upload Progress
                   </div>
                   {files.map((file) => (
-                    <div key={file.id} style={{ marginBottom: '8px' }}>
+                    <div key={file.id} style={{ marginBottom: '12px' }}>
                       <div style={{ 
                         fontSize: '12px', 
                         color: '#666',
-                        marginBottom: '4px',
+                        marginBottom: '6px',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap'
+                        whiteSpace: 'nowrap',
+                        fontWeight: 500
                       }}>
                         {file.name}
                       </div>
@@ -361,6 +365,7 @@ const Upload: React.FC = () => {
                         size="small"
                         status={file.status === 'success' ? 'success' : 'active'}
                         format={(percent) => `${Math.floor(percent || 0)}%`}
+                        strokeColor={file.status === 'success' ? '#52c41a' : '#1890ff'}
                       />
                     </div>
                   ))}
@@ -392,7 +397,7 @@ const Upload: React.FC = () => {
             </Button>
           </Dragger>
 
-            {/* Inline file display */}
+            {/* Simplified file display without progress */}
             {files.length > 0 && (
               <div style={{
                 borderTop: '1px solid #e8e8e8',
@@ -447,33 +452,6 @@ const Upload: React.FC = () => {
                       </div>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                      {file.status === 'uploading' && (
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                          <Progress 
-                            percent={uploadProgress[file.id] || 0}
-                            size="small"
-                            style={{ width: 100 }}
-                            showInfo={false}
-                          />
-                          <span style={{ fontSize: '12px', fontWeight: 500, color: '#666', minWidth: '35px' }}>
-                            {Math.floor(uploadProgress[file.id] || 0)}%
-                          </span>
-                        </div>
-                      )}
-                      {file.status === 'success' && (
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                          <Progress 
-                            percent={100} 
-                            size="small"
-                            status="success"
-                            style={{ width: 100 }}
-                            showInfo={false}
-                          />
-                          <span style={{ fontSize: '12px', fontWeight: 500, color: '#52c41a', minWidth: '35px' }}>
-                            100%
-                          </span>
-                        </div>
-                      )}
                       <CloseOutlined 
                         style={{ color: '#ff4d4f', cursor: 'pointer', fontSize: 12 }}
                         onClick={() => handleRemoveFile(file.id)}
