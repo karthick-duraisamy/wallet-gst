@@ -98,7 +98,6 @@ const CumulativeInvoice: React.FC = () => {
     invoiceDate: true,
     type: true,
     travelVendor: true,
-    action: true,
   });
   const [filterDropdownVisible, setFilterDropdownVisible] = useState(false);
 
@@ -108,88 +107,43 @@ const CumulativeInvoice: React.FC = () => {
       title: translate('supplierName'),
       dataIndex: 'supplierName',
       key: 'supplierName',
+      width: 150,
       render: (text: string) => text || 'Spice Jet',
     },
     {
       title: translate('pnrTicketNumber'),
       dataIndex: 'pnrTicketNo',
       key: 'pnrTicketNo',
+      width: 150,
       render: (text: string) => text || 'ADA123',
     },
     {
       title: translate('invoiceNumber'),
       dataIndex: 'invoiceNo',
       key: 'invoiceNo',
+      width: 180,
       render: (text: string) => text || 'INV123456',
     },
     {
       title: translate('invoiceDate'),
       dataIndex: 'invoiceDate',
       key: 'invoiceDate',
+      width: 130,
       render: (text: string) => text || '15-Jan-2024',
     },
     {
       title: translate('type'),
       dataIndex: 'type',
       key: 'type',
+      width: 120,
       render: (text: string) => text || 'Invoice',
     },
     {
       title: translate('travelVendor'),
       dataIndex: 'travelVendor',
       key: 'travelVendor',
+      width: 150,
       render: (text: string) => text || 'AtYourPrice',
-    },
-    {
-      title: 'Action',
-      dataIndex: 'action',
-      key: 'action',
-      align: 'center' as const,
-      render: () => 'Edit',
-    },
-    {
-      title: (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <Button
-            type="text"
-            icon={<FilterOutlined />}
-            onClick={() => setFilterDropdownVisible(!filterDropdownVisible)}
-            style={{ border: 'none', padding: 0, background: 'transparent' }}
-          />
-          {filterDropdownVisible && (
-            <div style={{
-              position: 'absolute',
-              top: '100%',
-              right: 0,
-              background: 'white',
-              border: '1px solid #d9d9d9',
-              borderRadius: 6,
-              padding: 16,
-              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-              zIndex: 1000,
-              minWidth: 200
-            }}>
-              <div style={{ marginBottom: 8, fontWeight: 600 }}>Show/Hide Columns</div>
-              {Object.keys(visibleColumns).map((key) => (
-                <div key={key} style={{ marginBottom: 8 }}>
-                  <Checkbox
-                    checked={visibleColumns[key as keyof typeof visibleColumns]}
-                    onChange={(e) => setVisibleColumns(prev => ({
-                      ...prev,
-                      [key]: e.target.checked
-                    }))}
-                  >
-                    {allColumns.find(col => col.key === key)?.title}
-                  </Checkbox>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      ),
-      key: 'filter',
-      width: 60,
-      render: () => null,
     },
   ];
 
@@ -198,7 +152,7 @@ const CumulativeInvoice: React.FC = () => {
 
   // Filter visible columns
   const visibleColumnsData = allColumns.filter(col => 
-    col.key === 'filter' || visibleColumns[col.key as keyof typeof visibleColumns]
+    visibleColumns[col.key as keyof typeof visibleColumns]
   );
 
   const mockData = [
@@ -1019,7 +973,7 @@ const CumulativeInvoice: React.FC = () => {
             size="middle"
             bordered={false}
             className="custom-table"
-            tableLayout="fixed"
+            scroll={{ x: 1000 }}
           />
 
           {/* Custom Pagination Footer */}
