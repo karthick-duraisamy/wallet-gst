@@ -33,55 +33,61 @@ const Reconciliation: React.FC = () => {
     { label: 'Invoice received', count: 0 },
   ];
 
-  const columns = [
+  // Initialize visible columns state with all columns visible by default
+  const [visibleColumns, setVisibleColumns] = useState({
+    supplierName: true,
+    pnrTicketNumber: true,
+    invoiceNumber: true,
+    invoiceDate: true,
+    type: true,
+    taxClaimable: true,
+    status: true,
+  });
+
+  const [filterDropdownVisible, setFilterDropdownVisible] = useState(false);
+
+  // Define all available columns first
+  const allColumns = [
     {
       title: translate('supplierName'),
       dataIndex: 'supplierName',
       key: 'supplierName',
-      width: 150,
       sorter: true,
-      ellipsis: true,
-      render: (text: string) => text || 'N/A',
+      render: (text: string) => text || 'Spice Jet',
     },
     {
       title: translate('pnrTicketNumber'),
       dataIndex: 'pnrTicketNumber',
       key: 'pnrTicketNumber',
-      width: 120,
-      ellipsis: true,
-      render: (text: string) => text || 'N/A',
+      render: (text: string) => text || 'ADA123',
     },
     {
       title: translate('invoiceNumber'),
       dataIndex: 'invoiceNumber',
       key: 'invoiceNumber',
-      width: 150,
-      ellipsis: true,
-      render: (text: string) => text || 'N/A',
+      render: (text: string) => text || 'INV0BET333738',
     },
     {
       title: translate('invoiceDate'),
       dataIndex: 'invoiceDate',
       key: 'invoiceDate',
-      width: 110,
       sorter: true,
+      render: (text: string) => text || '31-Jan-2020',
     },
     {
       title: translate('type'),
       dataIndex: 'type',
       key: 'type',
-      width: 100,
       render: (type: string) => type || translate('taxInvoice'),
     },
     {
       title: translate('taxClaimable'),
       dataIndex: 'taxClaimable',
       key: 'taxClaimable',
-      width: 120,
       align: 'right' as const,
       render: (amount: number) => (
         <span style={{ color: '#52c41a', fontWeight: 600 }}>
-          ₹ {amount ? amount.toLocaleString() : '0'}
+          ₹ {amount ? amount.toLocaleString() : '2,627'}
         </span>
       ),
       sorter: true,
@@ -90,20 +96,81 @@ const Reconciliation: React.FC = () => {
       title: translate('status'),
       dataIndex: 'status',
       key: 'status',
-      width: 180,
       render: (status: string) => (
         <Tag color="#722ed1" style={{ borderRadius: '12px' }}>
           {translate('additionalInGSTR2A')}
         </Tag>
       ),
     },
+    {
+      title: (
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Button
+            type="text"
+            icon={<FilterOutlined />}
+            onClick={() => setFilterDropdownVisible(!filterDropdownVisible)}
+            style={{ border: 'none', padding: 0, background: 'transparent' }}
+          />
+          {filterDropdownVisible && (
+            <div style={{
+              position: 'absolute',
+              top: '100%',
+              right: 0,
+              background: 'white',
+              border: '1px solid #d9d9d9',
+              borderRadius: 6,
+              padding: 16,
+              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+              zIndex: 1000,
+              minWidth: 200
+            }}>
+              <div style={{ marginBottom: 8, fontWeight: 600 }}>Show/Hide Columns</div>
+              {Object.keys(visibleColumns).map((key) => (
+                <div key={key} style={{ marginBottom: 8 }}>
+                  <Checkbox
+                    checked={visibleColumns[key as keyof typeof visibleColumns]}
+                    onChange={(e) => setVisibleColumns(prev => ({
+                      ...prev,
+                      [key]: e.target.checked
+                    }))}
+                  >
+                    {allColumns.find(col => col.key === key)?.title}
+                  </Checkbox>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      ),
+      key: 'filter',
+      width: 60,
+      render: () => null,
+    },
   ];
+
+  // Filter visible columns
+  const visibleColumnsData = allColumns.filter(col => 
+    col.key === 'filter' || visibleColumns[col.key as keyof typeof visibleColumns]
+  );
+
+  // Function to generate all columns (moved after allColumns definition)
+  const getAllColumns = () => {
+    return [
+      'supplierName',
+      'pnrTicketNumber', 
+      'invoiceNumber',
+      'invoiceDate',
+      'type',
+      'taxClaimable',
+      'status'
+    ].map(key => allColumns.find(col => col.key === key)).filter(Boolean);
+  };
 
   const mockData = [
     {
       key: '1',
-      supplierName: 'N/A',
-      pnrTicketNumber: 'N/A',
+      supplierName: 'Spice Jet',
+      pnrTicketNumber: 'ADA123',
       invoiceNumber: 'INV0BET333738',
       invoiceDate: '31-Jan-2020',
       type: 'Tax invoice',
@@ -112,8 +179,8 @@ const Reconciliation: React.FC = () => {
     },
     {
       key: '2',
-      supplierName: 'N/A',
-      pnrTicketNumber: 'N/A',
+      supplierName: 'IndiGo',
+      pnrTicketNumber: 'BCD456',
       invoiceNumber: 'INV1215645',
       invoiceDate: '10-Jan-2020',
       type: 'Tax invoice',
@@ -122,8 +189,8 @@ const Reconciliation: React.FC = () => {
     },
     {
       key: '3',
-      supplierName: 'N/A',
-      pnrTicketNumber: 'N/A',
+      supplierName: 'Air India',
+      pnrTicketNumber: 'EFG789',
       invoiceNumber: 'DL1212290AT85932',
       invoiceDate: '08-Oct-2021',
       type: 'Tax invoice',
@@ -132,8 +199,8 @@ const Reconciliation: React.FC = () => {
     },
     {
       key: '4',
-      supplierName: 'N/A',
-      pnrTicketNumber: 'N/A',
+      supplierName: 'Vistara',
+      pnrTicketNumber: 'HIJ012',
       invoiceNumber: 'DL1212290AU77270',
       invoiceDate: '13-Oct-2021',
       type: 'Tax invoice',
@@ -142,8 +209,8 @@ const Reconciliation: React.FC = () => {
     },
     {
       key: '5',
-      supplierName: 'N/A',
-      pnrTicketNumber: 'N/A',
+      supplierName: 'GoAir',
+      pnrTicketNumber: 'KLM345',
       invoiceNumber: 'DL1212290AU02058',
       invoiceDate: '09-Oct-2021',
       type: 'Tax invoice',
@@ -324,7 +391,7 @@ const Reconciliation: React.FC = () => {
       {/* Data Table */}
       <Card style={{ borderRadius: 8, boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
         <Table
-          columns={columns}
+          columns={visibleColumnsData}
           dataSource={mockData}
           pagination={{
             current: 1,
@@ -357,10 +424,10 @@ const Reconciliation: React.FC = () => {
               return originalElement;
             },
           }}
-          scroll={{ x: 1100, y: 400 }}
           size="middle"
           bordered={false}
           className="custom-table"
+          tableLayout="fixed"
         />
 
         {/* Custom Pagination Footer */}

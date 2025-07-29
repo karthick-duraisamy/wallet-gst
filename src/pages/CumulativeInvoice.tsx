@@ -12,896 +12,414 @@ import {
   Table,
   Checkbox,
   Tag,
-  DatePicker
+  DatePicker,
+  Dropdown,
+  MenuProps
 } from 'antd';
-import { SearchOutlined, DownloadOutlined, CalendarOutlined } from '@ant-design/icons';
+import { SearchOutlined, DownloadOutlined, CalendarOutlined, FilterOutlined } from '@ant-design/icons';
 import { useTheme } from '../contexts/ThemeContext';
 
 const { Title, Text } = Typography;
 const { TextArea } = Input;
 const { Option } = Select;
+const { RangePicker } = DatePicker;
 
 const CumulativeInvoice: React.FC = () => {
-  const [entityType, setEntityType] = useState('agency');
-  const [activeTab, setActiveTab] = useState('upload-pnr');
+  const { translate, isDarkMode } = useTheme();
+  const [activeTab, setActiveTab] = useState('upload');
   const [uploadType, setUploadType] = useState('pnr');
-  const [pnrInput, setPnrInput] = useState('');
-  const [invoiceType, setInvoiceType] = useState('all');
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const { translate } = useTheme();
-
-  // Form states
-  const [isInvoiceExpanded, setIsInvoiceExpanded] = useState(false);
-  const [invoiceText, setInvoiceText] = useState('');
-  const [isPnrDropdownOpen, setIsPnrDropdownOpen] = useState(false);
-  const [pnrTicketType, setPnrTicketType] = useState('pnr');
-  const [pnrTicketText, setPnrTicketText] = useState('');
-
-  const handleSubmit = () => {
-    console.log('Submit clicked');
-  };
-
-  const handleResetAll = () => {
-    setPnrInput('');
-    setInvoiceType('all');
-    setUploadType('pnr');
-  };
-
-  const handleInvoiceToggle = () => {
-    setIsInvoiceExpanded(!isInvoiceExpanded);
-  };
-
-  const handleInvoiceSubmit = () => {
-    // Process the invoiceText data here
-    console.log('Invoice data:', invoiceText);
-    setIsInvoiceExpanded(false);
-  };
-
-  const handlePnrDropdownClick = () => {
-    setIsPnrDropdownOpen(!isPnrDropdownOpen);
-  };
-
-  const handlePnrDropdownSubmit = () => {
-    // Process the pnrTicketText data here
-    console.log('PNR/Ticket data:', pnrTicketText);
-    setIsPnrDropdownOpen(false);
-  };
-
-  const tabItems = [
-    {
-      key: 'upload-pnr',
-      label: translate('uploadPNRTicket'),
-    },
-    {
-      key: 'upload-invoice',
-      label: translate('uploadInvoiceNo'),
-    },
-    {
-      key: 'pnr-ticket',
-      label: translate('pnrTicket'),
-    },
-    {
-      key: 'tax-invoice-range',
-      label: translate('showOnTaxInvoiceRange'),
-    },
-  ];
-
-  // Table columns
-  const columns = [
-    {
-      title: translate('supplierName'),
-      dataIndex: 'supplierName',
-      key: 'supplierName',
-      width: 140,
-      ellipsis: true,
-      render: (text: string) => text || 'Spice Jet',
-    },
-    {
-      title: translate('pnrTicketNumber'),
-      dataIndex: 'pnrTicketNo',
-      key: 'pnrTicketNo',
-      width: 120,
-      ellipsis: true,
-      render: (text: string) => text || 'ADA',
-    },
-    {
-      title: translate('invoiceNumber'),
-      dataIndex: 'invoiceNo',
-      key: 'invoiceNo',
-      width: 130,
-      ellipsis: true,
-      render: (text: string) => text || 'N/A',
-    },
-    {
-      title: translate('invoiceDate'),
-      dataIndex: 'invoiceDate',
-      key: 'invoiceDate',
-      width: 110,
-      render: (text: string) => text || 'N/A',
-    },
-    {
-      title: translate('type'),
-      dataIndex: 'type',
-      key: 'type',
-      width: 100,
-      render: (text: string) => text || 'Invoice',
-    },
-    {
-      title: translate('travelVendor'),
-      dataIndex: 'travelVendor',
-      key: 'travelVendor',
-      width: 120,
-      ellipsis: true,
-      render: (text: string) => text || 'AtYourPrice',
-    },
-    {
-      title: 'Action',
-      dataIndex: 'action',
-      key: 'action',
-      width: 80,
-      align: 'center' as const,
-      render: () => '-',
-    },
-  ];
+  const [dateRange, setDateRange] = useState(null);
+  const [searchText, setSearchText] = useState('');
+  const [selectedAirlines, setSelectedAirlines] = useState<string[]>([]);
+  const [selectedState, setSelectedState] = useState('all');
+  const [travelMode, setTravelMode] = useState('flight');
 
   // Mock data for the table
   const mockData = [
     {
       key: '1',
-      supplierName: 'Spice Jet',
-      pnrTicketNo: 'ADA',
-      invoiceNo: 'N/A',
-      invoiceDate: 'N/A',
-      type: 'Invoice',
-      travelVendor: 'AtYourPrice',
+      supplierName: 'Air India',
+      pnrTicketNumber: 'AI123456',
+      invoiceNumber: 'INV001',
+      invoiceDate: '2024-01-15',
+      type: 'Tax Invoice',
+      taxClaimable: '₹5,000',
+      status: 'New',
+      airlines: 'Air India',
+      placeOfSupply: 'Mumbai',
     },
     {
       key: '2',
-      supplierName: 'Spice Jet',
-      pnrTicketNo: 'N/A',
-      invoiceNo: 'N/A',
-      invoiceDate: 'N/A',
-      type: 'Credit note',
-      travelVendor: 'AtYourPrice',
-    },
-    {
-      key: '3',
-      supplierName: 'Spice Jet',
-      pnrTicketNo: 'ASSA',
-      invoiceNo: 'N/A',
-      invoiceDate: 'N/A',
-      type: 'Invoice',
-      travelVendor: 'AtYourPrice',
-    },
-    {
-      key: '4',
-      supplierName: 'Spice Jet',
-      pnrTicketNo: 'ASAS',
-      invoiceNo: 'N/A',
-      invoiceDate: 'N/A',
-      type: 'Invoice',
-      travelVendor: 'AtYourPrice',
-    },
-    {
-      key: '5',
-      supplierName: 'Vistara',
-      pnrTicketNo: 'ASAS',
-      invoiceNo: 'N/A',
-      invoiceDate: 'N/A',
-      type: 'Invoice',
-      travelVendor: 'AtYourPrice',
+      supplierName: 'IndiGo',
+      pnrTicketNumber: '6E789012',
+      invoiceNumber: 'INV002',
+      invoiceDate: '2024-01-16',
+      type: 'Credit Note',
+      taxClaimable: '₹3,500',
+      status: 'Matched',
+      airlines: 'IndiGo',
+      placeOfSupply: 'Delhi',
     },
   ];
 
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: (newSelectedRowKeys: React.Key[]) => {
-      setSelectedRowKeys(newSelectedRowKeys);
+  // Initialize visible columns state with all columns visible by default
+  const [visibleColumns, setVisibleColumns] = useState({
+    supplierName: true,
+    pnrTicketNumber: true,
+    invoiceNumber: true,
+    invoiceDate: true,
+    type: true,
+    taxClaimable: true,
+    status: true,
+    airlines: true,
+    placeOfSupply: true,
+  });
+  const [filterDropdownVisible, setFilterDropdownVisible] = useState(false);
+
+  // Define all available columns
+  const allColumnsDefinition = [
+    {
+      title: translate('supplierName'),
+      dataIndex: 'supplierName',
+      key: 'supplierName',
     },
-  };
+    {
+      title: translate('pnrTicketNumber'),
+      dataIndex: 'pnrTicketNumber',
+      key: 'pnrTicketNumber',
+    },
+    {
+      title: translate('invoiceNumber'),
+      dataIndex: 'invoiceNumber',
+      key: 'invoiceNumber',
+    },
+    {
+      title: translate('invoiceDate'),
+      dataIndex: 'invoiceDate',
+      key: 'invoiceDate',
+    },
+    {
+      title: translate('type'),
+      dataIndex: 'type',
+      key: 'type',
+    },
+    {
+      title: translate('taxClaimable'),
+      dataIndex: 'taxClaimable',
+      key: 'taxClaimable',
+    },
+    {
+      title: translate('status'),
+      dataIndex: 'status',
+      key: 'status',
+      render: (status: string) => {
+        const statusColors = {
+          'New': 'blue',
+          'Matched': 'green',
+          'Pending to file': 'orange',
+          'Invoice missing': 'red',
+          'Additional in GSTR-2A': 'purple',
+          'Invoice received': 'cyan',
+        };
+        return <Tag color={statusColors[status as keyof typeof statusColors]}>{status}</Tag>;
+      },
+    },
+    {
+      title: translate('airlines'),
+      dataIndex: 'airlines',
+      key: 'airlines',
+    },
+    {
+      title: translate('placeOfSupply'),
+      dataIndex: 'placeOfSupply',
+      key: 'placeOfSupply',
+    },
+    {
+      title: '',
+      key: 'filter',
+      width: 50,
+      render: () => null,
+    },
+  ];
 
-  const renderTabContent = () => {
-    switch (activeTab) {
-      case 'upload-pnr':
-        return (
-          <div style={{ 
-            backgroundColor: '#f8f9fa', 
-            border: '1px solid #e9ecef', 
-            borderRadius: 6, 
-            padding: 16, 
-            marginBottom: 24 
-          }}>
-            <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', marginBottom: 16 }}>
-              <div style={{ minWidth: 320, width: '100%', maxWidth: 400 }}>
-                <Button
-                  onClick={handlePnrDropdownClick}
-                  style={{ 
-                    width: '100%',
-                    height: 40,
-                    textAlign: 'left',
-                    border: 'none',
-                    background: '#f5f5f5',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    boxShadow: 'none',
-                    borderRadius: 6
-                  }}
-                >
-                  <span style={{ color: '#4f46e5', fontWeight: 500 }}>{translate('uploadMultiplePNR')}</span>
-                  <span style={{ 
-                    transform: isPnrDropdownOpen ? 'rotate(0deg)' : 'rotate(180deg)',
-                    transition: 'transform 0.3s ease',
-                    color: '#4f46e5'
-                  }}>▲</span>
-                </Button>
-                
-                {/* Count display below button */}
-                <div style={{ 
-                  fontSize: '14px', 
-                  color: '#8B949E', 
-                  marginTop: 8,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 6
-                }}>
-                  <span>60 Ticket No Submitted</span>
-                  <span style={{ 
-                    width: 18, 
-                    height: 18, 
-                    borderRadius: '50%', 
-                    background: '#8B949E',
-                    color: 'white',
-                    fontSize: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                    fontWeight: 'bold'
-                  }}>i</span>
-                </div>
-                
-                {/* Expanding content below */}
-                {isPnrDropdownOpen && (
-                  <div style={{
-                    marginTop: 20,
-                    background: 'white',
-                    border: '1px solid #e1e5e9',
-                    borderRadius: 8,
-                    padding: 20,
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                    position: 'relative',
-                    width: '100%'
-                  }}>
-                    {/* Close button */}
-                    <Button 
-                      type="text"
-                      onClick={() => setIsPnrDropdownOpen(false)}
-                      style={{
-                        position: 'absolute',
-                        top: 12,
-                        right: 12,
-                        color: '#8B949E',
-                        fontSize: '18px',
-                        width: 24,
-                        height: 24,
-                        padding: 0,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        border: 'none',
-                        background: 'transparent'
+  // Filter visible columns
+  const visibleColumnsData = allColumnsDefinition.filter(col => 
+    col.key === 'filter' || visibleColumns[col.key as keyof typeof visibleColumns]
+  );
+
+  // Add filter icon to the last column
+  const columnsWithFilter = [...visibleColumnsData];
+  if (columnsWithFilter.length > 0) {
+    const lastColumnIndex = columnsWithFilter.length - 1;
+    columnsWithFilter[lastColumnIndex] = {
+      ...columnsWithFilter[lastColumnIndex],
+      title: (
+        <Dropdown
+          open={filterDropdownVisible}
+          onOpenChange={setFilterDropdownVisible}
+          trigger={['click']}
+          dropdownRender={() => (
+            <div style={{ 
+              padding: '12px', 
+              background: isDarkMode ? '#262626' : '#ffffff',
+              border: `1px solid ${isDarkMode ? '#424242' : '#d9d9d9'}`,
+              borderRadius: '6px',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
+              minWidth: '200px'
+            }}>
+              <div style={{ marginBottom: '8px', fontWeight: 600, color: isDarkMode ? '#ffffff' : '#000000' }}>
+                Show/Hide Columns
+              </div>
+              {allColumnsDefinition
+                .filter(col => col.key !== 'filter')
+                .map(col => (
+                  <div key={col.key} style={{ marginBottom: '8px' }}>
+                    <Checkbox
+                      checked={visibleColumns[col.key as keyof typeof visibleColumns]}
+                      onChange={(e) => {
+                        setVisibleColumns(prev => ({
+                          ...prev,
+                          [col.key]: e.target.checked
+                        }));
                       }}
+                      style={{ color: isDarkMode ? '#ffffff' : '#000000' }}
                     >
-                      ×
-                    </Button>
-
-                    <div style={{ marginBottom: 20, marginTop: 8 }}>
-                      <Radio.Group 
-                        value={pnrTicketType} 
-                        onChange={(e) => setPnrTicketType(e.target.value)}
-                        style={{ display: 'flex', gap: 20 }}
-                      >
-                        <Radio value="pnr" style={{ fontSize: '14px' }}>PNR</Radio>
-                        <Radio value="ticket" style={{ fontSize: '14px' }}>Ticket Number</Radio>
-                      </Radio.Group>
-                    </div>
-
-                    <div style={{ marginBottom: 20 }}>
-                      <div style={{ 
-                        fontSize: '16px', 
-                        fontWeight: 500, 
-                        marginBottom: 12,
-                        color: '#24292f'
-                      }}>
-                        Enter Multiple Ticket No
-                      </div>
-                      <TextArea
-                        value={pnrTicketText}
-                        onChange={(e) => setPnrTicketText(e.target.value)}
-                        placeholder=""
-                        rows={6}
-                        style={{ 
-                          resize: 'none',
-                          borderRadius: 6,
-                          border: '1px solid #d0d7de',
-                          fontSize: '14px'
-                        }}
-                      />
-                    </div>
-
-                    <div style={{ marginBottom: 20 }}>
-                      <div style={{ 
-                        fontSize: '14px', 
-                        color: '#656d76',
-                        padding: '12px 16px',
-                        background: '#f6f8fa',
-                        borderRadius: 6,
-                        border: '1px solid #d0d7de'
-                      }}>
-                        <span style={{ fontWeight: 600, color: '#24292f' }}>Example : </span>
-                        123456,123456
-                      </div>
-                    </div>
-
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12 }}>
-                      <Button 
-                        onClick={() => setIsPnrDropdownOpen(false)}
-                        style={{
-                          borderRadius: 6,
-                          height: 36,
-                          paddingLeft: 16,
-                          paddingRight: 16
-                        }}
-                      >
-                        Cancel
-                      </Button>
-                      <Button 
-                        type="primary" 
-                        onClick={handlePnrDropdownSubmit}
-                        style={{ 
-                          backgroundColor: '#4f46e5',
-                          borderColor: '#4f46e5',
-                          borderRadius: 6,
-                          height: 36,
-                          paddingLeft: 16,
-                          paddingRight: 16,
-                          fontWeight: 500
-                        }}
-                      >
-                        Submit
-                      </Button>
-                    </div>
+                      {col.title}
+                    </Checkbox>
                   </div>
-                )}
-              </div>
-              
-              <Select
-                value={invoiceType}
-                onChange={setInvoiceType}
-                style={{ width: 120 }}
-                size="large"
-              >
-                <Option value="all">{translate('all')}</Option>
-                <Option value="tax-invoice">{translate('taxInvoice')}</Option>
-                <Option value="credit-note">{translate('creditNote')}</Option>
-                <Option value="debit-note">{translate('debitNote')}</Option>
-              </Select>
-              <Button 
-                type="primary"
-                onClick={handleSubmit}
-                size="large"
-              >
-                {translate('submit')}
-              </Button>
-              <Button 
-                onClick={handleResetAll}
-                size="large"
-              >
-                {translate('resetAll')}
-              </Button>
+                ))}
             </div>
-          </div>
-        );
-
-      case 'upload-invoice':
-        return (
-          <div style={{ 
-            backgroundColor: '#f8f9fa', 
-            border: '1px solid #e9ecef', 
-            borderRadius: 6, 
-            padding: 16, 
-            marginBottom: 24 
-          }}>
-            <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', marginBottom: 16 }}>
-              <div style={{ minWidth: 250, position: 'relative' }}>
-                <Button
-                  onClick={handleInvoiceToggle}
-                  style={{ 
-                    width: 250,
-                    height: 40,
-                    textAlign: 'left',
-                    border: '1px solid #d9d9d9',
-                    background: 'white',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between'
-                  }}
-                >
-                  <span>Upload Multiple Invoice No</span>
-                  <span style={{ 
-                    transform: isInvoiceExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
-                    transition: 'transform 0.3s ease'
-                  }}>▲</span>
-                </Button>
-                
-                {invoiceText && !isInvoiceExpanded && (
-                  <div style={{ 
-                    fontSize: '12px', 
-                    color: '#666', 
-                    marginTop: 4,
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 4
-                  }}>
-                    <span>{invoiceText.split(',').filter(item => item.trim()).length} Ticket No Submitted</span>
-                    <span style={{ 
-                      width: 16, 
-                      height: 16, 
-                      borderRadius: '50%', 
-                      background: '#666',
-                      color: 'white',
-                      fontSize: '10px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center'
-                    }}>i</span>
-                  </div>
-                )}
-
-                {/* Modal-like overlay when expanded */}
-                {isInvoiceExpanded && (
-                  <>
-                    {/* Backdrop */}
-                    <div 
-                      style={{
-                        position: 'fixed',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        backgroundColor: 'rgba(0, 0, 0, 0.45)',
-                        zIndex: 1000
-                      }}
-                      onClick={() => setIsInvoiceExpanded(false)}
-                    />
-                    
-                    {/* Modal Card */}
-                    <div style={{
-                      position: 'fixed',
-                      top: '50%',
-                      left: '50%',
-                      transform: 'translate(-50%, -50%)',
-                      background: 'white',
-                      borderRadius: 8,
-                      boxShadow: '0 4px 24px rgba(0, 0, 0, 0.15)',
-                      width: 432,
-                      maxHeight: '80vh',
-                      overflow: 'auto',
-                      zIndex: 1001
-                    }}>
-                      {/* Header with close button */}
-                      <div style={{
-                        display: 'flex',
-                        justifyContent: 'flex-end',
-                        padding: '16px 16px 0 16px'
-                      }}>
-                        <Button 
-                          type="text"
-                          onClick={() => setIsInvoiceExpanded(false)}
-                          style={{
-                            color: '#999',
-                            fontSize: '16px',
-                            width: 24,
-                            height: 24,
-                            padding: 0,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                          }}
-                        >
-                          ×
-                        </Button>
-                      </div>
-
-                      {/* Content */}
-                      <div style={{ padding: '0 24px 24px 24px' }}>
-                        <div style={{ marginBottom: 16 }}>
-                          <div style={{ 
-                            fontSize: '16px', 
-                            fontWeight: 500, 
-                            marginBottom: 16,
-                            color: '#000'
-                          }}>
-                            Enter Invoice No
-                          </div>
-                          <Input.TextArea
-                            value={invoiceText}
-                            onChange={(e) => setInvoiceText(e.target.value)}
-                            placeholder=""
-                            rows={6}
-                            style={{ 
-                              resize: 'none',
-                              borderRadius: 6,
-                              fontSize: '14px'
-                            }}
-                          />
-                        </div>
-
-                        <div style={{ marginBottom: 24 }}>
-                          <div style={{ 
-                            fontSize: '14px', 
-                            color: '#666',
-                            padding: '12px',
-                            background: '#f8f9fa',
-                            borderRadius: 6,
-                            border: '1px solid #e9ecef'
-                          }}>
-                            <span style={{ fontWeight: 600, color: '#000' }}>Example : </span>
-                            123456,123456
-                          </div>
-                        </div>
-
-                        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                          <Button 
-                            type="primary" 
-                            onClick={handleInvoiceSubmit}
-                            style={{ 
-                              backgroundColor: '#4f46e5',
-                              borderColor: '#4f46e5',
-                              borderRadius: 6,
-                              fontWeight: 500,
-                              height: 40,
-                              paddingLeft: 24,
-                              paddingRight: 24
-                            }}
-                          >
-                            Submit
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </>
-                )}
-              </div>
-              
-              <Select
-                value={invoiceType}
-                onChange={setInvoiceType}
-                style={{ width: 120 }}
-                size="large"
-              >
-                <Option value="all">All</Option>
-                <Option value="tax-invoice">Tax Invoice</Option>
-                <Option value="credit-note">Credit Note</Option>
-                <Option value="debit-note">Debit Note</Option>
-              </Select>
-              <Button 
-                type="primary"
-                onClick={handleSubmit}
-                size="large"
-              >
-                Submit
-              </Button>
-              <Button 
-                onClick={handleResetAll}
-                size="large"
-              >
-                Reset all
-              </Button>
-            </div>
-          </div>
-        );
-
-      case 'pnr-ticket':
-        return (
-          <div style={{ 
-            backgroundColor: '#f8f9fa', 
-            border: '1px solid #e9ecef', 
-            borderRadius: 6, 
-            padding: 16, 
-            marginBottom: 24 
-          }}>
-            <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 16 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{ fontSize: '12px', color: '#666' }}>PNR / Ticket no</span>
-                <Input
-                  placeholder="Enter PNR / Ticket no"
-                  style={{ width: 200 }}
-                  size="large"
-                />
-              </div>
-              <Select
-                value={invoiceType}
-                onChange={setInvoiceType}
-                style={{ width: 120 }}
-                size="large"
-              >
-                <Option value="all">All</Option>
-                <Option value="tax-invoice">Tax Invoice</Option>
-                <Option value="credit-note">Credit Note</Option>
-                <Option value="debit-note">Debit Note</Option>
-              </Select>
-              <Button 
-                type="primary"
-                onClick={handleSubmit}
-                size="large"
-              >
-                Submit
-              </Button>
-              <Button 
-                onClick={handleResetAll}
-                size="large"
-              >
-                Reset all
-              </Button>
-            </div>
-          </div>
-        );
-
-      case 'tax-invoice-range':
-        return (
-          <div style={{ 
-            backgroundColor: '#f8f9fa', 
-            border: '1px solid #e9ecef', 
-            borderRadius: 6, 
-            padding: 16, 
-            marginBottom: 24 
-          }}>
-            <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 16, flexWrap: 'wrap' }}>
-              <div>
-                <span style={{ fontSize: '12px', color: '#666', display: 'block', marginBottom: 4 }}>Airlines</span>
-                <Select
-                  defaultValue="all"
-                  style={{ width: 120 }}
-                  size="large"
-                >
-                  <Option value="all">All</Option>
-                  <Option value="spicejet">SpiceJet</Option>
-                  <Option value="indigo">IndiGo</Option>
-                </Select>
-              </div>
-
-              <div>
-                <span style={{ fontSize: '12px', color: '#666', display: 'block', marginBottom: 4 }}>Type</span>
-                <Select
-                  value={invoiceType}
-                  onChange={setInvoiceType}
-                  style={{ width: 120 }}
-                  size="large"
-                >
-                  <Option value="all">All</Option>
-                  <Option value="tax-invoice">Tax Invoice</Option>
-                  <Option value="credit-note">Credit Note</Option>
-                </Select>
-              </div>
-
-              <div>
-                <span style={{ fontSize: '12px', color: '#666', display: 'block', marginBottom: 4 }}>Travel mode</span>
-                <Select
-                  defaultValue="all"
-                  style={{ width: 120 }}
-                  size="large"
-                >
-                  <Option value="all">All</Option>
-                  <Option value="flight">Flight</Option>
-                  <Option value="train">Train</Option>
-                </Select>
-              </div>
-
-              <div>
-                <span style={{ fontSize: '12px', color: '#666', display: 'block', marginBottom: 4 }}>Place of supply</span>
-                <Select
-                  defaultValue="all-states"
-                  style={{ width: 120 }}
-                  size="large"
-                >
-                  <Option value="all-states">All states</Option>
-                  <Option value="delhi">Delhi</Option>
-                  <Option value="mumbai">Mumbai</Option>
-                </Select>
-              </div>
-
-              <div>
-                <span style={{ fontSize: '12px', color: '#666', display: 'block', marginBottom: 4 }}>Start / end date *</span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <DatePicker 
-                    placeholder="Start date" 
-                    suffixIcon={<CalendarOutlined />}
-                    style={{ width: 100 }}
-                    size="large"
-                  />
-                  <span style={{ fontSize: '12px' }}>to</span>
-                  <DatePicker 
-                    placeholder="End date" 
-                    suffixIcon={<CalendarOutlined />}
-                    style={{ width: 100 }}
-                    size="large"
-                  />
-                </div>
-              </div>
-
-              <div style={{ alignSelf: 'flex-end' }}>
-                <Button 
-                  type="primary"
-                  onClick={handleSubmit}
-                  size="large"
-                >
-                  Submit
-                </Button>
-              </div>
-
-              <div style={{ alignSelf: 'flex-end' }}>
-                <Button 
-                  onClick={handleResetAll}
-                  size="large"
-                >
-                  Reset all
-                </Button>
-              </div>
-            </div>
-          </div>
-        );
-
-      default:
-        return null;
-    }
-  };
-
-  return (
-    <div className="slide-up" style={{ padding: '24px', background: '#f5f5f5', minHeight: '100vh', paddingTop: '0px'}}>
-      {/* Breadcrumb */}
-      {/* <div style={{ marginBottom: 16 }}>
-        <Text style={{ color: '#666' }}>Home » Cumulative Invoice (Airline)</Text>
-      </div> */}
-
-      {/* Title */}
-      <Title level={3} style={{ margin: '0 0 24px 0', color: 'rgb(114, 46, 209)' }}>
-        {translate('cumulativeInvoice')}
-      </Title>
-
-      {/* Entity Type Selection */}
-      <div style={{ marginBottom: 24 }}>
-        <Radio.Group 
-          value={entityType} 
-          onChange={(e) => setEntityType(e.target.value)}
-          size="large"
+          )}
         >
-          <Radio value="agency" style={{ fontWeight: 500 }}>{translate('agency')}</Radio>
-          <Radio value="airline" style={{ fontWeight: 500 }}>{translate('airline')}</Radio>
-        </Radio.Group>
-      </div>
-
-      {/* Tabs */}
-      <Tabs 
-        activeKey={activeTab}
-        onChange={setActiveTab}
-        items={tabItems}
-        type="line"
-        style={{ marginBottom: 24 }}
-      />
-
-      {/* Dynamic Tab Content */}
-      {renderTabContent()}
-
-      {/* Data Table Section */}
-      <div>
-        {/* Export Buttons and Search */}
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'flex-end', 
-          gap: 12, 
-          marginBottom: 16,
-          alignItems: 'center'
-        }}>
-          <Button 
-            icon={<DownloadOutlined />}
+          <Button
+            type="text"
+            icon={<FilterOutlined />}
             style={{ 
-              backgroundColor: '#1d4ed8', 
-              color: 'white', 
-              border: 'none',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 4
+              border: 'none', 
+              boxShadow: 'none',
+              color: isDarkMode ? '#ffffff' : '#000000'
             }}
-          >
-            XLS
-          </Button>
-          <Button 
-            icon={<DownloadOutlined />}
-            style={{ 
-              backgroundColor: '#059669', 
-              color: 'white', 
-              border: 'none',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 4
-            }}
-          >
-            CSV
-          </Button>
-          <Input 
-            placeholder="Search" 
-            prefix={<SearchOutlined />}
-            style={{ width: 200 }}
           />
-        </div>
+        </Dropdown>
+      ),
+    };
+  }
 
-        {/* Data Table */}
-        <Card style={{ borderRadius: 8, boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
-          <Table
-            columns={columns}
-            dataSource={mockData}
-            pagination={{
-              current: 1,
-              pageSize: 5,
-              total: 489,
-              showSizeChanger: true,
-              showQuickJumper: true,
-              showTotal: (total, range) => `Displaying ${range[0]} Out of ${total}`,
-              itemRender: (current, type, originalElement) => {
-                if (type === 'page') {
-                  return (
-                    <Button 
-                      type={current === 1 ? 'primary' : 'default'}
-                      style={{
-                        backgroundColor: current === 1 ? '#4f46e5' : 'white',
-                        borderColor: current === 1 ? '#4f46e5' : '#d9d9d9',
-                        color: current === 1 ? 'white' : '#000',
-                        borderRadius: '50%',
-                        width: 32,
-                        height: 32,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}
-                    >
-                      {current}
-                    </Button>
-                  );
-                }
-                return originalElement;
-              },
-            }}
-            scroll={{ x: 900, y: 400 }}
-            size="middle"
-            bordered={false}
-            className="custom-table"
-          />
+  const airlines = ['Air India', 'IndiGo', 'SpiceJet', 'GoAir', 'Vistara'];
+  const states = [
+    'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh',
+    'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka',
+    'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram',
+    'Nagaland', 'Odisha', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu',
+    'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal'
+  ];
 
-          {/* Custom Pagination Footer */}
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'flex-end', 
-            alignItems: 'center', 
-            gap: 16,
-            marginTop: 16,
-            paddingTop: 16,
-            borderTop: '1px solid #f0f0f0'
-          }}>
-            <span style={{ fontSize: '14px' }}>Go to page</span>
-            <Input style={{ width: 60 }} />
+  const handleSearch = () => {
+    console.log('Search triggered');
+  };
+
+  const handleReset = () => {
+    setSearchText('');
+    setSelectedAirlines([]);
+    setSelectedState('all');
+    setDateRange(null);
+  };
+
+  const handleExport = () => {
+    console.log('Export triggered');
+  };
+
+  const tabItems = [
+    {
+      key: 'upload',
+      label: 'Upload',
+      children: (
+        <div style={{ padding: '24px 0' }}>
+          <Space direction="vertical" size="large" style={{ width: '100%' }}>
+            {/* Upload Type Selection */}
+            <div>
+              <Text strong style={{ display: 'block', marginBottom: '12px' }}>
+                {translate('uploadPNRTicket')}
+              </Text>
+              <Radio.Group 
+                value={uploadType} 
+                onChange={(e) => setUploadType(e.target.value)}
+                style={{ width: '100%' }}
+              >
+                <Radio value="pnr">{translate('uploadPNRTicket')}</Radio>
+                <Radio value="invoice">{translate('uploadInvoiceNo')}</Radio>
+              </Radio.Group>
+            </div>
+
+            {/* Text Area for Input */}
+            <div>
+              <Text strong style={{ display: 'block', marginBottom: '12px' }}>
+                {uploadType === 'pnr' ? translate('uploadMultiplePNR') : translate('uploadMultipleInvoice')}
+              </Text>
+              <TextArea
+                rows={4}
+                placeholder={uploadType === 'pnr' ? translate('enterPNRTicket') : 'Enter Invoice numbers...'}
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+              />
+            </div>
+
+            {/* Search Button */}
             <Button 
               type="primary" 
-              style={{ backgroundColor: '#4f46e5', borderRadius: '16px' }}
+              icon={<SearchOutlined />}
+              onClick={handleSearch}
+              size="large"
             >
-              Go
+              Search
             </Button>
+          </Space>
+        </div>
+      ),
+    },
+    {
+      key: 'results',
+      label: 'Results',
+      children: (
+        <div style={{ padding: '24px 0' }}>
+          {/* Filters */}
+          <div style={{ 
+            background: isDarkMode ? '#262626' : '#fafafa', 
+            padding: '20px', 
+            borderRadius: '8px', 
+            marginBottom: '24px' 
+          }}>
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
+              gap: '16px',
+              marginBottom: '16px'
+            }}>
+              <div>
+                <Text strong style={{ display: 'block', marginBottom: '8px' }}>
+                  {translate('airlines')}
+                </Text>
+                <Select
+                  mode="multiple"
+                  placeholder="Select airlines"
+                  style={{ width: '100%' }}
+                  value={selectedAirlines}
+                  onChange={setSelectedAirlines}
+                >
+                  {airlines.map(airline => (
+                    <Option key={airline} value={airline}>{airline}</Option>
+                  ))}
+                </Select>
+              </div>
+
+              <div>
+                <Text strong style={{ display: 'block', marginBottom: '8px' }}>
+                  {translate('placeOfSupply')}
+                </Text>
+                <Select
+                  placeholder="Select state"
+                  style={{ width: '100%' }}
+                  value={selectedState}
+                  onChange={setSelectedState}
+                >
+                  <Option value="all">{translate('allStates')}</Option>
+                  {states.map(state => (
+                    <Option key={state} value={state}>{state}</Option>
+                  ))}
+                </Select>
+              </div>
+
+              <div>
+                <Text strong style={{ display: 'block', marginBottom: '8px' }}>
+                  {translate('travelMode')}
+                </Text>
+                <Select
+                  placeholder="Select travel mode"
+                  style={{ width: '100%' }}
+                  value={travelMode}
+                  onChange={setTravelMode}
+                >
+                  <Option value="flight">{translate('flight')}</Option>
+                  <Option value="train">{translate('train')}</Option>
+                </Select>
+              </div>
+
+              <div>
+                <Text strong style={{ display: 'block', marginBottom: '8px' }}>
+                  {translate('startEndDateRequired')}
+                </Text>
+                <RangePicker
+                  style={{ width: '100%' }}
+                  value={dateRange}
+                  onChange={setDateRange}
+                  placeholder={[translate('startDate'), translate('endDate')]}
+                />
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+              <Button onClick={handleReset}>
+                {translate('resetAll')}
+              </Button>
+              <Button type="primary" icon={<SearchOutlined />} onClick={handleSearch}>
+                Search
+              </Button>
+              <Button icon={<DownloadOutlined />} onClick={handleExport}>
+                Export
+              </Button>
+            </div>
           </div>
-        </Card>
+
+          {/* Table */}
+          <div style={{ 
+            background: isDarkMode ? '#1f1f1f' : '#ffffff',
+            borderRadius: '8px',
+            overflow: 'hidden'
+          }}>
+            <Table
+              columns={columnsWithFilter}
+              dataSource={mockData}
+              pagination={{
+                total: mockData.length,
+                pageSize: 10,
+                showSizeChanger: true,
+                showQuickJumper: true,
+                showTotal: (total, range) => 
+                  `${translate('displaying')} ${range[0]}-${range[1]} ${translate('outOf')} ${total}`,
+              }}
+              scroll={{ x: 'max-content' }}
+              className="custom-table"
+              style={{
+                background: isDarkMode ? '#1f1f1f' : '#ffffff',
+              }}
+            />
+          </div>
+        </div>
+      ),
+    },
+  ];
+
+  return (
+    <div style={{ padding: '24px', maxWidth: '1400px', margin: '0 auto' }}>
+      <div style={{ marginBottom: '24px' }}>
+        <Title level={2} style={{ margin: 0, color: isDarkMode ? '#ffffff' : '#000000' }}>
+          {translate('cumulativeInvoice')}
+        </Title>
       </div>
 
-      
+      <Card style={{ 
+        background: isDarkMode ? '#1f1f1f' : '#ffffff',
+        border: isDarkMode ? '1px solid #424242' : '1px solid #d9d9d9'
+      }}>
+        <Tabs
+          activeKey={activeTab}
+          onChange={setActiveTab}
+          items={tabItems}
+          style={{
+            '--antd-tabs-tab-color': isDarkMode ? '#ffffff' : '#000000',
+          } as React.CSSProperties}
+        />
+      </Card>
     </div>
   );
 };
