@@ -223,74 +223,68 @@ const Upload: React.FC = () => {
         
         <div style={{ padding: '24px', paddingTop: '0px' }}>
          
-          {/* Upload Area */}
-          <Dragger 
-            {...uploadProps}
-            className="upload-area-hover"
-            style={{
-              border: `2px dashed ${dragOver ? '#4f46e5' : '#d9d9d9'}`,
-              borderRadius: 8,
-              background: dragOver ? '#f8f9ff' : '#fafafa',
-              marginBottom: 16,
-              minHeight: 120,
-              position: 'relative',
-              overflow: 'hidden',
-              transition: 'all 0.3s ease-in-out',
-              cursor: 'pointer',
-              width: '600px',
-              paddingTop: 15,
-              transform: dragOver ? 'translateY(-2px)' : 'translateY(0)',
-              boxShadow: dragOver ? '0 8px 24px rgba(79, 70, 229, 0.15)' : 'none'
-            }}
-            onMouseEnter={(e) => {
-              if (!dragOver) {
-                e.currentTarget.style.borderColor = '#4f46e5';
-                e.currentTarget.style.background = '#f8f9ff';
-                e.currentTarget.style.transform = 'translateY(-2px)';
-                e.currentTarget.style.boxShadow = '0 8px 24px rgba(79, 70, 229, 0.15)';
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (!dragOver) {
-                e.currentTarget.style.borderColor = '#d9d9d9';
-                e.currentTarget.style.background = '#fafafa';
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = 'none';
-              }
-            }}
-          >
-             {/* File Type and Limit Info */}
-          <div style={{ 
-            textAlign: 'center', 
-            marginBottom: 16,
-            fontSize: '14px',
-            color: '#666'
-          }}>
-            <div style={{ marginBottom: 4 }}>
-              Supported Files: <strong>CSV, XLS</strong>
-            </div>
-            <div>
-              Upload up to 3 file. Each max file size 5MB
-            </div>
-          </div>
+          {/* Main Upload Section with Side-by-side Layout */}
+          <div style={{ display: 'flex', gap: '24px', alignItems: 'flex-start' }}>
+            
+            {/* Upload Area - Left Side */}
+            <Dragger 
+              {...uploadProps}
+              className="upload-area-hover"
+              style={{
+                border: `2px dashed ${dragOver ? '#4f46e5' : '#d9d9d9'}`,
+                borderRadius: 8,
+                background: dragOver ? '#f8f9ff' : '#fafafa',
+                marginBottom: 16,
+                minHeight: 240,
+                position: 'relative',
+                overflow: 'hidden',
+                transition: 'all 0.3s ease-in-out',
+                cursor: 'pointer',
+                flex: 1,
+                paddingTop: 15,
+                transform: dragOver ? 'translateY(-2px)' : 'translateY(0)',
+                boxShadow: dragOver ? '0 8px 24px rgba(79, 70, 229, 0.15)' : 'none'
+              }}
+              onMouseEnter={(e) => {
+                if (!dragOver) {
+                  e.currentTarget.style.borderColor = '#4f46e5';
+                  e.currentTarget.style.background = '#f8f9ff';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(79, 70, 229, 0.15)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!dragOver) {
+                  e.currentTarget.style.borderColor = '#d9d9d9';
+                  e.currentTarget.style.background = '#fafafa';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }
+              }}
+            >
+              {/* File Type and Limit Info */}
+              <div style={{ 
+                textAlign: 'center', 
+                marginBottom: 24,
+                fontSize: '14px',
+                color: '#666'
+              }}>
+                <div style={{ marginBottom: 4 }}>
+                  Supported Files: <strong>CSV, XLS</strong>
+                </div>
+                <div>
+                  Upload up to 3 file. Each max file size 5MB
+                </div>
+              </div>
 
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              position: 'relative',
-              width: '100%',
-              minHeight: '120px'
-            }}>
-              {/* Left side - Upload content */}
               <div style={{
                 textAlign: 'center',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                flex: 1,
-                paddingRight: files.length > 0 ? '240px' : '0'
+                height: '100%',
+                minHeight: '120px'
               }}>
                 <div style={{
                   width: 48,
@@ -327,80 +321,140 @@ const Upload: React.FC = () => {
                 </Button>
               </div>
 
-              {/* Right side - Progress display (absolute positioned) */}
-              {files.length > 0 && (
+              {/* Sample File Button */}
+              <Button 
+                style={{ 
+                  position: 'absolute',
+                  bottom: 0,
+                  right: 0,
+                  background: '#52c41a', 
+                  borderColor: '#52c41a', 
+                  color: 'white',
+                  borderRadius: '20px 0px 0px 0px',
+                  fontWeight: 500,
+                  fontSize: '14px',
+                  height: 45,
+                  padding: '15px',
+                  alignItems: 'center',
+                  gap: 6,
+                }}
+              >
+                <DownloadOutlined style={{ fontSize: 16 }} />
+                Sample file
+              </Button>
+            </Dragger>
+
+            {/* Progress Display - Right Side */}
+            {files.length > 0 && (
+              <div style={{
+                width: '300px',
+                minHeight: '240px',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                borderRadius: '16px',
+                padding: '24px',
+                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
+                position: 'relative',
+                overflow: 'hidden'
+              }}>
+                {/* Background decoration */}
                 <div style={{
                   position: 'absolute',
-                  right: '20px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  width: '200px',
-                  padding: '16px',
-                  background: 'rgba(255, 255, 255, 0.95)',
-                  borderRadius: '12px',
-                  border: '1px solid #e8e8e8',
-                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-                  backdropFilter: 'blur(8px)',
-                  zIndex: 10
+                  top: '-50px',
+                  right: '-50px',
+                  width: '100px',
+                  height: '100px',
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  borderRadius: '50%',
+                  filter: 'blur(40px)'
+                }} />
+                
+                <div style={{ 
+                  fontSize: '18px', 
+                  fontWeight: 700, 
+                  color: 'white',
+                  marginBottom: '20px',
+                  textAlign: 'center',
+                  position: 'relative',
+                  zIndex: 2
                 }}>
-                  <div style={{ 
-                    fontSize: '14px', 
-                    fontWeight: 600, 
-                    color: '#333',
-                    marginBottom: '12px',
-                    textAlign: 'center'
+                  📁 Upload Progress
+                </div>
+                
+                {files.map((file, index) => (
+                  <div key={file.id} style={{ 
+                    marginBottom: '20px',
+                    position: 'relative',
+                    zIndex: 2
                   }}>
-                    Upload Progress
-                  </div>
-                  {files.map((file) => (
-                    <div key={file.id} style={{ marginBottom: '10px' }}>
+                    <div style={{
+                      background: 'rgba(255, 255, 255, 0.15)',
+                      backdropFilter: 'blur(10px)',
+                      borderRadius: '12px',
+                      padding: '16px',
+                      border: '1px solid rgba(255, 255, 255, 0.2)'
+                    }}>
                       <div style={{ 
-                        fontSize: '11px', 
-                        color: '#666',
-                        marginBottom: '4px',
+                        fontSize: '13px', 
+                        color: 'rgba(255, 255, 255, 0.9)',
+                        marginBottom: '8px',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap',
-                        fontWeight: 500
+                        fontWeight: 600
                       }}>
                         {file.name}
                       </div>
-                      <Progress 
-                        percent={uploadProgress[file.id] || 0}
-                        size="small"
-                        status={file.status === 'success' ? 'success' : 'active'}
-                        format={(percent) => `${Math.floor(percent || 0)}%`}
-                        strokeColor={file.status === 'success' ? '#52c41a' : '#1890ff'}
-                      />
+                      
+                      {/* Custom Progress Bar */}
+                      <div style={{
+                        width: '100%',
+                        height: '8px',
+                        background: 'rgba(255, 255, 255, 0.2)',
+                        borderRadius: '4px',
+                        overflow: 'hidden',
+                        marginBottom: '8px'
+                      }}>
+                        <div style={{
+                          width: `${uploadProgress[file.id] || 0}%`,
+                          height: '100%',
+                          background: file.status === 'success' 
+                            ? 'linear-gradient(90deg, #00f2fe 0%, #4facfe 100%)'
+                            : 'linear-gradient(90deg, #ffecd2 0%, #fcb69f 100%)',
+                          borderRadius: '4px',
+                          transition: 'width 0.3s ease',
+                          boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
+                        }} />
+                      </div>
+                      
+                      <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center'
+                      }}>
+                        <span style={{ 
+                          fontSize: '12px', 
+                          color: 'rgba(255, 255, 255, 0.8)',
+                          fontWeight: 500
+                        }}>
+                          {Math.floor(uploadProgress[file.id] || 0)}%
+                        </span>
+                        {file.status === 'success' && (
+                          <span style={{ 
+                            fontSize: '12px', 
+                            color: '#00f2fe',
+                            fontWeight: 600,
+                            textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)'
+                          }}>
+                            ✓ Complete
+                          </span>
+                        )}
+                      </div>
                     </div>
-                  ))}
-                </div>
-              )}
-
+                  </div>
+                ))}
               </div>
-
-            {/* Sample File Button */}
-            <Button 
-              style={{ 
-                position: 'absolute',
-                bottom: 0,
-                right: 0,
-                background: '#52c41a', 
-                borderColor: '#52c41a', 
-                color: 'white',
-                borderRadius: '20px 0px 0px 0px',
-                fontWeight: 500,
-                fontSize: '14px',
-                height: 45,
-                padding: '15px',
-                alignItems: 'center',
-                gap: 6,
-              }}
-            >
-              <DownloadOutlined style={{ fontSize: 16 }} />
-              Sample file
-            </Button>
-          </Dragger>
+            )}
+          </div>
 
             {/* Simplified file display without progress */}
             {files.length > 0 && (
