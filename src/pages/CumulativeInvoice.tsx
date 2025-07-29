@@ -803,19 +803,21 @@ const CumulativeInvoice: React.FC = () => {
                 <Option value="credit-note">Credit Note</Option>
                 <Option value="debit-note">Debit Note</Option>
               </Select>
-              <Button 
-                type="primary"
-                onClick={handleSubmit}
-                size="large"
-              >
-                Submit
-              </Button>
-              <Button 
-                onClick={handleResetAll}
-                size="large"
-              >
-                Reset all
-              </Button>
+              <div className='cls-button'>
+                <Button 
+                  type="primary"
+                  onClick={handleSubmit}
+                  size="large"
+                >
+                  Submit
+                </Button>
+                <Button 
+                  onClick={handleResetAll}
+                  size="large"
+                >
+                  Reset all
+                </Button>
+              </div>
             </div>
           </div>
         );

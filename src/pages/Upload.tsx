@@ -318,20 +318,25 @@ const Upload: React.FC = () => {
                   minHeight: "120px",
                 }}
               >
-                <div
-                  style={{
-                    width: 48,
-                    height: 48,
-                    background: "#1890ff",
-                    borderRadius: "50%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginBottom: 12,
-                    transition: "all 0.3s ease",
-                  }}
-                >
-                  <PlusOutlined style={{ color: "white", fontSize: 20 }} />
+                <div style={{borderRadius: '50%',    border: '1.5px dashed #ccc', height: '120px', width: '120px', position: 'relative' }}>
+                  <div
+                    style={{
+                      width: 48,
+                      height: 48,
+                      background: "#4C1D95",
+                      borderRadius: "50%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginBottom: 12,
+                      transition: "all 0.3s ease",
+                      position: 'absolute',
+                      top: '35px',
+                      left: '34px'
+                    }}
+                  >
+                    <PlusOutlined style={{ color: "white", fontSize: 20 }} />
+                  </div>
                 </div>
 
                 <div
