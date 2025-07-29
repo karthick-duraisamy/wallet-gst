@@ -1,4 +1,5 @@
 
+
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -287,7 +288,7 @@ const Upload: React.FC = () => {
                 cursor: "pointer",
                 flex: 1,
                 paddingTop: 15,
-                width: 700,
+                width: "60%",
                 transform: dragOver ? "translateY(-2px)" : "translateY(0)",
                 boxShadow: dragOver
                   ? "0 8px 24px rgba(79, 70, 229, 0.15)"
@@ -384,14 +385,16 @@ const Upload: React.FC = () => {
               </Button>
             </Dragger>
 
-            {/* Files Display - Right Side */}
+            {/* Files Display - Right Side (40% width) */}
             {files.length > 0 && (
               <div
                 style={{
-                  width: "280px",
+                  width: "40%",
                   borderRadius: "12px",
                   padding: "20px",
                   minHeight: "240px",
+                  display: "flex",
+                  flexDirection: "column",
                 }}
               >
                 <div
@@ -402,12 +405,27 @@ const Upload: React.FC = () => {
                     marginBottom: "16px",
                     display: "flex",
                     alignItems: "center",
-                    gap: "8px",
+                    justifyContent: "space-between",
                   }}
                 >
-                  {files.some((file) => file.status === "uploading")
-                    ? "Files are uploading ..."
-                    : "Uploaded Files"}
+                  <span>
+                    {files.some((file) => file.status === "uploading")
+                      ? "Files are uploading ..."
+                      : "Uploaded Files"}
+                  </span>
+                  
+                  {/* Upload completion ratio */}
+                  <div
+                    style={{
+                      fontSize: "12px",
+                      color: "#666",
+                      background: "#f0f0f0",
+                      padding: "4px 8px",
+                      borderRadius: "12px",
+                    }}
+                  >
+                    {files.filter(file => file.status === "success").length} / {files.length} completed
+                  </div>
                 </div>
 
                 {files.map((file) => (

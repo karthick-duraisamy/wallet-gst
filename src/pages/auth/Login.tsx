@@ -84,6 +84,40 @@ const Login: React.FC = () => {
 
   return (
     <div className="auth-card">
+      {/* Logo in top-right corner */}
+      <div style={{
+        position: 'absolute',
+        top: '20px',
+        right: '20px',
+        zIndex: 20,
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        background: 'rgba(255, 255, 255, 0.9)',
+        backdropFilter: 'blur(10px)',
+        padding: '8px 12px',
+        borderRadius: '12px',
+        border: '1px solid rgba(255, 255, 255, 0.3)',
+        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+      }}>
+        <img 
+          src="/src/assets/gst-logo.svg" 
+          alt="GST Claim" 
+          style={{ 
+            width: '32px', 
+            height: '32px' 
+          }} 
+        />
+        <span style={{
+          fontSize: '16px',
+          fontWeight: '600',
+          color: '#1700ba',
+          letterSpacing: '0.5px'
+        }}>
+          GST Claim
+        </span>
+      </div>
+
       <div className="floating-elements">
         <div className="floating-circle"></div>
         <div className="floating-circle"></div>
