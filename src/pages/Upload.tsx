@@ -344,182 +344,100 @@ const Upload: React.FC = () => {
               </Button>
             </Dragger>
 
-            {/* Progress Display - Right Side */}
+            {/* Files Display - Right Side */}
             {files.length > 0 && (
               <div style={{
-                width: '300px',
-                minHeight: '240px',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                borderRadius: '16px',
-                padding: '24px',
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
-                position: 'relative',
-                overflow: 'hidden'
+                width: '280px',
+                background: '#f8f9fa',
+                borderRadius: '12px',
+                padding: '20px',
+                border: '1px solid #e9ecef',
+                minHeight: '240px'
               }}>
-                {/* Background decoration */}
-                <div style={{
-                  position: 'absolute',
-                  top: '-50px',
-                  right: '-50px',
-                  width: '100px',
-                  height: '100px',
-                  background: 'rgba(255, 255, 255, 0.1)',
-                  borderRadius: '50%',
-                  filter: 'blur(40px)'
-                }} />
-                
                 <div style={{ 
-                  fontSize: '18px', 
-                  fontWeight: 700, 
-                  color: 'white',
-                  marginBottom: '20px',
-                  textAlign: 'center',
-                  position: 'relative',
-                  zIndex: 2
+                  fontSize: '14px', 
+                  fontWeight: 600, 
+                  color: '#333',
+                  marginBottom: '16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px'
                 }}>
-                  📁 Upload Progress
+                  {files.some(file => file.status === 'uploading') ? 'Files are uploading ...' : 'Uploaded Files'}
                 </div>
                 
-                {files.map((file, index) => (
+                {files.map((file) => (
                   <div key={file.id} style={{ 
-                    marginBottom: '20px',
-                    position: 'relative',
-                    zIndex: 2
+                    marginBottom: '12px',
+                    background: 'white',
+                    borderRadius: '8px',
+                    padding: '12px',
+                    border: '1px solid #e9ecef',
+                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
                   }}>
                     <div style={{
-                      background: 'rgba(255, 255, 255, 0.15)',
-                      backdropFilter: 'blur(10px)',
-                      borderRadius: '12px',
-                      padding: '16px',
-                      border: '1px solid rgba(255, 255, 255, 0.2)'
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      marginBottom: '8px'
                     }}>
-                      <div style={{ 
-                        fontSize: '13px', 
-                        color: 'rgba(255, 255, 255, 0.9)',
-                        marginBottom: '8px',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        fontWeight: 600
-                      }}>
-                        {file.name}
-                      </div>
-                      
-                      {/* Custom Progress Bar */}
-                      <div style={{
-                        width: '100%',
-                        height: '8px',
-                        background: 'rgba(255, 255, 255, 0.2)',
-                        borderRadius: '4px',
-                        overflow: 'hidden',
-                        marginBottom: '8px'
-                      }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1 }}>
                         <div style={{
-                          width: `${uploadProgress[file.id] || 0}%`,
-                          height: '100%',
-                          background: file.status === 'success' 
-                            ? 'linear-gradient(90deg, #00f2fe 0%, #4facfe 100%)'
-                            : 'linear-gradient(90deg, #ffecd2 0%, #fcb69f 100%)',
+                          width: '24px',
+                          height: '24px',
+                          background: '#1890ff',
                           borderRadius: '4px',
-                          transition: 'width 0.3s ease',
-                          boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
-                        }} />
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        }}>
+                          <FileOutlined style={{ color: 'white', fontSize: '12px' }} />
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <div style={{ 
+                            fontSize: '13px', 
+                            fontWeight: 500,
+                            color: '#333',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                          }}>
+                            {file.name}
+                          </div>
+                        </div>
                       </div>
-                      
-                      <div style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center'
-                      }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <span style={{ 
                           fontSize: '12px', 
-                          color: 'rgba(255, 255, 255, 0.8)',
-                          fontWeight: 500
+                          color: '#666'
                         }}>
-                          {Math.floor(uploadProgress[file.id] || 0)}%
+                          {formatFileSize(file.size)}
                         </span>
-                        {file.status === 'success' && (
-                          <span style={{ 
-                            fontSize: '12px', 
-                            color: '#00f2fe',
-                            fontWeight: 600,
-                            textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)'
-                          }}>
-                            ✓ Complete
-                          </span>
-                        )}
+                        <CloseOutlined 
+                          style={{ color: '#999', cursor: 'pointer', fontSize: '12px' }}
+                          onClick={() => handleRemoveFile(file.id)}
+                        />
                       </div>
                     </div>
+                    
+                    {file.status === 'uploading' && (
+                      <div style={{ marginTop: '8px' }}>
+                        <Progress 
+                          percent={Math.floor(uploadProgress[file.id] || 0)} 
+                          size="small"
+                          strokeColor="#1890ff"
+                          showInfo={false}
+                          style={{ margin: 0 }}
+                        />
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
             )}
           </div>
 
-            {/* Simplified file display without progress */}
-            {files.length > 0 && (
-              <div style={{
-                borderTop: '1px solid #e8e8e8',
-                background: 'white',
-                padding: '16px 20px'
-              }}>
-                {files.map((file) => (
-                  <div 
-                    key={file.id}
-                    style={{ 
-                      display: 'flex', 
-                      alignItems: 'center', 
-                      justifyContent: 'space-between',
-                      marginBottom: files.length > 1 ? 12 : 0
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, flex: 1 }}>
-                      <div style={{
-                        width: 32,
-                        height: 32,
-                        background: '#1890ff',
-                        borderRadius: 4,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}>
-                        <FileOutlined style={{ color: 'white', fontSize: 14 }} />
-                      </div>
-                      <div style={{ flex: 1 }}>
-                        <div style={{ 
-                          fontWeight: 500, 
-                          color: '#333',
-                          fontSize: '14px',
-                          marginBottom: 4
-                        }}>
-                          {file.name}
-                        </div>
-                        <div style={{ 
-                          color: '#666', 
-                          fontSize: '12px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: 8
-                        }}>
-                          {formatFileSize(file.size)}
-                          {file.status === 'success' && (
-                            <span style={{ color: '#52c41a', fontWeight: 500 }}>
-                              Upload Successful!
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                      <CloseOutlined 
-                        style={{ color: '#ff4d4f', cursor: 'pointer', fontSize: 12 }}
-                        onClick={() => handleRemoveFile(file.id)}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+            
 
           {/* Submit Section */}
           <div style={{ textAlign: 'right' }}>
