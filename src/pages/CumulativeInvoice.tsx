@@ -31,6 +31,7 @@ const CumulativeInvoice: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const [goToPageValue, setGoToPageValue] = useState('');
+  const [searchText, setSearchText] = useState('');
   const { translate } = useTheme();
 
   // Form states
@@ -345,11 +346,18 @@ const CumulativeInvoice: React.FC = () => {
     },
   };
 
+  // Filter data based on search text
+  const filteredData = mockData.filter(item => 
+    Object.values(item).some(value => 
+      value.toString().toLowerCase().includes(searchText.toLowerCase())
+    )
+  );
+
   // Calculate pagination for table data
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
-  const paginatedTableData = mockData.slice(startIndex, endIndex);
-  const totalPages = Math.ceil(mockData.length / pageSize);
+  const paginatedTableData = filteredData.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(filteredData.length / pageSize);
 
   const handlePageChange = (page: number, pageSize: number) => {
     setCurrentPage(page);
@@ -994,6 +1002,11 @@ const CumulativeInvoice: React.FC = () => {
             placeholder="Search" 
             prefix={<SearchOutlined />}
             style={{ width: 200 }}
+            value={searchText}
+            onChange={(e) => {
+              setSearchText(e.target.value);
+              setCurrentPage(1); // Reset to first page when searching
+            }}
           />
         </div>
 
@@ -1005,7 +1018,7 @@ const CumulativeInvoice: React.FC = () => {
             pagination={{
               current: currentPage,
               pageSize: pageSize,
-              total: mockData.length,
+              total: filteredData.length,
               showSizeChanger: true,
               showQuickJumper: false,
               pageSizeOptions: ['5', '10', '20', '30', '50'],

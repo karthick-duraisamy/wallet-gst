@@ -17,6 +17,7 @@ const Reconciliation: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const [goToPageValue, setGoToPageValue] = useState('');
+  const [searchText, setSearchText] = useState('');
 
   const handleFilterChange = (key: string, value: any) => {
     dispatch(setFilters({ [key]: value }));
@@ -376,11 +377,24 @@ const Reconciliation: React.FC = () => {
     },
   ];
 
+  const filteredData = mockData.filter(item => {
+    const searchTerm = searchText.toLowerCase();
+    return (
+      item.supplierName.toLowerCase().includes(searchTerm) ||
+      item.pnrTicketNumber.toLowerCase().includes(searchTerm) ||
+      item.invoiceNumber.toLowerCase().includes(searchTerm) ||
+      item.invoiceDate.toLowerCase().includes(searchTerm) ||
+      item.type.toLowerCase().includes(searchTerm) ||
+      item.taxClaimable.toString().includes(searchTerm) ||
+      item.status.toLowerCase().includes(searchTerm)
+    );
+  });
+
   // Calculate pagination
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
-  const paginatedData = mockData.slice(startIndex, endIndex);
-  const totalPages = Math.ceil(mockData.length / pageSize);
+  const paginatedData = filteredData.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(filteredData.length / pageSize);
 
   const rowSelection = {
     selectedRowKeys,
@@ -545,10 +559,15 @@ const Reconciliation: React.FC = () => {
           CSV
         </Button>
         <Input 
-          placeholder="search" 
-          prefix={<SearchOutlined />}
-          style={{ width: 200 }}
-        />
+            placeholder="search" 
+            prefix={<SearchOutlined />}
+            style={{ width: 200 }}
+            value={searchText}
+            onChange={(e) => {
+              setSearchText(e.target.value);
+              setCurrentPage(1); // Reset to first page when searching
+            }}
+          />
       </div>
 
       {/* Data Table */}
@@ -557,9 +576,9 @@ const Reconciliation: React.FC = () => {
           columns={visibleColumnsData}
           dataSource={paginatedData}
           pagination={{
-            current: currentPage,
-            pageSize: pageSize,
-            total: mockData.length,
+              current: currentPage,
+              pageSize: pageSize,
+              total: filteredData.length,
             showSizeChanger: true,
             showQuickJumper: false,
             pageSizeOptions: ['5', '10', '20', '30', '50'],
