@@ -144,6 +144,8 @@ const CumulativeInvoice: React.FC = () => {
       title: 'Action',
       dataIndex: 'action',
       key: 'action',
+      width: 80,
+      fixed: 'right' as const,
       align: 'center' as const,
       render: () => 'Edit',
     },
@@ -189,6 +191,7 @@ const CumulativeInvoice: React.FC = () => {
       ),
       key: 'filter',
       width: 60,
+      fixed: 'right' as const,
       render: () => null,
     },
   ];
@@ -1019,6 +1022,7 @@ const CumulativeInvoice: React.FC = () => {
             size="middle"
             bordered={false}
             className="custom-table"
+            scroll={{ x: 1200 }}
             tableLayout="fixed"
           />
 

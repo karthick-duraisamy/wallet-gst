@@ -115,6 +115,8 @@ const Reconciliation: React.FC = () => {
       title: translate('status'),
       dataIndex: 'status',
       key: 'status',
+      width: 150,
+      fixed: 'right' as const,
       render: (status: string) => (
         <Tag color="#722ed1" style={{ borderRadius: '12px' }}>
           {translate('additionalInGSTR2A')}
@@ -163,6 +165,7 @@ const Reconciliation: React.FC = () => {
       ),
       key: 'filter',
       width: 60,
+      fixed: 'right' as const,
       render: () => null,
     },
   ];
@@ -576,6 +579,7 @@ const Reconciliation: React.FC = () => {
           size="middle"
           bordered={false}
           className="custom-table"
+          scroll={{ x: 1200 }}
           tableLayout="fixed"
         />
 
