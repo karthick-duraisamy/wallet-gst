@@ -74,7 +74,6 @@ const Reconciliation: React.FC = () => {
       title: translate('supplierName'),
       dataIndex: 'supplierName',
       key: 'supplierName',
-      sorter: true,
       render: (text: string) => text || 'Spice Jet',
     },
     {
@@ -93,7 +92,6 @@ const Reconciliation: React.FC = () => {
       title: translate('invoiceDate'),
       dataIndex: 'invoiceDate',
       key: 'invoiceDate',
-      sorter: true,
       render: (text: string) => text || '31-Jan-2020',
     },
     {
@@ -112,7 +110,6 @@ const Reconciliation: React.FC = () => {
           ₹ {amount ? amount.toLocaleString() : '2,627'}
         </span>
       ),
-      sorter: true,
     },
     {
       title: translate('status'),
