@@ -483,7 +483,6 @@ const Upload: React.FC = () => {
                 ))}
               </div>
             )}
-          </div>
 
           {/* Submit Section */}
           <div style={{ textAlign: 'right' }}>
