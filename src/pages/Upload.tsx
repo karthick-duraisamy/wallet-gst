@@ -91,8 +91,6 @@ const Upload: React.FC = () => {
           clearInterval(interval);
           setUploadProgress((prev) => ({ ...prev, [newFile.id]: progress }));
           dispatch(updateFileStatus({ id: newFile.id, status: "success" }));
-          setSuccessMessage("Uploaded successfully!");
-          setTimeout(() => setSuccessMessage(""), 5000);
         } else {
           setUploadProgress((prev) => ({ ...prev, [newFile.id]: progress }));
         }
@@ -406,7 +404,7 @@ const Upload: React.FC = () => {
                 >
                   {files.some((file) => file.status === "uploading")
                     ? "Files are uploading ..."
-                    : "Uploaded Files"}
+                    : ""}
                 </div>
 
                 {files.map((file) => (
@@ -461,6 +459,7 @@ const Upload: React.FC = () => {
                               overflow: "hidden",
                               textOverflow: "ellipsis",
                               whiteSpace: "nowrap",
+                              width:'110px'
                             }}
                           >
                             {file.name}
