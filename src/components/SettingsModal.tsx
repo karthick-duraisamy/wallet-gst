@@ -37,16 +37,14 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
       onClose={onClose}
       open={open}
       width={400}
-      styles={{
-        header: {
-          background: isDarkMode ? '#1f1f1f' : '#ffffff',
-          borderBottom: isDarkMode ? '1px solid #424242' : '1px solid #f0f0f0',
-          color: isDarkMode ? '#ffffff' : '#000000'
-        },
-        body: {
-          background: isDarkMode ? '#1f1f1f' : '#ffffff',
-          color: isDarkMode ? '#ffffff' : '#000000'
-        }
+      headerStyle={{
+        background: isDarkMode ? '#1f1f1f' : '#ffffff',
+        borderBottom: isDarkMode ? '1px solid #424242' : '1px solid #f0f0f0',
+        color: isDarkMode ? '#ffffff' : '#000000'
+      }}
+      bodyStyle={{
+        background: isDarkMode ? '#1f1f1f' : '#ffffff',
+        color: isDarkMode ? '#ffffff' : '#000000'
       }}
     >
       <Space direction="vertical" size="large" style={{ width: '100%' }}>
