@@ -289,7 +289,8 @@ const Upload: React.FC = () => {
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                flex: 1
+                flex: 1,
+                paddingRight: files.length > 0 ? '240px' : '0'
               }}>
                 <div style={{
                   width: 48,
@@ -326,33 +327,37 @@ const Upload: React.FC = () => {
                 </Button>
               </div>
 
-              {/* Right side - Progress display */}
+              {/* Right side - Progress display (absolute positioned) */}
               {files.length > 0 && (
                 <div style={{
-                  width: '220px',
-                  padding: '20px',
+                  position: 'absolute',
+                  right: '20px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  width: '200px',
+                  padding: '16px',
                   background: 'rgba(255, 255, 255, 0.95)',
                   borderRadius: '12px',
                   border: '1px solid #e8e8e8',
-                  marginRight: '20px',
                   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-                  backdropFilter: 'blur(8px)'
+                  backdropFilter: 'blur(8px)',
+                  zIndex: 10
                 }}>
                   <div style={{ 
                     fontSize: '14px', 
                     fontWeight: 600, 
                     color: '#333',
-                    marginBottom: '16px',
+                    marginBottom: '12px',
                     textAlign: 'center'
                   }}>
                     Upload Progress
                   </div>
                   {files.map((file) => (
-                    <div key={file.id} style={{ marginBottom: '12px' }}>
+                    <div key={file.id} style={{ marginBottom: '10px' }}>
                       <div style={{ 
-                        fontSize: '12px', 
+                        fontSize: '11px', 
                         color: '#666',
-                        marginBottom: '6px',
+                        marginBottom: '4px',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap',
