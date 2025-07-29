@@ -987,7 +987,7 @@ body {
 }
 
 /* Card Styles */
-.content-card {
+.content-card {```text
   background: white;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
@@ -1139,12 +1139,6 @@ body {
 .upload-star-icon {
   font-size: 20px;
   color: #ffa500;
-  animation: twinkle 2s infinite;
-}
-
-@keyframes twinkle {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.7; transform: scale(1.1); }
 }
 
 .upload-subtitle {
@@ -1410,19 +1404,19 @@ body {
   .upload-page-container {
     padding: 20px 16px;
   }
-  
+
   .upload-main-card {
     padding: 24px;
   }
-  
+
   .upload-title {
     font-size: 20px;
   }
-  
+
   .upload-actions {
     flex-direction: column;
   }
-  
+
   .upload-file-tags {
     justify-content: center;
   }

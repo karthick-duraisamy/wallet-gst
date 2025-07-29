@@ -1,538 +1,289 @@
-
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  Card,
-  Radio,
+  Upload,
   Button,
-  Upload as AntUpload,
-  message,
-  Progress,
-  Alert,
+  Card,
+  Typography,
+  Row,
+  Col,
+  Space,
+  Radio,
   Tabs,
+  Table,
+  Input,
+  Select,
+  Tag,
 } from "antd";
 import {
   InboxOutlined,
-  CloseOutlined,
-  FileOutlined,
+  StarFilled,
   DownloadOutlined,
-  InfoCircleOutlined,
-  PlusOutlined,
+  CheckCircleOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
 import { RootState } from "../store/store";
-import {
-  setUploadType,
-  setSubOption,
-  addFiles,
-  removeFile,
-  updateFileStatus,
-  clearFiles,
-} from "../store/slices/uploadSlice";
-import { useTheme } from "../contexts/ThemeContext";
+import { setFiles, removeFile } from "../store/slices/uploadSlice";
 
-const { Dragger } = AntUpload;
+const { Title, Text } = Typography;
+const { Dragger } = Upload;
+const { Option } = Select;
 
-const Upload: React.FC = () => {
+const Upload_Page: React.FC = () => {
   const dispatch = useDispatch();
-  const { files, uploadType, subOption, loading } = useSelector(
-    (state: RootState) => state.upload,
-  );
-  const { translate } = useTheme();
-  const [dragOver, setDragOver] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [activeTab, setActiveTab] = useState("non-ayp");
-
-  const handleUploadTypeChange = (e: any) => {
-    dispatch(setUploadType(e.target.value));
-  };
-
-  const [uploadProgress, setUploadProgress] = useState<{
-    [key: string]: number;
-  }>({});
+  const { files } = useSelector((state: RootState) => state.upload);
+  const [uploadType, setUploadType] = useState<string>("single");
+  const [activeTab, setActiveTab] = useState<string>("upload");
 
   const uploadProps = {
     name: "file",
     multiple: true,
-    accept: ".csv,.xls,.xlsx,.pdf,.doc,.docx",
     showUploadList: false,
-    beforeUpload: (file: File) => {
-      const isValidType =
-        file.type === "text/csv" ||
-        file.type === "application/vnd.ms-excel" ||
-        file.type ===
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-
-      if (!isValidType) {
-        message.error("You can only upload CSV, Excel, PDF, or Word files!");
-        return false;
-      }
-
-      const isValidSize = file.size / 1024 / 1024 < 50;
-      if (!isValidSize) {
-        message.error("File must be smaller than 50MB!");
-        return false;
-      }
-
-      const newFile = {
-        id: Date.now().toString(),
-        name: file.name,
-        size: file.size,
-        type: file.type,
-        status: "uploading" as const,
-      };
-
-      dispatch(addFiles([newFile]));
-
-      // Simulate upload progress with real-time updates
-      let progress = 0;
-      const interval = setInterval(() => {
-        progress += Math.random() * 15 + 5; // More consistent progress increments
-        if (progress >= 100) {
-          progress = 100;
-          clearInterval(interval);
-          setUploadProgress((prev) => ({ ...prev, [newFile.id]: progress }));
-          dispatch(updateFileStatus({ id: newFile.id, status: "success" }));
-          setSuccessMessage("Uploaded successfully!");
-          setTimeout(() => setSuccessMessage(""), 5000);
-        } else {
-          setUploadProgress((prev) => ({ ...prev, [newFile.id]: progress }));
-        }
-      }, 300);
-
+    beforeUpload: (file: any) => {
+      dispatch(setFiles([...files, file]));
       return false;
     },
-    onDragEnter: (e: any) => {
-      e.preventDefault();
-      setDragOver(true);
-    },
-    onDragLeave: (e: any) => {
-      e.preventDefault();
-      setDragOver(false);
-    },
-    onDragOver: (e: any) => {
-      e.preventDefault();
-      setDragOver(true);
-    },
-    onDrop: (e: any) => {
-      e.preventDefault();
-      setDragOver(false);
-    },
   };
 
-  const handleRemoveFile = (fileId: string) => {
-    dispatch(removeFile(fileId));
+  const handleRemoveFile = (index: number) => {
+    dispatch(removeFile(index));
   };
 
-  const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return "0 Bytes";
-    const k = 1024;
-    const sizes = ["Bytes", "KB", "MB", "GB"];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(0)) + " " + sizes[i];
-  };
-
-  const handleSubmit = () => {
-    message.success("Files submitted successfully!");
-  };
-
-  const tabItems = [
+  const columns = [
     {
-      key: "non-ayp",
-      label: "Non-AYP Bookings",
-      children: (
-        <div
-          style={{
-            textAlign: "left",
-            color: "#666",
-            fontSize: "14px",
-            marginTop: 24,
-            marginBottom: 24,
-            margin: "25px 15px",
-            padding: "8px 14px",
-            background: "#e6f3ff",
-            borderRadius: "8px",
-            border: "1px solid #91d5ff",
-          }}
-        >
-          <InfoCircleOutlined style={{ color: "#1890ff", marginRight: 8 }} />
-          Kindly upload the file downloaded from GSTR-2A of respective travel
-          agencies for reconciliation of the booking fees.
-        </div>
+      title: "Invoice Number",
+      dataIndex: "invoiceNumber",
+      key: "invoiceNumber",
+      fixed: "left" as const,
+      width: 150,
+    },
+    {
+      title: "Invoice Date",
+      dataIndex: "invoiceDate",
+      key: "invoiceDate",
+      width: 120,
+    },
+    {
+      title: "Supplier Name",
+      dataIndex: "supplierName",
+      key: "supplierName",
+      width: 200,
+    },
+    {
+      title: "GSTIN",
+      dataIndex: "gstin",
+      key: "gstin",
+      width: 150,
+    },
+    {
+      title: "Taxable Value",
+      dataIndex: "taxableValue",
+      key: "taxableValue",
+      width: 130,
+    },
+    {
+      title: "CGST",
+      dataIndex: "cgst",
+      key: "cgst",
+      width: 100,
+    },
+    {
+      title: "SGST",
+      dataIndex: "sgst",
+      key: "sgst",
+      width: 100,
+    },
+    {
+      title: "IGST",
+      dataIndex: "igst",
+      key: "igst",
+      width: 100,
+    },
+    {
+      title: "Total Amount",
+      dataIndex: "totalAmount",
+      key: "totalAmount",
+      width: 130,
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      fixed: "right" as const,
+      width: 100,
+      render: (status: string) => (
+        <Tag color={status === "Valid" ? "green" : "red"}>{status}</Tag>
       ),
     },
     {
-      key: "gstr-2a",
-      label: "GSTR-2A",
-      children: (
-        <div
-          style={{
-            textAlign: "left",
-            color: "#666",
-            fontSize: "14px",
-            marginTop: 16,
-            marginBottom: 16,
-            margin: "25px 15px",
-            padding: "8px 14px",
-            background: "#e6f3ff",
-            borderRadius: "8px",
-            border: "1px solid #91d5ff",
-          }}
-        >
-          <InfoCircleOutlined style={{ color: "#1890ff", marginRight: 8 }} />
-          Upload GSTR-2A data for tax reconciliation purposes.
-        </div>
+      title: "Filter",
+      dataIndex: "filter",
+      key: "filter",
+      fixed: "right" as const,
+      width: 80,
+      render: () => (
+        <Button type="link" size="small">
+          Filter
+        </Button>
       ),
     },
   ];
 
+  const mockData = [
+    {
+      key: "1",
+      invoiceNumber: "INV-001",
+      invoiceDate: "2024-01-15",
+      supplierName: "ABC Corp",
+      gstin: "29ABCDE1234F1Z5",
+      taxableValue: "10000",
+      cgst: "900",
+      sgst: "900",
+      igst: "0",
+      totalAmount: "11800",
+      status: "Valid",
+    },
+    {
+      key: "2",
+      invoiceNumber: "INV-002",
+      invoiceDate: "2024-01-16",
+      supplierName: "XYZ Ltd",
+      gstin: "27PQRST5678G2A1",
+      taxableValue: "15000",
+      cgst: "1350",
+      sgst: "1350",
+      igst: "0",
+      totalAmount: "17700",
+      status: "Invalid",
+    },
+  ];
+
   return (
-    <div
-      className="slide-up"
-      style={{
-        padding: "24px",
-        background: "#f5f5f5",
-        minHeight: "100vh",
-        paddingTop: "0px",
-      }}
-    >
-      {/* Page Title */}
-      <h2
-        style={{
-          fontSize: "24px",
-          fontWeight: 600,
-          color: "#722ed1",
-          marginBottom: 24,
-        }}
-      >
-        {translate("uploadFiles")}
-      </h2>
+    <div className="upload-page-container">
+      <Card className="upload-main-card">
+        <div className="upload-card-header">
+          <div className="upload-title-section">
+            <Title level={2} className="upload-title">
+              Upload GST Files
+            </Title>
+            <StarFilled className="upload-star-icon" />
+          </div>
+          <Text type="secondary">
+            Upload your GST files for processing and reconciliation
+          </Text>
+        </div>
 
-      {/* Success Message */}
-      {successMessage && (
-        <Alert
-          message={successMessage}
-          type="success"
-          showIcon
-          closable
-          onClose={() => setSuccessMessage("")}
-          style={{
-            marginBottom: 24,
-            borderRadius: 8,
-            animation: "slideInDown 0.5s ease-out",
-          }}
-        />
-      )}
-
-      {/* Type Selection */}
-      <div style={{ marginBottom: 24 }}>
-        <Radio.Group
-          value={uploadType}
-          onChange={handleUploadTypeChange}
-          size="large"
-        >
-          <Radio value="agency" style={{ fontWeight: 500 }}>
-            {translate("agency")}
-          </Radio>
-          <Radio value="airline" style={{ fontWeight: 500 }}>
-            {translate("airline")}
-          </Radio>
-        </Radio.Group>
-      </div>
-
-      {/* Single Upload Card with Tabs */}
-      <Card
-        style={{
-          borderRadius: 12,
-          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-          marginBottom: 24,
-          overflow: "hidden",
-        }}
-        bodyStyle={{ padding: 0 }}
-      >
-        <Tabs
-          activeKey={activeTab}
-          onChange={setActiveTab}
-          items={tabItems}
-          style={{
-            ".ant-tabs-nav": {
-              margin: 0,
-              background: "#fafafa",
-              borderBottom: "1px solid #f0f0f0",
-            },
-          }}
-          tabBarStyle={{
-            margin: 0,
-            background: "#fafafa",
-          }}
-        />
-
-        <div style={{ padding: "24px", paddingTop: "0px" }}>
-          {/* Main Upload Section with Side-by-side Layout */}
-          <div
-            style={{ display: "flex", gap: "24px", alignItems: "flex-start" }}
-          >
-            {/* Upload Area - Left Side */}
-            <Dragger
-              {...uploadProps}
-              className="upload-area-hover"
-              style={{
-                border: `2px dashed ${dragOver ? "#4f46e5" : "#d9d9d9"}`,
-                borderRadius: 8,
-                background: dragOver ? "#f8f9ff" : "#fafafa",
-                marginBottom: 16,
-                minHeight: 240,
-                position: "relative",
-                overflow: "hidden",
-                transition: "all 0.3s ease-in-out",
-                cursor: "pointer",
-                flex: 1,
-                paddingTop: 15,
-                width: 700,
-                transform: dragOver ? "translateY(-2px)" : "translateY(0)",
-                boxShadow: dragOver
-                  ? "0 8px 24px rgba(79, 70, 229, 0.15)"
-                  : "none",
-              }}
-            >
-              {/* File Type and Limit Info */}
-              <div
-                style={{
-                  textAlign: "center",
-                  marginBottom: 24,
-                  fontSize: "14px",
-                  color: "#666",
-                }}
-              >
-                <div style={{ marginBottom: 4 }}>
-                  Supported Files: <strong>CSV, XLS</strong>
-                </div>
-                <div>Upload up to 3 file. Each max file size 5MB</div>
+        <Row gutter={[24, 24]}>
+          <Col xs={24} lg={16}>
+            <div className="upload-section">
+              <div className="upload-radio-section">
+                <Radio.Group
+                  value={uploadType}
+                  onChange={(e) => setUploadType(e.target.value)}
+                  className="upload-radio-group"
+                >
+                  <Radio value="single">Single File Upload</Radio>
+                  <Radio value="bulk">Bulk File Upload</Radio>
+                </Radio.Group>
               </div>
 
-              <div
-                style={{
-                  textAlign: "center",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  height: "100%",
-                  minHeight: "120px",
-                }}
-              >
-                <div
-                  style={{
-                    width: 48,
-                    height: 48,
-                    background: "#1890ff",
-                    borderRadius: "50%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginBottom: 12,
-                    transition: "all 0.3s ease",
-                  }}
-                >
-                  <PlusOutlined style={{ color: "white", fontSize: 20 }} />
+              <Dragger {...uploadProps} className="upload-area-main">
+                <div className="upload-icon-container">
+                  <InboxOutlined className="upload-plus-icon" />
                 </div>
+                <p className="upload-main-text">
+                  Click or drag file to this area to upload
+                </p>
+                <p className="upload-or-text">or</p>
+                <Button type="link" className="select-file-btn">
+                  Select Files
+                </Button>
+              </Dragger>
 
-                <div
-                  style={{ fontSize: "16px", color: "#333", marginBottom: 8 }}
-                >
-                  Drag & drop your file here
-                </div>
-
-                <div
-                  style={{ fontSize: "14px", color: "#666", marginBottom: 12 }}
-                >
-                  or
-                </div>
-
+              <div className="sample-file-section">
                 <Button
-                  type="link"
-                  style={{
-                    color: "#1890ff",
-                    fontWeight: 500,
-                    fontSize: "14px",
-                    textDecoration: "underline",
-                  }}
+                  type="primary"
+                  icon={<DownloadOutlined />}
+                  className="sample-file-btn"
                 >
-                  Select File
+                  Download Sample File
                 </Button>
               </div>
 
-              {/* Sample File Button */}
-              <Button
-                style={{
-                  position: "absolute",
-                  bottom: 0,
-                  right: 0,
-                  background: "#52c41a",
-                  borderColor: "#52c41a",
-                  color: "white",
-                  borderRadius: "20px 0px 0px 0px",
-                  fontWeight: 500,
-                  fontSize: "14px",
-                  height: 45,
-                  padding: "15px",
-                  alignItems: "center",
-                  gap: 6,
-                }}
-              >
-                <DownloadOutlined style={{ fontSize: 16 }} />
-                Sample file
-              </Button>
-            </Dragger>
-
-            {/* Files Display - Right Side */}
-            {files.length > 0 && (
-              <div
-                style={{
-                  width: "280px",
-                  borderRadius: "12px",
-                  padding: "20px",
-                  minHeight: "240px",
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: "14px",
-                    fontWeight: 600,
-                    color: "#333",
-                    marginBottom: "16px",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                  }}
-                >
-                  {files.some((file) => file.status === "uploading")
-                    ? "Files are uploading ..."
-                    : "Uploaded Files"}
-                </div>
-
-                {files.map((file) => (
-                  <div
-                    key={file.id}
-                    style={{
-                      marginBottom: "12px",
-                      background: "white",
-                      borderRadius: "8px",
-                      padding: "12px",
-                      border: "1px solid #e9ecef",
-                      boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        marginBottom: "8px",
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "8px",
-                          flex: 1,
-                        }}
-                      >
-                        <div
-                          style={{
-                            width: "24px",
-                            height: "24px",
-                            background: "#1890ff",
-                            borderRadius: "4px",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                          }}
-                        >
-                          <FileOutlined
-                            style={{ color: "white", fontSize: "12px" }}
-                          />
-                        </div>
-                        <div style={{ flex: 1 }}>
-                          <div
-                            style={{
-                              fontSize: "13px",
-                              fontWeight: 500,
-                              color: "#333",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              whiteSpace: "nowrap",
-                            }}
-                          >
-                            {file.name}
+              {files.length > 0 && (
+                <div className="upload-file-list">
+                  <Title level={4} className="upload-file-list-title">
+                    Uploaded Files ({files.length})
+                  </Title>
+                  {files.map((file, index) => (
+                    <div key={index} className="upload-file-item">
+                      <div className="upload-file-info">
+                        <div>
+                          <div className="upload-file-name">{file.name}</div>
+                          <div className="upload-file-size">
+                            {(file.size / 1024).toFixed(2)} KB
+                          </div>
+                          <div className="upload-file-success">
+                            <CheckCircleOutlined /> Uploaded successfully
                           </div>
                         </div>
                       </div>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "8px",
-                        }}
-                      >
-                        <span
-                          style={{
-                            fontSize: "12px",
-                            color: "#666",
-                          }}
-                        >
-                          {formatFileSize(file.size)}
-                        </span>
-                        <CloseOutlined
-                          style={{
-                            color: "#999",
-                            cursor: "pointer",
-                            fontSize: "12px",
-                          }}
-                          onClick={() => handleRemoveFile(file.id)}
-                        />
-                      </div>
+                      <Button
+                        type="text"
+                        danger
+                        icon={<DeleteOutlined />}
+                        onClick={() => handleRemoveFile(index)}
+                      />
                     </div>
+                  ))}
+                </div>
+              )}
 
-                    {file.status === "uploading" && (
-                      <div style={{ marginTop: "8px" }}>
-                        <Progress
-                          percent={Math.floor(uploadProgress[file.id] || 0)}
-                          size="small"
-                          strokeColor="#1890ff"
-                          showInfo={false}
-                          style={{ margin: 0 }}
-                        />
-                      </div>
-                    )}
-                  </div>
-                ))}
+              <div className="upload-submit-section">
+                <Button
+                  type="primary"
+                  size="large"
+                  className="upload-submit-btn"
+                  disabled={files.length === 0}
+                >
+                  Process Files
+                </Button>
               </div>
-            )}
-          </div>
+            </div>
+          </Col>
 
-          {/* Submit Section */}
-          <div style={{ textAlign: "right" }}>
-            <Button
-              type="primary"
-              size="large"
-              onClick={handleSubmit}
-              style={{
-                minWidth: 120,
-                height: 40,
-                borderRadius: 6,
-                fontWeight: 500,
-                backgroundColor: "#4f46e5",
-                borderColor: "#4f46e5",
-              }}
-            >
-              {translate("submit")}
-            </Button>
-          </div>
+          <Col xs={24} lg={8}>
+            <Card title="Upload Guidelines" size="small">
+              <Space direction="vertical" size="small">
+                <Text>• Accepted formats: .xlsx, .csv, .pdf</Text>
+                <Text>• Maximum file size: 10MB</Text>
+                <Text>• Ensure proper GST format</Text>
+                <Text>• Check data completeness</Text>
+              </Space>
+            </Card>
+
+            <Card title="Recent Uploads" size="small" style={{ marginTop: 16 }}>
+              <Space direction="vertical" size="small">
+                <Text>• GST_Returns_Jan2024.xlsx</Text>
+                <Text>• Purchase_Register_Q4.csv</Text>
+                <Text>• Invoice_Data_Dec2023.xlsx</Text>
+              </Space>
+            </Card>
+          </Col>
+        </Row>
+
+        <div style={{ marginTop: 32 }}>
+          <Table
+            columns={columns}
+            dataSource={mockData}
+            className="custom-table"
+            scroll={{ x: 1200 }}
+            pagination={false}
+          />
         </div>
       </Card>
     </div>
   );
 };
 
-export default Upload;
+export default Upload_Page;
