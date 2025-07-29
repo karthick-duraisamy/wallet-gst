@@ -261,7 +261,6 @@ const Upload: React.FC = () => {
           }}
           tabBarStyle={{
             margin: 0,
-            padding: "0 24px",
             background: "#fafafa",
           }}
         />

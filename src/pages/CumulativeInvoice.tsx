@@ -928,10 +928,10 @@ const CumulativeInvoice: React.FC = () => {
 
   return (
     <div className="slide-up" style={{ padding: '24px', background: '#f5f5f5', minHeight: '100vh' }}>
-      {/* Breadcrumb */}
+      {/* Breadcrumb
       <div style={{ marginBottom: 16 }}>
         <Text style={{ color: '#666' }}>{translate('home')} » {translate('cumulativeInvoice')}</Text>
-      </div>
+      </div> */}
 
       {/* Title */}
       <Title level={3} style={{ margin: '0 0 24px 0', color: '#7c4dff' }}>
