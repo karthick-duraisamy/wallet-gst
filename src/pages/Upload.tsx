@@ -218,8 +218,7 @@ const Upload: React.FC = () => {
               overflow: 'hidden',
               transition: 'all 0.3s ease-in-out',
               cursor: 'pointer',
-              width: '800px',
-              margin: 'auto',
+              width: '600px',
               paddingTop: 15
             }}
            onMouseEnter={(e) => {
@@ -410,30 +409,27 @@ const Upload: React.FC = () => {
             )}
           </div>
 
+        {/* Submit Section */}
+        <div style={{ textAlign: 'right' }}>
+          <Button 
+            type="primary" 
+            size="large"
+            onClick={handleSubmit}
+            style={{ 
+              minWidth: 120,
+              height: 40,
+              borderRadius: 6,
+              fontWeight: 500,
+              backgroundColor: '#4f46e5',
+              borderColor: '#4f46e5'
+            }}
+          >
+            {translate('submit')}
+          </Button>
+        </div>
           
         </div>
       </Card>
-
-      
-
-      {/* Submit Section */}
-      <div style={{ textAlign: 'right' }}>
-        <Button 
-          type="primary" 
-          size="large"
-          onClick={handleSubmit}
-          style={{ 
-            minWidth: 120,
-            height: 40,
-            borderRadius: 6,
-            fontWeight: 500,
-            backgroundColor: '#4f46e5',
-            borderColor: '#4f46e5'
-          }}
-        >
-          {translate('submit')}
-        </Button>
-      </div>
     </div>
   );
 };
