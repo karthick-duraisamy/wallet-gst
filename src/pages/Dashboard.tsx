@@ -137,24 +137,7 @@ const Dashboard: React.FC = () => {
       amount: 'INR -144',
       color: '#fa8c16'
     },
-    {
-      key: '5',
-      airline: 'IX',
-      code: '96',
-      bookings: '96 tickets',
-      cancellations: '336',
-      amount: 'INR -240',
-      color: '#ff4d4f'
-    },
-    {
-      key: '6',
-      airline: 'G8',
-      code: '348',
-      bookings: '348 tickets',
-      cancellations: '1548',
-      amount: 'INR -1200',
-      color: '#52c41a'
-    }
+   
   ];
 
   const airlineColumns = [
@@ -211,14 +194,14 @@ const Dashboard: React.FC = () => {
   ];
 
   const pendingFilesData = [
-    { month: 'SG', value: 8 }
+    { month: 'SG', value: 8 },{month: 'IN', value: 10}, {month: 'FZ', value: 4}
   ];
 
   return (
     <div className="slide-up" style={{ padding: '24px', background: '#f5f5f5', minHeight: '100vh',paddingTop: '0px' }}>
       {/* Header */}
       <div style={{ marginBottom: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Title level={3} style={{ margin: 0, color: '#333' }}>{translate('dashboard')}</Title>
+        <Title level={3} style={{ margin: 0, color: 'rgb(114, 46, 209)' }}>{translate('dashboard')}</Title>
         <Select defaultValue="This month" style={{ width: 120 }}>
           <Option value="This month">{translate('thisMonth')}</Option>
           <Option value="Last month">{translate('lastMonth')}</Option>
@@ -314,7 +297,7 @@ const Dashboard: React.FC = () => {
       </div>
 
       {/* Recent failures section */}
-      <Row gutter={[24, 24]} style={{ marginBottom: 32 }}>
+      {/* <Row gutter={[24, 24]} style={{ marginBottom: 32 }}>
         <Col xs={24} lg={16}>
           <Card 
             title={
@@ -404,7 +387,7 @@ const Dashboard: React.FC = () => {
             </div>
           </Card>
         </Col>
-      </Row>
+      </Row> */}
 
       <Row gutter={[24, 24]}>
         {/* Invoice Status Chart */}
@@ -450,7 +433,7 @@ const Dashboard: React.FC = () => {
             title={translate('airlineWiseClaimable')}
             extra={
               <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                <Select size="small" defaultValue="Airlines" style={{ width: 80 }}>
+                <Select size="small" defaultValue="Airlines" style={{ width: 100 }}>
                   <Option value="Airlines">Airlines</Option>
                 </Select>
                 <DownloadOutlined style={{ cursor: 'pointer' }} />
@@ -468,7 +451,6 @@ const Dashboard: React.FC = () => {
               dataSource={airlineData}
               pagination={false}
               size="small"
-              scroll={{ y: 280 }}
             />
           </Card>
         </Col>

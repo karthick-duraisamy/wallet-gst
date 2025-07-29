@@ -217,6 +217,56 @@ const Reconciliation: React.FC = () => {
       taxClaimable: 4445.00,
       status: 'Additional in GSTR-2A',
     },
+      {
+      key: '6',
+      supplierName: 'Spice Jet',
+      pnrTicketNumber: 'ADA123',
+      invoiceNumber: 'INV0BET333738',
+      invoiceDate: '31-Jan-2020',
+      type: 'Tax invoice',
+      taxClaimable: 2627.12,
+      status: 'Additional in GSTR-2A',
+    },
+    {
+      key: '7',
+      supplierName: 'IndiGo',
+      pnrTicketNumber: 'BCD456',
+      invoiceNumber: 'INV1215645',
+      invoiceDate: '10-Jan-2020',
+      type: 'Tax invoice',
+      taxClaimable: 19500.00,
+      status: 'Additional in GSTR-2A',
+    },
+    {
+      key: '8',
+      supplierName: 'Air India',
+      pnrTicketNumber: 'EFG789',
+      invoiceNumber: 'DL1212290AT85932',
+      invoiceDate: '08-Oct-2021',
+      type: 'Tax invoice',
+      taxClaimable: 4593.00,
+      status: 'Additional in GSTR-2A',
+    },
+    {
+      key: '9',
+      supplierName: 'Vistara',
+      pnrTicketNumber: 'HIJ012',
+      invoiceNumber: 'DL1212290AU77270',
+      invoiceDate: '13-Oct-2021',
+      type: 'Tax invoice',
+      taxClaimable: 5586.00,
+      status: 'Additional in GSTR-2A',
+    },
+    {
+      key: '10',
+      supplierName: 'iNDIGO',
+      pnrTicketNumber: 'KLM345',
+      invoiceNumber: 'DL1212290AU02058',
+      invoiceDate: '09-Oct-2021',
+      type: 'Tax invoice',
+      taxClaimable: 4445.00,
+      status: 'Additional in GSTR-2A',
+    },
   ];
 
   const rowSelection = {
@@ -396,7 +446,7 @@ const Reconciliation: React.FC = () => {
           pagination={{
             current: 1,
             pageSize: 5,
-            total: 917,
+            total: 10,
             showSizeChanger: true,
             showQuickJumper: true,
             showTotal: (total, range) => `${translate('displaying')} ${range[0]} ${translate('outOf')} ${total}`,
@@ -430,25 +480,7 @@ const Reconciliation: React.FC = () => {
           tableLayout="fixed"
         />
 
-        {/* Custom Pagination Footer */}
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'flex-end', 
-          alignItems: 'center', 
-          gap: 16,
-          marginTop: 16,
-          paddingTop: 16,
-          borderTop: '1px solid #f0f0f0'
-        }}>
-          <span style={{ fontSize: '14px' }}>{translate('goToPage')}</span>
-          <Input style={{ width: 60 }} />
-          <Button 
-            type="primary" 
-            style={{ backgroundColor: '#4f46e5', borderRadius: '16px' }}
-          >
-            {translate('go')}
-          </Button>
-        </div>
+       
       </Card>
     </div>
   );

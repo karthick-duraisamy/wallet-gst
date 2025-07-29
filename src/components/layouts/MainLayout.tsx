@@ -240,8 +240,8 @@ const MainLayout: React.FC = () => {
             left: 0,
             right: 0,
             zIndex: 199,
-            background: isDarkMode ? '#262626' : '#f8f9fa',
-            borderBottom: isDarkMode ? '1px solid #424242' : '1px solid #e8e8e8',
+            background: isDarkMode ? '#262626' : '#4C1D95',
+            borderBottom: isDarkMode ? '1px solid #424242' : '1px solid #FFFFFF',
             height: '60px',
             display: 'flex',
             alignItems: 'center',
@@ -263,14 +263,14 @@ const MainLayout: React.FC = () => {
                     backgroundColor: getCurrentKey() === item.key ? 
                       (isDarkMode ? 'rgba(24, 144, 255, 0.2)' : 'rgba(24, 144, 255, 0.1)') : 'transparent',
                     color: getCurrentKey() === item.key ? 
-                      '#1890ff' : (isDarkMode ? '#ffffff' : '#1a1a1a'),
+                      '#ffffff' : (isDarkMode ? '#ffffff' : '#ffffff  '),
                     transition: 'all 0.2s ease'
                   }}
                 >
-                  <div style={{ fontSize: '16px' }}>
+                  <div style={{ fontSize: '20px' }}>
                     {item.icon}
                   </div>
-                  <span style={{ fontSize: '14px', fontWeight: '500' }}>
+                  <span style={{ fontSize: '16px', fontWeight: '500' }}>
                     {item.label}
                   </span>
                 </div>

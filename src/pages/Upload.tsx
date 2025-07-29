@@ -36,10 +36,7 @@ const Upload: React.FC = () => {
     beforeUpload: (file: File) => {
       const isValidType = file.type === 'text/csv' || 
                          file.type === 'application/vnd.ms-excel' ||
-                         file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
-                         file.type === 'application/pdf' ||
-                         file.type === 'application/msword' ||
-                         file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+                         file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
       if (!isValidType) {
         message.error('You can only upload CSV, Excel, PDF, or Word files!');
@@ -207,21 +204,7 @@ const Upload: React.FC = () => {
         />
         
         <div style={{ padding: '24px', paddingTop: '0px' }}>
-          {/* File Type and Limit Info */}
-          <div style={{ 
-            textAlign: 'center', 
-            marginBottom: 16,
-            fontSize: '14px',
-            color: '#666'
-          }}>
-            <div style={{ marginBottom: 4 }}>
-              Supported Files: <strong>CSV, XLS</strong>
-            </div>
-            <div>
-              Upload up to 3 file. Each max file size 5MB
-            </div>
-          </div>
-
+         
           {/* Upload Area */}
           <div 
             className="upload-area-hover"
@@ -237,6 +220,7 @@ const Upload: React.FC = () => {
               cursor: 'pointer',
               width: '800px',
               margin: 'auto',
+              paddingTop: 15
             }}
            onMouseEnter={(e) => {
               e.currentTarget.style.borderColor = '#4f46e5';
@@ -251,8 +235,22 @@ const Upload: React.FC = () => {
               e.currentTarget.  style.boxShadow = 'none';
             }}
           >
+             {/* File Type and Limit Info */}
+          <div style={{ 
+            textAlign: 'center', 
+            marginBottom: 16,
+            fontSize: '14px',
+            color: '#666'
+          }}>
+            <div style={{ marginBottom: 4 }}>
+              Supported Files: <strong>CSV, XLS</strong>
+            </div>
+            <div>
+              Upload up to 3 file. Each max file size 5MB
+            </div>
+          </div>
+
             <div style={{
-              padding: '24px 20px',
               textAlign: 'center',
               display: 'flex',
               flexDirection: 'column',
@@ -419,7 +417,7 @@ const Upload: React.FC = () => {
       
 
       {/* Submit Section */}
-      <div style={{ textAlign: 'center' }}>
+      <div style={{ textAlign: 'right' }}>
         <Button 
           type="primary" 
           size="large"
