@@ -23,7 +23,7 @@ import {
   DeleteOutlined,
 } from "@ant-design/icons";
 import { RootState } from "../store/store";
-import { setFiles, removeFile } from "../store/slices/uploadSlice";
+import { addFiles, removeFile } from "../store/slices/uploadSlice";
 
 const { Title, Text } = Typography;
 const { Dragger } = Upload;
@@ -40,13 +40,20 @@ const Upload_Page: React.FC = () => {
     multiple: true,
     showUploadList: false,
     beforeUpload: (file: any) => {
-      dispatch(setFiles([...files, file]));
+      const uploadFile = {
+        id: Date.now().toString(),
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        status: 'success' as const
+      };
+      dispatch(addFiles([uploadFile]));
       return false;
     },
   };
 
-  const handleRemoveFile = (index: number) => {
-    dispatch(removeFile(index));
+  const handleRemoveFile = (fileId: string) => {
+    dispatch(removeFile(fileId));
   };
 
   const columns = [
@@ -215,8 +222,8 @@ const Upload_Page: React.FC = () => {
                   <Title level={4} className="upload-file-list-title">
                     Uploaded Files ({files.length})
                   </Title>
-                  {files.map((file, index) => (
-                    <div key={index} className="upload-file-item">
+                  {files.map((file) => (
+                    <div key={file.id} className="upload-file-item">
                       <div className="upload-file-info">
                         <div>
                           <div className="upload-file-name">{file.name}</div>
@@ -232,7 +239,7 @@ const Upload_Page: React.FC = () => {
                         type="text"
                         danger
                         icon={<DeleteOutlined />}
-                        onClick={() => handleRemoveFile(index)}
+                        onClick={() => handleRemoveFile(file.id)}
                       />
                     </div>
                   ))}
