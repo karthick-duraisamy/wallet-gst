@@ -930,14 +930,14 @@ const CumulativeInvoice: React.FC = () => {
   };
 
   return (
-    <div className="slide-up" style={{ padding: '0px 24px', background: '#f5f5f5', minHeight: '100vh' }}>
+    <div className="slide-up" style={{ padding: '24px', background: '#f5f5f5', minHeight: '100vh' }}>
       {/* Breadcrumb
       <div style={{ marginBottom: 16 }}>
         <Text style={{ color: '#666' }}>{translate('home')} » {translate('cumulativeInvoice')}</Text>
       </div> */}
 
       {/* Title */}
-      <Title level={3} style={{ margin: '0 0 24px 0', color: '#722ed1' }}>
+      <Title level={3} style={{ margin: '0 0 24px 0', color: '#7c4dff' }}>
         {translate('cumulativeInvoice')}
       </Title>
 
