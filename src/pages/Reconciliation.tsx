@@ -65,6 +65,7 @@ const Reconciliation: React.FC = () => {
     invoiceDate: true,
     type: true,
     taxClaimable: true,
+    status: true,
   });
   const [filterDropdownVisible, setFilterDropdownVisible] = useState(false);
 
@@ -73,42 +74,36 @@ const Reconciliation: React.FC = () => {
       title: translate('supplierName'),
       dataIndex: 'supplierName',
       key: 'supplierName',
-      width: 150,
       render: (text: string) => text || 'Spice Jet',
     },
     {
       title: translate('pnrTicketNumber'),
       dataIndex: 'pnrTicketNumber',
       key: 'pnrTicketNumber',
-      width: 150,
       render: (text: string) => text || 'ADA123',
     },
     {
       title: translate('invoiceNumber'),
       dataIndex: 'invoiceNumber',
       key: 'invoiceNumber',
-      width: 180,
       render: (text: string) => text || 'INV0BET333738',
     },
     {
       title: translate('invoiceDate'),
       dataIndex: 'invoiceDate',
       key: 'invoiceDate',
-      width: 130,
       render: (text: string) => text || '31-Jan-2020',
     },
     {
       title: translate('type'),
       dataIndex: 'type',
       key: 'type',
-      width: 120,
       render: (type: string) => type || translate('taxInvoice'),
     },
     {
       title: translate('taxClaimable'),
       dataIndex: 'taxClaimable',
       key: 'taxClaimable',
-      width: 150,
       align: 'right' as const,
       render: (amount: number) => (
         <span style={{ color: '#52c41a', fontWeight: 600 }}>
@@ -116,10 +111,64 @@ const Reconciliation: React.FC = () => {
         </span>
       ),
     },
+    {
+      title: translate('status'),
+      dataIndex: 'status',
+      key: 'status',
+      render: (status: string) => (
+        <Tag color="#722ed1" style={{ borderRadius: '12px' }}>
+          {translate('additionalInGSTR2A')}
+        </Tag>
+      ),
+    },
+    {
+      title: (
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Button
+            type="text"
+            icon={<FilterOutlined />}
+            onClick={() => setFilterDropdownVisible(!filterDropdownVisible)}
+            style={{ border: 'none', padding: 0, background: 'transparent' }}
+          />
+          {filterDropdownVisible && (
+            <div style={{
+              position: 'absolute',
+              top: '100%',
+              right: 0,
+              background: 'white',
+              border: '1px solid #d9d9d9',
+              borderRadius: 6,
+              padding: 16,
+              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+              zIndex: 1000,
+              minWidth: 200
+            }}>
+              <div style={{ marginBottom: 8, fontWeight: 600 }}>Show/Hide Columns</div>
+              {Object.keys(visibleColumns).map((key) => (
+                <div key={key} style={{ marginBottom: 8 }}>
+                  <Checkbox
+                    checked={visibleColumns[key as keyof typeof visibleColumns]}
+                    onChange={(e) => setVisibleColumns(prev => ({
+                      ...prev,
+                      [key]: e.target.checked
+                    }))}
+                  >
+                    {allColumns.find(col => col.key === key)?.title}
+                  </Checkbox>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      ),
+      key: 'filter',
+      width: 60,
+      render: () => null,
+    },
   ];
 
   const visibleColumnsData = allColumns.filter(col => 
-    visibleColumns[col.key as keyof typeof visibleColumns]
+    col.key === 'filter' || visibleColumns[col.key as keyof typeof visibleColumns]
   );
 
   const mockData = [
@@ -527,7 +576,7 @@ const Reconciliation: React.FC = () => {
           size="middle"
           bordered={false}
           className="custom-table"
-          scroll={{ x: 1000 }}
+          tableLayout="fixed"
         />
 
         {/* Custom Pagination Footer */}
