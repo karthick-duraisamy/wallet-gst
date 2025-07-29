@@ -2159,3 +2159,11 @@ body {
   border: unset;
   margin-right: 5px !important;
 }
+.cls-button{
+  display: flex;
+  gap: 15px;
+}
+.cls-sprt{
+    display: flex;
+    gap: 16px;
+}
