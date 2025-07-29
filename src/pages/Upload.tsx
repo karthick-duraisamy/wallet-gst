@@ -485,7 +485,7 @@ const Upload: React.FC = () => {
             )}
           </div>
 
-        {/* Submit Section */}
+          {/* Submit Section */}
           <div style={{ textAlign: 'right' }}>
             <Button 
               type="primary" 
