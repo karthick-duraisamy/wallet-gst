@@ -28,6 +28,8 @@ const Upload: React.FC = () => {
     dispatch(setUploadType(e.target.value));
   };
 
+  const [uploadProgress, setUploadProgress] = useState<{[key: string]: number}>({});
+
   const uploadProps = {
     name: 'file',
     multiple: true,
@@ -59,24 +61,40 @@ const Upload: React.FC = () => {
 
       dispatch(addFiles([newFile]));
 
-      // Simulate upload progress
+      // Simulate upload progress with real-time updates
       let progress = 0;
       const interval = setInterval(() => {
-        progress += Math.random() * 30;
+        progress += Math.random() * 15 + 5; // More consistent progress increments
         if (progress >= 100) {
           progress = 100;
           clearInterval(interval);
+          setUploadProgress(prev => ({ ...prev, [newFile.id]: progress }));
           dispatch(updateFileStatus({ id: newFile.id, status: 'success' }));
           setSuccessMessage('Uploaded successfully!');
           setTimeout(() => setSuccessMessage(''), 5000);
+        } else {
+          setUploadProgress(prev => ({ ...prev, [newFile.id]: progress }));
         }
-      }, 500);
+      }, 300);
 
       return false;
     },
-    onDragEnter: () => setDragOver(true),
-    onDragLeave: () => setDragOver(false),
-    onDrop: () => setDragOver(false),
+    onDragEnter: (e: any) => {
+      e.preventDefault();
+      setDragOver(true);
+    },
+    onDragLeave: (e: any) => {
+      e.preventDefault();
+      setDragOver(false);
+    },
+    onDragOver: (e: any) => {
+      e.preventDefault();
+      setDragOver(true);
+    },
+    onDrop: (e: any) => {
+      e.preventDefault();
+      setDragOver(false);
+    },
   };
 
   const handleRemoveFile = (fileId: string) => {
@@ -206,12 +224,13 @@ const Upload: React.FC = () => {
         <div style={{ padding: '24px', paddingTop: '0px' }}>
          
           {/* Upload Area */}
-          <div 
+          <Dragger 
+            {...uploadProps}
             className="upload-area-hover"
             style={{
-              border: '2px dashed #d9d9d9',
+              border: `2px dashed ${dragOver ? '#4f46e5' : '#d9d9d9'}`,
               borderRadius: 8,
-              background: '#fafafa',
+              background: dragOver ? '#f8f9ff' : '#fafafa',
               marginBottom: 16,
               minHeight: 120,
               position: 'relative',
@@ -219,19 +238,25 @@ const Upload: React.FC = () => {
               transition: 'all 0.3s ease-in-out',
               cursor: 'pointer',
               width: '600px',
-              paddingTop: 15
+              paddingTop: 15,
+              transform: dragOver ? 'translateY(-2px)' : 'translateY(0)',
+              boxShadow: dragOver ? '0 8px 24px rgba(79, 70, 229, 0.15)' : 'none'
             }}
-           onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = '#4f46e5';
-              e.currentTarget.style.background = '#f8f9ff';
-              e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.boxShadow = '0 8px 24px rgba(79, 70, 229, 0.15)';
+            onMouseEnter={(e) => {
+              if (!dragOver) {
+                e.currentTarget.style.borderColor = '#4f46e5';
+                e.currentTarget.style.background = '#f8f9ff';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px rgba(79, 70, 229, 0.15)';
+              }
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = '#d9d9d9';
-              e.currentTarget.style.background = '#fafafa';
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.  style.boxShadow = 'none';
+              if (!dragOver) {
+                e.currentTarget.style.borderColor = '#d9d9d9';
+                e.currentTarget.style.background = '#fafafa';
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+              }
             }}
           >
              {/* File Type and Limit Info */}
@@ -250,36 +275,44 @@ const Upload: React.FC = () => {
           </div>
 
             <div style={{
-              textAlign: 'center',
               display: 'flex',
-              flexDirection: 'column',
               alignItems: 'center',
-              justifyContent: 'center',
-              position: 'relative'
+              justifyContent: 'space-between',
+              position: 'relative',
+              width: '100%',
+              minHeight: '120px'
             }}>
+              {/* Left side - Upload content */}
               <div style={{
-                width: 48,
-                height: 48,
-                background: '#1890ff',
-                borderRadius: '50%',
+                textAlign: 'center',
                 display: 'flex',
+                flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                marginBottom: 12,
-                transition: 'all 0.3s ease'
+                flex: 1
               }}>
-                <PlusOutlined style={{ color: 'white', fontSize: 20 }} />
-              </div>
-              
-              <div style={{ fontSize: '16px', color: '#333', marginBottom: 8 }}>
-                Drag & drop your file here
-              </div>
-              
-              <div style={{ fontSize: '14px', color: '#666', marginBottom: 12 }}>
-                or
-              </div>
-              
-              <Dragger {...uploadProps} style={{ background: 'transparent', border: 'none', padding: 0 }}>
+                <div style={{
+                  width: 48,
+                  height: 48,
+                  background: '#1890ff',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: 12,
+                  transition: 'all 0.3s ease'
+                }}>
+                  <PlusOutlined style={{ color: 'white', fontSize: 20 }} />
+                </div>
+                
+                <div style={{ fontSize: '16px', color: '#333', marginBottom: 8 }}>
+                  Drag & drop your file here
+                </div>
+                
+                <div style={{ fontSize: '14px', color: '#666', marginBottom: 12 }}>
+                  or
+                </div>
+                
                 <Button 
                   type="link" 
                   style={{ 
@@ -291,30 +324,73 @@ const Upload: React.FC = () => {
                 >
                   Select File
                 </Button>
-              </Dragger>
+              </div>
 
-              {/* Sample File Button inside upload area */}
-              <Button 
-                style={{ 
-                  position: 'absolute',
-                  bottom: 0,
-                  right: 0,
-                  background: '#52c41a', 
-                  borderColor: '#52c41a', 
-                  color: 'white',
-                  borderRadius: '20px 0px 0px 0px',
-                  fontWeight: 500,
-                  fontSize: '14px',
-                  height: 45,
-                  padding: '15px',
-                  alignItems: 'center',
-                  gap: 6,
-                }}
-              >
-                <DownloadOutlined style={{ fontSize: 16 }} />
-                Sample file
-              </Button>
-            </div>
+              {/* Right side - Progress display */}
+              {files.length > 0 && (
+                <div style={{
+                  width: '200px',
+                  padding: '16px',
+                  background: 'white',
+                  borderRadius: '8px',
+                  border: '1px solid #e8e8e8',
+                  marginRight: '16px'
+                }}>
+                  <div style={{ 
+                    fontSize: '14px', 
+                    fontWeight: 500, 
+                    color: '#333',
+                    marginBottom: '12px' 
+                  }}>
+                    Upload Progress
+                  </div>
+                  {files.map((file) => (
+                    <div key={file.id} style={{ marginBottom: '8px' }}>
+                      <div style={{ 
+                        fontSize: '12px', 
+                        color: '#666',
+                        marginBottom: '4px',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap'
+                      }}>
+                        {file.name}
+                      </div>
+                      <Progress 
+                        percent={uploadProgress[file.id] || 0}
+                        size="small"
+                        status={file.status === 'success' ? 'success' : 'active'}
+                        format={(percent) => `${Math.floor(percent || 0)}%`}
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              </div>
+
+            {/* Sample File Button */}
+            <Button 
+              style={{ 
+                position: 'absolute',
+                bottom: 0,
+                right: 0,
+                background: '#52c41a', 
+                borderColor: '#52c41a', 
+                color: 'white',
+                borderRadius: '20px 0px 0px 0px',
+                fontWeight: 500,
+                fontSize: '14px',
+                height: 45,
+                padding: '15px',
+                alignItems: 'center',
+                gap: 6,
+              }}
+            >
+              <DownloadOutlined style={{ fontSize: 16 }} />
+              Sample file
+            </Button>
+          </Dragger>
 
             {/* Inline file display */}
             {files.length > 0 && (
@@ -374,13 +450,13 @@ const Upload: React.FC = () => {
                       {file.status === 'uploading' && (
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                           <Progress 
-                            percent={Math.floor(Math.random() * 100)} 
+                            percent={uploadProgress[file.id] || 0}
                             size="small"
                             style={{ width: 100 }}
                             showInfo={false}
                           />
                           <span style={{ fontSize: '12px', fontWeight: 500, color: '#666', minWidth: '35px' }}>
-                            {Math.floor(Math.random() * 100)}%
+                            {Math.floor(uploadProgress[file.id] || 0)}%
                           </span>
                         </div>
                       )}
