@@ -486,24 +486,23 @@ const Upload: React.FC = () => {
           </div>
 
         {/* Submit Section */}
-        <div style={{ textAlign: 'right' }}>
-          <Button 
-            type="primary" 
-            size="large"
-            onClick={handleSubmit}
-            style={{ 
-              minWidth: 120,
-              height: 40,
-              borderRadius: 6,
-              fontWeight: 500,
-              backgroundColor: '#4f46e5',
-              borderColor: '#4f46e5'
-            }}
-          >
-            {translate('submit')}
-          </Button>
-        </div>
-          
+          <div style={{ textAlign: 'right' }}>
+            <Button 
+              type="primary" 
+              size="large"
+              onClick={handleSubmit}
+              style={{ 
+                minWidth: 120,
+                height: 40,
+                borderRadius: 6,
+                fontWeight: 500,
+                backgroundColor: '#4f46e5',
+                borderColor: '#4f46e5'
+              }}
+            >
+              {translate('submit')}
+            </Button>
+          </div>
         </div>
       </Card>
     </div>
