@@ -202,7 +202,15 @@ const MainLayout: React.FC = () => {
                 }} 
                 onClick={() => setSettingsModalOpen(true)}
               >
-                🎨
+                <img 
+                  src="/src/assets/theme-icon.svg" 
+                  alt="Theme" 
+                  style={{ 
+                    width: '20px', 
+                    height: '20px',
+                    filter: isDarkMode ? 'invert(0.65)' : 'invert(0.4)'
+                  }} 
+                />
               </Button>
               
               <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
@@ -477,7 +485,15 @@ const MainLayout: React.FC = () => {
             }} 
             onClick={() => setSettingsModalOpen(true)}
           >
-            🎨
+            <img 
+              src="/src/assets/theme-icon.svg" 
+              alt="Theme" 
+              style={{ 
+                width: '20px', 
+                height: '20px',
+                filter: isDarkMode ? 'invert(0.65)' : 'invert(0.4)'
+              }} 
+            />
           </Button>
 
           {/* <Button 

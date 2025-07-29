@@ -19,7 +19,15 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
       title={
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '16px' }}>🎨</span>
+            <img 
+              src="/src/assets/theme-icon.svg" 
+              alt="Theme" 
+              style={{ 
+                width: '16px', 
+                height: '16px',
+                filter: isDarkMode ? 'invert(1)' : 'invert(0)'
+              }} 
+            />
             <span>{translate('themeSettings')}</span>
           </div>
           <CloseOutlined 
@@ -46,6 +54,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
         background: isDarkMode ? '#1f1f1f' : '#ffffff',
         color: isDarkMode ? '#ffffff' : '#000000'
       }}
+      transitionName="slide-right"
+      maskTransitionName="fade"
     >
       <Space direction="vertical" size="large" style={{ width: '100%' }}>
         {/* Theme Settings */}
