@@ -28,6 +28,9 @@ const CumulativeInvoice: React.FC = () => {
   const [pnrInput, setPnrInput] = useState('');
   const [invoiceType, setInvoiceType] = useState('all');
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
+  const [goToPageValue, setGoToPageValue] = useState('');
   const { translate } = useTheme();
 
   // Form states
@@ -197,7 +200,6 @@ const CumulativeInvoice: React.FC = () => {
     col.key === 'filter' || visibleColumns[col.key as keyof typeof visibleColumns]
   );
 
-  // Mock data for the table
   const mockData = [
     {
       key: '1',
@@ -244,6 +246,96 @@ const CumulativeInvoice: React.FC = () => {
       type: 'Invoice',
       travelVendor: 'AtYourPrice',
     },
+    {
+      key: '6',
+      supplierName: 'Alliance Air',
+      pnrTicketNo: 'ASSA789',
+      invoiceNo: 'INV006789',
+      invoiceDate: '20-Jan-2024',
+      type: 'Invoice',
+      travelVendor: 'AtYourPrice',
+    },
+    {
+      key: '7',
+      supplierName: 'Air Asia',
+      pnrTicketNo: 'QWER456',
+      invoiceNo: 'INV007890',
+      invoiceDate: '21-Jan-2024',
+      type: 'Credit Note',
+      travelVendor: 'AtYourPrice',
+    },
+    {
+      key: '8',
+      supplierName: 'Spice Jet',
+      pnrTicketNo: 'ZXCV123',
+      invoiceNo: 'INV008901',
+      invoiceDate: '22-Jan-2024',
+      type: 'Invoice',
+      travelVendor: 'AtYourPrice',
+    },
+    {
+      key: '9',
+      supplierName: 'IndiGo',
+      pnrTicketNo: 'TYUI567',
+      invoiceNo: 'INV009012',
+      invoiceDate: '23-Jan-2024',
+      type: 'Invoice',
+      travelVendor: 'AtYourPrice',
+    },
+    {
+      key: '10',
+      supplierName: 'Air India',
+      pnrTicketNo: 'GHJK234',
+      invoiceNo: 'INV010123',
+      invoiceDate: '24-Jan-2024',
+      type: 'Debit Note',
+      travelVendor: 'AtYourPrice',
+    },
+    {
+      key: '11',
+      supplierName: 'Vistara',
+      pnrTicketNo: 'BNMS890',
+      invoiceNo: 'INV011234',
+      invoiceDate: '25-Jan-2024',
+      type: 'Invoice',
+      travelVendor: 'AtYourPrice',
+    },
+    {
+      key: '12',
+      supplierName: 'GoAir',
+      pnrTicketNo: 'LKJH567',
+      invoiceNo: 'INV012345',
+      invoiceDate: '26-Jan-2024',
+      type: 'Invoice',
+      travelVendor: 'AtYourPrice',
+    },
+    {
+      key: '13',
+      supplierName: 'Alliance Air',
+      pnrTicketNo: 'POIU234',
+      invoiceNo: 'INV013456',
+      invoiceDate: '27-Jan-2024',
+      type: 'Credit Note',
+      travelVendor: 'AtYourPrice',
+    },
+    {
+      key: '14',
+      supplierName: 'Air Asia',
+      pnrTicketNo: 'ASDF890',
+      invoiceNo: 'INV014567',
+      invoiceDate: '28-Jan-2024',
+      type: 'Invoice',
+      travelVendor: 'AtYourPrice',
+    },
+    {
+      key: '15',
+      supplierName: 'Spice Jet',
+      pnrTicketNo: 'MNBV567',
+      invoiceNo: 'INV015678',
+      invoiceDate: '29-Jan-2024',
+      type: 'Debit Note',
+      travelVendor: 'AtYourPrice',
+    }
   ];
 
   const rowSelection = {
@@ -251,6 +343,30 @@ const CumulativeInvoice: React.FC = () => {
     onChange: (newSelectedRowKeys: React.Key[]) => {
       setSelectedRowKeys(newSelectedRowKeys);
     },
+  };
+
+  // Calculate pagination for table data
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const paginatedTableData = mockData.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(mockData.length / pageSize);
+
+  const handlePageChange = (page: number, pageSize: number) => {
+    setCurrentPage(page);
+    setPageSize(pageSize);
+  };
+
+  const handlePageSizeChange = (current: number, size: number) => {
+    setCurrentPage(1);
+    setPageSize(size);
+  };
+
+  const handleGoToPage = () => {
+    const page = Number(goToPageValue);
+    if (!isNaN(page) && page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+    setGoToPageValue('');
   };
 
   const renderTabContent = () => {
@@ -885,37 +1001,17 @@ const CumulativeInvoice: React.FC = () => {
         <Card style={{ borderRadius: 8, boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
           <Table
             columns={visibleColumnsData}
-            dataSource={mockData}
+            dataSource={paginatedTableData}
             pagination={{
-              current: 1,
-              pageSize: 5,
-              total: 10,
+              current: currentPage,
+              pageSize: pageSize,
+              total: mockData.length,
               showSizeChanger: true,
-              showQuickJumper: true,
+              showQuickJumper: false,
+              pageSizeOptions: ['5', '10', '20', '30', '50'],
               showTotal: (total, range) => `Displaying ${range[0]} Out of ${total}`,
-              itemRender: (current, type, originalElement) => {
-                if (type === 'page') {
-                  return (
-                    <Button 
-                      type={current === 1 ? 'primary' : 'default'}
-                      style={{
-                        backgroundColor: current === 1 ? '#4f46e5' : 'white',
-                        borderColor: current === 1 ? '#4f46e5' : '#d9d9d9',
-                        color: current === 1 ? 'white' : '#000',
-                        borderRadius: '50%',
-                        width: 32,
-                        height: 32,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}
-                    >
-                      {current}
-                    </Button>
-                  );
-                }
-                return originalElement;
-              },
+              onChange: handlePageChange,
+              onShowSizeChange: handlePageSizeChange,
             }}
             size="middle"
             bordered={false}
@@ -923,8 +1019,8 @@ const CumulativeInvoice: React.FC = () => {
             tableLayout="fixed"
           />
 
-          {/* Custom Pagination Footer */}
-          {/* <div style={{ 
+          {/* Custom Go to Page Footer */}
+          <div style={{ 
             display: 'flex', 
             justifyContent: 'flex-end', 
             alignItems: 'center', 
@@ -933,15 +1029,22 @@ const CumulativeInvoice: React.FC = () => {
             paddingTop: 16,
             borderTop: '1px solid #f0f0f0'
           }}>
-            <span style={{ fontSize: '14px' }}>Go to page</span>
-            <Input style={{ width: 60 }} />
+            <span style={{ fontSize: '14px' }}>{translate('goToPage')}</span>
+            <Input 
+              style={{ width: 60 }} 
+              value={goToPageValue}
+              onChange={(e) => setGoToPageValue(e.target.value)}
+              onPressEnter={handleGoToPage}
+              placeholder={`1-${totalPages}`}
+            />
             <Button 
               type="primary" 
               style={{ backgroundColor: '#4f46e5', borderRadius: '16px' }}
+              onClick={handleGoToPage}
             >
-              Go
+              {translate('go')}
             </Button>
-          </div> */}
+          </div>
         </Card>
       </div>
 

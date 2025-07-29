@@ -14,6 +14,9 @@ const Reconciliation: React.FC = () => {
   const { records, filters, loading, pagination } = useSelector((state: RootState) => state.reconciliation);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const { translate } = useTheme();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
+  const [goToPageValue, setGoToPageValue] = useState('');
 
   const handleFilterChange = (key: string, value: any) => {
     dispatch(setFilters({ [key]: value }));
@@ -21,6 +24,27 @@ const Reconciliation: React.FC = () => {
 
   const handleClearFilters = () => {
     dispatch(clearFilters());
+  };
+
+  const handlePageChange = (page: number, size?: number) => {
+    setCurrentPage(page);
+    if (size && size !== pageSize) {
+      setPageSize(size);
+    }
+  };
+
+  const handlePageSizeChange = (current: number, size: number) => {
+    setCurrentPage(1);
+    setPageSize(size);
+  };
+
+  const handleGoToPage = () => {
+    const pageNumber = parseInt(goToPageValue);
+    const totalPages = Math.ceil(mockData.length / pageSize);
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+      setGoToPageValue('');
+    }
   };
 
   const statusOptions = [
@@ -200,57 +224,163 @@ const Reconciliation: React.FC = () => {
       taxClaimable: 4445.00,
       status: 'Additional in GSTR-2A',
     },
-      {
+    {
       key: '6',
       supplierName: 'Spice Jet',
-      pnrTicketNumber: 'ADA123',
-      invoiceNumber: 'INV0BET333738',
-      invoiceDate: '31-Jan-2020',
+      pnrTicketNumber: 'XYZ123',
+      invoiceNumber: 'INV0BET456789',
+      invoiceDate: '15-Feb-2020',
       type: 'Tax invoice',
-      taxClaimable: 2627.12,
+      taxClaimable: 3200.50,
       status: 'Additional in GSTR-2A',
     },
     {
       key: '7',
       supplierName: 'IndiGo',
-      pnrTicketNumber: 'BCD456',
-      invoiceNumber: 'INV1215645',
-      invoiceDate: '10-Jan-2020',
+      pnrTicketNumber: 'ABC789',
+      invoiceNumber: 'INV1234567',
+      invoiceDate: '20-Mar-2020',
       type: 'Tax invoice',
-      taxClaimable: 19500.00,
+      taxClaimable: 15750.00,
       status: 'Additional in GSTR-2A',
     },
     {
       key: '8',
       supplierName: 'Air India',
-      pnrTicketNumber: 'EFG789',
-      invoiceNumber: 'DL1212290AT85932',
-      invoiceDate: '08-Oct-2021',
+      pnrTicketNumber: 'DEF456',
+      invoiceNumber: 'DL1212290AT12345',
+      invoiceDate: '25-Apr-2021',
       type: 'Tax invoice',
-      taxClaimable: 4593.00,
+      taxClaimable: 6789.00,
       status: 'Additional in GSTR-2A',
     },
     {
       key: '9',
       supplierName: 'Vistara',
-      pnrTicketNumber: 'HIJ012',
-      invoiceNumber: 'DL1212290AU77270',
-      invoiceDate: '13-Oct-2021',
+      pnrTicketNumber: 'GHI789',
+      invoiceNumber: 'DL1212290AU98765',
+      invoiceDate: '30-May-2021',
       type: 'Tax invoice',
-      taxClaimable: 5586.00,
+      taxClaimable: 8900.00,
       status: 'Additional in GSTR-2A',
     },
     {
       key: '10',
-      supplierName: 'iNDIGO',
-      pnrTicketNumber: 'KLM345',
-      invoiceNumber: 'DL1212290AU02058',
-      invoiceDate: '09-Oct-2021',
+      supplierName: 'Alliance Air',
+      pnrTicketNumber: 'JKL012',
+      invoiceNumber: 'DL1212290AU54321',
+      invoiceDate: '15-Jun-2021',
       type: 'Tax invoice',
-      taxClaimable: 4445.00,
+      taxClaimable: 5432.00,
+      status: 'Additional in GSTR-2A',
+    },
+    {
+      key: '11',
+      supplierName: 'AirAsia India',
+      pnrTicketNumber: 'MNO345',
+      invoiceNumber: 'INV987654321',
+      invoiceDate: '20-Jul-2021',
+      type: 'Tax invoice',
+      taxClaimable: 7500.00,
+      status: 'Additional in GSTR-2A',
+    },
+    {
+      key: '12',
+      supplierName: 'Spice Jet',
+      pnrTicketNumber: 'PQR678',
+      invoiceNumber: 'INV0BET999888',
+      invoiceDate: '25-Aug-2021',
+      type: 'Tax invoice',
+      taxClaimable: 4200.75,
+      status: 'Additional in GSTR-2A',
+    },
+    {
+      key: '13',
+      supplierName: 'IndiGo',
+      pnrTicketNumber: 'STU901',
+      invoiceNumber: 'INV555666777',
+      invoiceDate: '30-Sep-2021',
+      type: 'Tax invoice',
+      taxClaimable: 12000.00,
+      status: 'Additional in GSTR-2A',
+    },
+    {
+      key: '14',
+      supplierName: 'Air India',
+      pnrTicketNumber: 'VWX234',
+      invoiceNumber: 'DL1212290AT99999',
+      invoiceDate: '15-Oct-2021',
+      type: 'Tax invoice',
+      taxClaimable: 9800.50,
+      status: 'Additional in GSTR-2A',
+    },
+    {
+      key: '15',
+      supplierName: 'Vistara',
+      pnrTicketNumber: 'YZA567',
+      invoiceNumber: 'DL1212290AU11111',
+      invoiceDate: '20-Nov-2021',
+      type: 'Tax invoice',
+      taxClaimable: 6750.25,
+      status: 'Additional in GSTR-2A',
+    },
+    {
+      key: '16',
+      supplierName: 'GoAir',
+      pnrTicketNumber: 'BCD890',
+      invoiceNumber: 'DL1212290AU22222',
+      invoiceDate: '25-Dec-2021',
+      type: 'Tax invoice',
+      taxClaimable: 5100.00,
+      status: 'Additional in GSTR-2A',
+    },
+    {
+      key: '17',
+      supplierName: 'Alliance Air',
+      pnrTicketNumber: 'EFG123',
+      invoiceNumber: 'DL1212290AU33333',
+      invoiceDate: '10-Jan-2022',
+      type: 'Tax invoice',
+      taxClaimable: 3800.75,
+      status: 'Additional in GSTR-2A',
+    },
+    {
+      key: '18',
+      supplierName: 'AirAsia India',
+      pnrTicketNumber: 'HIJ456',
+      invoiceNumber: 'INV444555666',
+      invoiceDate: '15-Feb-2022',
+      type: 'Tax invoice',
+      taxClaimable: 8200.00,
+      status: 'Additional in GSTR-2A',
+    },
+    {
+      key: '19',
+      supplierName: 'Spice Jet',
+      pnrTicketNumber: 'KLM789',
+      invoiceNumber: 'INV0BET777888',
+      invoiceDate: '20-Mar-2022',
+      type: 'Tax invoice',
+      taxClaimable: 4900.50,
+      status: 'Additional in GSTR-2A',
+    },
+    {
+      key: '20',
+      supplierName: 'IndiGo',
+      pnrTicketNumber: 'NOP012',
+      invoiceNumber: 'INV333444555',
+      invoiceDate: '25-Apr-2022',
+      type: 'Tax invoice',
+      taxClaimable: 11500.00,
       status: 'Additional in GSTR-2A',
     },
   ];
+
+  // Calculate pagination
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const paginatedData = mockData.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(mockData.length / pageSize);
 
   const rowSelection = {
     selectedRowKeys,
@@ -425,23 +555,26 @@ const Reconciliation: React.FC = () => {
       <Card style={{ borderRadius: 8, boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
         <Table
           columns={visibleColumnsData}
-          dataSource={mockData}
+          dataSource={paginatedData}
           pagination={{
-            current: 1,
-            pageSize: 5,
-            total: 10,
+            current: currentPage,
+            pageSize: pageSize,
+            total: mockData.length,
             showSizeChanger: true,
-            showQuickJumper: true,
+            showQuickJumper: false,
+            pageSizeOptions: ['5', '10', '20', '30', '50'],
             showTotal: (total, range) => `${translate('displaying')} ${range[0]} ${translate('outOf')} ${total}`,
+            onChange: handlePageChange,
+            onShowSizeChange: handlePageSizeChange,
             itemRender: (current, type, originalElement) => {
               if (type === 'page') {
                 return (
                   <Button 
-                    type={current === 1 ? 'primary' : 'default'}
+                    type={current === currentPage ? 'primary' : 'default'}
                     style={{
-                      backgroundColor: current === 1 ? '#4f46e5' : 'white',
-                      borderColor: current === 1 ? '#4f46e5' : '#d9d9d9',
-                      color: current === 1 ? 'white' : '#000',
+                      backgroundColor: current === currentPage ? '#4f46e5' : 'white',
+                      borderColor: current === currentPage ? '#4f46e5' : '#d9d9d9',
+                      color: current === currentPage ? 'white' : '#000',
                       borderRadius: '50%',
                       width: 32,
                       height: 32,
@@ -463,7 +596,32 @@ const Reconciliation: React.FC = () => {
           tableLayout="fixed"
         />
 
-       
+        {/* Custom Go to Page Footer */}
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'flex-end', 
+          alignItems: 'center', 
+          gap: 16,
+          marginTop: 16,
+          paddingTop: 16,
+          borderTop: '1px solid #f0f0f0'
+        }}>
+          <span style={{ fontSize: '14px' }}>{translate('goToPage')}</span>
+          <Input 
+            style={{ width: 60 }} 
+            value={goToPageValue}
+            onChange={(e) => setGoToPageValue(e.target.value)}
+            onPressEnter={handleGoToPage}
+            placeholder={`1-${totalPages}`}
+          />
+          <Button 
+            type="primary" 
+            style={{ backgroundColor: '#4f46e5', borderRadius: '16px' }}
+            onClick={handleGoToPage}
+          >
+            {translate('go')}
+          </Button>
+        </div>
       </Card>
     </div>
   );
