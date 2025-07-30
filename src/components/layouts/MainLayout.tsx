@@ -2,17 +2,15 @@ import React, { useState } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Layout, Menu, Dropdown, Button, Avatar } from 'antd';
-import {
+import { 
+  LogoutOutlined, 
+  UserOutlined, 
+  FileTextOutlined,
   DashboardOutlined,
   UploadOutlined,
   ReconciliationOutlined,
-  FileTextOutlined,
-  BarChartOutlined,
-  LogoutOutlined,
   SettingOutlined,
-  UserOutlined,
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
+  NotificationOutlined
 } from '@ant-design/icons';
 import { RootState } from '../../store/store';
 import { logout } from '../../store/slices/authSlice';
@@ -206,7 +204,7 @@ const MainLayout: React.FC = () => {
               >
                 🎨
               </Button>
-
+              
               <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
                 <Button 
                   type="text" 
@@ -338,7 +336,7 @@ const MainLayout: React.FC = () => {
             ))}
           </div>
 
-
+          
         </div>
       </Sider>
 
@@ -497,7 +495,7 @@ const MainLayout: React.FC = () => {
           >
             ⛶
           </Button> */}
-
+          
           <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
             <Button 
               type="text" 

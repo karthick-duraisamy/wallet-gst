@@ -1139,6 +1139,12 @@ body {
 .upload-star-icon {
   font-size: 20px;
   color: #ffa500;
+  animation: twinkle 2s infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.1); }
 }
 
 .upload-subtitle {
@@ -1404,19 +1410,19 @@ body {
   .upload-page-container {
     padding: 20px 16px;
   }
-
+  
   .upload-main-card {
     padding: 24px;
   }
-
+  
   .upload-title {
     font-size: 20px;
   }
-
+  
   .upload-actions {
     flex-direction: column;
   }
-
+  
   .upload-file-tags {
     justify-content: center;
   }
@@ -2152,4 +2158,12 @@ body {
 :where(.css-dev-only-do-not-override-1y53vaa).ant-pagination .ant-pagination-item-active{
   border: unset;
   margin-right: 5px !important;
+}
+.cls-button{
+  display: flex;
+  gap: 15px;
+}
+.cls-sprt{
+    display: flex;
+    gap: 16px;
 }

@@ -33,6 +33,7 @@ import {
   EyeOutlined
 } from '@ant-design/icons';
 import { useTheme } from '../contexts/ThemeContext';
+import '../styles/Dashboard.scss';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -198,10 +199,10 @@ const Dashboard: React.FC = () => {
   ];
 
   return (
-    <div className="slide-up" style={{ padding: '24px', background: '#f5f5f5', minHeight: '100vh',paddingTop: '0px' }}>
+    <div className="slide-up cls-dashboard-container">
       {/* Header */}
-      <div style={{ marginBottom: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Title level={3} style={{ margin: 0, color: 'rgb(114, 46, 209)' }}>{translate('dashboard')}</Title>
+      <div className="cls-dashboard-header">
+        <Title level={3} className="cls-dashboard-title">{translate('dashboard')}</Title>
         <Select defaultValue="This month" style={{ width: 120 }}>
           <Option value="This month">{translate('thisMonth')}</Option>
           <Option value="Last month">{translate('lastMonth')}</Option>
@@ -210,21 +211,12 @@ const Dashboard: React.FC = () => {
       </div>
 
       {/* Overall Summary Section */}
-      <div style={{ marginBottom: 32 }}>
-        <Title level={4} style={{ marginBottom: 16, color: '#333' }}>{translate('overallSummary')}</Title>
-        <Row gutter={[16, 16]}>
+      <div className="cls-overall-summary">
+        <Title level={4} className="cls-summary-title">{translate('overallSummary')}</Title>
+        <Row gutter={[16, 16]} className="cls-overview-grid">
           {overviewData.map((item, index) => (
             <Col xs={24} sm={12} lg={6} key={index}>
-              <div 
-                style={{ 
-                  borderRadius: 8,
-                  overflow: 'hidden',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                  height: '120px',
-                  display: 'flex',
-                  flexDirection: 'column'
-                }}
-              >
+              <div className="cls-overview-card">
                 {/* Header */}
                 <div style={{ 
                   backgroundColor: 'white',

@@ -1,0 +1,259 @@
+
+@import 'common';
+
+.cls-reconciliation-container {
+  padding: 24px;
+  background: #f5f5f5;
+  min-height: 100vh;
+  padding-top: 0px;
+}
+
+.cls-reconciliation-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #722ed1;
+  margin-bottom: 24px;
+}
+
+.cls-type-selection {
+  margin-bottom: 24px;
+
+  .ant-radio-wrapper {
+    font-weight: 500;
+  }
+}
+
+.cls-filters-section {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+
+  .cls-filter-group {
+    .cls-filter-label {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+  }
+
+  .cls-date-range-group {
+    .cls-date-range-inputs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .cls-date-separator {
+        font-size: 12px;
+      }
+    }
+  }
+
+  .cls-filter-actions {
+    .cls-reset-button {
+      border: unset;
+      background: unset;
+      color: #734cce;
+      text-decoration: underline;
+      padding: 0px;
+      box-shadow: unset;
+    }
+
+    .cls-submit-button {
+      background-color: #4f46e5;
+    }
+  }
+}
+
+.cls-status-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .cls-status-count {
+    color: #666;
+    font-size: 12px;
+  }
+}
+
+.cls-export-controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-bottom: 16px;
+
+  .cls-export-btn {
+    color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    &.cls-xls {
+      background-color: #1d4ed8;
+    }
+
+    &.cls-csv {
+      background-color: #059669;
+    }
+  }
+
+  .cls-search-input {
+    width: 200px;
+  }
+}
+
+.cls-data-table-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.cls-table-container {
+  .ant-table {
+    .ant-table-thead > tr > th {
+      background-color: #f8fafc !important;
+      font-weight: 600 !important;
+      font-size: 14px !important;
+      border-bottom: 2px solid #e2e8f0 !important;
+      padding: 12px 16px !important;
+      white-space: nowrap !important;
+    }
+
+    .ant-table-tbody > tr > td {
+      padding: 12px 16px !important;
+      border-bottom: 1px solid #f1f5f9 !important;
+    }
+
+    .ant-table-tbody > tr:hover > td {
+      background-color: #f8fafc !important;
+    }
+  }
+}
+
+.cls-tax-claimable {
+  color: #52c41a;
+  font-weight: 600;
+}
+
+.cls-status-tag {
+  color: #722ed1;
+  border-radius: 12px;
+}
+
+.cls-filter-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .cls-filter-button {
+    border: none;
+    padding: 0;
+    background: transparent;
+  }
+
+  .cls-filter-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border: 1px solid #d9d9d9;
+    border-radius: 6px;
+    padding: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 1000;
+    min-width: 200px;
+
+    .cls-dropdown-title {
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .cls-dropdown-option {
+      margin-bottom: 8px;
+    }
+  }
+}
+
+.cls-pagination-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.cls-pagination-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .cls-page-size-selector {
+    width: 60px;
+  }
+
+  .cls-info-text {
+    font-size: 14px;
+  }
+}
+
+.cls-pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .cls-nav-button {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #d9d9d9;
+  }
+
+  .cls-page-number {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &.cls-active {
+      background-color: #4f46e5;
+      border-color: #4f46e5;
+      color: white;
+    }
+
+    &.cls-inactive {
+      background-color: white;
+      border-color: #d9d9d9;
+      color: #000;
+    }
+  }
+
+  .cls-ellipsis {
+    margin: 0 8px;
+  }
+}
+
+.cls-goto-page {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .cls-goto-text {
+    font-size: 14px;
+  }
+
+  .cls-goto-input {
+    width: 60px;
+  }
+
+  .cls-goto-button {
+    background-color: #4f46e5;
+    border-radius: 16px;
+  }
+}
