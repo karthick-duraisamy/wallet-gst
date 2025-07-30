@@ -8,12 +8,14 @@ import {
   Space,
   Typography,
   Tag,
-  message
+  message,
+  Tooltip
 } from 'antd';
 import { 
   ArrowLeftOutlined,
   PlusOutlined,
-  DownloadOutlined
+  DownloadOutlined,
+  InfoCircleOutlined
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
@@ -86,28 +88,22 @@ const SavedReports: React.FC = () => {
       title: 'Report Name',
       dataIndex: 'name',
       key: 'name',
-      filteredValue: searchText ? [searchText] : null,
-      onFilter: (value: any, record: any) =>
-        record.name.toLowerCase().includes(value.toLowerCase()) ||
-        record.type.toLowerCase().includes(value.toLowerCase()),
-    },
-    {
-      title: 'Type',
-      dataIndex: 'type',
-      key: 'type',
-      render: (type: string) => (
-        <Tag color="blue">{type}</Tag>
+      render: (name: string, record: any) => (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span>{name}</span>
+          {record.description && (
+            <Tooltip title={record.description} placement="top">
+              <InfoCircleOutlined 
+                style={{ 
+                  color: '#1890ff', 
+                  fontSize: '14px',
+                  cursor: 'pointer'
+                }} 
+              />
+            </Tooltip>
+          )}
+        </div>
       ),
-    },
-    {
-      title: 'Description',
-      dataIndex: 'description',
-      key: 'description',
-    },
-    {
-      title: 'Created Date',
-      dataIndex: 'createdDate',
-      key: 'createdDate',
     },
     {
       title: 'Last Run',
@@ -161,7 +157,7 @@ const SavedReports: React.FC = () => {
           <Button 
             icon={<ArrowLeftOutlined />} 
             onClick={() => navigate('/report')}
-            style={{ border: 'none', background: 'transparent' }}
+            style={{ border: 'none', background: 'transparent', fontSize: '16px' }}
           />
           <Title level={2} style={{ margin: 0, color: '#5A4FCF' }}>
             Saved Reports
@@ -223,16 +219,6 @@ const SavedReports: React.FC = () => {
 
         {/* Main Content */}
         <div style={{ flex: 1 }}>
-          {/* Search */}
-          <div style={{ marginBottom: '24px' }}>
-            <Search
-              placeholder="Search reports..."
-              allowClear
-              onChange={(e) => setSearchText(e.target.value)}
-              style={{ width: 300 }}
-            />
-          </div>
-
           {/* Reports Table */}
           <Card style={{ background: isDarkMode ? '#1f1f1f' : '#fff' }}>
             <Table

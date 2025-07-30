@@ -92,6 +92,16 @@ const Report: React.FC = () => {
     }
   };
 
+  const canContinue = () => {
+    if (currentStep === 0) {
+      return Object.values(selectedFields).some(fields => fields.length > 0);
+    }
+    if (currentStep === 1) {
+      return selectedConditions.length > 0;
+    }
+    return true;
+  };
+
   const handleBack = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
@@ -286,7 +296,12 @@ const Report: React.FC = () => {
         );
 
       case 1:
-        const allConditionsSelected = reportData.conditionDetails.every(
+        const availableConditions = [
+          { key: "date_range", label: "Date Range" },
+          { key: "agency", label: "Agency" }
+        ];
+        
+        const allConditionsSelected = availableConditions.every(
           (condition) => selectedConditions.includes(condition.key),
         );
 
@@ -319,7 +334,7 @@ const Report: React.FC = () => {
                     cursor: "pointer",
                   }}
                   onClick={() => {
-                    reportData.conditionDetails.forEach((condition) => {
+                    availableConditions.forEach((condition) => {
                       handleConditionSelection(
                         condition.key,
                         !allConditionsSelected,
@@ -330,7 +345,7 @@ const Report: React.FC = () => {
                   <Checkbox
                     checked={allConditionsSelected}
                     onChange={() => {
-                      reportData.conditionDetails.forEach((condition) => {
+                      availableConditions.forEach((condition) => {
                         handleConditionSelection(
                           condition.key,
                           !allConditionsSelected,
@@ -350,7 +365,7 @@ const Report: React.FC = () => {
                 </div>
               </div>
               <Row gutter={[16, 16]}>
-                {reportData.conditionDetails.map((condition) => (
+                {availableConditions.map((condition) => (
                   <Col span={8} key={condition.key}>
                     <div
                       style={{
@@ -411,8 +426,10 @@ const Report: React.FC = () => {
         };
 
         const hasSelectedFields = Object.values(selectedFields).some(fields => fields.length > 0);
-        const hasInvoicedDateRange = selectedConditions.includes("date_range");
-        const hasDepartureDateRange = selectedConditions.includes("departure_date_range");
+        const hasDateRange = selectedConditions.includes("date_range");
+        const hasAgency = selectedConditions.includes("agency");
+        const [invoicedDateRange, setInvoicedDateRange] = useState("today");
+        const [customInvoicedDateRange, setCustomInvoicedDateRange] = useState<any>(null);
 
         return (
           <div style={{ padding: "24px" }}>
@@ -475,7 +492,7 @@ const Report: React.FC = () => {
             )}
 
             {/* Condition Details Section */}
-            {(hasInvoicedDateRange || hasDepartureDateRange) && (
+            {(hasDateRange || hasAgency) && (
               <div style={{ marginBottom: "32px" }}>
                 <Text
                   strong
@@ -489,145 +506,116 @@ const Report: React.FC = () => {
                   Condition Details
                 </Text>
 
-                <Row gutter={[16, 16]}>
-                  {hasInvoicedDateRange && (
+                <div style={{ marginBottom: "24px" }}>
+                  <Row gutter={[16, 16]}>
                     <Col span={12}>
                       <div
                         style={{
-                          padding: "16px",
-                          border: "1px solid #d9d9d9",
-                          borderRadius: "6px",
-                          background: isDarkMode ? "#1f1f1f" : "#fff",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
+                          padding: "8px 0",
+                          cursor: "pointer",
                         }}
                       >
-                        <div
+                        <Checkbox
+                          checked={hasDateRange}
+                          disabled
                           style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "8px",
-                            marginBottom: "8px",
+                            transform: "scale(1.2)",
                           }}
-                        >
-                          <div
-                            style={{
-                              width: "12px",
-                              height: "12px",
-                              borderRadius: "50%",
-                              background: "#5A4FCF",
-                            }}
-                          />
-                          <Text
-                            style={{
-                              color: isDarkMode ? "#fff" : "#1a1a1a",
-                              fontWeight: "500",
-                            }}
-                          >
-                            Invoiced Date Range
-                          </Text>
-                        </div>
+                        />
                         <Text
                           style={{
-                            color: isDarkMode ? "#a6a6a6" : "#666",
-                            fontSize: "12px",
+                            color: isDarkMode ? "#fff" : "#1a1a1a",
+                            fontSize: "14px",
+                            fontWeight: "500",
                           }}
                         >
-                          Select invoiced date range
+                          Invoiced date range
                         </Text>
                       </div>
                     </Col>
-                  )}
-
-                  {hasDepartureDateRange && (
                     <Col span={12}>
                       <div
                         style={{
-                          padding: "16px",
-                          border: "1px solid #d9d9d9",
-                          borderRadius: "6px",
-                          background: isDarkMode ? "#1f1f1f" : "#fff",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
+                          padding: "8px 0",
+                          cursor: "pointer",
                         }}
                       >
-                        <div
+                        <Checkbox
+                          checked={false}
+                          disabled
                           style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "8px",
-                            marginBottom: "8px",
+                            transform: "scale(1.2)",
                           }}
-                        >
-                          <div
-                            style={{
-                              width: "12px",
-                              height: "12px",
-                              borderRadius: "50%",
-                              background: "#5A4FCF",
-                            }}
-                          />
-                          <Text
-                            style={{
-                              color: isDarkMode ? "#fff" : "#1a1a1a",
-                              fontWeight: "500",
-                            }}
-                          >
-                            Departure Date Range
-                          </Text>
-                        </div>
+                        />
                         <Text
                           style={{
-                            color: isDarkMode ? "#a6a6a6" : "#666",
-                            fontSize: "12px",
+                            color: isDarkMode ? "#fff" : "#1a1a1a",
+                            fontSize: "14px",
+                            fontWeight: "400",
                           }}
                         >
-                          Select departure date range
+                          Departure date range
                         </Text>
                       </div>
                     </Col>
-                  )}
-                </Row>
-              </div>
-            )}
-
-            {/* Date Range Selection */}
-            {hasDepartureDateRange && (
-              <div style={{ marginTop: "24px" }}>
-                <Text
-                  strong
-                  style={{
-                    color: isDarkMode ? "#fff" : "#1a1a1a",
-                    fontSize: "16px",
-                    display: "block",
-                    marginBottom: "16px",
-                  }}
-                >
-                  Select Departure Date Range
-                </Text>
-
-                <div style={{ marginBottom: "16px" }}>
-                  <Radio.Group 
-                    value={dateRangeType}
-                    onChange={(e) => setDateRangeType(e.target.value)}
-                    style={{ width: "100%" }}
-                  >
-                    <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                      <Radio value="today">Today</Radio>
-                      <Radio value="yesterday">Yesterday</Radio>
-                      <Radio value="last7days">Last 7 Days</Radio>
-                      <Radio value="thismonth">This Month</Radio>
-                      <Radio value="lastmonth">Last Month</Radio>
-                      <Radio value="custom">Custom</Radio>
-                    </div>
-                  </Radio.Group>
+                  </Row>
                 </div>
 
-                {/* Custom Date Range Picker - Appears when Custom is selected */}
-                {dateRangeType === "custom" && (
-                  <div style={{ marginTop: "16px" }}>
-                    <RangePicker 
-                      value={customDateRange}
-                      onChange={(dates) => setCustomDateRange(dates)}
-                      style={{ width: "100%" }}
-                      placeholder={["Start Date", "End Date"]}
-                    />
+                {/* Date Range Selection for Invoiced Date Range */}
+                {hasDateRange && (
+                  <div style={{ marginBottom: "24px" }}>
+                    <Text
+                      strong
+                      style={{
+                        color: isDarkMode ? "#fff" : "#1a1a1a",
+                        fontSize: "14px",
+                        display: "block",
+                        marginBottom: "12px",
+                      }}
+                    >
+                      Select Invoiced date range
+                    </Text>
+
+                    <div style={{ marginBottom: "16px", maxWidth: "300px" }}>
+                      <select
+                        value={invoicedDateRange}
+                        onChange={(e) => setInvoicedDateRange(e.target.value)}
+                        style={{
+                          width: "100%",
+                          padding: "8px 12px",
+                          border: "1px solid #d9d9d9",
+                          borderRadius: "6px",
+                          background: isDarkMode ? "#1f1f1f" : "#fff",
+                          color: isDarkMode ? "#fff" : "#1a1a1a",
+                          fontSize: "14px",
+                        }}
+                      >
+                        <option value="today">Today</option>
+                        <option value="yesterday">Yesterday</option>
+                        <option value="last7days">Last 7 Days</option>
+                        <option value="thismonth">This Month</option>
+                        <option value="lastmonth">Last Month</option>
+                        <option value="custom">Custom</option>
+                      </select>
+                    </div>
+
+                    {/* Custom Date Range Picker - Appears when Custom is selected */}
+                    {invoicedDateRange === "custom" && (
+                      <div style={{ marginTop: "16px", maxWidth: "300px" }}>
+                        <RangePicker 
+                          value={customInvoicedDateRange}
+                          onChange={(dates) => setCustomInvoicedDateRange(dates)}
+                          style={{ width: "100%" }}
+                          placeholder={["Start Date", "End Date"]}
+                        />
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -833,7 +821,12 @@ const Report: React.FC = () => {
                   <Button
                     type="primary"
                     onClick={handleContinue}
-                    style={{ background: "#5A4FCF", borderColor: "#5A4FCF" }}
+                    disabled={!canContinue()}
+                    style={{ 
+                      background: canContinue() ? "#5A4FCF" : "#d9d9d9", 
+                      borderColor: canContinue() ? "#5A4FCF" : "#d9d9d9",
+                      cursor: canContinue() ? "pointer" : "not-allowed"
+                    }}
                   >
                     Continue
                   </Button>

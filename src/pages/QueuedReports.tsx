@@ -85,6 +85,10 @@ const QueuedReports: React.FC = () => {
     message.success('Report resumed');
   };
 
+  const handleDownload = (reportId: string) => {
+    message.success('Report downloaded successfully');
+  };
+
   const handleCancel = (reportId: string) => {
     message.success('Report cancelled');
   };
@@ -113,10 +117,6 @@ const QueuedReports: React.FC = () => {
       title: 'Report Name',
       dataIndex: 'name',
       key: 'name',
-      filteredValue: searchText ? [searchText] : null,
-      onFilter: (value: any, record: any) =>
-        record.name.toLowerCase().includes(value.toLowerCase()) ||
-        record.type.toLowerCase().includes(value.toLowerCase()),
     },
     {
       title: 'Type',
@@ -137,74 +137,21 @@ const QueuedReports: React.FC = () => {
       ),
     },
     {
-      title: 'Progress',
-      dataIndex: 'progress',
-      key: 'progress',
-      render: (progress: number, record: any) => (
-        <div style={{ width: 100 }}>
-          <Progress 
-            percent={progress} 
-            size="small" 
-            status={record.status === 'Paused' ? 'exception' : 'active'}
-          />
-        </div>
-      ),
-    },
-    {
       title: 'Queue Time',
       dataIndex: 'queueTime',
       key: 'queueTime',
-    },
-    {
-      title: 'Est. Completion',
-      dataIndex: 'estimatedCompletion',
-      key: 'estimatedCompletion',
-    },
-    {
-      title: 'Priority',
-      dataIndex: 'priority',
-      key: 'priority',
-      render: (priority: string) => (
-        <Tag color={getPriorityColor(priority)}>
-          {priority}
-        </Tag>
-      ),
     },
     {
       title: 'Actions',
       key: 'actions',
       render: (text: any, record: any) => (
         <Space size="middle">
-          {record.status === 'Paused' && (
-            <Button 
-              type="text" 
-              icon={<PlayCircleOutlined />} 
-              onClick={() => handleResume(record.key)}
-              style={{ color: '#52c41a' }}
-            />
-          )}
-          {record.status === 'Processing' && (
-            <Button 
-              type="text" 
-              icon={<PauseCircleOutlined />} 
-              onClick={() => handlePause(record.key)}
-              style={{ color: '#faad14' }}
-            />
-          )}
-          {record.status !== 'Completed' && (
-            <Popconfirm
-              title="Are you sure you want to cancel this report?"
-              onConfirm={() => handleCancel(record.key)}
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button 
-                type="text" 
-                icon={<DeleteOutlined />} 
-                danger
-              />
-            </Popconfirm>
-          )}
+          <Button 
+            type="text" 
+            icon={<DownloadOutlined />} 
+            onClick={() => handleDownload(record.key)}
+            style={{ color: '#52c41a' }}
+          />
         </Space>
       ),
     },
@@ -226,7 +173,7 @@ const QueuedReports: React.FC = () => {
           <Button 
             icon={<ArrowLeftOutlined />} 
             onClick={() => navigate('/report')}
-            style={{ border: 'none', background: 'transparent' }}
+            style={{ border: 'none', background: 'transparent', fontSize: '16px' }}
           />
           <Title level={2} style={{ margin: 0, color: '#5A4FCF' }}>
             Queued Reports
@@ -288,16 +235,6 @@ const QueuedReports: React.FC = () => {
 
         {/* Main Content */}
         <div style={{ flex: 1 }}>
-          {/* Search */}
-          <div style={{ marginBottom: '24px' }}>
-            <Search
-              placeholder="Search queued reports..."
-              allowClear
-              onChange={(e) => setSearchText(e.target.value)}
-              style={{ width: 300 }}
-            />
-          </div>
-
           {/* Reports Table */}
           <Card style={{ background: isDarkMode ? '#1f1f1f' : '#fff' }}>
             <Table
