@@ -16,6 +16,7 @@ import {
 } from 'antd';
 import { SearchOutlined, DownloadOutlined, CalendarOutlined, FilterOutlined } from '@ant-design/icons';
 import { useTheme } from '../contexts/ThemeContext';
+import '../styles/CumulativeInvoice.scss';
 
 const { Title, Text } = Typography;
 const { TextArea } = Input;
@@ -384,114 +385,47 @@ const CumulativeInvoice: React.FC = () => {
     switch (activeTab) {
       case 'upload-pnr':
         return (
-          <div style={{ 
-            backgroundColor: '#f8f9fa', 
-            border: '1px solid #e9ecef', 
-            borderRadius: 6, 
-            padding: 16, 
-            marginBottom: 24 
-          }}>
-            <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', marginBottom: 16, justifyContent: 'space-between'}}>
+          <div className="cls-tab-content-area">
+            <div className="cls-tab-content-layout">
               <div className='cls-sprt'>
                 <Button
                   onClick={handlePnrDropdownClick}
-                  style={{ 
-                    height: 40,
-                    textAlign: 'left',
-                    border: 'none',
-                    background: '#f5f5f5',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    boxShadow: 'none',
-                    borderRadius: 6
-                  }}
+                  className="cls-upload-button"
                 >
-                  <span style={{ color: '#4f46e5', fontWeight: 500 }}>{translate('uploadMultiplePNR')}</span>
-                  <span style={{ 
-                    transform: isPnrDropdownOpen ? 'rotate(0deg)' : 'rotate(180deg)',
-                    transition: 'transform 0.3s ease',
-                    color: '#4f46e5'
-                  }}>▲</span>
+                  <span>{translate('uploadMultiplePNR')}</span>
+                  <span className={isPnrDropdownOpen ? 'cls-expanded' : 'cls-collapsed'}>▲</span>
                 </Button>
 
                 {/* Count display below button */}
-                <div style={{ 
-                  fontSize: '14px', 
-                  color: '#8B949E', 
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 6
-                }}>
+                <div className="cls-count-display">
                   <span>60 Ticket No Submitted</span>
-                  <span style={{ 
-                    width: 18, 
-                    height: 18, 
-                    borderRadius: '50%', 
-                    background: '#8B949E',
-                    color: 'white',
-                    fontSize: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                    fontWeight: 'bold'
-                  }}>i</span>
+                  <span className="cls-info-icon">i</span>
                 </div>
 
                 {/* Expanding content below */}
                 {isPnrDropdownOpen && (
-                  <div style={{
-                    marginTop: 20,
-                    background: 'white',
-                    border: '1px solid #e1e5e9',
-                    borderRadius: 8,
-                    padding: 20,
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                    position: 'relative',
-                    width: '300px'
-                  }}>
+                  <div className="cls-dropdown-content">
                     {/* Close button */}
                     <Button 
                       type="text"
                       onClick={() => setIsPnrDropdownOpen(false)}
-                      style={{
-                        position: 'absolute',
-                        top: 12,
-                        right: 12,
-                        color: '#8B949E',
-                        fontSize: '18px',
-                        width: 24,
-                        height: 24,
-                        padding: 0,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        border: 'none',
-                        background: 'transparent'
-                      }}
+                      className="cls-close-button"
                     >
                       ×
                     </Button>
 
-                    <div style={{ marginBottom: 20, marginTop: 8 }}>
+                    <div className="cls-radio-section">
                       <Radio.Group 
                         value={pnrTicketType} 
                         onChange={(e) => setPnrTicketType(e.target.value)}
-                        style={{ display: 'flex', gap: 20 }}
                       >
-                        <Radio value="pnr" style={{ fontSize: '14px' }}>PNR</Radio>
-                        <Radio value="ticket" style={{ fontSize: '14px' }}>Ticket Number</Radio>
+                        <Radio value="pnr">PNR</Radio>
+                        <Radio value="ticket">Ticket Number</Radio>
                       </Radio.Group>
                     </div>
 
-                    <div style={{ marginBottom: 20 }}>
-                      <div style={{ 
-                        fontSize: '16px', 
-                        fontWeight: 500, 
-                        marginBottom: 12,
-                        color: '#24292f'
-                      }}>
+                    <div className="cls-textarea-section">
+                      <div className="cls-textarea-label">
                         Enter Multiple Ticket No
                       </div>
                       <TextArea
@@ -499,53 +433,25 @@ const CumulativeInvoice: React.FC = () => {
                         onChange={(e) => setPnrTicketText(e.target.value)}
                         placeholder=""
                         rows={6}
-                        style={{ 
-                          resize: 'none',
-                          borderRadius: 6,
-                          border: '1px solid #d0d7de',
-                          fontSize: '14px'
-                        }}
                       />
                     </div>
 
-                    <div style={{ marginBottom: 20 }}>
-                      <div style={{ 
-                        fontSize: '14px', 
-                        color: '#656d76',
-                        padding: '12px 16px',
-                        background: '#f6f8fa',
-                        borderRadius: 6,
-                        border: '1px solid #d0d7de'
-                      }}>
-                        <span style={{ fontWeight: 600, color: '#24292f' }}>Example : </span>
+                    <div className="cls-example-section">
+                      <div className="cls-example-box">
+                        <span className="cls-example-label">Example : </span>
                         123456,123456
                       </div>
                     </div>
 
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12 }}>
+                    <div className="cls-action-buttons">
                       <Button 
                         onClick={() => setIsPnrDropdownOpen(false)}
-                        style={{
-                          borderRadius: 6,
-                          height: 36,
-                          paddingLeft: 16,
-                          paddingRight: 16
-                        }}
                       >
                         Cancel
                       </Button>
                       <Button 
                         type="primary" 
                         onClick={handlePnrDropdownSubmit}
-                        style={{ 
-                          backgroundColor: '#4f46e5',
-                          borderColor: '#4f46e5',
-                          borderRadius: 6,
-                          height: 36,
-                          paddingLeft: 16,
-                          paddingRight: 16,
-                          fontWeight: 500
-                        }}
                       >
                         Submit
                       </Button>
@@ -941,37 +847,38 @@ const CumulativeInvoice: React.FC = () => {
   };
 
   return (
-    <div className="slide-up" style={{ padding: '0px 24px', background: '#f5f5f5', minHeight: '100vh' }}>
+    <div className="slide-up cls-cumulative-container">
       {/* Breadcrumb
       <div style={{ marginBottom: 16 }}>
         <Text style={{ color: '#666' }}>{translate('home')} » {translate('cumulativeInvoice')}</Text>
       </div> */}
 
       {/* Title */}
-      <Title level={3} style={{ margin: '0 0 24px 0', color: '#722ed1' }}>
+      <Title level={3} className="cls-cumulative-title">
         {translate('cumulativeInvoice')}
       </Title>
 
       {/* Entity Type Selection */}
-      <div style={{ marginBottom: 24 }}>
+      <div className="cls-entity-type-section">
         <Radio.Group 
           value={entityType} 
           onChange={(e) => setEntityType(e.target.value)}
           size="large"
         >
-          <Radio value="agency" style={{ fontWeight: 500 }}>{translate('agency')}</Radio>
-          <Radio value="airline" style={{ fontWeight: 500 }}>{translate('airline')}</Radio>
+          <Radio value="agency">{translate('agency')}</Radio>
+          <Radio value="airline">{translate('airline')}</Radio>
         </Radio.Group>
       </div>
 
       {/* Tabs */}
-      <Tabs 
-        activeKey={activeTab}
-        onChange={setActiveTab}
-        items={tabItems}
-        type="line"
-        style={{ marginBottom: 24 }}
-      />
+      <div className="cls-tabs-section">
+        <Tabs 
+          activeKey={activeTab}
+          onChange={setActiveTab}
+          items={tabItems}
+          type="line"
+        />
+      </div>
 
       {/* Dynamic Tab Content */}
       {renderTabContent()}
@@ -979,43 +886,23 @@ const CumulativeInvoice: React.FC = () => {
       {/* Data Table Section */}
       <div>
         {/* Export Buttons and Search */}
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'flex-end', 
-          gap: 12, 
-          marginBottom: 16,
-          alignItems: 'center'
-        }}>
+        <div className="cls-export-section">
           <Button 
             icon={<DownloadOutlined />}
-            style={{ 
-              backgroundColor: '#1d4ed8', 
-              color: 'white', 
-              border: 'none',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 4
-            }}
+            className="cls-export-button cls-xls"
           >
             XLS
           </Button>
           <Button 
             icon={<DownloadOutlined />}
-            style={{ 
-              backgroundColor: '#059669', 
-              color: 'white', 
-              border: 'none',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 4
-            }}
+            className="cls-export-button cls-csv"
           >
             CSV
           </Button>
           <Input 
             placeholder="Search" 
             prefix={<SearchOutlined />}
-            style={{ width: 200 }}
+            className="cls-search-input"
             value={searchText}
             onChange={(e) => {
               setSearchText(e.target.value);
@@ -1025,7 +912,7 @@ const CumulativeInvoice: React.FC = () => {
         </div>
 
         {/* Data Table */}
-        <Card style={{ borderRadius: 8, boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
+        <Card className="cls-data-table">
           <Table
             columns={visibleColumnsData}
             dataSource={paginatedTableData}
