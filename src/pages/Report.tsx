@@ -53,6 +53,7 @@ const Report: React.FC = () => {
   const [customDateRange, setCustomDateRange] = useState<any>(null);
   const [invoicedDateRange, setInvoicedDateRange] = useState("today");
   const [customInvoicedDateRange, setCustomInvoicedDateRange] = useState<any>(null);
+  const [dateRangeRadioValue, setDateRangeRadioValue] = useState("invoiced");
   const [form] = Form.useForm();
 
   const reportTypes = ["DSR", "Ledger", "Commission", "Top-up", "Sales"];
@@ -535,67 +536,43 @@ const Report: React.FC = () => {
                 </Text>
 
                 <div style={{ marginBottom: "24px" }}>
-                  <Row gutter={[16, 16]}>
-                    <Col span={12}>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "8px",
-                          padding: "8px 0",
-                          cursor: "pointer",
-                        }}
-                      >
-                        <Checkbox
-                          checked={hasDateRange}
-                          disabled
-                          style={{
-                            transform: "scale(1.2)",
-                          }}
-                        />
-                        <Text
-                          style={{
-                            color: isDarkMode ? "#fff" : "#1a1a1a",
-                            fontSize: "14px",
-                            fontWeight: "500",
-                          }}
-                        >
-                          Invoiced date range
-                        </Text>
-                      </div>
-                    </Col>
-                    <Col span={12}>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "8px",
-                          padding: "8px 0",
-                          cursor: "pointer",
-                        }}
-                      >
-                        <Checkbox
-                          checked={false}
-                          disabled
-                          style={{
-                            transform: "scale(1.2)",
-                          }}
-                        />
-                        <Text
-                          style={{
-                            color: isDarkMode ? "#fff" : "#1a1a1a",
-                            fontSize: "14px",
-                            fontWeight: "400",
-                          }}
-                        >
-                          Departure date range
-                        </Text>
-                      </div>
-                    </Col>
-                  </Row>
+                  <Radio.Group 
+                    value={dateRangeRadioValue} 
+                    onChange={(e) => setDateRangeRadioValue(e.target.value)}
+                    style={{ width: "100%" }}
+                  >
+                    <Row gutter={[16, 16]}>
+                      <Col span={12}>
+                        <Radio value="invoiced" style={{ fontSize: "14px" }}>
+                          <Text
+                            style={{
+                              color: isDarkMode ? "#fff" : "#1a1a1a",
+                              fontSize: "14px",
+                              fontWeight: dateRangeRadioValue === "invoiced" ? "500" : "400",
+                            }}
+                          >
+                            Invoiced date range
+                          </Text>
+                        </Radio>
+                      </Col>
+                      <Col span={12}>
+                        <Radio value="departure" style={{ fontSize: "14px" }}>
+                          <Text
+                            style={{
+                              color: isDarkMode ? "#fff" : "#1a1a1a",
+                              fontSize: "14px",
+                              fontWeight: dateRangeRadioValue === "departure" ? "500" : "400",
+                            }}
+                          >
+                            Departure date range
+                          </Text>
+                        </Radio>
+                      </Col>
+                    </Row>
+                  </Radio.Group>
                 </div>
 
-                {/* Date Range Selection for Invoiced Date Range */}
+                {/* Date Range Selection */}
                 {hasDateRange && (
                   <div style={{ marginBottom: "24px" }}>
                     <Text
@@ -607,13 +584,17 @@ const Report: React.FC = () => {
                         marginBottom: "12px",
                       }}
                     >
-                      Select Invoiced date range
+                      Select {dateRangeRadioValue === "invoiced" ? "Invoiced" : "Departure"} date range
                     </Text>
 
                     <div style={{ marginBottom: "16px", maxWidth: "300px" }}>
                       <select
-                        value={invoicedDateRange}
-                        onChange={(e) => setInvoicedDateRange(e.target.value)}
+                        value={dateRangeRadioValue === "invoiced" ? invoicedDateRange : "today"}
+                        onChange={(e) => {
+                          if (dateRangeRadioValue === "invoiced") {
+                            setInvoicedDateRange(e.target.value);
+                          }
+                        }}
                         style={{
                           width: "100%",
                           padding: "8px 12px",
@@ -634,7 +615,7 @@ const Report: React.FC = () => {
                     </div>
 
                     {/* Custom Date Range Picker - Appears when Custom is selected */}
-                    {invoicedDateRange === "custom" && (
+                    {((dateRangeRadioValue === "invoiced" && invoicedDateRange === "custom")) && (
                       <div style={{ marginTop: "16px", maxWidth: "300px" }}>
                         <RangePicker
                           value={customInvoicedDateRange}
