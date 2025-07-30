@@ -16,7 +16,6 @@ import {
   clearError,
 } from "../../store/slices/authSlice";
 import { useTheme } from "../../contexts/ThemeContext";
-import "../../styles/Login.scss";
 
 interface LoginForm {
   email: string;

@@ -5,7 +5,6 @@ import { SearchOutlined, DownloadOutlined, FilterOutlined, CalendarOutlined } fr
 import { RootState } from '../store/store';
 import { setFilters, clearFilters } from '../store/slices/reconciliationSlice';
 import { useTheme } from '../contexts/ThemeContext';
-import '../styles/Reconciliation.scss';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -405,7 +404,7 @@ const Reconciliation: React.FC = () => {
   };
 
   return (
-    <div className="slide-up cls-reconciliation-container">
+    <div className="slide-up" style={{ padding: '24px', background: '#f5f5f5', minHeight: '100vh',paddingTop: '0px' }}>
       {/* Breadcrumb */}
       {/* <div style={{ marginBottom: 16, fontSize: '14px', color: '#666' }}>
         <span>Home</span>
@@ -414,23 +413,29 @@ const Reconciliation: React.FC = () => {
       </div> */}
 
       {/* Page Title */}
-      <h2 className="cls-reconciliation-title">
+      <h2 style={{ fontSize: '24px', fontWeight: 600, color: '#722ed1', marginBottom: 24 }}>
         {translate('reconciliationHistory')}
       </h2>
 
       {/* Type Selection */}
-      <div className="cls-type-selection">
+      <div style={{ marginBottom: 24 }}>
         <Radio.Group 
           defaultValue="airline" 
           size="large"
         >
-          <Radio value="agency">{translate('agency')}</Radio>
-          <Radio value="airline">{translate('airline')}</Radio>
+          <Radio value="agency" style={{ fontWeight: 500 }}>{translate('agency')}</Radio>
+          <Radio value="airline" style={{ fontWeight: 500 }}>{translate('airline')}</Radio>
         </Radio.Group>
       </div>
 
       {/* Filters */}
-      <div className="cls-filters-section">
+      <div style={{ 
+        display: 'flex', 
+        gap: 16, 
+        marginBottom: 24, 
+        alignItems: 'flex-end',
+        flexWrap: 'wrap'
+      }}>
         <div>
           <label style={{ display: 'block', marginBottom: 4, fontSize: '14px' }}>{translate('airline')}</label>
           <Select
@@ -521,23 +526,42 @@ const Reconciliation: React.FC = () => {
 
 
       {/* Export Buttons */}
-      <div className="cls-export-controls">
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'flex-end', 
+        gap: 12, 
+        marginBottom: 16 
+      }}>
         <Button 
           icon={<DownloadOutlined />}
-          className="cls-export-btn cls-xls"
+          style={{ 
+            backgroundColor: '#1d4ed8', 
+            color: 'white', 
+            border: 'none',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 4
+          }}
         >
           XLS
         </Button>
         <Button 
           icon={<DownloadOutlined />}
-          className="cls-export-btn cls-csv"
+          style={{ 
+            backgroundColor: '#059669', 
+            color: 'white', 
+            border: 'none',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 4
+          }}
         >
           CSV
         </Button>
         <Input 
             placeholder="search" 
             prefix={<SearchOutlined />}
-            className="cls-search-input"
+            style={{ width: 200 }}
             value={searchText}
             onChange={(e) => {
               setSearchText(e.target.value);
@@ -547,7 +571,7 @@ const Reconciliation: React.FC = () => {
       </div>
 
       {/* Data Table */}
-      <Card className="cls-data-table-card">
+      <Card style={{ borderRadius: 8, boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
         <Table
           columns={visibleColumnsData}
           dataSource={paginatedData}
