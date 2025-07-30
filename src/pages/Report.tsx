@@ -16,6 +16,7 @@ import {
   Radio,
   Divider,
 } from "antd";
+import * as XLSX from 'xlsx';
 import {
   CalendarOutlined,
   DownloadOutlined,
@@ -111,7 +112,75 @@ const Report: React.FC = () => {
     }
   };
 
+  const generateXLSData = () => {
+    // Sample data structure based on selected fields
+    const data = [];
+    const headers = [];
+    
+    // Build headers based on selected fields
+    Object.entries(selectedFields).forEach(([category, fields]) => {
+      if (fields.length > 0) {
+        const categoryData = reportData.reportFields[reportType as keyof typeof reportData.reportFields];
+        const categoryFields = categoryData?.[category as keyof typeof categoryData] || [];
+        
+        fields.forEach(fieldKey => {
+          const field = categoryFields.find((f: any) => f.key === fieldKey);
+          if (field) {
+            headers.push(field.label);
+          }
+        });
+      }
+    });
+    
+    // Add sample rows (in real implementation, this would come from API)
+    for (let i = 0; i < 100; i++) {
+      const row: any = {};
+      headers.forEach(header => {
+        row[header] = `Sample ${header} ${i + 1}`;
+      });
+      data.push(row);
+    }
+    
+    return { headers, data };
+  };
+
   const handleDownload = () => {
+    const { headers, data } = generateXLSData();
+    const fileSize = JSON.stringify(data).length; // Rough size estimation
+    const sizeThreshold = 500000; // 500KB threshold for demo purposes
+    
+    if (fileSize > sizeThreshold) {
+      // Add to queued reports
+      const queuedReport = {
+        key: Date.now().toString(),
+        name: `${reportType} Report - ${new Date().toLocaleDateString()}`,
+        type: reportType,
+        status: 'Queued',
+        progress: 0,
+        queueTime: new Date().toLocaleString(),
+        estimatedCompletion: new Date(Date.now() + 30 * 60 * 1000).toLocaleString(),
+        priority: 'Medium'
+      };
+      
+      const existingQueued = JSON.parse(localStorage.getItem('queuedReports') || '[]');
+      existingQueued.push(queuedReport);
+      localStorage.setItem('queuedReports', JSON.stringify(existingQueued));
+      
+      message.info("Report is large and has been added to the queue for processing.");
+      return;
+    }
+    
+    // Create workbook and worksheet
+    const ws = XLSX.utils.json_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, reportType);
+    
+    // Generate filename with timestamp
+    const filename = `${reportType}_Report_${Date.now()}.xlsx`;
+    
+    // Download the file
+    XLSX.writeFile(wb, filename);
+    
     message.success("Report downloaded successfully!");
   };
 
@@ -121,6 +190,21 @@ const Report: React.FC = () => {
 
   const handleSaveModalOk = () => {
     form.validateFields().then((values) => {
+      const savedReport = {
+        key: Date.now().toString(),
+        name: values.reportName,
+        type: reportType,
+        description: values.description || '',
+        createdDate: new Date().toLocaleDateString(),
+        lastRun: new Date().toLocaleDateString(),
+        frequency: values.frequency || 'once',
+        status: 'Active'
+      };
+      
+      const existingSaved = JSON.parse(localStorage.getItem('savedReports') || '[]');
+      existingSaved.push(savedReport);
+      localStorage.setItem('savedReports', JSON.stringify(existingSaved));
+      
       message.success("Report saved successfully!");
       setSaveModalVisible(false);
       form.resetFields();
@@ -589,10 +673,12 @@ const Report: React.FC = () => {
 
                     <div style={{ marginBottom: "16px", maxWidth: "300px" }}>
                       <select
-                        value={dateRangeRadioValue === "invoiced" ? invoicedDateRange : "today"}
+                        value={dateRangeRadioValue === "invoiced" ? invoicedDateRange : dateRangeType}
                         onChange={(e) => {
                           if (dateRangeRadioValue === "invoiced") {
                             setInvoicedDateRange(e.target.value);
+                          } else {
+                            setDateRangeType(e.target.value);
                           }
                         }}
                         style={{
@@ -615,11 +701,18 @@ const Report: React.FC = () => {
                     </div>
 
                     {/* Custom Date Range Picker - Appears when Custom is selected */}
-                    {((dateRangeRadioValue === "invoiced" && invoicedDateRange === "custom")) && (
+                    {((dateRangeRadioValue === "invoiced" && invoicedDateRange === "custom") || 
+                      (dateRangeRadioValue === "departure" && dateRangeType === "custom")) && (
                       <div style={{ marginTop: "16px", maxWidth: "300px" }}>
                         <RangePicker
-                          value={customInvoicedDateRange}
-                          onChange={(dates) => setCustomInvoicedDateRange(dates)}
+                          value={dateRangeRadioValue === "invoiced" ? customInvoicedDateRange : customDateRange}
+                          onChange={(dates) => {
+                            if (dateRangeRadioValue === "invoiced") {
+                              setCustomInvoicedDateRange(dates);
+                            } else {
+                              setCustomDateRange(dates);
+                            }
+                          }}
                           style={{ width: "100%" }}
                           placeholder={["Start Date", "End Date"]}
                         />
@@ -681,7 +774,7 @@ const Report: React.FC = () => {
         {/* Left Sidebar - Report Types */}
         <div
           style={{
-            width: "295px",
+            width: "200px",
             position: "sticky",
             top: "50px",
             height: "fit-content",
@@ -711,7 +804,6 @@ const Report: React.FC = () => {
                   fontWeight: reportType === type ? "500" : "400",
                   fontSize: "14px",
                   transition: "all 0.2s ease",
-                  textAlign: "center",
                 }}
                 onClick={() => setReportType(type)}
               >

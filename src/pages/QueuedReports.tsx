@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Card, 
   Button, 
@@ -33,8 +33,8 @@ const QueuedReports: React.FC = () => {
 
   const reportTypes = ["DSR", "Ledger", "Commission", "Top-up", "Sales"];
 
-  // Sample queued reports data
-  const queuedReportsData = [
+  // Load queued reports from localStorage
+  const [queuedReportsData, setQueuedReportsData] = useState([
     {
       key: '1',
       name: 'Large DSR Export',
@@ -54,28 +54,15 @@ const QueuedReports: React.FC = () => {
       queueTime: '2024-01-25 10:45',
       estimatedCompletion: '2024-01-25 11:30',
       priority: 'Medium'
-    },
-    {
-      key: '3',
-      name: 'Annual Sales Report',
-      type: 'Sales',
-      status: 'Paused',
-      progress: 25,
-      queueTime: '2024-01-25 09:15',
-      estimatedCompletion: '2024-01-25 12:00',
-      priority: 'Low'
-    },
-    {
-      key: '4',
-      name: 'Ledger Summary',
-      type: 'Ledger',
-      status: 'Completed',
-      progress: 100,
-      queueTime: '2024-01-25 08:00',
-      estimatedCompletion: '2024-01-25 08:45',
-      priority: 'High'
     }
-  ];
+  ]);
+
+  React.useEffect(() => {
+    const savedQueued = JSON.parse(localStorage.getItem('queuedReports') || '[]');
+    if (savedQueued.length > 0) {
+      setQueuedReportsData(prev => [...prev, ...savedQueued]);
+    }
+  }, []);
 
   const handlePause = (reportId: string) => {
     message.success('Report paused');
