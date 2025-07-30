@@ -49,6 +49,8 @@ const Report: React.FC = () => {
   });
   const [selectedConditions, setSelectedConditions] = useState<string[]>([]);
   const [saveModalVisible, setSaveModalVisible] = useState(false);
+  const [dateRangeType, setDateRangeType] = useState("today");
+  const [customDateRange, setCustomDateRange] = useState<any>(null);
   const [form] = Form.useForm();
 
   const reportTypes = ["DSR", "Ledger", "Commission", "Top-up", "Sales"];
@@ -399,189 +401,237 @@ const Report: React.FC = () => {
         );
 
       case 2:
+        const categoryNames = {
+          itineraryDetails: "Itinerary Details",
+          passengerDetails: "Passenger Details", 
+          fareDetails: "Fare Details",
+          commissionDetails: "Commission Details",
+          airlineDetails: "Airline Details",
+          agencyDetails: "Agency Details",
+        };
+
+        const hasSelectedFields = Object.values(selectedFields).some(fields => fields.length > 0);
+        const hasInvoicedDateRange = selectedConditions.includes("date_range");
+        const hasDepartureDateRange = selectedConditions.includes("departure_date_range");
+
         return (
           <div style={{ padding: "24px" }}>
-            <div style={{ marginBottom: "24px" }}>
-              <Text
-                strong
-                style={{
-                  color: isDarkMode ? "#fff" : "#1a1a1a",
-                  fontSize: "16px",
-                  display: "block",
-                  marginBottom: "16px",
-                }}
-              >
-                Selected fields
-              </Text>
+            {/* Selected Fields Section */}
+            {hasSelectedFields && (
+              <div style={{ marginBottom: "32px" }}>
+                <Text
+                  strong
+                  style={{
+                    color: isDarkMode ? "#fff" : "#1a1a1a",
+                    fontSize: "16px",
+                    display: "block",
+                    marginBottom: "16px",
+                  }}
+                >
+                  Selected fields
+                </Text>
 
-              {Object.entries(selectedFields).map(([category, fields]) => {
-                if (fields.length === 0) return null;
+                {Object.entries(selectedFields).map(([category, fields]) => {
+                  if (fields.length === 0) return null;
 
-                const categoryData =
-                  reportData.reportFields[
-                    reportType as keyof typeof reportData.reportFields
-                  ];
-                const categoryFields =
-                  categoryData?.[category as keyof typeof categoryData] || [];
+                  const categoryData =
+                    reportData.reportFields[
+                      reportType as keyof typeof reportData.reportFields
+                    ];
+                  const categoryFields =
+                    categoryData?.[category as keyof typeof categoryData] || [];
 
-                return (
-                  <div key={category} style={{ marginBottom: "16px" }}>
-                    <Text
-                      strong
-                      style={{
-                        color: isDarkMode ? "#fff" : "#1a1a1a",
-                        fontSize: "14px",
-                      }}
-                    >
-                      Selected{" "}
-                      {category.replace(/([A-Z])/g, " $1").toLowerCase()}
-                    </Text>
-                    <div
-                      style={{
-                        marginTop: "8px",
-                        color: isDarkMode ? "#a6a6a6" : "#666",
-                      }}
-                    >
-                      {fields
-                        .map((fieldKey) => {
-                          const field = categoryFields.find(
-                            (f: any) => f.key === fieldKey,
-                          );
-                          return field?.label;
-                        })
-                        .filter(Boolean)
-                        .join(", ")}
+                  return (
+                    <div key={category} style={{ marginBottom: "16px" }}>
+                      <Text
+                        strong
+                        style={{
+                          color: isDarkMode ? "#fff" : "#1a1a1a",
+                          fontSize: "14px",
+                        }}
+                      >
+                        {categoryNames[category as keyof typeof categoryNames]}
+                      </Text>
+                      <div
+                        style={{
+                          marginTop: "8px",
+                          color: isDarkMode ? "#a6a6a6" : "#666",
+                        }}
+                      >
+                        {fields
+                          .map((fieldKey) => {
+                            const field = categoryFields.find(
+                              (f: any) => f.key === fieldKey,
+                            );
+                            return field?.label;
+                          })
+                          .filter(Boolean)
+                          .join(", ")}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
+            )}
 
+            {/* Condition Details Section */}
+            {(hasInvoicedDateRange || hasDepartureDateRange) && (
+              <div style={{ marginBottom: "32px" }}>
+                <Text
+                  strong
+                  style={{
+                    color: isDarkMode ? "#fff" : "#1a1a1a",
+                    fontSize: "16px",
+                    display: "block",
+                    marginBottom: "16px",
+                  }}
+                >
+                  Condition Details
+                </Text>
+
+                <Row gutter={[16, 16]}>
+                  {hasInvoicedDateRange && (
+                    <Col span={12}>
+                      <div
+                        style={{
+                          padding: "16px",
+                          border: "1px solid #d9d9d9",
+                          borderRadius: "6px",
+                          background: isDarkMode ? "#1f1f1f" : "#fff",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "8px",
+                            marginBottom: "8px",
+                          }}
+                        >
+                          <div
+                            style={{
+                              width: "12px",
+                              height: "12px",
+                              borderRadius: "50%",
+                              background: "#5A4FCF",
+                            }}
+                          />
+                          <Text
+                            style={{
+                              color: isDarkMode ? "#fff" : "#1a1a1a",
+                              fontWeight: "500",
+                            }}
+                          >
+                            Invoiced Date Range
+                          </Text>
+                        </div>
+                        <Text
+                          style={{
+                            color: isDarkMode ? "#a6a6a6" : "#666",
+                            fontSize: "12px",
+                          }}
+                        >
+                          Select invoiced date range
+                        </Text>
+                      </div>
+                    </Col>
+                  )}
+
+                  {hasDepartureDateRange && (
+                    <Col span={12}>
+                      <div
+                        style={{
+                          padding: "16px",
+                          border: "1px solid #d9d9d9",
+                          borderRadius: "6px",
+                          background: isDarkMode ? "#1f1f1f" : "#fff",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "8px",
+                            marginBottom: "8px",
+                          }}
+                        >
+                          <div
+                            style={{
+                              width: "12px",
+                              height: "12px",
+                              borderRadius: "50%",
+                              background: "#5A4FCF",
+                            }}
+                          />
+                          <Text
+                            style={{
+                              color: isDarkMode ? "#fff" : "#1a1a1a",
+                              fontWeight: "500",
+                            }}
+                          >
+                            Departure Date Range
+                          </Text>
+                        </div>
+                        <Text
+                          style={{
+                            color: isDarkMode ? "#a6a6a6" : "#666",
+                            fontSize: "12px",
+                          }}
+                        >
+                          Select departure date range
+                        </Text>
+                      </div>
+                    </Col>
+                  )}
+                </Row>
+              </div>
+            )}
+
+            {/* Date Range Selection */}
+            {hasDepartureDateRange && (
               <div style={{ marginTop: "24px" }}>
                 <Text
                   strong
                   style={{
                     color: isDarkMode ? "#fff" : "#1a1a1a",
-                    fontSize: "14px",
+                    fontSize: "16px",
+                    display: "block",
+                    marginBottom: "16px",
                   }}
                 >
-                  Selected condition details
+                  Select Departure Date Range
                 </Text>
-                <div
-                  style={{
-                    marginTop: "8px",
-                    color: isDarkMode ? "#a6a6a6" : "#666",
-                  }}
-                >
-                  {selectedConditions
-                    .map((conditionKey) => {
-                      const condition = reportData.conditionDetails.find(
-                        (c) => c.key === conditionKey,
-                      );
-                      return condition?.label;
-                    })
-                    .filter(Boolean)
-                    .join(", ")}
+
+                <div style={{ marginBottom: "16px" }}>
+                  <Radio.Group 
+                    value={dateRangeType}
+                    onChange={(e) => setDateRangeType(e.target.value)}
+                    style={{ width: "100%" }}
+                  >
+                    <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                      <Radio value="today">Today</Radio>
+                      <Radio value="yesterday">Yesterday</Radio>
+                      <Radio value="last7days">Last 7 Days</Radio>
+                      <Radio value="thismonth">This Month</Radio>
+                      <Radio value="lastmonth">Last Month</Radio>
+                      <Radio value="custom">Custom</Radio>
+                    </div>
+                  </Radio.Group>
                 </div>
+
+                {/* Custom Date Range Picker - Appears when Custom is selected */}
+                {dateRangeType === "custom" && (
+                  <div style={{ marginTop: "16px" }}>
+                    <RangePicker 
+                      value={customDateRange}
+                      onChange={(dates) => setCustomDateRange(dates)}
+                      style={{ width: "100%" }}
+                      placeholder={["Start Date", "End Date"]}
+                    />
+                  </div>
+                )}
               </div>
-            </div>
-
-            <div style={{ marginTop: "32px" }}>
-              <Text
-                strong
-                style={{
-                  color: isDarkMode ? "#fff" : "#1a1a1a",
-                  fontSize: "16px",
-                  display: "block",
-                  marginBottom: "16px",
-                }}
-              >
-                Selected conditions
-              </Text>
-
-              <Row gutter={[16, 16]}>
-                <Col span={12}>
-                  <div
-                    style={{
-                      padding: "16px",
-                      border: "1px solid #d9d9d9",
-                      borderRadius: "6px",
-                      background: isDarkMode ? "#1f1f1f" : "#fff",
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "8px",
-                        marginBottom: "8px",
-                      }}
-                    >
-                      <div
-                        style={{
-                          width: "12px",
-                          height: "12px",
-                          borderRadius: "50%",
-                          background: "#5A4FCF",
-                        }}
-                      />
-                      <Text
-                        style={{
-                          color: isDarkMode ? "#fff" : "#1a1a1a",
-                          fontWeight: "500",
-                        }}
-                      >
-                        Invoiced date range
-                      </Text>
-                    </div>
-                    <Text
-                      style={{
-                        color: isDarkMode ? "#a6a6a6" : "#666",
-                        fontSize: "12px",
-                      }}
-                    >
-                      Select invoiced date range
-                    </Text>
-                  </div>
-                </Col>
-                <Col span={12}>
-                  <div
-                    style={{
-                      padding: "16px",
-                      border: "1px solid #d9d9d9",
-                      borderRadius: "6px",
-                      background: isDarkMode ? "#1f1f1f" : "#fff",
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "8px",
-                        marginBottom: "8px",
-                      }}
-                    >
-                      <div
-                        style={{
-                          width: "12px",
-                          height: "12px",
-                          borderRadius: "50%",
-                          background: "#fff",
-                          border: "1px solid #d9d9d9",
-                        }}
-                      />
-                      <Text
-                        style={{
-                          color: isDarkMode ? "#fff" : "#1a1a1a",
-                          fontWeight: "500",
-                        }}
-                      >
-                        Departure date range
-                      </Text>
-                    </div>
-                  </div>
-                </Col>
-              </Row>
-            </div>
+            )}
           </div>
         );
 

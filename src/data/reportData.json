@@ -287,7 +287,8 @@
     }
   },
   "conditionDetails": [
-    { "key": "date_range", "label": "Date Range", "checked": true },
+    { "key": "date_range", "label": "Invoiced Date Range", "checked": true },
+    { "key": "departure_date_range", "label": "Departure Date Range", "checked": false },
     { "key": "agency", "label": "Agency", "checked": false }
   ],
   "savedReports": []
