@@ -14,7 +14,6 @@ import {
 } from 'antd';
 import { 
   ArrowLeftOutlined,
-  SearchOutlined,
   PlusOutlined,
   PlayCircleOutlined,
   PauseCircleOutlined,
@@ -30,6 +29,9 @@ const QueuedReports: React.FC = () => {
   const navigate = useNavigate();
   const { isDarkMode } = useTheme();
   const [searchText, setSearchText] = useState('');
+  const [reportType, setReportType] = useState("DSR");
+
+  const reportTypes = ["DSR", "Ledger", "Commission", "Top-up", "Sales"];
 
   // Sample queued reports data
   const queuedReportsData = [
@@ -210,7 +212,6 @@ const QueuedReports: React.FC = () => {
 
   return (
     <div style={{ 
-      padding: '24px', 
       background: isDarkMode ? '#141414' : '#f5f5f5',
       minHeight: 'calc(100vh - 128px)' 
     }}>
@@ -227,7 +228,7 @@ const QueuedReports: React.FC = () => {
             onClick={() => navigate('/report')}
             style={{ border: 'none', background: 'transparent' }}
           />
-          <Title level={2} style={{ margin: 0, color: isDarkMode ? '#fff' : '#1a1a1a' }}>
+          <Title level={2} style={{ margin: 0, color: '#5A4FCF' }}>
             Queued Reports
           </Title>
         </div>
@@ -241,29 +242,79 @@ const QueuedReports: React.FC = () => {
         </Button>
       </div>
 
-      {/* Search */}
-      <div style={{ marginBottom: '24px' }}>
-        <Search
-          placeholder="Search queued reports..."
-          allowClear
-          onChange={(e) => setSearchText(e.target.value)}
-          style={{ width: 300 }}
-        />
-      </div>
-
-      {/* Reports Table */}
-      <Card style={{ background: isDarkMode ? '#1f1f1f' : '#fff' }}>
-        <Table
-          columns={columns}
-          dataSource={queuedReportsData}
-          pagination={{
-            pageSize: 10,
-            showSizeChanger: true,
-            showQuickJumper: true,
+      <div style={{ display: 'flex', gap: '24px' }}>
+        {/* Left Sidebar - Report Types */}
+        <div
+          style={{
+            width: "295px",
+            position: "sticky",
+            top: "50px",
+            height: "fit-content",
           }}
-          scroll={{ x: 800 }}
-        />
-      </Card>
+        >
+          <Card
+            style={{
+              background: isDarkMode ? "#1f1f1f" : "#fff",
+              padding: "8px",
+            }}
+          >
+            {reportTypes.map((type, index) => (
+              <div
+                key={type}
+                style={{
+                  padding: "12px 16px",
+                  marginBottom: "4px",
+                  background: reportType === type ? "#5A4FCF" : "transparent",
+                  color:
+                    reportType === type
+                      ? "#fff"
+                      : isDarkMode
+                        ? "#fff"
+                        : "#1a1a1a",
+                  borderRadius: "6px",
+                  cursor: "pointer",
+                  fontWeight: reportType === type ? "500" : "400",
+                  fontSize: "14px",
+                  transition: "all 0.2s ease",
+                  textAlign: "center",
+                }}
+                onClick={() => setReportType(type)}
+              >
+                {type}
+              </div>
+            ))}
+          </Card>
+        </div>
+
+        {/* Main Content */}
+        <div style={{ flex: 1 }}>
+          {/* Search */}
+          <div style={{ marginBottom: '24px' }}>
+            <Search
+              placeholder="Search queued reports..."
+              allowClear
+              onChange={(e) => setSearchText(e.target.value)}
+              style={{ width: 300 }}
+            />
+          </div>
+
+          {/* Reports Table */}
+          <Card style={{ background: isDarkMode ? '#1f1f1f' : '#fff' }}>
+            <Table
+              columns={columns}
+              dataSource={queuedReportsData}
+              pagination={{
+                pageSize: 10,
+                showSizeChanger: true,
+                showQuickJumper: true,
+                showTotal: (total, range) => 
+                  `${range[0]}-${range[1]} of ${total} items`,
+              }}
+              scroll={{ x: 800 }}
+            />
+          </Card>
+        </div>
+      </div>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Card, 
   Button, 
@@ -8,16 +8,12 @@ import {
   Space,
   Typography,
   Tag,
-  Popconfirm,
   message
 } from 'antd';
 import { 
   ArrowLeftOutlined,
-  SearchOutlined,
   PlusOutlined,
-  DownloadOutlined,
-  EditOutlined,
-  DeleteOutlined
+  DownloadOutlined
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
@@ -29,44 +25,49 @@ const SavedReports: React.FC = () => {
   const navigate = useNavigate();
   const { isDarkMode } = useTheme();
   const [searchText, setSearchText] = useState('');
+  const [reportType, setReportType] = useState("DSR");
+  const [savedReportsData, setSavedReportsData] = useState<any[]>([]);
 
-  // Sample saved reports data
-  const savedReportsData = [
-    {
-      key: '1',
-      name: 'Monthly DSR Report',
-      type: 'DSR',
-      description: 'Monthly sales report for all agencies',
-      createdDate: '2024-01-15',
-      lastRun: '2024-01-25',
-      frequency: 'Monthly',
-      status: 'Active'
-    },
-    {
-      key: '2',
-      name: 'Weekly Commission Report',
-      type: 'Commission',
-      description: 'Weekly commission breakdown',
-      createdDate: '2024-01-10',
-      lastRun: '2024-01-24',
-      frequency: 'Weekly',
-      status: 'Active'
-    },
-    {
-      key: '3',
-      name: 'Annual Ledger Summary',
-      type: 'Ledger',
-      description: 'Complete ledger for financial year',
-      createdDate: '2024-01-05',
-      lastRun: '2024-01-20',
-      frequency: 'Yearly',
-      status: 'Paused'
-    }
-  ];
+  const reportTypes = ["DSR", "Ledger", "Commission", "Top-up", "Sales"];
 
-  const handleDelete = (reportId: string) => {
-    message.success('Report deleted successfully');
-  };
+  useEffect(() => {
+    // Load saved reports from localStorage
+    const savedReports = JSON.parse(localStorage.getItem('savedReports') || '[]');
+    const defaultReports = [
+      {
+        key: '1',
+        name: 'Monthly DSR Report',
+        type: 'DSR',
+        description: 'Monthly sales report for all agencies',
+        createdDate: '2024-01-15',
+        lastRun: '2024-01-25',
+        frequency: 'Monthly',
+        status: 'Active'
+      },
+      {
+        key: '2',
+        name: 'Weekly Commission Report',
+        type: 'Commission',
+        description: 'Weekly commission breakdown',
+        createdDate: '2024-01-10',
+        lastRun: '2024-01-24',
+        frequency: 'Weekly',
+        status: 'Active'
+      },
+      {
+        key: '3',
+        name: 'Annual Ledger Summary',
+        type: 'Ledger',
+        description: 'Complete ledger for financial year',
+        createdDate: '2024-01-05',
+        lastRun: '2024-01-20',
+        frequency: 'Yearly',
+        status: 'Paused'
+      }
+    ];
+    
+    setSavedReportsData([...defaultReports, ...savedReports]);
+  }, []);
 
   const handleDownload = (reportId: string) => {
     message.success('Report downloaded successfully');
@@ -139,23 +140,6 @@ const SavedReports: React.FC = () => {
             onClick={() => handleDownload(record.key)}
             style={{ color: '#52c41a' }}
           />
-          <Button 
-            type="text" 
-            icon={<EditOutlined />} 
-            onClick={() => navigate('/report')}
-          />
-          <Popconfirm
-            title="Are you sure you want to delete this report?"
-            onConfirm={() => handleDelete(record.key)}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button 
-              type="text" 
-              icon={<DeleteOutlined />} 
-              danger
-            />
-          </Popconfirm>
         </Space>
       ),
     },
@@ -163,7 +147,6 @@ const SavedReports: React.FC = () => {
 
   return (
     <div style={{ 
-      padding: '24px', 
       background: isDarkMode ? '#141414' : '#f5f5f5',
       minHeight: 'calc(100vh - 128px)' 
     }}>
@@ -180,7 +163,7 @@ const SavedReports: React.FC = () => {
             onClick={() => navigate('/report')}
             style={{ border: 'none', background: 'transparent' }}
           />
-          <Title level={2} style={{ margin: 0, color: isDarkMode ? '#fff' : '#1a1a1a' }}>
+          <Title level={2} style={{ margin: 0, color: '#5A4FCF' }}>
             Saved Reports
           </Title>
         </div>
@@ -194,29 +177,79 @@ const SavedReports: React.FC = () => {
         </Button>
       </div>
 
-      {/* Search */}
-      <div style={{ marginBottom: '24px' }}>
-        <Search
-          placeholder="Search reports..."
-          allowClear
-          onChange={(e) => setSearchText(e.target.value)}
-          style={{ width: 300 }}
-        />
-      </div>
-
-      {/* Reports Table */}
-      <Card style={{ background: isDarkMode ? '#1f1f1f' : '#fff' }}>
-        <Table
-          columns={columns}
-          dataSource={savedReportsData}
-          pagination={{
-            pageSize: 10,
-            showSizeChanger: true,
-            showQuickJumper: true,
+      <div style={{ display: 'flex', gap: '24px' }}>
+        {/* Left Sidebar - Report Types */}
+        <div
+          style={{
+            width: "295px",
+            position: "sticky",
+            top: "50px",
+            height: "fit-content",
           }}
-          scroll={{ x: 800 }}
-        />
-      </Card>
+        >
+          <Card
+            style={{
+              background: isDarkMode ? "#1f1f1f" : "#fff",
+              padding: "8px",
+            }}
+          >
+            {reportTypes.map((type, index) => (
+              <div
+                key={type}
+                style={{
+                  padding: "12px 16px",
+                  marginBottom: "4px",
+                  background: reportType === type ? "#5A4FCF" : "transparent",
+                  color:
+                    reportType === type
+                      ? "#fff"
+                      : isDarkMode
+                        ? "#fff"
+                        : "#1a1a1a",
+                  borderRadius: "6px",
+                  cursor: "pointer",
+                  fontWeight: reportType === type ? "500" : "400",
+                  fontSize: "14px",
+                  transition: "all 0.2s ease",
+                  textAlign: "center",
+                }}
+                onClick={() => setReportType(type)}
+              >
+                {type}
+              </div>
+            ))}
+          </Card>
+        </div>
+
+        {/* Main Content */}
+        <div style={{ flex: 1 }}>
+          {/* Search */}
+          <div style={{ marginBottom: '24px' }}>
+            <Search
+              placeholder="Search reports..."
+              allowClear
+              onChange={(e) => setSearchText(e.target.value)}
+              style={{ width: 300 }}
+            />
+          </div>
+
+          {/* Reports Table */}
+          <Card style={{ background: isDarkMode ? '#1f1f1f' : '#fff' }}>
+            <Table
+              columns={columns}
+              dataSource={savedReportsData}
+              pagination={{
+                pageSize: 10,
+                showSizeChanger: true,
+                showQuickJumper: true,
+                showTotal: (total, range) => 
+                  `${range[0]}-${range[1]} of ${total} items`,
+              }}
+              scroll={{ x: 800 }}
+            />
+          </Card>
+        </div>
+      </div>
     </div>
   );
 };

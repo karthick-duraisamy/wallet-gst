@@ -157,11 +157,7 @@ const Report: React.FC = () => {
               checked={allSelected}
               onChange={() => handleSelectAllFields(categoryKey, fields)}
               style={{
-                "& .ant-checkbox-inner": {
-                  width: "16px",
-                  height: "16px",
-                  borderRadius: "2px",
-                },
+                transform: "scale(1.2)",
               }}
             />
             <Text
@@ -204,11 +200,7 @@ const Report: React.FC = () => {
                     )
                   }
                   style={{
-                    "& .ant-checkbox-inner": {
-                      width: "16px",
-                      height: "16px",
-                      borderRadius: "2px",
-                    },
+                    transform: "scale(1.2)",
                   }}
                 />
                 <Text
