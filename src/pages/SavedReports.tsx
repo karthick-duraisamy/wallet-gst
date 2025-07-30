@@ -1,24 +1,23 @@
+
 import React, { useState } from 'react';
 import { 
   Card, 
-  Table, 
   Button, 
+  Table, 
+  Input, 
   Space,
   Typography,
   Tag,
   Popconfirm,
-  message,
-  Input
+  message
 } from 'antd';
 import { 
   ArrowLeftOutlined,
-  PlusOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  DownloadOutlined,
   SearchOutlined,
-  FileTextOutlined,
-  UnorderedListOutlined
+  PlusOutlined,
+  DownloadOutlined,
+  EditOutlined,
+  DeleteOutlined
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
@@ -73,6 +72,14 @@ const SavedReports: React.FC = () => {
     message.success('Report downloaded successfully');
   };
 
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'Active': return 'green';
+      case 'Paused': return 'orange';
+      default: return 'default';
+    }
+  };
+
   const columns = [
     {
       title: 'Report Name',
@@ -95,7 +102,6 @@ const SavedReports: React.FC = () => {
       title: 'Description',
       dataIndex: 'description',
       key: 'description',
-      ellipsis: true,
     },
     {
       title: 'Created Date',
@@ -111,18 +117,13 @@ const SavedReports: React.FC = () => {
       title: 'Frequency',
       dataIndex: 'frequency',
       key: 'frequency',
-      render: (frequency: string) => (
-        <Tag color={frequency === 'Daily' ? 'green' : frequency === 'Weekly' ? 'orange' : 'purple'}>
-          {frequency}
-        </Tag>
-      ),
     },
     {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
       render: (status: string) => (
-        <Tag color={status === 'Active' ? 'green' : 'red'}>
+        <Tag color={getStatusColor(status)}>
           {status}
         </Tag>
       ),
@@ -131,7 +132,7 @@ const SavedReports: React.FC = () => {
       title: 'Actions',
       key: 'actions',
       render: (text: any, record: any) => (
-        <Space size="small">
+        <Space size="middle">
           <Button 
             type="text" 
             icon={<DownloadOutlined />} 
@@ -193,32 +194,15 @@ const SavedReports: React.FC = () => {
         </Button>
       </div>
 
-      <Space>
-          <Button 
-            icon={<FileTextOutlined />}
-            onClick={() => navigate('/saved-reports')}
-          >
-            Saved reports
-          </Button>
-          <Button 
-            icon={<UnorderedListOutlined />}
-            onClick={() => navigate('/queued-reports')}
-          >
-            Queued reports
-          </Button>
-        </Space>
-      {/* Search and Filters */}
-      <Card style={{ marginBottom: '24px', background: isDarkMode ? '#1f1f1f' : '#fff' }}>
-        <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-          <Search
-            placeholder="Search reports..."
-            allowClear
-            style={{ width: 300 }}
-            onSearch={setSearchText}
-            onChange={(e) => setSearchText(e.target.value)}
-          />
-        </div>
-      </Card>
+      {/* Search */}
+      <div style={{ marginBottom: '24px' }}>
+        <Search
+          placeholder="Search reports..."
+          allowClear
+          onChange={(e) => setSearchText(e.target.value)}
+          style={{ width: 300 }}
+        />
+      </div>
 
       {/* Reports Table */}
       <Card style={{ background: isDarkMode ? '#1f1f1f' : '#fff' }}>
@@ -229,10 +213,8 @@ const SavedReports: React.FC = () => {
             pageSize: 10,
             showSizeChanger: true,
             showQuickJumper: true,
-            showTotal: (total, range) => 
-              `${range[0]}-${range[1]} of ${total} reports`
           }}
-          size="middle"
+          scroll={{ x: 800 }}
         />
       </Card>
     </div>

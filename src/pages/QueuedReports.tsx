@@ -1,25 +1,24 @@
+
 import React, { useState } from 'react';
 import { 
   Card, 
-  Table, 
   Button, 
+  Table, 
+  Input, 
   Space,
   Typography,
   Tag,
   Progress,
   Popconfirm,
-  message,
-  Input
+  message
 } from 'antd';
 import { 
   ArrowLeftOutlined,
-  PlusOutlined,
-  PauseCircleOutlined,
-  PlayCircleOutlined,
-  DeleteOutlined,
   SearchOutlined,
-  FileTextOutlined,
-  UnorderedListOutlined
+  PlusOutlined,
+  PlayCircleOutlined,
+  PauseCircleOutlined,
+  DeleteOutlined
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
@@ -173,23 +172,23 @@ const QueuedReports: React.FC = () => {
       title: 'Actions',
       key: 'actions',
       render: (text: any, record: any) => (
-        <Space size="small">
-          {record.status === 'Processing' || record.status === 'Queued' ? (
-            <Button 
-              type="text" 
-              icon={<PauseCircleOutlined />} 
-              onClick={() => handlePause(record.key)}
-              style={{ color: '#faad14' }}
-            />
-          ) : record.status === 'Paused' ? (
+        <Space size="middle">
+          {record.status === 'Paused' && (
             <Button 
               type="text" 
               icon={<PlayCircleOutlined />} 
               onClick={() => handleResume(record.key)}
               style={{ color: '#52c41a' }}
             />
-          ) : null}
-
+          )}
+          {record.status === 'Processing' && (
+            <Button 
+              type="text" 
+              icon={<PauseCircleOutlined />} 
+              onClick={() => handlePause(record.key)}
+              style={{ color: '#faad14' }}
+            />
+          )}
           {record.status !== 'Completed' && (
             <Popconfirm
               title="Are you sure you want to cancel this report?"
@@ -242,18 +241,15 @@ const QueuedReports: React.FC = () => {
         </Button>
       </div>
 
-      {/* Search and Filters */}
-      <Card style={{ marginBottom: '24px', background: isDarkMode ? '#1f1f1f' : '#fff' }}>
-        <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-          <Search
-            placeholder="Search queued reports..."
-            allowClear
-            style={{ width: 300 }}
-            onSearch={setSearchText}
-            onChange={(e) => setSearchText(e.target.value)}
-          />
-        </div>
-      </Card>
+      {/* Search */}
+      <div style={{ marginBottom: '24px' }}>
+        <Search
+          placeholder="Search queued reports..."
+          allowClear
+          onChange={(e) => setSearchText(e.target.value)}
+          style={{ width: 300 }}
+        />
+      </div>
 
       {/* Reports Table */}
       <Card style={{ background: isDarkMode ? '#1f1f1f' : '#fff' }}>
@@ -264,10 +260,8 @@ const QueuedReports: React.FC = () => {
             pageSize: 10,
             showSizeChanger: true,
             showQuickJumper: true,
-            showTotal: (total, range) => 
-              `${range[0]}-${range[1]} of ${total} reports`
           }}
-          size="middle"
+          scroll={{ x: 800 }}
         />
       </Card>
     </div>

@@ -61,6 +61,14 @@ const Report: React.FC = () => {
     }));
   };
 
+  const handleSelectAllFields = (category: string, fields: any[]) => {
+    const allSelected = fields.every(field => selectedFields[category].includes(field.key));
+    setSelectedFields(prev => ({
+      ...prev,
+      [category]: allSelected ? [] : fields.map(field => field.key)
+    }));
+  };
+
   const handleConditionSelection = (condition: string, checked: boolean) => {
     if (checked) {
       setSelectedConditions([...selectedConditions, condition]);
@@ -99,68 +107,89 @@ const Report: React.FC = () => {
 
   const stepTitles = ['Available fields', 'Available conditions', 'Review & Save'];
 
-  const renderFieldCategory = (categoryName: string, categoryKey: string, fields: any[]) => (
-    <div style={{ marginBottom: '24px' }}>
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center', 
-        marginBottom: '12px',
-        padding: '8px 0',
-        borderBottom: `1px solid ${isDarkMode ? '#434343' : '#f0f0f0'}`
-      }}>
-        <Text strong style={{ color: isDarkMode ? '#fff' : '#1a1a1a', fontSize: '14px' }}>
-          {categoryName}
-        </Text>
-        <Button 
-          type="link" 
-          size="small"
-          onClick={() => {
-            const allSelected = fields.every(field => selectedFields[categoryKey].includes(field.key));
-            fields.forEach(field => {
-              handleFieldSelection(categoryKey, field.key, !allSelected);
-            });
-          }}
-          style={{ color: '#FF5722', padding: 0, height: 'auto' }}
-        >
-          Select all
-        </Button>
-      </div>
-      <Row gutter={[8, 8]}>
-        {fields.map((field) => (
-          <Col span={8} key={field.key}>
-            <div 
-              style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: '8px',
-                padding: '4px 0'
+  const renderFieldCategory = (categoryName: string, categoryKey: string, fields: any[]) => {
+    const allSelected = fields.every(field => selectedFields[categoryKey].includes(field.key));
+    
+    return (
+      <div style={{ marginBottom: '24px' }}>
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center', 
+          marginBottom: '16px',
+          padding: '0',
+        }}>
+          <Text strong style={{ color: isDarkMode ? '#fff' : '#1a1a1a', fontSize: '16px' }}>
+            {categoryName}
+          </Text>
+          <div 
+            style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '8px',
+              cursor: 'pointer'
+            }}
+            onClick={() => handleSelectAllFields(categoryKey, fields)}
+          >
+            <Checkbox
+              checked={allSelected}
+              onChange={() => handleSelectAllFields(categoryKey, fields)}
+              style={{
+                '& .ant-checkbox-inner': {
+                  width: '16px',
+                  height: '16px',
+                  borderRadius: '2px'
+                }
               }}
-            >
-              <Checkbox
-                checked={selectedFields[categoryKey].includes(field.key)}
-                onChange={(e) => handleFieldSelection(categoryKey, field.key, e.target.checked)}
-                style={{
-                  '& .ant-checkbox-inner': {
-                    width: '16px',
-                    height: '16px',
-                    borderRadius: '2px'
-                  }
+            />
+            <Text style={{ 
+              color: '#5A4FCF',
+              fontSize: '14px',
+              cursor: 'pointer'
+            }}>
+              Select all
+            </Text>
+          </div>
+        </div>
+        <Row gutter={[12, 12]}>
+          {fields.map((field) => (
+            <Col span={8} key={field.key}>
+              <div 
+                style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: '8px',
+                  padding: '4px 0',
+                  cursor: 'pointer'
                 }}
-              />
-              <Text style={{ 
-                color: selectedFields[categoryKey].includes(field.key) ? '#FF5722' : (isDarkMode ? '#fff' : '#1a1a1a'),
-                fontSize: '13px',
-                fontWeight: selectedFields[categoryKey].includes(field.key) ? '600' : '400'
-              }}>
-                {field.label}
-              </Text>
-            </div>
-          </Col>
-        ))}
-      </Row>
-    </div>
-  );
+                onClick={() => handleFieldSelection(categoryKey, field.key, !selectedFields[categoryKey].includes(field.key))}
+              >
+                <Checkbox
+                  checked={selectedFields[categoryKey].includes(field.key)}
+                  onChange={(e) => handleFieldSelection(categoryKey, field.key, e.target.checked)}
+                  style={{
+                    '& .ant-checkbox-inner': {
+                      width: '16px',
+                      height: '16px',
+                      borderRadius: '2px'
+                    }
+                  }}
+                />
+                <Text style={{ 
+                  color: selectedFields[categoryKey].includes(field.key) ? '#5A4FCF' : (isDarkMode ? '#fff' : '#1a1a1a'),
+                  fontSize: '14px',
+                  fontWeight: selectedFields[categoryKey].includes(field.key) ? '500' : '400',
+                  cursor: 'pointer'
+                }}>
+                  {field.label}
+                </Text>
+              </div>
+            </Col>
+          ))}
+        </Row>
+      </div>
+    );
+  };
 
   const renderStepContent = () => {
     switch (currentStep) {
@@ -205,6 +234,10 @@ const Report: React.FC = () => {
         );
 
       case 1:
+        const allConditionsSelected = reportData.conditionDetails.every(condition => 
+          selectedConditions.includes(condition.key)
+        );
+        
         return (
           <div style={{ padding: '24px' }}>
             <div style={{ marginBottom: '24px' }}>
@@ -212,28 +245,41 @@ const Report: React.FC = () => {
                 display: 'flex', 
                 justifyContent: 'space-between', 
                 alignItems: 'center', 
-                marginBottom: '12px',
-                padding: '8px 0',
-                borderBottom: `1px solid ${isDarkMode ? '#434343' : '#f0f0f0'}`
+                marginBottom: '16px',
+                padding: '0'
               }}>
-                <Text strong style={{ color: isDarkMode ? '#fff' : '#1a1a1a', fontSize: '14px' }}>
+                <Text strong style={{ color: isDarkMode ? '#fff' : '#1a1a1a', fontSize: '16px' }}>
                   Condition Details
                 </Text>
-                <Button 
-                  type="link" 
-                  size="small"
+                <div 
+                  style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: '8px',
+                    cursor: 'pointer'
+                  }}
                   onClick={() => {
-                    const allSelected = reportData.conditionDetails.every(condition => 
-                      selectedConditions.includes(condition.key)
-                    );
                     reportData.conditionDetails.forEach(condition => {
-                      handleConditionSelection(condition.key, !allSelected);
+                      handleConditionSelection(condition.key, !allConditionsSelected);
                     });
                   }}
-                  style={{ color: '#FF5722', padding: 0, height: 'auto' }}
                 >
-                  Select all
-                </Button>
+                  <Checkbox
+                    checked={allConditionsSelected}
+                    onChange={() => {
+                      reportData.conditionDetails.forEach(condition => {
+                        handleConditionSelection(condition.key, !allConditionsSelected);
+                      });
+                    }}
+                  />
+                  <Text style={{ 
+                    color: '#5A4FCF',
+                    fontSize: '14px',
+                    cursor: 'pointer'
+                  }}>
+                    Select all
+                  </Text>
+                </div>
               </div>
               <Row gutter={[16, 16]}>
                 {reportData.conditionDetails.map((condition) => (
@@ -244,9 +290,9 @@ const Report: React.FC = () => {
                         alignItems: 'center', 
                         gap: '8px',
                         padding: '8px 12px',
-                        border: `1px solid ${selectedConditions.includes(condition.key) ? '#FF5722' : '#d9d9d9'}`,
+                        border: `1px solid ${selectedConditions.includes(condition.key) ? '#5A4FCF' : '#d9d9d9'}`,
                         borderRadius: '4px',
-                        background: selectedConditions.includes(condition.key) ? '#FFF3E0' : (isDarkMode ? '#1f1f1f' : '#fff'),
+                        background: selectedConditions.includes(condition.key) ? '#F0EFFF' : (isDarkMode ? '#1f1f1f' : '#fff'),
                         cursor: 'pointer'
                       }}
                       onClick={() => handleConditionSelection(condition.key, !selectedConditions.includes(condition.key))}
@@ -256,9 +302,9 @@ const Report: React.FC = () => {
                         onChange={(e) => handleConditionSelection(condition.key, e.target.checked)}
                       />
                       <Text style={{ 
-                        color: selectedConditions.includes(condition.key) ? '#FF5722' : (isDarkMode ? '#fff' : '#1a1a1a'),
-                        fontSize: '13px',
-                        fontWeight: selectedConditions.includes(condition.key) ? '600' : '400'
+                        color: selectedConditions.includes(condition.key) ? '#5A4FCF' : (isDarkMode ? '#fff' : '#1a1a1a'),
+                        fontSize: '14px',
+                        fontWeight: selectedConditions.includes(condition.key) ? '500' : '400'
                       }}>
                         {condition.label}
                       </Text>
@@ -271,8 +317,6 @@ const Report: React.FC = () => {
         );
 
       case 2:
-        const totalSelectedFields = Object.values(selectedFields).reduce((acc, curr) => acc + curr.length, 0);
-        
         return (
           <div style={{ padding: '24px' }}>
             <div style={{ marginBottom: '24px' }}>
@@ -332,7 +376,7 @@ const Report: React.FC = () => {
                         width: '12px', 
                         height: '12px', 
                         borderRadius: '50%', 
-                        background: '#FF5722' 
+                        background: '#5A4FCF' 
                       }} />
                       <Text style={{ color: isDarkMode ? '#fff' : '#1a1a1a', fontWeight: '500' }}>
                         Invoiced date range
@@ -388,7 +432,7 @@ const Report: React.FC = () => {
         marginBottom: '24px'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <Title level={2} style={{ margin: 0, color: '#FF5722' }}>
+          <Title level={2} style={{ margin: 0, color: '#5A4FCF' }}>
             Create custom report
           </Title>
         </div>
@@ -410,20 +454,26 @@ const Report: React.FC = () => {
 
       <div style={{ display: 'flex', gap: '24px' }}>
         {/* Left Sidebar - Report Types */}
-        <div style={{ width: '200px' }}>
-          <Card style={{ background: isDarkMode ? '#1f1f1f' : '#fff', padding: '16px' }}>
+        <div style={{ 
+          width: '200px',
+          position: 'sticky',
+          top: '24px',
+          height: 'fit-content'
+        }}>
+          <Card style={{ background: isDarkMode ? '#1f1f1f' : '#fff', padding: '8px' }}>
             {reportTypes.map((type, index) => (
               <div
                 key={type}
                 style={{
                   padding: '12px 16px',
-                  marginBottom: '8px',
-                  background: reportType === type ? '#FF5722' : 'transparent',
+                  marginBottom: '4px',
+                  background: reportType === type ? '#5A4FCF' : 'transparent',
                   color: reportType === type ? '#fff' : (isDarkMode ? '#fff' : '#1a1a1a'),
-                  borderRadius: '4px',
+                  borderRadius: '6px',
                   cursor: 'pointer',
-                  fontWeight: reportType === type ? '600' : '400',
-                  borderLeft: reportType === type ? '4px solid #FF5722' : index === 0 ? '4px solid #FF5722' : '4px solid transparent'
+                  fontWeight: reportType === type ? '500' : '400',
+                  fontSize: '14px',
+                  transition: 'all 0.2s ease'
                 }}
                 onClick={() => setReportType(type)}
               >
@@ -451,7 +501,7 @@ const Report: React.FC = () => {
                     width: '32px',
                     height: '32px',
                     borderRadius: '50%',
-                    background: index <= currentStep ? '#FF5722' : '#f0f0f0',
+                    background: index <= currentStep ? '#5A4FCF' : '#f0f0f0',
                     color: index <= currentStep ? '#fff' : '#999',
                     marginRight: '12px',
                     fontSize: '14px',
@@ -460,8 +510,8 @@ const Report: React.FC = () => {
                     {index + 1}
                   </div>
                   <Text style={{ 
-                    color: index === currentStep ? '#FF5722' : (isDarkMode ? '#fff' : '#1a1a1a'),
-                    fontWeight: index === currentStep ? '600' : '400',
+                    color: index === currentStep ? '#5A4FCF' : (isDarkMode ? '#fff' : '#1a1a1a'),
+                    fontWeight: index === currentStep ? '500' : '400',
                     marginRight: index < stepTitles.length - 1 ? '32px' : '0'
                   }}>
                     {title}
@@ -470,7 +520,7 @@ const Report: React.FC = () => {
                     <div style={{
                       width: '40px',
                       height: '2px',
-                      background: index < currentStep ? '#FF5722' : '#f0f0f0',
+                      background: index < currentStep ? '#5A4FCF' : '#f0f0f0',
                       margin: '0 24px'
                     }} />
                   )}
@@ -504,7 +554,7 @@ const Report: React.FC = () => {
                       type="primary"
                       icon={<SaveOutlined />}
                       onClick={handleSaveReport}
-                      style={{ background: '#FF5722', borderColor: '#FF5722' }}
+                      style={{ background: '#5A4FCF', borderColor: '#5A4FCF' }}
                     >
                       Save report
                     </Button>
@@ -513,7 +563,7 @@ const Report: React.FC = () => {
                   <Button 
                     type="primary"
                     onClick={handleContinue}
-                    style={{ background: '#FF5722', borderColor: '#FF5722' }}
+                    style={{ background: '#5A4FCF', borderColor: '#5A4FCF' }}
                   >
                     Continue
                   </Button>
@@ -532,7 +582,7 @@ const Report: React.FC = () => {
         onCancel={() => setSaveModalVisible(false)}
         okText="Save"
         cancelText="Cancel"
-        okButtonProps={{ style: { background: '#FF5722', borderColor: '#FF5722' } }}
+        okButtonProps={{ style: { background: '#5A4FCF', borderColor: '#5A4FCF' } }}
       >
         <Form form={form} layout="vertical">
           <Form.Item
