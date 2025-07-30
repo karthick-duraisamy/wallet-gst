@@ -243,24 +243,26 @@ const Report: React.FC = () => {
   const getSelectedFieldsData = React.useMemo(() => {
     const selectedData: { [key: string]: any[] } = {};
 
-    Object.entries(reportData.reportFields).forEach(([reportTypeKey, reportTypeData]) => {
-      if (reportTypeKey === reportType) {
-        Object.entries(reportTypeData).forEach(([groupKey, group]: [string, any]) => {
-          if (Array.isArray(group)) {
-            const selectedInGroup = group.filter(field => selectedFields[groupKey].includes(field.key));
-            if (selectedInGroup.length > 0) {
-              selectedData[groupKey] = selectedInGroup;
+    if (reportData.reportFields) {
+      Object.entries(reportData.reportFields).forEach(([reportTypeKey, reportTypeData]) => {
+        if (reportTypeKey === reportType) {
+          Object.entries(reportTypeData).forEach(([groupKey, group]: [string, any]) => {
+            if (Array.isArray(group)) {
+              const selectedInGroup = group.filter(field => selectedFields[groupKey].includes(field.key));
+              if (selectedInGroup.length > 0) {
+                selectedData[groupKey] = selectedInGroup;
+              }
             }
-          }
-        });
-      }
-    });
+          });
+        }
+      });
+    }
 
     return selectedData;
   }, [reportType, selectedFields]);
 
   const getSelectedConditionsData = React.useMemo(() => {
-    return reportData.reportConditions.filter(condition =>
+    return (reportData.reportConditions || []).filter(condition =>
       selectedConditions.includes(condition.key)
     );
   }, [selectedConditions]);
