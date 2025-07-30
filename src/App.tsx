@@ -14,6 +14,9 @@ import Dashboard from './pages/Dashboard';
 import Upload from './pages/Upload';
 import Reconciliation from './pages/Reconciliation';
 import CumulativeInvoice from './pages/CumulativeInvoice';
+import Report from './pages/Report';
+import SavedReports from './pages/SavedReports';
+import QueuedReports from './pages/QueuedReports';
 import './App.css';
 
 const App: React.FC = () => {
@@ -36,6 +39,9 @@ const App: React.FC = () => {
                   <Route path="upload" element={<Upload />} />
                   <Route path="reconciliation" element={<Reconciliation />} />
                   <Route path="cumulative-invoice" element={<CumulativeInvoice />} />
+                  <Route path="report" element={<Report />} />
+                  <Route path="report/saved" element={<SavedReports />} />
+                  <Route path="report/queued" element={<QueuedReports />} />
                 </Route>
               </Routes>
             </div>
