@@ -239,6 +239,32 @@ const Report: React.FC = () => {
     );
   };
 
+  // Move all hook-dependent logic outside the render function
+  const getSelectedFieldsData = React.useMemo(() => {
+    const selectedData: { [key: string]: any[] } = {};
+
+    Object.entries(reportData.reportFields).forEach(([reportTypeKey, reportTypeData]) => {
+      if (reportTypeKey === reportType) {
+        Object.entries(reportTypeData).forEach(([groupKey, group]: [string, any]) => {
+          if (Array.isArray(group)) {
+            const selectedInGroup = group.filter(field => selectedFields[groupKey].includes(field.key));
+            if (selectedInGroup.length > 0) {
+              selectedData[groupKey] = selectedInGroup;
+            }
+          }
+        });
+      }
+    });
+
+    return selectedData;
+  }, [reportType, selectedFields]);
+
+  const getSelectedConditionsData = React.useMemo(() => {
+    return reportData.reportConditions.filter(condition =>
+      selectedConditions.includes(condition.key)
+    );
+  }, [selectedConditions]);
+
   const renderStepContent = () => {
     switch (currentStep) {
       case 0:
@@ -300,7 +326,7 @@ const Report: React.FC = () => {
           { key: "date_range", label: "Date Range" },
           { key: "agency", label: "Agency" }
         ];
-        
+
         const allConditionsSelected = availableConditions.every(
           (condition) => selectedConditions.includes(condition.key),
         );
@@ -418,7 +444,7 @@ const Report: React.FC = () => {
       case 2:
         const categoryNames = {
           itineraryDetails: "Itinerary Details",
-          passengerDetails: "Passenger Details", 
+          passengerDetails: "Passenger Details",
           fareDetails: "Fare Details",
           commissionDetails: "Commission Details",
           airlineDetails: "Airline Details",
@@ -608,7 +634,7 @@ const Report: React.FC = () => {
                     {/* Custom Date Range Picker - Appears when Custom is selected */}
                     {invoicedDateRange === "custom" && (
                       <div style={{ marginTop: "16px", maxWidth: "300px" }}>
-                        <RangePicker 
+                        <RangePicker
                           value={customInvoicedDateRange}
                           onChange={(dates) => setCustomInvoicedDateRange(dates)}
                           style={{ width: "100%" }}
@@ -822,8 +848,8 @@ const Report: React.FC = () => {
                     type="primary"
                     onClick={handleContinue}
                     disabled={!canContinue()}
-                    style={{ 
-                      background: canContinue() ? "#5A4FCF" : "#d9d9d9", 
+                    style={{
+                      background: canContinue() ? "#5A4FCF" : "#d9d9d9",
                       borderColor: canContinue() ? "#5A4FCF" : "#d9d9d9",
                       cursor: canContinue() ? "pointer" : "not-allowed"
                     }}
