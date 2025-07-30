@@ -607,7 +607,10 @@ const Report: React.FC = () => {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-          <Title level={2} style={{ margin: 0, color: "#5A4FCF" }}>
+          <Title
+            level={2}
+            style={{ margin: 0, color: "#5A4FCF", fontSize: "24px" }}
+          >
             Create custom report
           </Title>
         </div>
@@ -745,7 +748,7 @@ const Report: React.FC = () => {
               style={{
                 display: "flex",
                 justifyContent: "end",
-                gap: '15px',
+                gap: "15px",
                 alignItems: "center",
               }}
             >
