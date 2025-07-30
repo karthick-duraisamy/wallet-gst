@@ -564,203 +564,324 @@ const Report: React.FC = () => {
         const hasDateRange = selectedConditions.includes("date_range");
         const hasAgency = selectedConditions.includes("agency");
 
+        // Agency options for autocomplete
+        const agencyOptions = [
+          { value: "atyourprice", label: "AtYourPrice" },
+          { value: "makemytrip", label: "MakeMyTrip" },
+          { value: "cleartrip", label: "Cleartrip" },
+          { value: "goibibo", label: "Goibibo" },
+          { value: "yatra", label: "Yatra" },
+          { value: "easemytrip", label: "EaseMyTrip" },
+        ];
+
         return (
           <div style={{ padding: "24px" }}>
             {/* Selected Fields Section */}
             {hasSelectedFields && (
               <div style={{ marginBottom: "32px" }}>
-                <Text
-                  strong
+                <div
                   style={{
-                    color: isDarkMode ? "#fff" : "#1a1a1a",
-                    fontSize: "16px",
-                    display: "block",
-                    marginBottom: "16px",
+                    background: isDarkMode ? "#262626" : "#f8f9fa",
+                    border: `1px solid ${isDarkMode ? "#404040" : "#e9ecef"}`,
+                    borderRadius: "8px",
+                    padding: "20px",
                   }}
                 >
-                  Selected fields
-                </Text>
+                  <Text
+                    strong
+                    style={{
+                      color: isDarkMode ? "#fff" : "#1a1a1a",
+                      fontSize: "18px",
+                      display: "block",
+                      marginBottom: "20px",
+                    }}
+                  >
+                    Selected Fields
+                  </Text>
 
-                {Object.entries(selectedFields).map(([category, fields]) => {
-                  if (fields.length === 0) return null;
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                      gap: "20px",
+                    }}
+                  >
+                    {Object.entries(selectedFields).map(([category, fields]) => {
+                      if (fields.length === 0) return null;
 
-                  const categoryData =
-                    reportData.reportFields[
-                      reportType as keyof typeof reportData.reportFields
-                    ];
-                  const categoryFields =
-                    categoryData?.[category as keyof typeof categoryData] || [];
+                      const categoryData =
+                        reportData.reportFields[
+                          reportType as keyof typeof reportData.reportFields
+                        ];
+                      const categoryFields =
+                        categoryData?.[category as keyof typeof categoryData] || [];
 
-                  return (
-                    <div key={category} style={{ marginBottom: "16px" }}>
-                      <Text
-                        strong
-                        style={{
-                          color: isDarkMode ? "#fff" : "#1a1a1a",
-                          fontSize: "16px",
-                        }}
-                      >
-                        {categoryNames[category as keyof typeof categoryNames]}
-                      </Text>
-                      <div
-                        style={{
-                          marginTop: "8px",
-                          color: isDarkMode ? "#a6a6a6" : "#666",
-                          fontSize: "14px",
-                        }}
-                      >
-                        {fields
-                          .map((fieldKey) => {
-                            const field = categoryFields.find(
-                              (f: any) => f.key === fieldKey,
-                            );
-                            return field?.label;
-                          })
-                          .filter(Boolean)
-                          .join(", ")}
-                      </div>
-                    </div>
-                  );
-                })}
+                      return (
+                        <div
+                          key={category}
+                          style={{
+                            background: isDarkMode ? "#1a1a1a" : "#fff",
+                            border: `1px solid ${isDarkMode ? "#333" : "#e1e5e9"}`,
+                            borderRadius: "6px",
+                            padding: "16px",
+                          }}
+                        >
+                          <Text
+                            strong
+                            style={{
+                              color: "#5A4FCF",
+                              fontSize: "14px",
+                              display: "block",
+                              marginBottom: "12px",
+                            }}
+                          >
+                            {categoryNames[category as keyof typeof categoryNames]}
+                          </Text>
+                          <div
+                            style={{
+                              display: "flex",
+                              flexWrap: "wrap",
+                              gap: "8px",
+                            }}
+                          >
+                            {fields.map((fieldKey) => {
+                              const field = categoryFields.find(
+                                (f: any) => f.key === fieldKey,
+                              );
+                              return field ? (
+                                <span
+                                  key={fieldKey}
+                                  style={{
+                                    background: "#f0f5ff",
+                                    color: "#5A4FCF",
+                                    padding: "4px 8px",
+                                    borderRadius: "4px",
+                                    fontSize: "12px",
+                                    fontWeight: "500",
+                                  }}
+                                >
+                                  {field.label}
+                                </span>
+                              ) : null;
+                            })}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
             )}
 
             {/* Condition Details Section */}
             {(hasDateRange || hasAgency) && (
               <div style={{ marginBottom: "32px" }}>
-                <Text
-                  strong
+                <div
                   style={{
-                    color: isDarkMode ? "#fff" : "#1a1a1a",
-                    fontSize: "16px",
-                    display: "block",
-                    marginBottom: "16px",
+                    background: isDarkMode ? "#262626" : "#f8f9fa",
+                    border: `1px solid ${isDarkMode ? "#404040" : "#e9ecef"}`,
+                    borderRadius: "8px",
+                    padding: "20px",
                   }}
                 >
-                  Condition Details
-                </Text>
-
-                <div style={{ marginBottom: "24px" }}>
-                  <Radio.Group
-                    value={dateRangeRadioValue}
-                    onChange={(e) => setDateRangeRadioValue(e.target.value)}
-                    style={{ width: "100%" }}
+                  <Text
+                    strong
+                    style={{
+                      color: isDarkMode ? "#fff" : "#1a1a1a",
+                      fontSize: "18px",
+                      display: "block",
+                      marginBottom: "20px",
+                    }}
                   >
-                    <Row gutter={[16, 16]}>
-                      <Col span={12}>
-                        <Radio value="invoiced" style={{ fontSize: "14px" }}>
-                          <Text
-                            style={{
-                              color: isDarkMode ? "#fff" : "#1a1a1a",
-                              fontSize: "14px",
-                              fontWeight:
-                                dateRangeRadioValue === "invoiced"
-                                  ? "500"
-                                  : "400",
-                            }}
-                          >
-                            Invoiced date range
-                          </Text>
-                        </Radio>
-                      </Col>
-                      <Col span={12}>
-                        <Radio value="departure" style={{ fontSize: "14px" }}>
-                          <Text
-                            style={{
-                              color: isDarkMode ? "#fff" : "#1a1a1a",
-                              fontSize: "14px",
-                              fontWeight:
-                                dateRangeRadioValue === "departure"
-                                  ? "500"
-                                  : "400",
-                            }}
-                          >
-                            Departure date range
-                          </Text>
-                        </Radio>
-                      </Col>
-                    </Row>
-                  </Radio.Group>
-                </div>
+                    Condition Details
+                  </Text>
 
-                {/* Date Range Selection */}
-                {hasDateRange && (
-                  <div style={{ marginBottom: "24px" }}>
-                    <Text
-                      strong
-                      style={{
-                        color: isDarkMode ? "#fff" : "#1a1a1a",
-                        fontSize: "14px",
-                        display: "block",
-                        marginBottom: "12px",
-                      }}
-                    >
-                      Select{" "}
-                      {dateRangeRadioValue === "invoiced"
-                        ? "Invoiced"
-                        : "Departure"}{" "}
-                      date range
-                    </Text>
-
-                    <div style={{ marginBottom: "16px", maxWidth: "300px" }}>
-                      <select
-                        value={
-                          dateRangeRadioValue === "invoiced"
-                            ? invoicedDateRange
-                            : dateRangeType
-                        }
-                        onChange={(e) => {
-                          if (dateRangeRadioValue === "invoiced") {
-                            setInvoicedDateRange(e.target.value);
-                          } else {
-                            setDateRangeType(e.target.value);
-                          }
-                        }}
+                  {hasDateRange && (
+                    <div style={{ marginBottom: "24px" }}>
+                      <div
                         style={{
-                          width: "100%",
-                          padding: "8px 12px",
-                          border: "1px solid #d9d9d9",
+                          background: isDarkMode ? "#1a1a1a" : "#fff",
+                          border: `1px solid ${isDarkMode ? "#333" : "#e1e5e9"}`,
                           borderRadius: "6px",
-                          background: isDarkMode ? "#1f1f1f" : "#fff",
-                          color: isDarkMode ? "#fff" : "#1a1a1a",
-                          fontSize: "14px",
+                          padding: "16px",
+                          marginBottom: "16px",
                         }}
                       >
-                        <option value="today">Today</option>
-                        <option value="yesterday">Yesterday</option>
-                        <option value="last7days">Last 7 Days</option>
-                        <option value="thismonth">This Month</option>
-                        <option value="lastmonth">Last Month</option>
-                        <option value="custom">Custom</option>
-                      </select>
-                    </div>
-
-                    {/* Custom Date Range Picker - Appears when Custom is selected */}
-                    {((dateRangeRadioValue === "invoiced" &&
-                      invoicedDateRange === "custom") ||
-                      (dateRangeRadioValue === "departure" &&
-                        dateRangeType === "custom")) && (
-                      <div style={{ marginTop: "16px", maxWidth: "300px" }}>
-                        <RangePicker
-                          value={
-                            dateRangeRadioValue === "invoiced"
-                              ? customInvoicedDateRange
-                              : customDateRange
-                          }
-                          onChange={(dates) => {
-                            if (dateRangeRadioValue === "invoiced") {
-                              setCustomInvoicedDateRange(dates);
-                            } else {
-                              setCustomDateRange(dates);
-                            }
+                        <Text
+                          strong
+                          style={{
+                            color: "#5A4FCF",
+                            fontSize: "14px",
+                            display: "block",
+                            marginBottom: "12px",
                           }}
+                        >
+                          Date Range Type
+                        </Text>
+                        <Radio.Group
+                          value={dateRangeRadioValue}
+                          onChange={(e) => setDateRangeRadioValue(e.target.value)}
                           style={{ width: "100%" }}
-                          placeholder={["Start Date", "End Date"]}
-                        />
+                        >
+                          <Row gutter={[16, 16]}>
+                            <Col span={12}>
+                              <Radio value="invoiced" style={{ fontSize: "14px" }}>
+                                <Text
+                                  style={{
+                                    color: isDarkMode ? "#fff" : "#1a1a1a",
+                                    fontSize: "14px",
+                                    fontWeight:
+                                      dateRangeRadioValue === "invoiced"
+                                        ? "500"
+                                        : "400",
+                                  }}
+                                >
+                                  Invoiced date range
+                                </Text>
+                              </Radio>
+                            </Col>
+                            <Col span={12}>
+                              <Radio value="departure" style={{ fontSize: "14px" }}>
+                                <Text
+                                  style={{
+                                    color: isDarkMode ? "#fff" : "#1a1a1a",
+                                    fontSize: "14px",
+                                    fontWeight:
+                                      dateRangeRadioValue === "departure"
+                                        ? "500"
+                                        : "400",
+                                  }}
+                                >
+                                  Departure date range
+                                </Text>
+                              </Radio>
+                            </Col>
+                          </Row>
+                        </Radio.Group>
                       </div>
-                    )}
-                  </div>
-                )}
+
+                      <div
+                        style={{
+                          background: isDarkMode ? "#1a1a1a" : "#fff",
+                          border: `1px solid ${isDarkMode ? "#333" : "#e1e5e9"}`,
+                          borderRadius: "6px",
+                          padding: "16px",
+                        }}
+                      >
+                        <Text
+                          strong
+                          style={{
+                            color: "#5A4FCF",
+                            fontSize: "14px",
+                            display: "block",
+                            marginBottom: "12px",
+                          }}
+                        >
+                          Select{" "}
+                          {dateRangeRadioValue === "invoiced"
+                            ? "Invoiced"
+                            : "Departure"}{" "}
+                          Date Range
+                        </Text>
+
+                        <div style={{ marginBottom: "16px", maxWidth: "300px" }}>
+                          <select
+                            value={
+                              dateRangeRadioValue === "invoiced"
+                                ? invoicedDateRange
+                                : dateRangeType
+                            }
+                            onChange={(e) => {
+                              if (dateRangeRadioValue === "invoiced") {
+                                setInvoicedDateRange(e.target.value);
+                              } else {
+                                setDateRangeType(e.target.value);
+                              }
+                            }}
+                            style={{
+                              width: "100%",
+                              padding: "8px 12px",
+                              border: "1px solid #d9d9d9",
+                              borderRadius: "6px",
+                              background: isDarkMode ? "#1f1f1f" : "#fff",
+                              color: isDarkMode ? "#fff" : "#1a1a1a",
+                              fontSize: "14px",
+                            }}
+                          >
+                            <option value="today">Today</option>
+                            <option value="yesterday">Yesterday</option>
+                            <option value="last7days">Last 7 Days</option>
+                            <option value="thismonth">This Month</option>
+                            <option value="lastmonth">Last Month</option>
+                            <option value="custom">Custom</option>
+                          </select>
+                        </div>
+
+                        {/* Custom Date Range Picker - Appears when Custom is selected */}
+                        {((dateRangeRadioValue === "invoiced" &&
+                          invoicedDateRange === "custom") ||
+                          (dateRangeRadioValue === "departure" &&
+                            dateRangeType === "custom")) && (
+                          <div style={{ marginTop: "16px", maxWidth: "300px" }}>
+                            <RangePicker
+                              value={
+                                dateRangeRadioValue === "invoiced"
+                                  ? customInvoicedDateRange
+                                  : customDateRange
+                              }
+                              onChange={(dates) => {
+                                if (dateRangeRadioValue === "invoiced") {
+                                  setCustomInvoicedDateRange(dates);
+                                } else {
+                                  setCustomDateRange(dates);
+                                }
+                              }}
+                              style={{ width: "100%" }}
+                              placeholder={["Start Date", "End Date"]}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Agency Selection */}
+                  {hasAgency && (
+                    <div
+                      style={{
+                        background: isDarkMode ? "#1a1a1a" : "#fff",
+                        border: `1px solid ${isDarkMode ? "#333" : "#e1e5e9"}`,
+                        borderRadius: "6px",
+                        padding: "16px",
+                      }}
+                    >
+                      <Text
+                        strong
+                        style={{
+                          color: "#5A4FCF",
+                          fontSize: "14px",
+                          display: "block",
+                          marginBottom: "12px",
+                        }}
+                      >
+                        Select Agency
+                      </Text>
+                      <Select
+                        mode="multiple"
+                        placeholder="Select agencies"
+                        style={{ width: "100%", maxWidth: "400px" }}
+                        options={agencyOptions}
+                        filterOption={(input, option) =>
+                          (option?.label ?? "")
+                            .toLowerCase()
+                            .includes(input.toLowerCase())
+                        }
+                        showSearch
+                        allowClear
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>

@@ -24,41 +24,51 @@
   margin-bottom: 32px;
 
   .cls-summary-title {
-    margin-bottom: 16px;
+    margin-bottom: 20px;
     color: #333;
+    font-size: 18px;
+    font-weight: 600;
   }
 }
 
 .cls-overview-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
 }
 
 .cls-overview-card {
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  height: 120px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  height: 140px;
   display: flex;
   flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid #f0f0f0;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  }
 
   .cls-card-header {
     background-color: white;
-    padding: 12px 16px;
+    padding: 16px 20px;
     border-bottom: 1px solid #f0f0f0;
     flex: 0 0 auto;
 
     .cls-card-title {
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 600;
       color: #333;
       display: flex;
       align-items: center;
       gap: 8px;
+      line-height: 1.2;
 
       .anticon {
-        font-size: 12px;
+        font-size: 14px;
         color: #999;
       }
     }
@@ -67,7 +77,7 @@
   .cls-card-sections {
     display: flex;
     flex: 1;
-    height: 80px;
+    height: 90px;
 
     .cls-section {
       flex: 1;
@@ -76,24 +86,38 @@
       justify-content: center;
       align-items: center;
       color: white;
-      padding: 8px;
+      padding: 12px 8px;
       position: relative;
 
       &.cls-light-variant {
         color: var(--section-color);
+        background-color: var(--section-bg-light);
       }
 
       .cls-section-label {
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 500;
         text-align: center;
-        line-height: 14px;
-        margin-bottom: 4px;
+        line-height: 1.3;
+        margin-bottom: 6px;
+        opacity: 0.9;
       }
 
       .cls-section-value {
-        font-size: 18px;
+        font-size: 20px;
         font-weight: 700;
+        line-height: 1;
+      }
+
+      // Add divider between sections
+      &:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 20%;
+        bottom: 20%;
+        width: 1px;
+        background: rgba(255, 255, 255, 0.3);
       }
     }
   }

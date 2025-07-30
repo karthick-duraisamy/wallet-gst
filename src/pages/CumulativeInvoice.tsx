@@ -103,6 +103,14 @@ const CumulativeInvoice: React.FC = () => {
   });
   const [filterDropdownVisible, setFilterDropdownVisible] = useState(false);
 
+  // Configuration for fixed columns (non-scrollable)
+  const fixedColumnsConfig = {
+    action: true,
+    filter: true,
+    // Add other columns that should be fixed here
+    // pnrTicketNo: true, // Example: uncomment to make PNR non-scrollable
+  };
+
   // All available columns - defined as a function to avoid initialization issues
   const getAllColumns = () => [
     {
@@ -110,36 +118,42 @@ const CumulativeInvoice: React.FC = () => {
       dataIndex: 'supplierName',
       key: 'supplierName',
       render: (text: string) => text || 'Spice Jet',
+      ...(fixedColumnsConfig.supplierName && { fixed: 'left' as const }),
     },
     {
       title: translate('pnrTicketNumber'),
       dataIndex: 'pnrTicketNo',
       key: 'pnrTicketNo',
       render: (text: string) => text || 'ADA123',
+      ...(fixedColumnsConfig.pnrTicketNo && { fixed: 'left' as const }),
     },
     {
       title: translate('invoiceNumber'),
       dataIndex: 'invoiceNo',
       key: 'invoiceNo',
       render: (text: string) => text || 'INV123456',
+      ...(fixedColumnsConfig.invoiceNo && { fixed: 'left' as const }),
     },
     {
       title: translate('invoiceDate'),
       dataIndex: 'invoiceDate',
       key: 'invoiceDate',
       render: (text: string) => text || '15-Jan-2024',
+      ...(fixedColumnsConfig.invoiceDate && { fixed: 'left' as const }),
     },
     {
       title: translate('type'),
       dataIndex: 'type',
       key: 'type',
       render: (text: string) => text || 'Invoice',
+      ...(fixedColumnsConfig.type && { fixed: 'left' as const }),
     },
     {
       title: translate('travelVendor'),
       dataIndex: 'travelVendor',
       key: 'travelVendor',
       render: (text: string) => text || 'AtYourPrice',
+      ...(fixedColumnsConfig.travelVendor && { fixed: 'left' as const }),
     },
     {
       title: 'Action',

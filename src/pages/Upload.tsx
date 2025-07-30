@@ -19,6 +19,7 @@ import {
   InfoCircleOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
+import { Tooltip } from "antd";
 import { RootState } from "../store/store";
 import {
   setUploadType,
@@ -137,7 +138,17 @@ const Upload: React.FC = () => {
   const tabItems = [
     {
       key: "non-ayp",
-      label: "Non-AYP Bookings",
+      label: (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span>Non-AYP Bookings</span>
+          <Tooltip 
+            title="Bookings done via a designated platform or channel (e.g., Amadeus, Yatra, proprietary travel system, etc.)"
+            placement="top"
+          >
+            <InfoCircleOutlined style={{ color: '#1890ff', fontSize: '14px' }} />
+          </Tooltip>
+        </div>
+      ),
       children: (
         <div className="cls-tab-content">
           <InfoCircleOutlined />
@@ -148,7 +159,17 @@ const Upload: React.FC = () => {
     },
     {
       key: "gstr-2a",
-      label: "GSTR-2A",
+      label: (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span>GSTR-2A</span>
+          <Tooltip 
+            title="A system-generated return that reflects all purchases and inward supplies made by a business, as reported by its suppliers in their GSTR-1 returns."
+            placement="top"
+          >
+            <InfoCircleOutlined style={{ color: '#1890ff', fontSize: '14px' }} />
+          </Tooltip>
+        </div>
+      ),
       children: (
         <div className="cls-tab-content">
           <InfoCircleOutlined />
