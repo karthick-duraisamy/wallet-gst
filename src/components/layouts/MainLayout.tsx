@@ -10,7 +10,8 @@ import {
   UploadOutlined,
   ReconciliationOutlined,
   SettingOutlined,
-  NotificationOutlined
+  NotificationOutlined,
+  BarChartOutlined
 } from '@ant-design/icons';
 import { RootState } from '../../store/store';
 import { logout } from '../../store/slices/authSlice';
@@ -70,6 +71,12 @@ const MainLayout: React.FC = () => {
       icon: <FileTextOutlined />,
       label: translate('cumulative'),
       onClick: () => navigate('/cumulative-invoice'),
+    },
+    {
+      key: '/report',
+      icon: <BarChartOutlined />,
+      label: 'Report',
+      onClick: () => navigate('/report'),
     },
   ];
 
@@ -375,7 +382,8 @@ const MainLayout: React.FC = () => {
               {location.pathname === '/dashboard' ? translate('dashboard') : 
                location.pathname === '/upload' ? translate('upload') :
                location.pathname === '/reconciliation' ? translate('reconciliation') :
-               location.pathname === '/cumulative-invoice' ? translate('cumulative') : translate('dashboard')}
+               location.pathname === '/cumulative-invoice' ? translate('cumulative') :
+               location.pathname.startsWith('/report') ? 'Report' : translate('dashboard')}
             </span>
           </div>
         </div>

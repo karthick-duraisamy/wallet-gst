@@ -14,6 +14,9 @@ import Dashboard from './pages/Dashboard';
 import Upload from './pages/Upload';
 import Reconciliation from './pages/Reconciliation';
 import CumulativeInvoice from './pages/CumulativeInvoice';
+import Report from './pages/Report'; // Import the Report component
+import SavedReports from './pages/SavedReports'; // Import SavedReports component
+import QueuedReports from './pages/QueuedReports'; // Import QueuedReports component
 import './App.css';
 
 const App: React.FC = () => {
@@ -32,10 +35,13 @@ const App: React.FC = () => {
 
                 <Route path="/" element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>
                   <Route index element={<Navigate to="/dashboard" replace />} />
-                  <Route path="dashboard" element={<Dashboard />} />
-                  <Route path="upload" element={<Upload />} />
-                  <Route path="reconciliation" element={<Reconciliation />} />
-                  <Route path="cumulative-invoice" element={<CumulativeInvoice />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/upload" element={<Upload />} />
+                  <Route path="/reconciliation" element={<Reconciliation />} />
+                  <Route path="/cumulative-invoice" element={<CumulativeInvoice />} />
+                  <Route path="/report" element={<Report />} />
+                  <Route path="/saved-reports" element={<SavedReports />} />
+                  <Route path="/queued-reports" element={<QueuedReports />} />
                 </Route>
               </Routes>
             </div>
