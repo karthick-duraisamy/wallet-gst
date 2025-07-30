@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import {
   Card,
@@ -16,7 +15,7 @@ import {
   Radio,
   Divider,
 } from "antd";
-import * as XLSX from 'xlsx';
+import * as XLSX from "xlsx";
 import {
   CalendarOutlined,
   DownloadOutlined,
@@ -53,7 +52,8 @@ const Report: React.FC = () => {
   const [dateRangeType, setDateRangeType] = useState("today");
   const [customDateRange, setCustomDateRange] = useState<any>(null);
   const [invoicedDateRange, setInvoicedDateRange] = useState("today");
-  const [customInvoicedDateRange, setCustomInvoicedDateRange] = useState<any>(null);
+  const [customInvoicedDateRange, setCustomInvoicedDateRange] =
+    useState<any>(null);
   const [dateRangeRadioValue, setDateRangeRadioValue] = useState("invoiced");
   const [form] = Form.useForm();
 
@@ -98,7 +98,7 @@ const Report: React.FC = () => {
 
   const canContinue = () => {
     if (currentStep === 0) {
-      return Object.values(selectedFields).some(fields => fields.length > 0);
+      return Object.values(selectedFields).some((fields) => fields.length > 0);
     }
     if (currentStep === 1) {
       return selectedConditions.length > 0;
@@ -116,14 +116,18 @@ const Report: React.FC = () => {
     // Sample data structure based on selected fields
     const data = [];
     const headers = [];
-    
+
     // Build headers based on selected fields
     Object.entries(selectedFields).forEach(([category, fields]) => {
       if (fields.length > 0) {
-        const categoryData = reportData.reportFields[reportType as keyof typeof reportData.reportFields];
-        const categoryFields = categoryData?.[category as keyof typeof categoryData] || [];
-        
-        fields.forEach(fieldKey => {
+        const categoryData =
+          reportData.reportFields[
+            reportType as keyof typeof reportData.reportFields
+          ];
+        const categoryFields =
+          categoryData?.[category as keyof typeof categoryData] || [];
+
+        fields.forEach((fieldKey) => {
           const field = categoryFields.find((f: any) => f.key === fieldKey);
           if (field) {
             headers.push(field.label);
@@ -131,16 +135,16 @@ const Report: React.FC = () => {
         });
       }
     });
-    
+
     // Add sample rows (in real implementation, this would come from API)
     for (let i = 0; i < 100; i++) {
       const row: any = {};
-      headers.forEach(header => {
+      headers.forEach((header) => {
         row[header] = `Sample ${header} ${i + 1}`;
       });
       data.push(row);
     }
-    
+
     return { headers, data };
   };
 
@@ -148,39 +152,45 @@ const Report: React.FC = () => {
     const { headers, data } = generateXLSData();
     const fileSize = JSON.stringify(data).length; // Rough size estimation
     const sizeThreshold = 500000; // 500KB threshold for demo purposes
-    
+
     if (fileSize > sizeThreshold) {
       // Add to queued reports
       const queuedReport = {
         key: Date.now().toString(),
         name: `${reportType} Report - ${new Date().toLocaleDateString()}`,
         type: reportType,
-        status: 'Queued',
+        status: "Queued",
         progress: 0,
         queueTime: new Date().toLocaleString(),
-        estimatedCompletion: new Date(Date.now() + 30 * 60 * 1000).toLocaleString(),
-        priority: 'Medium'
+        estimatedCompletion: new Date(
+          Date.now() + 30 * 60 * 1000,
+        ).toLocaleString(),
+        priority: "Medium",
       };
-      
-      const existingQueued = JSON.parse(localStorage.getItem('queuedReports') || '[]');
+
+      const existingQueued = JSON.parse(
+        localStorage.getItem("queuedReports") || "[]",
+      );
       existingQueued.push(queuedReport);
-      localStorage.setItem('queuedReports', JSON.stringify(existingQueued));
-      
-      message.info("Report is large and has been added to the queue for processing.");
+      localStorage.setItem("queuedReports", JSON.stringify(existingQueued));
+
+      message.info(
+        "Report is large and has been added to the queue for processing.",
+      );
       return;
     }
-    
+
     // Create workbook and worksheet
     const ws = XLSX.utils.json_to_sheet(data);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, reportType);
-    
+
     // Generate filename with timestamp
     const filename = `${reportType}_Report_${Date.now()}.xlsx`;
-    
+
     // Download the file
     XLSX.writeFile(wb, filename);
-    
+
     message.success("Report downloaded successfully!");
   };
 
@@ -194,17 +204,19 @@ const Report: React.FC = () => {
         key: Date.now().toString(),
         name: values.reportName,
         type: reportType,
-        description: values.description || '',
+        description: values.description || "",
         createdDate: new Date().toLocaleDateString(),
         lastRun: new Date().toLocaleDateString(),
-        frequency: values.frequency || 'once',
-        status: 'Active'
+        frequency: values.frequency || "once",
+        status: "Active",
       };
-      
-      const existingSaved = JSON.parse(localStorage.getItem('savedReports') || '[]');
+
+      const existingSaved = JSON.parse(
+        localStorage.getItem("savedReports") || "[]",
+      );
       existingSaved.push(savedReport);
-      localStorage.setItem('savedReports', JSON.stringify(existingSaved));
-      
+      localStorage.setItem("savedReports", JSON.stringify(existingSaved));
+
       message.success("Report saved successfully!");
       setSaveModalVisible(false);
       form.resetFields();
@@ -331,26 +343,32 @@ const Report: React.FC = () => {
     const selectedData: { [key: string]: any[] } = {};
 
     if (reportData.reportFields) {
-      Object.entries(reportData.reportFields).forEach(([reportTypeKey, reportTypeData]) => {
-        if (reportTypeKey === reportType) {
-          Object.entries(reportTypeData).forEach(([groupKey, group]: [string, any]) => {
-            if (Array.isArray(group)) {
-              const selectedInGroup = group.filter(field => selectedFields[groupKey].includes(field.key));
-              if (selectedInGroup.length > 0) {
-                selectedData[groupKey] = selectedInGroup;
-              }
-            }
-          });
-        }
-      });
+      Object.entries(reportData.reportFields).forEach(
+        ([reportTypeKey, reportTypeData]) => {
+          if (reportTypeKey === reportType) {
+            Object.entries(reportTypeData).forEach(
+              ([groupKey, group]: [string, any]) => {
+                if (Array.isArray(group)) {
+                  const selectedInGroup = group.filter((field) =>
+                    selectedFields[groupKey].includes(field.key),
+                  );
+                  if (selectedInGroup.length > 0) {
+                    selectedData[groupKey] = selectedInGroup;
+                  }
+                }
+              },
+            );
+          }
+        },
+      );
     }
 
     return selectedData;
   }, [reportType, selectedFields]);
 
   const getSelectedConditionsData = React.useMemo(() => {
-    return (reportData.reportConditions || []).filter(condition =>
-      selectedConditions.includes(condition.key)
+    return (reportData.reportConditions || []).filter((condition) =>
+      selectedConditions.includes(condition.key),
     );
   }, [selectedConditions]);
 
@@ -413,11 +431,11 @@ const Report: React.FC = () => {
       case 1:
         const availableConditions = [
           { key: "date_range", label: "Date Range" },
-          { key: "agency", label: "Agency" }
+          { key: "agency", label: "Agency" },
         ];
 
-        const allConditionsSelected = availableConditions.every(
-          (condition) => selectedConditions.includes(condition.key),
+        const allConditionsSelected = availableConditions.every((condition) =>
+          selectedConditions.includes(condition.key),
         );
 
         return (
@@ -540,7 +558,9 @@ const Report: React.FC = () => {
           agencyDetails: "Agency Details",
         };
 
-        const hasSelectedFields = Object.values(selectedFields).some(fields => fields.length > 0);
+        const hasSelectedFields = Object.values(selectedFields).some(
+          (fields) => fields.length > 0,
+        );
         const hasDateRange = selectedConditions.includes("date_range");
         const hasAgency = selectedConditions.includes("agency");
 
@@ -577,7 +597,7 @@ const Report: React.FC = () => {
                         strong
                         style={{
                           color: isDarkMode ? "#fff" : "#1a1a1a",
-                          fontSize: "14px",
+                          fontSize: "16px",
                         }}
                       >
                         {categoryNames[category as keyof typeof categoryNames]}
@@ -586,6 +606,7 @@ const Report: React.FC = () => {
                         style={{
                           marginTop: "8px",
                           color: isDarkMode ? "#a6a6a6" : "#666",
+                          fontSize: "14px",
                         }}
                       >
                         {fields
@@ -620,8 +641,8 @@ const Report: React.FC = () => {
                 </Text>
 
                 <div style={{ marginBottom: "24px" }}>
-                  <Radio.Group 
-                    value={dateRangeRadioValue} 
+                  <Radio.Group
+                    value={dateRangeRadioValue}
                     onChange={(e) => setDateRangeRadioValue(e.target.value)}
                     style={{ width: "100%" }}
                   >
@@ -632,7 +653,10 @@ const Report: React.FC = () => {
                             style={{
                               color: isDarkMode ? "#fff" : "#1a1a1a",
                               fontSize: "14px",
-                              fontWeight: dateRangeRadioValue === "invoiced" ? "500" : "400",
+                              fontWeight:
+                                dateRangeRadioValue === "invoiced"
+                                  ? "500"
+                                  : "400",
                             }}
                           >
                             Invoiced date range
@@ -645,7 +669,10 @@ const Report: React.FC = () => {
                             style={{
                               color: isDarkMode ? "#fff" : "#1a1a1a",
                               fontSize: "14px",
-                              fontWeight: dateRangeRadioValue === "departure" ? "500" : "400",
+                              fontWeight:
+                                dateRangeRadioValue === "departure"
+                                  ? "500"
+                                  : "400",
                             }}
                           >
                             Departure date range
@@ -668,12 +695,20 @@ const Report: React.FC = () => {
                         marginBottom: "12px",
                       }}
                     >
-                      Select {dateRangeRadioValue === "invoiced" ? "Invoiced" : "Departure"} date range
+                      Select{" "}
+                      {dateRangeRadioValue === "invoiced"
+                        ? "Invoiced"
+                        : "Departure"}{" "}
+                      date range
                     </Text>
 
                     <div style={{ marginBottom: "16px", maxWidth: "300px" }}>
                       <select
-                        value={dateRangeRadioValue === "invoiced" ? invoicedDateRange : dateRangeType}
+                        value={
+                          dateRangeRadioValue === "invoiced"
+                            ? invoicedDateRange
+                            : dateRangeType
+                        }
                         onChange={(e) => {
                           if (dateRangeRadioValue === "invoiced") {
                             setInvoicedDateRange(e.target.value);
@@ -701,11 +736,17 @@ const Report: React.FC = () => {
                     </div>
 
                     {/* Custom Date Range Picker - Appears when Custom is selected */}
-                    {((dateRangeRadioValue === "invoiced" && invoicedDateRange === "custom") || 
-                      (dateRangeRadioValue === "departure" && dateRangeType === "custom")) && (
+                    {((dateRangeRadioValue === "invoiced" &&
+                      invoicedDateRange === "custom") ||
+                      (dateRangeRadioValue === "departure" &&
+                        dateRangeType === "custom")) && (
                       <div style={{ marginTop: "16px", maxWidth: "300px" }}>
                         <RangePicker
-                          value={dateRangeRadioValue === "invoiced" ? customInvoicedDateRange : customDateRange}
+                          value={
+                            dateRangeRadioValue === "invoiced"
+                              ? customInvoicedDateRange
+                              : customDateRange
+                          }
                           onChange={(dates) => {
                             if (dateRangeRadioValue === "invoiced") {
                               setCustomInvoicedDateRange(dates);
@@ -926,7 +967,7 @@ const Report: React.FC = () => {
                     style={{
                       background: canContinue() ? "#5A4FCF" : "#d9d9d9",
                       borderColor: canContinue() ? "#5A4FCF" : "#d9d9d9",
-                      cursor: canContinue() ? "pointer" : "not-allowed"
+                      cursor: canContinue() ? "pointer" : "not-allowed",
                     }}
                   >
                     Continue
@@ -951,7 +992,7 @@ const Report: React.FC = () => {
         }}
         styles={{
           header: { background: isDarkMode ? "#1f1f1f" : "#fff" },
-          body: { background: isDarkMode ? "#1f1f1f" : "#fff" }
+          body: { background: isDarkMode ? "#1f1f1f" : "#fff" },
         }}
       >
         <Form form={form} layout="vertical">
