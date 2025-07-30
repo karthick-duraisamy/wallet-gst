@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import {
   Card,
@@ -12,7 +13,6 @@ import {
   Col,
   Space,
   Typography,
-  Steps,
   Radio,
   Divider,
 } from "antd";
@@ -23,6 +23,7 @@ import {
   CheckCircleOutlined,
   FileTextOutlined,
   UnorderedListOutlined,
+  ArrowLeftOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeContext";
@@ -30,7 +31,6 @@ import reportData from "../data/reportData.json";
 
 const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
-const { Step } = Steps;
 
 const Report: React.FC = () => {
   const navigate = useNavigate();
@@ -51,6 +51,8 @@ const Report: React.FC = () => {
   const [saveModalVisible, setSaveModalVisible] = useState(false);
   const [dateRangeType, setDateRangeType] = useState("today");
   const [customDateRange, setCustomDateRange] = useState<any>(null);
+  const [invoicedDateRange, setInvoicedDateRange] = useState("today");
+  const [customInvoicedDateRange, setCustomInvoicedDateRange] = useState<any>(null);
   const [form] = Form.useForm();
 
   const reportTypes = ["DSR", "Ledger", "Commission", "Top-up", "Sales"];
@@ -456,8 +458,6 @@ const Report: React.FC = () => {
         const hasSelectedFields = Object.values(selectedFields).some(fields => fields.length > 0);
         const hasDateRange = selectedConditions.includes("date_range");
         const hasAgency = selectedConditions.includes("agency");
-        const [invoicedDateRange, setInvoicedDateRange] = useState("today");
-        const [customInvoicedDateRange, setCustomInvoicedDateRange] = useState<any>(null);
 
         return (
           <div style={{ padding: "24px" }}>
@@ -875,6 +875,10 @@ const Report: React.FC = () => {
         cancelText="Cancel"
         okButtonProps={{
           style: { background: "#5A4FCF", borderColor: "#5A4FCF" },
+        }}
+        styles={{
+          header: { background: isDarkMode ? "#1f1f1f" : "#fff" },
+          body: { background: isDarkMode ? "#1f1f1f" : "#fff" }
         }}
       >
         <Form form={form} layout="vertical">
