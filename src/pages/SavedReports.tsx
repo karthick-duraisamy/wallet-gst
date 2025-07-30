@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   Card, 
@@ -17,7 +16,9 @@ import {
   EditOutlined,
   DeleteOutlined,
   DownloadOutlined,
-  SearchOutlined
+  SearchOutlined,
+  FileTextOutlined,
+  UnorderedListOutlined
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
@@ -192,6 +193,20 @@ const SavedReports: React.FC = () => {
         </Button>
       </div>
 
+      <Space>
+          <Button 
+            icon={<FileTextOutlined />}
+            onClick={() => navigate('/saved-reports')}
+          >
+            Saved reports
+          </Button>
+          <Button 
+            icon={<UnorderedListOutlined />}
+            onClick={() => navigate('/queued-reports')}
+          >
+            Queued reports
+          </Button>
+        </Space>
       {/* Search and Filters */}
       <Card style={{ marginBottom: '24px', background: isDarkMode ? '#1f1f1f' : '#fff' }}>
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>

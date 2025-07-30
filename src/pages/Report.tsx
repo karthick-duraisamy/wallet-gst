@@ -3,9 +3,7 @@ import React, { useState } from 'react';
 import { 
   Card, 
   Button, 
-  Select, 
   DatePicker, 
-  Table, 
   Checkbox, 
   Modal, 
   Input, 
@@ -23,15 +21,16 @@ import {
   CalendarOutlined, 
   DownloadOutlined, 
   SaveOutlined,
-  ArrowLeftOutlined,
-  CheckCircleOutlined
+  CheckCircleOutlined,
+  FileTextOutlined,
+  UnorderedListOutlined
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
+import reportData from '../data/reportData.json';
 
 const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
-const { Option } = Select;
 const { Step } = Steps;
 
 const Report: React.FC = () => {
@@ -39,55 +38,34 @@ const Report: React.FC = () => {
   const { isDarkMode } = useTheme();
   const [currentStep, setCurrentStep] = useState(0);
   const [reportType, setReportType] = useState('DSR');
-  const [selectedFields, setSelectedFields] = useState<string[]>([]);
-  const [conditions, setConditions] = useState<any>({});
+  const [selectedFields, setSelectedFields] = useState<{[key: string]: string[]}>({
+    itineraryDetails: [],
+    passengerDetails: [],
+    fareDetails: [],
+    commissionDetails: [],
+    airlineDetails: [],
+    agencyDetails: []
+  });
+  const [selectedConditions, setSelectedConditions] = useState<string[]>([]);
   const [saveModalVisible, setSaveModalVisible] = useState(false);
   const [form] = Form.useForm();
 
-  // Sample data for report fields
-  const reportFields = {
-    DSR: [
-      { key: 'date', label: 'Date', type: 'date' },
-      { key: 'pnr', label: 'PNR', type: 'text' },
-      { key: 'airline', label: 'Airline', type: 'select' },
-      { key: 'amount', label: 'Amount', type: 'number' },
-      { key: 'gst', label: 'GST', type: 'number' },
-      { key: 'commission', label: 'Commission', type: 'number' },
-      { key: 'status', label: 'Status', type: 'select' }
-    ],
-    Ledger: [
-      { key: 'transaction_date', label: 'Transaction Date', type: 'date' },
-      { key: 'description', label: 'Description', type: 'text' },
-      { key: 'debit', label: 'Debit', type: 'number' },
-      { key: 'credit', label: 'Credit', type: 'number' },
-      { key: 'balance', label: 'Balance', type: 'number' }
-    ],
-    Commission: [
-      { key: 'booking_date', label: 'Booking Date', type: 'date' },
-      { key: 'agent', label: 'Agent', type: 'text' },
-      { key: 'commission_rate', label: 'Commission Rate', type: 'number' },
-      { key: 'commission_amount', label: 'Commission Amount', type: 'number' }
-    ],
-    'Top-up': [
-      { key: 'topup_date', label: 'Top-up Date', type: 'date' },
-      { key: 'amount', label: 'Amount', type: 'number' },
-      { key: 'reference', label: 'Reference', type: 'text' },
-      { key: 'status', label: 'Status', type: 'select' }
-    ],
-    Sales: [
-      { key: 'sale_date', label: 'Sale Date', type: 'date' },
-      { key: 'product', label: 'Product', type: 'text' },
-      { key: 'quantity', label: 'Quantity', type: 'number' },
-      { key: 'unit_price', label: 'Unit Price', type: 'number' },
-      { key: 'total', label: 'Total', type: 'number' }
-    ]
+  const reportTypes = ['DSR', 'Ledger', 'Commission', 'Top-up', 'Sales'];
+
+  const handleFieldSelection = (category: string, field: string, checked: boolean) => {
+    setSelectedFields(prev => ({
+      ...prev,
+      [category]: checked 
+        ? [...prev[category], field]
+        : prev[category].filter(f => f !== field)
+    }));
   };
 
-  const handleFieldSelection = (field: string, checked: boolean) => {
+  const handleConditionSelection = (condition: string, checked: boolean) => {
     if (checked) {
-      setSelectedFields([...selectedFields, field]);
+      setSelectedConditions([...selectedConditions, condition]);
     } else {
-      setSelectedFields(selectedFields.filter(f => f !== field));
+      setSelectedConditions(selectedConditions.filter(c => c !== condition));
     }
   };
 
@@ -119,147 +97,275 @@ const Report: React.FC = () => {
     });
   };
 
-  const stepTitles = ['Available Fields', 'Available Conditions', 'Review & Save'];
+  const stepTitles = ['Available fields', 'Available conditions', 'Review & Save'];
+
+  const renderFieldCategory = (categoryName: string, categoryKey: string, fields: any[]) => (
+    <div style={{ marginBottom: '24px' }}>
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
+        marginBottom: '12px',
+        padding: '8px 0',
+        borderBottom: `1px solid ${isDarkMode ? '#434343' : '#f0f0f0'}`
+      }}>
+        <Text strong style={{ color: isDarkMode ? '#fff' : '#1a1a1a', fontSize: '14px' }}>
+          {categoryName}
+        </Text>
+        <Button 
+          type="link" 
+          size="small"
+          onClick={() => {
+            const allSelected = fields.every(field => selectedFields[categoryKey].includes(field.key));
+            fields.forEach(field => {
+              handleFieldSelection(categoryKey, field.key, !allSelected);
+            });
+          }}
+          style={{ color: '#FF5722', padding: 0, height: 'auto' }}
+        >
+          Select all
+        </Button>
+      </div>
+      <Row gutter={[8, 8]}>
+        {fields.map((field) => (
+          <Col span={8} key={field.key}>
+            <div 
+              style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '8px',
+                padding: '4px 0'
+              }}
+            >
+              <Checkbox
+                checked={selectedFields[categoryKey].includes(field.key)}
+                onChange={(e) => handleFieldSelection(categoryKey, field.key, e.target.checked)}
+                style={{
+                  '& .ant-checkbox-inner': {
+                    width: '16px',
+                    height: '16px',
+                    borderRadius: '2px'
+                  }
+                }}
+              />
+              <Text style={{ 
+                color: selectedFields[categoryKey].includes(field.key) ? '#FF5722' : (isDarkMode ? '#fff' : '#1a1a1a'),
+                fontSize: '13px',
+                fontWeight: selectedFields[categoryKey].includes(field.key) ? '600' : '400'
+              }}>
+                {field.label}
+              </Text>
+            </div>
+          </Col>
+        ))}
+      </Row>
+    </div>
+  );
 
   const renderStepContent = () => {
     switch (currentStep) {
       case 0:
         return (
           <div style={{ padding: '24px' }}>
-            <Title level={4} style={{ color: isDarkMode ? '#fff' : '#1a1a1a', marginBottom: '24px' }}>
-              Select Available Fields
-            </Title>
-            <Row gutter={[16, 16]}>
-              {reportFields[reportType as keyof typeof reportFields]?.map((field) => (
-                <Col span={8} key={field.key}>
-                  <Card 
-                    size="small" 
-                    style={{ 
-                      background: isDarkMode ? '#262626' : '#fff',
-                      border: `1px solid ${selectedFields.includes(field.key) ? '#5A4FCF' : '#d9d9d9'}`,
-                      cursor: 'pointer'
-                    }}
-                    onClick={() => handleFieldSelection(field.key, !selectedFields.includes(field.key))}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <Checkbox 
-                        checked={selectedFields.includes(field.key)}
-                        onChange={(e) => handleFieldSelection(field.key, e.target.checked)}
-                      />
-                      <Text style={{ color: isDarkMode ? '#fff' : '#1a1a1a' }}>{field.label}</Text>
-                    </div>
-                  </Card>
-                </Col>
-              ))}
-            </Row>
+            {reportData.reportFields[reportType as keyof typeof reportData.reportFields] && (
+              <>
+                {renderFieldCategory(
+                  'Itinerary details', 
+                  'itineraryDetails', 
+                  reportData.reportFields[reportType as keyof typeof reportData.reportFields].itineraryDetails
+                )}
+                {renderFieldCategory(
+                  'Passenger details', 
+                  'passengerDetails', 
+                  reportData.reportFields[reportType as keyof typeof reportData.reportFields].passengerDetails
+                )}
+                {renderFieldCategory(
+                  'Fare details', 
+                  'fareDetails', 
+                  reportData.reportFields[reportType as keyof typeof reportData.reportFields].fareDetails
+                )}
+                {renderFieldCategory(
+                  'Commission details', 
+                  'commissionDetails', 
+                  reportData.reportFields[reportType as keyof typeof reportData.reportFields].commissionDetails
+                )}
+                {renderFieldCategory(
+                  'Airline details', 
+                  'airlineDetails', 
+                  reportData.reportFields[reportType as keyof typeof reportData.reportFields].airlineDetails
+                )}
+                {renderFieldCategory(
+                  'Agency details', 
+                  'agencyDetails', 
+                  reportData.reportFields[reportType as keyof typeof reportData.reportFields].agencyDetails
+                )}
+              </>
+            )}
           </div>
         );
 
       case 1:
         return (
           <div style={{ padding: '24px' }}>
-            <Title level={4} style={{ color: isDarkMode ? '#fff' : '#1a1a1a', marginBottom: '24px' }}>
-              Set Conditions
-            </Title>
-            <Row gutter={[16, 16]}>
-              <Col span={12}>
-                <Text style={{ color: isDarkMode ? '#fff' : '#1a1a1a', display: 'block', marginBottom: '8px' }}>
-                  Date Range
+            <div style={{ marginBottom: '24px' }}>
+              <div style={{ 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'center', 
+                marginBottom: '12px',
+                padding: '8px 0',
+                borderBottom: `1px solid ${isDarkMode ? '#434343' : '#f0f0f0'}`
+              }}>
+                <Text strong style={{ color: isDarkMode ? '#fff' : '#1a1a1a', fontSize: '14px' }}>
+                  Condition Details
                 </Text>
-                <RangePicker 
-                  style={{ width: '100%' }}
-                  onChange={(dates) => setConditions({...conditions, dateRange: dates})}
-                />
-              </Col>
-              <Col span={12}>
-                <Text style={{ color: isDarkMode ? '#fff' : '#1a1a1a', display: 'block', marginBottom: '8px' }}>
-                  Status Filter
-                </Text>
-                <Select 
-                  style={{ width: '100%' }}
-                  placeholder="Select status"
-                  onChange={(value) => setConditions({...conditions, status: value})}
+                <Button 
+                  type="link" 
+                  size="small"
+                  onClick={() => {
+                    const allSelected = reportData.conditionDetails.every(condition => 
+                      selectedConditions.includes(condition.key)
+                    );
+                    reportData.conditionDetails.forEach(condition => {
+                      handleConditionSelection(condition.key, !allSelected);
+                    });
+                  }}
+                  style={{ color: '#FF5722', padding: 0, height: 'auto' }}
                 >
-                  <Option value="active">Active</Option>
-                  <Option value="pending">Pending</Option>
-                  <Option value="completed">Completed</Option>
-                </Select>
-              </Col>
-              <Col span={12}>
-                <Text style={{ color: isDarkMode ? '#fff' : '#1a1a1a', display: 'block', marginBottom: '8px' }}>
-                  Amount Range
-                </Text>
-                <Input.Group compact>
-                  <Input 
-                    style={{ width: '50%' }} 
-                    placeholder="Min"
-                    onChange={(e) => setConditions({...conditions, minAmount: e.target.value})}
-                  />
-                  <Input 
-                    style={{ width: '50%' }} 
-                    placeholder="Max"
-                    onChange={(e) => setConditions({...conditions, maxAmount: e.target.value})}
-                  />
-                </Input.Group>
-              </Col>
-              <Col span={12}>
-                <Text style={{ color: isDarkMode ? '#fff' : '#1a1a1a', display: 'block', marginBottom: '8px' }}>
-                  Group By
-                </Text>
-                <Select 
-                  style={{ width: '100%' }}
-                  placeholder="Select grouping"
-                  onChange={(value) => setConditions({...conditions, groupBy: value})}
-                >
-                  <Option value="date">Date</Option>
-                  <Option value="airline">Airline</Option>
-                  <Option value="agent">Agent</Option>
-                </Select>
-              </Col>
-            </Row>
+                  Select all
+                </Button>
+              </div>
+              <Row gutter={[16, 16]}>
+                {reportData.conditionDetails.map((condition) => (
+                  <Col span={8} key={condition.key}>
+                    <div 
+                      style={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        gap: '8px',
+                        padding: '8px 12px',
+                        border: `1px solid ${selectedConditions.includes(condition.key) ? '#FF5722' : '#d9d9d9'}`,
+                        borderRadius: '4px',
+                        background: selectedConditions.includes(condition.key) ? '#FFF3E0' : (isDarkMode ? '#1f1f1f' : '#fff'),
+                        cursor: 'pointer'
+                      }}
+                      onClick={() => handleConditionSelection(condition.key, !selectedConditions.includes(condition.key))}
+                    >
+                      <Checkbox
+                        checked={selectedConditions.includes(condition.key)}
+                        onChange={(e) => handleConditionSelection(condition.key, e.target.checked)}
+                      />
+                      <Text style={{ 
+                        color: selectedConditions.includes(condition.key) ? '#FF5722' : (isDarkMode ? '#fff' : '#1a1a1a'),
+                        fontSize: '13px',
+                        fontWeight: selectedConditions.includes(condition.key) ? '600' : '400'
+                      }}>
+                        {condition.label}
+                      </Text>
+                    </div>
+                  </Col>
+                ))}
+              </Row>
+            </div>
           </div>
         );
 
       case 2:
+        const totalSelectedFields = Object.values(selectedFields).reduce((acc, curr) => acc + curr.length, 0);
+        
         return (
           <div style={{ padding: '24px' }}>
-            <Title level={4} style={{ color: isDarkMode ? '#fff' : '#1a1a1a', marginBottom: '24px' }}>
-              Review & Save Report
-            </Title>
-            <Card style={{ background: isDarkMode ? '#262626' : '#f8f9fa', marginBottom: '24px' }}>
-              <Title level={5} style={{ color: isDarkMode ? '#fff' : '#1a1a1a' }}>Report Summary</Title>
-              <Row gutter={[16, 8]}>
-                <Col span={8}>
-                  <Text strong style={{ color: isDarkMode ? '#fff' : '#1a1a1a' }}>Report Type:</Text>
-                  <div style={{ color: isDarkMode ? '#a6a6a6' : '#666' }}>{reportType}</div>
+            <div style={{ marginBottom: '24px' }}>
+              <Text strong style={{ color: isDarkMode ? '#fff' : '#1a1a1a', fontSize: '16px', display: 'block', marginBottom: '16px' }}>
+                Selected fields
+              </Text>
+              
+              {Object.entries(selectedFields).map(([category, fields]) => {
+                if (fields.length === 0) return null;
+                
+                const categoryData = reportData.reportFields[reportType as keyof typeof reportData.reportFields];
+                const categoryFields = categoryData?.[category as keyof typeof categoryData] || [];
+                
+                return (
+                  <div key={category} style={{ marginBottom: '16px' }}>
+                    <Text strong style={{ color: isDarkMode ? '#fff' : '#1a1a1a', fontSize: '14px' }}>
+                      Selected {category.replace(/([A-Z])/g, ' $1').toLowerCase()}
+                    </Text>
+                    <div style={{ marginTop: '8px', color: isDarkMode ? '#a6a6a6' : '#666' }}>
+                      {fields.map(fieldKey => {
+                        const field = categoryFields.find((f: any) => f.key === fieldKey);
+                        return field?.label;
+                      }).filter(Boolean).join(', ')}
+                    </div>
+                  </div>
+                );
+              })}
+              
+              <div style={{ marginTop: '24px' }}>
+                <Text strong style={{ color: isDarkMode ? '#fff' : '#1a1a1a', fontSize: '14px' }}>
+                  Selected condition details
+                </Text>
+                <div style={{ marginTop: '8px', color: isDarkMode ? '#a6a6a6' : '#666' }}>
+                  {selectedConditions.map(conditionKey => {
+                    const condition = reportData.conditionDetails.find(c => c.key === conditionKey);
+                    return condition?.label;
+                  }).filter(Boolean).join(', ')}
+                </div>
+              </div>
+            </div>
+
+            <div style={{ marginTop: '32px' }}>
+              <Text strong style={{ color: isDarkMode ? '#fff' : '#1a1a1a', fontSize: '16px', display: 'block', marginBottom: '16px' }}>
+                Selected conditions
+              </Text>
+              
+              <Row gutter={[16, 16]}>
+                <Col span={12}>
+                  <div style={{ 
+                    padding: '16px',
+                    border: '1px solid #d9d9d9',
+                    borderRadius: '6px',
+                    background: isDarkMode ? '#1f1f1f' : '#fff'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                      <div style={{ 
+                        width: '12px', 
+                        height: '12px', 
+                        borderRadius: '50%', 
+                        background: '#FF5722' 
+                      }} />
+                      <Text style={{ color: isDarkMode ? '#fff' : '#1a1a1a', fontWeight: '500' }}>
+                        Invoiced date range
+                      </Text>
+                    </div>
+                    <Text style={{ color: isDarkMode ? '#a6a6a6' : '#666', fontSize: '12px' }}>
+                      Select invoiced date range
+                    </Text>
+                  </div>
                 </Col>
-                <Col span={8}>
-                  <Text strong style={{ color: isDarkMode ? '#fff' : '#1a1a1a' }}>Selected Fields:</Text>
-                  <div style={{ color: isDarkMode ? '#a6a6a6' : '#666' }}>{selectedFields.length} fields</div>
-                </Col>
-                <Col span={8}>
-                  <Text strong style={{ color: isDarkMode ? '#fff' : '#1a1a1a' }}>Conditions:</Text>
-                  <div style={{ color: isDarkMode ? '#a6a6a6' : '#666' }}>{Object.keys(conditions).length} applied</div>
+                <Col span={12}>
+                  <div style={{ 
+                    padding: '16px',
+                    border: '1px solid #d9d9d9',
+                    borderRadius: '6px',
+                    background: isDarkMode ? '#1f1f1f' : '#fff'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                      <div style={{ 
+                        width: '12px', 
+                        height: '12px', 
+                        borderRadius: '50%', 
+                        background: '#fff',
+                        border: '1px solid #d9d9d9'
+                      }} />
+                      <Text style={{ color: isDarkMode ? '#fff' : '#1a1a1a', fontWeight: '500' }}>
+                        Departure date range
+                      </Text>
+                    </div>
+                  </div>
                 </Col>
               </Row>
-            </Card>
-            
-            <Title level={5} style={{ color: isDarkMode ? '#fff' : '#1a1a1a', marginBottom: '16px' }}>
-              Preview Data
-            </Title>
-            <Table
-              size="small"
-              dataSource={[
-                { key: 1, field: 'Sample Data 1', value: 'Value 1' },
-                { key: 2, field: 'Sample Data 2', value: 'Value 2' },
-                { key: 3, field: 'Sample Data 3', value: 'Value 3' }
-              ]}
-              columns={[
-                { title: 'Field', dataIndex: 'field', key: 'field' },
-                { title: 'Value', dataIndex: 'value', key: 'value' }
-              ]}
-              pagination={false}
-            />
+            </div>
           </div>
         );
 
@@ -282,119 +388,141 @@ const Report: React.FC = () => {
         marginBottom: '24px'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <Button 
-            icon={<ArrowLeftOutlined />} 
-            onClick={() => navigate('/dashboard')}
-            style={{ border: 'none', background: 'transparent' }}
-          />
-          <Title level={2} style={{ margin: 0, color: isDarkMode ? '#fff' : '#1a1a1a' }}>
-            Reports
+          <Title level={2} style={{ margin: 0, color: '#FF5722' }}>
+            Create custom report
           </Title>
         </div>
         <Space>
-          <Button onClick={() => navigate('/saved-reports')}>
-            Saved Reports
+          <Button 
+            icon={<FileTextOutlined />}
+            onClick={() => navigate('/saved-reports')}
+          >
+            Saved reports
           </Button>
-          <Button onClick={() => navigate('/queued-reports')}>
-            Queued Reports
+          <Button 
+            icon={<UnorderedListOutlined />}
+            onClick={() => navigate('/queued-reports')}
+          >
+            Queued reports
           </Button>
         </Space>
       </div>
 
-      {/* Report Type Selection */}
-      <Card style={{ marginBottom: '24px', background: isDarkMode ? '#1f1f1f' : '#fff' }}>
-        <Title level={4} style={{ color: isDarkMode ? '#fff' : '#1a1a1a', marginBottom: '16px' }}>
-          Select Report Type
-        </Title>
-        <Radio.Group 
-          value={reportType} 
-          onChange={(e) => setReportType(e.target.value)}
-          style={{ width: '100%' }}
-        >
-          <Row gutter={[16, 16]}>
-            {['DSR', 'Ledger', 'Commission', 'Top-up', 'Sales'].map(type => (
-              <Col span={4} key={type}>
-                <Card 
-                  size="small"
-                  style={{ 
-                    cursor: 'pointer',
-                    background: reportType === type ? '#5A4FCF' : (isDarkMode ? '#262626' : '#f8f9fa'),
-                    color: reportType === type ? '#fff' : (isDarkMode ? '#fff' : '#1a1a1a'),
-                    border: `1px solid ${reportType === type ? '#5A4FCF' : '#d9d9d9'}`,
-                    textAlign: 'center'
-                  }}
-                  onClick={() => setReportType(type)}
-                >
-                  <Radio value={type} style={{ display: 'none' }} />
-                  <Text style={{ 
-                    color: reportType === type ? '#fff' : (isDarkMode ? '#fff' : '#1a1a1a'),
-                    fontWeight: '500' 
-                  }}>
-                    {type}
-                  </Text>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        </Radio.Group>
-      </Card>
-
-      {/* Steps */}
-      <Card style={{ background: isDarkMode ? '#1f1f1f' : '#fff' }}>
-        <Steps 
-          current={currentStep} 
-          style={{ marginBottom: '32px' }}
-          items={stepTitles.map((title, index) => ({
-            title,
-            status: index === currentStep ? 'process' : index < currentStep ? 'finish' : 'wait',
-            icon: index < currentStep ? <CheckCircleOutlined /> : undefined
-          }))}
-        />
-
-        {renderStepContent()}
-
-        {/* Action Buttons */}
-        <Divider />
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Button 
-            onClick={handleBack}
-            disabled={currentStep === 0}
-          >
-            Back
-          </Button>
-          
-          <Space>
-            {currentStep === 2 ? (
-              <>
-                <Button 
-                  icon={<DownloadOutlined />}
-                  onClick={handleDownload}
-                  style={{ background: '#52c41a', borderColor: '#52c41a', color: '#fff' }}
-                >
-                  Download
-                </Button>
-                <Button 
-                  type="primary"
-                  icon={<SaveOutlined />}
-                  onClick={handleSaveReport}
-                  style={{ background: '#5A4FCF', borderColor: '#5A4FCF' }}
-                >
-                  Save Report
-                </Button>
-              </>
-            ) : (
-              <Button 
-                type="primary"
-                onClick={handleContinue}
-                disabled={currentStep === 0 && selectedFields.length === 0}
-                style={{ background: '#5A4FCF', borderColor: '#5A4FCF' }}
+      <div style={{ display: 'flex', gap: '24px' }}>
+        {/* Left Sidebar - Report Types */}
+        <div style={{ width: '200px' }}>
+          <Card style={{ background: isDarkMode ? '#1f1f1f' : '#fff', padding: '16px' }}>
+            {reportTypes.map((type, index) => (
+              <div
+                key={type}
+                style={{
+                  padding: '12px 16px',
+                  marginBottom: '8px',
+                  background: reportType === type ? '#FF5722' : 'transparent',
+                  color: reportType === type ? '#fff' : (isDarkMode ? '#fff' : '#1a1a1a'),
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  fontWeight: reportType === type ? '600' : '400',
+                  borderLeft: reportType === type ? '4px solid #FF5722' : index === 0 ? '4px solid #FF5722' : '4px solid transparent'
+                }}
+                onClick={() => setReportType(type)}
               >
-                Continue
-              </Button>
-            )}
-          </Space>
+                {type}
+              </div>
+            ))}
+          </Card>
         </div>
-      </Card>
+
+        {/* Main Content */}
+        <div style={{ flex: 1 }}>
+          {/* Steps */}
+          <Card style={{ background: isDarkMode ? '#1f1f1f' : '#fff', marginBottom: '24px' }}>
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'center',
+              marginBottom: '32px'
+            }}>
+              {stepTitles.map((title, index) => (
+                <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '50%',
+                    background: index <= currentStep ? '#FF5722' : '#f0f0f0',
+                    color: index <= currentStep ? '#fff' : '#999',
+                    marginRight: '12px',
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}>
+                    {index + 1}
+                  </div>
+                  <Text style={{ 
+                    color: index === currentStep ? '#FF5722' : (isDarkMode ? '#fff' : '#1a1a1a'),
+                    fontWeight: index === currentStep ? '600' : '400',
+                    marginRight: index < stepTitles.length - 1 ? '32px' : '0'
+                  }}>
+                    {title}
+                  </Text>
+                  {index < stepTitles.length - 1 && (
+                    <div style={{
+                      width: '40px',
+                      height: '2px',
+                      background: index < currentStep ? '#FF5722' : '#f0f0f0',
+                      margin: '0 24px'
+                    }} />
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {renderStepContent()}
+
+            {/* Action Buttons */}
+            <Divider />
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Button 
+                onClick={handleBack}
+                disabled={currentStep === 0}
+              >
+                Back
+              </Button>
+              
+              <Space>
+                {currentStep === 2 ? (
+                  <>
+                    <Button 
+                      icon={<DownloadOutlined />}
+                      onClick={handleDownload}
+                      style={{ background: '#52c41a', borderColor: '#52c41a', color: '#fff' }}
+                    >
+                      Download
+                    </Button>
+                    <Button 
+                      type="primary"
+                      icon={<SaveOutlined />}
+                      onClick={handleSaveReport}
+                      style={{ background: '#FF5722', borderColor: '#FF5722' }}
+                    >
+                      Save report
+                    </Button>
+                  </>
+                ) : (
+                  <Button 
+                    type="primary"
+                    onClick={handleContinue}
+                    style={{ background: '#FF5722', borderColor: '#FF5722' }}
+                  >
+                    Continue
+                  </Button>
+                )}
+              </Space>
+            </div>
+          </Card>
+        </div>
+      </div>
 
       {/* Save Report Modal */}
       <Modal
@@ -404,7 +532,7 @@ const Report: React.FC = () => {
         onCancel={() => setSaveModalVisible(false)}
         okText="Save"
         cancelText="Cancel"
-        okButtonProps={{ style: { background: '#5A4FCF', borderColor: '#5A4FCF' } }}
+        okButtonProps={{ style: { background: '#FF5722', borderColor: '#FF5722' } }}
       >
         <Form form={form} layout="vertical">
           <Form.Item
@@ -424,12 +552,12 @@ const Report: React.FC = () => {
             name="frequency"
             label="Schedule Frequency"
           >
-            <Select placeholder="Select frequency">
-              <Option value="once">One Time</Option>
-              <Option value="daily">Daily</Option>
-              <Option value="weekly">Weekly</Option>
-              <Option value="monthly">Monthly</Option>
-            </Select>
+            <Radio.Group>
+              <Radio value="once">One Time</Radio>
+              <Radio value="daily">Daily</Radio>
+              <Radio value="weekly">Weekly</Radio>
+              <Radio value="monthly">Monthly</Radio>
+            </Radio.Group>
           </Form.Item>
         </Form>
       </Modal>

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   Card, 
@@ -18,7 +17,9 @@ import {
   PauseCircleOutlined,
   PlayCircleOutlined,
   DeleteOutlined,
-  SearchOutlined
+  SearchOutlined,
+  FileTextOutlined,
+  UnorderedListOutlined
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
@@ -188,7 +189,7 @@ const QueuedReports: React.FC = () => {
               style={{ color: '#52c41a' }}
             />
           ) : null}
-          
+
           {record.status !== 'Completed' && (
             <Popconfirm
               title="Are you sure you want to cancel this report?"
