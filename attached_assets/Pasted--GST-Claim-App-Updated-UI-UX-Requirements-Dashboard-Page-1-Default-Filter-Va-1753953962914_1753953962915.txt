@@ -1,0 +1,68 @@
+# GST Claim App – Updated UI/UX Requirements
+
+---
+
+## ✅ Dashboard Page
+
+1. **Default Filter Values**
+   - Set the **default value** for:
+     - Time Period
+     - Month
+     - Travel Vendors  
+   as the **first option** in each dropdown.
+
+2. **Invoice Status Section**
+   - Move `All Airlines` and `Type` dropdowns to the **right end** of the Invoice Status section.
+
+3. **All / Airlines Switch Tabs**
+   - Combine "All" and "Airlines" as **switch tabs in a single section**.
+   - Update the tab design to look more modern and user-friendly.
+
+4. **Dynamic Graph**
+   - Based on the selected **tab (All or Airlines)** and the selected **Type**, the associated **graph should update accordingly**.
+
+5. **Airline Wise Claimable Amount (INR)**
+   - Based on the selected **dropdown value (Airline Name)**, the displayed list should **filter dynamically**.
+
+6. **Airlines Pending Files to GST**
+   - Based on the selected **dropdown (Airline Name)**, the graph should update accordingly.
+
+---
+
+## ✅ Upload Page
+
+1. **Sample File Download**
+   - On clicking the **Sample** button, trigger the **download of an XLS file** with dummy data.
+
+2. **File Type Restriction**
+   - Allow only **CSV and XLS** file types in the file picker.
+   - Restrict all other file formats.
+
+3. **File Upload Limit**
+   - If **more than 3 files are uploaded**, **disable the upload area**.
+   - If one or more files are removed and the total becomes **3 or fewer**, re-enable the upload area.
+
+---
+
+## ✅ Reconciliation History (Airline)
+
+1. **Date Range Input**
+   - Replace separate **Start** and **End Date** fields with a **Date Range Picker**.
+
+2. **Travel Vendor Dropdown**
+   - Add a **Travel Vendor** dropdown with values like:
+     - ClearTrip
+     - MakeMyTrip
+
+3. **Reset All Functionality**
+   - When the **Reset All** button is clicked:
+     - Clear all input fields and dropdown selections.
+
+4. **Status Count Placement**
+   - Remove count display from the status field.
+   - Display the counts **below the input section** (utilize existing empty space).
+
+5. **Filter Popup Issues**
+   - Fix the **z-index issue** causing the select dropdown to appear behind other elements when clicking the **Filter**.
+   - Fix the **Show/Hide Columns** panel so that it **does not interfere with or hide the table section**.
+

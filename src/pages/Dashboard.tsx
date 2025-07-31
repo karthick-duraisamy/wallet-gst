@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import { 
-  Row, 
-  Col, 
-  Card, 
-  Select, 
-  Button, 
-  Table, 
+import React, { useState } from "react";
+import {
+  Row,
+  Col,
+  Card,
+  Select,
+  Button,
+  Table,
   Progress,
   Typography,
   Space,
   Divider,
-  Statistic
-} from 'antd';
-import { 
+  Statistic,
+} from "antd";
+import {
   BarChart,
   Bar,
   XAxis,
@@ -22,84 +22,166 @@ import {
   ResponsiveContainer,
   PieChart,
   Pie,
-  Cell
-} from 'recharts';
-import { 
-  DownloadOutlined, 
-  InfoCircleOutlined, 
+  Cell,
+} from "recharts";
+import {
+  DownloadOutlined,
+  InfoCircleOutlined,
   MailOutlined,
   WhatsAppOutlined,
   BellOutlined,
-  EyeOutlined
-} from '@ant-design/icons';
-import { useTheme } from '../contexts/ThemeContext';
-import '../styles/Dashboard.scss';
+  EyeOutlined,
+} from "@ant-design/icons";
+import { useTheme } from "../contexts/ThemeContext";
+import "../styles/Dashboard.scss";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
 
 const Dashboard: React.FC = () => {
-  const [timePeriod, setTimePeriod] = useState('select');
-  const [month, setMonth] = useState('select');
-  const [travelVendor, setTravelVendor] = useState('select');
-  const [invoiceType, setInvoiceType] = useState('invoices-count');
-  const [airlineFilter, setAirlineFilter] = useState('all');
-  const [pendingFilesType, setPendingFilesType] = useState('invoices-count');
-  const [pendingFilesAirline, setPendingFilesAirline] = useState('all');
+  const [timePeriod, setTimePeriod] = useState("select");
+  const [month, setMonth] = useState("select");
+  const [travelVendor, setTravelVendor] = useState("select");
+  const [invoiceType, setInvoiceType] = useState("invoices-count");
+  const [airlineFilter, setAirlineFilter] = useState("all");
+  const [pendingFilesType, setPendingFilesType] = useState("invoices-count");
+  const [pendingFilesAirline, setPendingFilesAirline] = useState("all");
   const { translate, isDarkMode } = useTheme();
 
   // Overview summary data
   const overviewData = [
     {
-      title: 'All Travel History',
-      backgroundColor: '#4CAF50',
+      title: "All Travel History",
+      backgroundColor: "#4CAF50",
       sections: [
-        { label: 'Bookings', value: 0, backgroundColor: '#4CAF50' },
-        { label: 'Cancellations', value: 0, backgroundColor: '#2E7D32' }
-      ]
+        { label: "Bookings", value: 0, backgroundColor: "#4CAF50" },
+        { label: "Cancellations", value: 0, backgroundColor: "#2E7D32" },
+      ],
     },
     {
-      title: 'Airline Invoices',
-      backgroundColor: '#3F51B5',
+      title: "Airline Invoices",
+      backgroundColor: "#3F51B5",
       sections: [
-        { label: 'Available', value: 0, backgroundColor: '#3F51B5' },
-        { label: 'GST - Filed', value: 0, backgroundColor: '#1A237E' },
-        { label: 'Pending to File', value: 0, backgroundColor: '#3F51B5', variant: 'light' }
-      ]
+        { label: "Available", value: 0, backgroundColor: "#3F51B5" },
+        { label: "GST - Filed", value: 0, backgroundColor: "#1A237E" },
+        {
+          label: "Pending to File",
+          value: 0,
+          backgroundColor: "#3F51B5",
+          variant: "light",
+        },
+      ],
     },
     {
-      title: 'All Invoices',
-      backgroundColor: '#9C27B0',
+      title: "All Invoices",
+      backgroundColor: "#9C27B0",
       sections: [
-        { label: 'Available', value: 0, backgroundColor: '#9C27B0' },
-        { label: 'GST - Filed', value: 0, backgroundColor: '#4A148C' },
-        { label: 'Pending to File', value: 0, backgroundColor: '#9C27B0', variant: 'light' }
-      ]
+        { label: "Available", value: 0, backgroundColor: "#9C27B0" },
+        { label: "GST - Filed", value: 0, backgroundColor: "#4A148C" },
+        {
+          label: "Pending to File",
+          value: 0,
+          backgroundColor: "#9C27B0",
+          variant: "light",
+        },
+      ],
     },
     {
-      title: 'Net Claimable Amount(INR)',
-      backgroundColor: '#F44336',
+      title: "Net Claimable Amount(INR)",
+      backgroundColor: "#F44336",
       sections: [
-        { label: 'Airlines', value: 0, backgroundColor: '#F44336' },
-        { label: 'All', value: 0, backgroundColor: '#C62828' }
-      ]
-    }
+        { label: "Airlines", value: 0, backgroundColor: "#F44336" },
+        { label: "All", value: 0, backgroundColor: "#C62828" },
+      ],
+    },
   ];
 
   // Chart data
   const invoiceStatusData = [
-    { month: 'Apr', Submitted: 180, 'Pending to File': 40, 'Invoice Missing': 20, 'Additional in GSTR -2A': 10 },
-    { month: 'May', Submitted: 200, 'Pending to File': 35, 'Invoice Missing': 25, 'Additional in GSTR -2A': 15 },
-    { month: 'Jun', Submitted: 220, 'Pending to File': 30, 'Invoice Missing': 30, 'Additional in GSTR -2A': 20 },
-    { month: 'Jul', Submitted: 190, 'Pending to File': 45, 'Invoice Missing': 15, 'Additional in GSTR -2A': 25 },
-    { month: 'Aug', Submitted: 210, 'Pending to File': 25, 'Invoice Missing': 35, 'Additional in GSTR -2A': 10 },
-    { month: 'Sep', Submitted: 180, 'Pending to File': 50, 'Invoice Missing': 20, 'Additional in GSTR -2A': 30 },
-    { month: 'Oct', Submitted: 240, 'Pending to File': 20, 'Invoice Missing': 25, 'Additional in GSTR -2A': 15 },
-    { month: 'Nov', Submitted: 200, 'Pending to File': 40, 'Invoice Missing': 30, 'Additional in GSTR -2A': 20 },
-    { month: 'Dec', Submitted: 220, 'Pending to File': 35, 'Invoice Missing': 20, 'Additional in GSTR -2A': 25 },
-    { month: 'Jan', Submitted: 190, 'Pending to File': 30, 'Invoice Missing': 40, 'Additional in GSTR -2A': 15 },
-    { month: 'Feb', Submitted: 210, 'Pending to File': 45, 'Invoice Missing': 25, 'Additional in GSTR -2A': 20 },
-    { month: 'Mar', Submitted: 180, 'Pending to File': 25, 'Invoice Missing': 35, 'Additional in GSTR -2A': 30 }
+    {
+      month: "Apr",
+      Submitted: 180,
+      "Pending to File": 40,
+      "Invoice Missing": 20,
+      "Additional in GSTR -2A": 10,
+    },
+    {
+      month: "May",
+      Submitted: 200,
+      "Pending to File": 35,
+      "Invoice Missing": 25,
+      "Additional in GSTR -2A": 15,
+    },
+    {
+      month: "Jun",
+      Submitted: 220,
+      "Pending to File": 30,
+      "Invoice Missing": 30,
+      "Additional in GSTR -2A": 20,
+    },
+    {
+      month: "Jul",
+      Submitted: 190,
+      "Pending to File": 45,
+      "Invoice Missing": 15,
+      "Additional in GSTR -2A": 25,
+    },
+    {
+      month: "Aug",
+      Submitted: 210,
+      "Pending to File": 25,
+      "Invoice Missing": 35,
+      "Additional in GSTR -2A": 10,
+    },
+    {
+      month: "Sep",
+      Submitted: 180,
+      "Pending to File": 50,
+      "Invoice Missing": 20,
+      "Additional in GSTR -2A": 30,
+    },
+    {
+      month: "Oct",
+      Submitted: 240,
+      "Pending to File": 20,
+      "Invoice Missing": 25,
+      "Additional in GSTR -2A": 15,
+    },
+    {
+      month: "Nov",
+      Submitted: 200,
+      "Pending to File": 40,
+      "Invoice Missing": 30,
+      "Additional in GSTR -2A": 20,
+    },
+    {
+      month: "Dec",
+      Submitted: 220,
+      "Pending to File": 35,
+      "Invoice Missing": 20,
+      "Additional in GSTR -2A": 25,
+    },
+    {
+      month: "Jan",
+      Submitted: 190,
+      "Pending to File": 30,
+      "Invoice Missing": 40,
+      "Additional in GSTR -2A": 15,
+    },
+    {
+      month: "Feb",
+      Submitted: 210,
+      "Pending to File": 45,
+      "Invoice Missing": 25,
+      "Additional in GSTR -2A": 20,
+    },
+    {
+      month: "Mar",
+      Submitted: 180,
+      "Pending to File": 25,
+      "Invoice Missing": 35,
+      "Additional in GSTR -2A": 30,
+    },
   ];
 
   // Recent failures data
@@ -108,91 +190,95 @@ const Dashboard: React.FC = () => {
   // Airline data
   const airlineData = [
     {
-      key: '1',
-      airline: 'SG',
-      code: '6132',
-      bookings: '1024 tickets',
-      cancellations: '11364',
-      amount: 'INR -5232',
-      color: '#ff4d4f'
+      key: "1",
+      airline: "SG",
+      code: "6132",
+      bookings: "1024 tickets",
+      cancellations: "11364",
+      amount: "INR -5232",
+      color: "#ff4d4f",
     },
     {
-      key: '2',
-      airline: 'AI',
-      code: '324',
-      bookings: '324 tickets',
-      cancellations: '1032',
-      amount: 'INR -708',
-      color: '#722ed1'
+      key: "2",
+      airline: "AI",
+      code: "324",
+      bookings: "324 tickets",
+      cancellations: "1032",
+      amount: "INR -708",
+      color: "#722ed1",
     },
     {
-      key: '3',
-      airline: '6E',
-      code: '529',
-      bookings: '529 tickets',
-      cancellations: '1356',
-      amount: 'INR -1428',
-      color: '#1890ff'
+      key: "3",
+      airline: "6E",
+      code: "529",
+      bookings: "529 tickets",
+      cancellations: "1356",
+      amount: "INR -1428",
+      color: "#1890ff",
     },
     {
-      key: '4',
-      airline: 'UK',
-      code: '168',
-      bookings: '168 tickets',
-      cancellations: '312',
-      amount: 'INR -144',
-      color: '#fa8c16'
+      key: "4",
+      airline: "UK",
+      code: "168",
+      bookings: "168 tickets",
+      cancellations: "312",
+      amount: "INR -144",
+      color: "#fa8c16",
     },
-   
   ];
 
   const airlineColumns = [
     {
-      title: 'Airline code',
-      dataIndex: 'airline',
-      key: 'airline',
+      title: "Airline code",
+      dataIndex: "airline",
+      key: "airline",
       render: (text: string, record: any) => (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <div 
-            style={{ 
-              width: 16, 
-              height: 16, 
-              backgroundColor: record.color, 
-              borderRadius: 2 
-            }} 
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <div
+            style={{
+              width: 16,
+              height: 16,
+              backgroundColor: record.color,
+              borderRadius: 2,
+            }}
           />
           <Text strong>{text}</Text>
         </div>
       ),
     },
     {
-      title: 'Bookings/Claim',
-      dataIndex: 'code',
-      key: 'code',
+      title: "Bookings/Claim",
+      dataIndex: "code",
+      key: "code",
       render: (text: string, record: any) => (
         <div>
           <div style={{ fontWeight: 600 }}>{text}</div>
-          <div style={{ fontSize: 12, color: '#666' }}>{record.bookings}</div>
+          <div style={{ fontSize: 12, color: "#666" }}>{record.bookings}</div>
         </div>
       ),
     },
     {
-      title: 'Cancellations/Claim',
-      dataIndex: 'cancellations',
-      key: 'cancellations',
+      title: "Cancellations/Claim",
+      dataIndex: "cancellations",
+      key: "cancellations",
       render: (text: string) => (
         <div>
           <div style={{ fontWeight: 600 }}>{text}</div>
-          <div style={{ fontSize: 12, color: '#666' }}>1356 tickets</div>
+          <div style={{ fontSize: 12, color: "#666" }}>1356 tickets</div>
         </div>
       ),
     },
     {
-      title: 'Net Claimable',
-      dataIndex: 'amount',
-      key: 'amount',
+      title: "Net Claimable",
+      dataIndex: "amount",
+      key: "amount",
       render: (text: string) => (
-        <Text style={{ fontWeight: 600, color: text.includes('-') ? '#ff4d4f' : '#52c41a' }}>
+        <Text
+          style={{
+            fontWeight: 600,
+            color: text.includes("-") ? "#ff4d4f" : "#52c41a",
+          }}
+        >
           {text}
         </Text>
       ),
@@ -200,19 +286,23 @@ const Dashboard: React.FC = () => {
   ];
 
   const pendingFilesData = [
-    { month: 'SG', value: 8 },{month: 'IN', value: 10}, {month: 'FZ', value: 4}
+    { month: "SG", value: 8 },
+    { month: "IN", value: 10 },
+    { month: "FZ", value: 4 },
   ];
 
   return (
     <div className="slide-up cls-dashboard-container">
       {/* Header */}
       <div className="cls-dashboard-header">
-        <Title level={3} className="cls-dashboard-title">{translate('dashboard')}</Title>
+        <Title level={3} className="cls-dashboard-title">
+          {translate("dashboard")}
+        </Title>
       </div>
 
       {/* Filter Section */}
       <Card className="cls-filter-section">
-        <Row gutter={[16, 16]} align="middle">
+        <Row gutter={[16, 16]} align="middle" style={{ alignItems: "end" }}>
           <Col>
             <div className="cls-filter-item">
               <Text className="cls-filter-label">Time Period:</Text>
@@ -272,7 +362,7 @@ const Dashboard: React.FC = () => {
               </Select>
             </div>
           </Col>
-          <Col>
+          <Col className="cls-apply-btn">
             <Button type="primary" className="cls-apply-button">
               Apply →
             </Button>
@@ -282,71 +372,96 @@ const Dashboard: React.FC = () => {
 
       {/* Overall Summary Section */}
       <div className="cls-overall-summary">
-        <Title level={4} className="cls-summary-title">{translate('overallSummary')}</Title>
+        <Title level={4} className="cls-summary-title">
+          {translate("overallSummary")}
+        </Title>
         <Row gutter={[16, 16]} className="cls-overview-grid">
           {overviewData.map((item, index) => (
             <Col xs={24} sm={12} lg={6} key={index}>
               <div className="cls-overview-card">
                 {/* Header */}
-                <div style={{ 
-                  backgroundColor: 'white',
-                  padding: '12px 16px',
-                  borderBottom: '1px solid #f0f0f0',
-                  flex: '0 0 auto'
-                }}>
-                  <Text style={{ 
-                    fontSize: 14, 
-                    fontWeight: 600, 
-                    color: '#333',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px'
-                  }}>
+                <div
+                  style={{
+                    backgroundColor: "white",
+                    padding: "12px 16px",
+                    borderBottom: "1px solid #f0f0f0",
+                    flex: "0 0 auto",
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      fontWeight: 600,
+                      color: "#333",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                    }}
+                  >
                     {item.title}
-                    {(item.title.includes('Amount') || item.title.includes('Airlines')) && (
-                      <InfoCircleOutlined style={{ fontSize: 12, color: '#999' }} />
+                    {(item.title.includes("Amount") ||
+                      item.title.includes("Airlines")) && (
+                      <InfoCircleOutlined
+                        style={{ fontSize: 12, color: "#999" }}
+                      />
                     )}
                   </Text>
                 </div>
 
                 {/* Sections */}
-                <div style={{ 
-                  display: 'flex', 
-                  flex: 1,
-                  height: '80px'
-                }}>
+                <div
+                  style={{
+                    display: "flex",
+                    flex: 1,
+                    height: "80px",
+                  }}
+                >
                   {item.sections.map((section, sectionIndex) => (
-                    <div 
+                    <div
                       key={sectionIndex}
-                      style={{ 
+                      style={{
                         flex: 1,
-                        backgroundColor: section.variant === 'light' 
-                          ? `${section.backgroundColor}33` 
-                          : section.backgroundColor,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        color: section.variant === 'light' ? section.backgroundColor : 'white',
-                        padding: '8px',
-                        position: 'relative'
+                        backgroundColor:
+                          section.variant === "light"
+                            ? `${section.backgroundColor}33`
+                            : section.backgroundColor,
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        color:
+                          section.variant === "light"
+                            ? section.backgroundColor
+                            : "white",
+                        padding: "8px",
+                        position: "relative",
                       }}
                     >
-                      <Text style={{ 
-                        color: section.variant === 'light' ? section.backgroundColor : 'white',
-                        fontSize: 12,
-                        fontWeight: 500,
-                        textAlign: 'center',
-                        lineHeight: '14px',
-                        marginBottom: 4
-                      }}>
+                      <Text
+                        style={{
+                          color:
+                            section.variant === "light"
+                              ? section.backgroundColor
+                              : "white",
+                          fontSize: 12,
+                          fontWeight: 500,
+                          textAlign: "center",
+                          lineHeight: "14px",
+                          marginBottom: 4,
+                        }}
+                      >
                         {section.label}
                       </Text>
-                      <Text style={{ 
-                        color: section.variant === 'light' ? section.backgroundColor : 'white',
-                        fontSize: 18,
-                        fontWeight: 700
-                      }}>
+                      <Text
+                        style={{
+                          color:
+                            section.variant === "light"
+                              ? section.backgroundColor
+                              : "white",
+                          fontSize: 18,
+                          fontWeight: 700,
+                        }}
+                      >
                         {section.value}
                       </Text>
                     </div>
@@ -454,21 +569,22 @@ const Dashboard: React.FC = () => {
       <Row gutter={[24, 24]}>
         {/* Invoice Status Chart */}
         <Col xs={24} lg={12}>
-          <Card 
-            title={translate('invoiceStatus')}
-            extra={<DownloadOutlined style={{ cursor: 'pointer' }} />}
-            style={{ 
-              borderRadius: 12, 
-              border: 'none',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-              height: 400 
+          <Card
+            title={translate("invoiceStatus")}
+            style={{
+              borderRadius: 12,
+              border: "none",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+              height: 400,
             }}
           >
-            <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
-              <Button size="small" type="primary">All</Button>
+            <div style={{ display: "flex", gap: 16, marginBottom: 16 }}>
+              <Button size="small" type="primary">
+                All
+              </Button>
               <Button size="small">Airlines</Button>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <Text style={{ fontSize: '12px' }}>Type:</Text>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <Text style={{ fontSize: "12px" }}>Type:</Text>
                 <Select
                   value={invoiceType}
                   onChange={setInvoiceType}
@@ -489,7 +605,11 @@ const Dashboard: React.FC = () => {
                 <Bar dataKey="Submitted" stackId="a" fill="#1890ff" />
                 <Bar dataKey="Pending to File" stackId="a" fill="#52c41a" />
                 <Bar dataKey="Invoice Missing" stackId="a" fill="#faad14" />
-                <Bar dataKey="Additional in GSTR -2A" stackId="a" fill="#ff4d4f" />
+                <Bar
+                  dataKey="Additional in GSTR -2A"
+                  stackId="a"
+                  fill="#ff4d4f"
+                />
               </BarChart>
             </ResponsiveContainer>
           </Card>
@@ -497,10 +617,10 @@ const Dashboard: React.FC = () => {
 
         {/* Airline wise claimable amount */}
         <Col xs={24} lg={12}>
-          <Card 
-            title={translate('airlineWiseClaimable')}
+          <Card
+            title={translate("airlineWiseClaimable")}
             extra={
-              <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
                 <Select
                   value={airlineFilter}
                   onChange={setAirlineFilter}
@@ -513,14 +633,13 @@ const Dashboard: React.FC = () => {
                   <Option value="6e">6E</Option>
                   <Option value="uk">UK</Option>
                 </Select>
-                <DownloadOutlined style={{ cursor: 'pointer' }} />
               </div>
             }
-            style={{ 
-              borderRadius: 12, 
-              border: 'none',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-              height: 400 
+            style={{
+              borderRadius: 12,
+              border: "none",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+              height: 400,
             }}
           >
             <Table
@@ -534,10 +653,10 @@ const Dashboard: React.FC = () => {
 
         {/* Airlines pending files to GST */}
         <Col xs={24}>
-          <Card 
-            title={translate('airlinesPendingFiles')}
+          <Card
+            title={translate("airlinesPendingFiles")}
             extra={
-              <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
                 <Text>Type:</Text>
                 <Select
                   value={pendingFilesType}
@@ -563,11 +682,11 @@ const Dashboard: React.FC = () => {
                 </Select>
               </div>
             }
-            style={{ 
-              borderRadius: 12, 
-              border: 'none',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-              height: 300 
+            style={{
+              borderRadius: 12,
+              border: "none",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+              height: 300,
             }}
           >
             <ResponsiveContainer width="100%" height={200}>
