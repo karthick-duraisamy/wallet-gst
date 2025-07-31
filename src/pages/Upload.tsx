@@ -140,13 +140,15 @@ const Upload: React.FC = () => {
     {
       key: "non-ayp",
       label: (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <span>Non-AYP Bookings</span>
-          <Tooltip 
+          <Tooltip
             title="Bookings done via a designated platform or channel (e.g., Amadeus, Yatra, proprietary travel system, etc.)"
             placement="top"
           >
-            <InfoCircleOutlined style={{ color: '#1890ff', fontSize: '14px' }} />
+            <InfoCircleOutlined
+              style={{ color: "#1890ff", fontSize: "14px" }}
+            />
           </Tooltip>
         </div>
       ),
@@ -161,13 +163,15 @@ const Upload: React.FC = () => {
     {
       key: "gstr-2a",
       label: (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <span>GSTR-2A</span>
-          <Tooltip 
+          <Tooltip
             title="A system-generated return that reflects all purchases and inward supplies made by a business, as reported by its suppliers in their GSTR-1 returns."
             placement="top"
           >
-            <InfoCircleOutlined style={{ color: '#1890ff', fontSize: '14px' }} />
+            <InfoCircleOutlined
+              style={{ color: "#1890ff", fontSize: "14px" }}
+            />
           </Tooltip>
         </div>
       ),
@@ -183,9 +187,7 @@ const Upload: React.FC = () => {
   return (
     <div className="slide-up cls-upload-container">
       {/* Page Title */}
-      <h2 className="cls-page-title">
-        {translate("uploadFiles")}
-      </h2>
+      <h2 className="cls-page-title">{translate("uploadFiles")}</h2>
 
       {/* Success Message */}
       {successMessage && (
@@ -206,12 +208,8 @@ const Upload: React.FC = () => {
           onChange={handleUploadTypeChange}
           size="large"
         >
-          <Radio value="agency">
-            {translate("agency")}
-          </Radio>
-          <Radio value="airline">
-            {translate("airline")}
-          </Radio>
+          <Radio value="agency">{translate("agency")}</Radio>
+          <Radio value="airline">{translate("airline")}</Radio>
         </Radio.Group>
       </div>
 
@@ -231,7 +229,7 @@ const Upload: React.FC = () => {
             {/* Upload Area - Left Side */}
             <Dragger
               {...uploadProps}
-              className={`cls-upload-area ${dragOver ? 'cls-drag-over' : ''}`}
+              className={`cls-upload-area ${dragOver ? "cls-drag-over" : ""}`}
             >
               {/* File Type and Limit Info */}
               <div className="cls-file-info">
@@ -252,9 +250,7 @@ const Upload: React.FC = () => {
                   Drag & drop your file here
                 </div>
 
-                <div className="cls-upload-or-text">
-                  or
-                </div>
+                <div className="cls-upload-or-text">or</div>
 
                 <Button type="link" className="cls-select-file-btn">
                   Select File
@@ -269,67 +265,73 @@ const Upload: React.FC = () => {
             </Dragger>
 
             {/* Files Display - Right Side */}
-            {files.length > 0 && (
-              <div className="cls-files-display">
-                <div className="cls-files-header">
-                  {files.some((file) => file.status === "uploading")
-                    ? "Files are uploading ..."
-                    : ""}
-                </div>
+            {/* {files.length > 0 && ( */}
+            <div className="cls-files-display">
+              <div className="cls-files-header">
+                {files.some((file) => file.status === "uploading")
+                  ? "Files are uploading ..."
+                  : ""}
+              </div>
 
-                {files.map((file) => (
-                  <div key={file.id} className="cls-file-item">
-                    <div className="cls-file-header">
-                      <div className="cls-file-info-section">
-                        <div className="cls-file-icon">
-                          <FileOutlined />
-                        </div>
-                        <div className="cls-file-details">
-                          <div className="cls-file-name">
-                            {file.name}
-                          </div>
-                        </div>
+              {files.map((file) => (
+                <div key={file.id} className="cls-file-item">
+                  <div className="cls-file-header">
+                    <div className="cls-file-info-section">
+                      <div className="cls-file-icon">
+                        <FileOutlined />
                       </div>
-                      <div className="cls-file-actions">
-                        <span className="cls-file-size">
-                          {formatFileSize(file.size)}
-                        </span>
-                        <CloseOutlined
-                          className="cls-remove-file"
-                          onClick={() => handleRemoveFile(file.id)}
-                        />
+                      <div className="cls-file-details">
+                        <div className="cls-file-name">{file.name}</div>
                       </div>
                     </div>
+                    <div className="cls-file-actions">
+                      <span className="cls-file-size">
+                        {formatFileSize(file.size)}
+                      </span>
+                      <CloseOutlined
+                        className="cls-remove-file"
+                        onClick={() => handleRemoveFile(file.id)}
+                      />
+                    </div>
+                  </div>
 
-                    {file.status === "uploading" && (
-                      <div className="cls-progress-section">
-                        <div className="cls-upload-spinner">
-                          <div className="cls-spinner"></div>
-                          <Text style={{ fontSize: 12, color: '#666', marginLeft: 8 }}>
-                            Uploading...
-                          </Text>
-                        </div>
-                        <Progress
-                          percent={Math.floor(uploadProgress[file.id] || 0)}
-                          size="small"
-                          strokeColor="#1890ff"
-                          showInfo={false}
-                        />
-                      </div>
-                    )}
-
-                    {file.status === "success" && (
-                      <div className="cls-success-indicator">
-                        <div className="cls-success-tick">✓</div>
-                        <Text style={{ fontSize: 12, color: '#52c41a', marginLeft: 8 }}>
-                          Upload completed
+                  {file.status === "uploading" && (
+                    <div className="cls-progress-section">
+                      <div className="cls-upload-spinner">
+                        <div className="cls-spinner"></div>
+                        <Text
+                          style={{ fontSize: 12, color: "#666", marginLeft: 8 }}
+                        >
+                          Uploading...
                         </Text>
                       </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
+                      <Progress
+                        percent={Math.floor(uploadProgress[file.id] || 0)}
+                        size="small"
+                        strokeColor="#1890ff"
+                        showInfo={false}
+                      />
+                    </div>
+                  )}
+
+                  {file.status === "success" && (
+                    <div className="cls-success-indicator">
+                      <div className="cls-success-tick">✓</div>
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          color: "#52c41a",
+                          marginLeft: 8,
+                        }}
+                      >
+                        Upload completed
+                      </Text>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+            {/* )} */}
           </div>
 
           {/* Submit Section */}
