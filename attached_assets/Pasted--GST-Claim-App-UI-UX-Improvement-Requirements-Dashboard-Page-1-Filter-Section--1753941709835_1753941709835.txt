@@ -1,0 +1,125 @@
+# GST Claim App – UI/UX Improvement Requirements
+
+## ✅ Dashboard Page
+
+### 1. Filter Section
+- Add a filter section containing:
+  - Time Period
+  - Month
+  - Vendors
+  - Apply Button (as shown in the attached image)
+- Remove the “This Month” dropdown.
+
+### 2. Summary Cards
+- Improve design of the cards:
+  - All Travel History
+  - Airline Invoices
+  - All Invoices
+  - Net Claimable Amount (INR)
+- Apply modern design with icons, shadows, and clean layout.
+
+### 3. Invoice Details
+- Remove the non-functional “All Airlines” control.
+- Add two proper dropdowns:
+  - `Type` (as a label)
+  - `Invoices Count / Amount` (as options in dropdown)
+- Ensure labels and dropdowns are correctly structured.
+
+### 4. Airline Wise Claimable Amount (INR)
+- Remove the existing dropdown.
+- Add a dropdown with predefined airline names (e.g., SG, AI, 6E, UK).
+
+### 5. Airlines Pending Files to GST
+- Update `Type` dropdown to include:
+  - Amount
+  - Invoices Count
+- Add a dropdown to filter by Airline Name.
+
+---
+
+## ✅ Upload Page
+
+### 1. Design Improvements
+- Reduce upload box width (avoid full-width).
+- Apply modern UI styling for the upload container.
+
+### 2. Upload Animations
+- Add animation while file uploads:
+  - Loading spinner during upload
+  - Tick mark on success
+
+### 3. Completed Files
+- Improve visual design of completed/uploaded file list section.
+
+---
+
+## ✅ Cumulative / Reconciliation Pages
+
+### 1. Pagination
+- Update pagination design only (based on the attached reference).
+- Do **not** change logic for:
+  - Go to page
+  - Display per page
+
+### 2. Filter Functionality
+- Fix filter click issue in the list.
+- On filter click:
+  - Display table header list (e.g., Supplier Name, PNR Tickets, etc.)
+  - Use checkboxes to select/deselect headers for display.
+
+### 3. Reset Function
+- "Reset All" button should:
+  - Clear all selected filters
+  - Reset table view to default
+
+---
+
+## ✅ Reconciliation History (Airline)
+
+### 1. Status Field
+- Remove count display inside the field.
+- Replace with:
+  - `All (76)`, `New (0)`, `Processing (5)` etc. — styled outside with modern UI.
+
+### 2. Date Range
+- Replace Start/End Date fields with a unified **Date Range Picker**.
+
+### 3. Travel Vendor
+- Add dropdown with vendor options:
+  - ClearTrip
+  - MakeMyTrip
+  - Goibibo, etc.
+
+---
+
+## ✅ Cumulative Invoice (Airline)
+
+- Apply the same color theme used across other pages.
+- Redesign and improve:
+  - Upload Multiple PNR / Ticket No.
+  - Upload Multiple Invoice No.
+- Ensure dropdowns and file upload fields use a consistent and modern design.
+
+---
+
+## ✅ Header
+
+### 1. Language Support
+- Ensure language changes apply to:
+  - All screens
+  - All labels and single-word texts
+
+### 2. Theme Application
+- Apply selected theme (light/dark) to:
+  - All components
+  - All inputs and fields across the app
+
+---
+
+## ✅ Side Menu
+
+- Add **Sign Out** button at the bottom of the sidebar.
+- On click, the user should:
+  - Be logged out
+  - Redirected to the login screen
+
