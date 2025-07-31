@@ -156,7 +156,7 @@ const Reconciliation: React.FC = () => {
                       [key]: e.target.checked
                     }))}
                   >
-                    {allColumns.find(col => col.key === key)?.title}
+                    {translate(key.replace(/([A-Z])/g, ' $1').toLowerCase().trim())}
                   </Checkbox>
                 </div>
               ))}

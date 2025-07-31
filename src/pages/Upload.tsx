@@ -10,6 +10,7 @@ import {
   Progress,
   Alert,
   Tabs,
+  Typography,
 } from "antd";
 import {
   InboxOutlined,
@@ -33,6 +34,7 @@ import { useTheme } from "../contexts/ThemeContext";
 import "../styles/Upload.scss";
 
 const { Dragger } = AntUpload;
+const { Text } = Typography;
 
 const Upload: React.FC = () => {
   const dispatch = useDispatch();

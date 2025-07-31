@@ -111,8 +111,8 @@ const CumulativeInvoice: React.FC = () => {
     // pnrTicketNo: true, // Example: uncomment to make PNR non-scrollable
   };
 
-  // All available columns - defined as a function to avoid initialization issues
-  const getAllColumns = () => [
+  // Define all columns directly
+  const allColumns = [
     {
       title: translate('supplierName'),
       dataIndex: 'supplierName',
@@ -210,9 +210,6 @@ const CumulativeInvoice: React.FC = () => {
       render: () => null,
     },
   ];
-
-  // Get all columns
-  const allColumns = getAllColumns();
 
   // Filter visible columns
   const visibleColumnsData = allColumns.filter(col => 
