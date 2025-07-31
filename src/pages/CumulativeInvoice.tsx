@@ -644,7 +644,7 @@ const CumulativeInvoice: React.FC = () => {
                         boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
                         position: "absolute",
                         width: "300px",
-                        zIndex: "1",
+                        zIndex: 1001,
                       }}
                     >
                       {/* Close button */}
@@ -1095,6 +1095,7 @@ const CumulativeInvoice: React.FC = () => {
                   { value: 5, label: "5" },
                   { value: 10, label: "10" },
                   { value: 20, label: "20" },
+                  { value: 30" },
                   { value: 30, label: "30" },
                   { value: 50, label: "50" },
                 ]}

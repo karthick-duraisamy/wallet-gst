@@ -56,17 +56,22 @@ const Upload: React.FC = () => {
   const uploadProps = {
     name: "file",
     multiple: true,
-    accept: ".csv,.xls,.xlsx,.pdf,.doc,.docx",
+    accept: ".csv,.xls,.xlsx",
     showUploadList: false,
+    disabled: files.length >= 3,
     beforeUpload: (file: File) => {
+      if (files.length >= 3) {
+        message.error("Maximum 3 files allowed!");
+        return false;
+      }
+
       const isValidType =
         file.type === "text/csv" ||
         file.type === "application/vnd.ms-excel" ||
-        file.type ===
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
       if (!isValidType) {
-        message.error("You can only upload CSV, Excel, PDF, or Word files!");
+        message.error("You can only upload CSV and XLS files!");
         return false;
       }
 
@@ -134,6 +139,30 @@ const Upload: React.FC = () => {
 
   const handleSubmit = () => {
     message.success("Files submitted successfully!");
+  };
+
+  const handleSampleFileDownload = () => {
+    // Create sample data for XLS file
+    const sampleData = [
+      ['PNR', 'Ticket Number', 'Passenger Name', 'Amount', 'Date'],
+      ['ABC123', 'TKT001', 'John Doe', '5000', '2024-01-15'],
+      ['DEF456', 'TKT002', 'Jane Smith', '7500', '2024-01-16'],
+      ['GHI789', 'TKT003', 'Mike Johnson', '6200', '2024-01-17'],
+    ];
+
+    // Convert to CSV format
+    const csvContent = sampleData.map(row => row.join(',')).join('\n');
+    
+    // Create and download file
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'sample_data.csv';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
   };
 
   const tabItems = [
@@ -236,7 +265,7 @@ const Upload: React.FC = () => {
                 <div>
                   Supported Files: <strong>CSV, XLS</strong>
                 </div>
-                <div>Upload up to 3 file. Each max file size 5MB</div>
+                <div>Upload up to 3 files. Each max file size 50MB</div>
               </div>
 
               <div className="cls-upload-center">
@@ -247,7 +276,7 @@ const Upload: React.FC = () => {
                 </div>
 
                 <div className="cls-upload-main-text">
-                  Drag & drop your file here
+                  {files.length >= 3 ? 'Maximum files reached (3/3)' : 'Drag & drop your file here'}
                 </div>
 
                 <div className="cls-upload-or-text">or</div>
@@ -258,7 +287,7 @@ const Upload: React.FC = () => {
               </div>
 
               {/* Sample File Button */}
-              <Button className="cls-sample-file-btn">
+              <Button className="cls-sample-file-btn" onClick={handleSampleFileDownload}>
                 <DownloadOutlined />
                 Sample file
               </Button>
@@ -341,6 +370,7 @@ const Upload: React.FC = () => {
               size="large"
               onClick={handleSubmit}
               className="cls-submit-btn"
+              disabled={files.length === 0}
             >
               {translate("submit")}
             </Button>
