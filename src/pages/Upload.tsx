@@ -57,7 +57,7 @@ const Upload: React.FC = () => {
   const uploadProps = {
     name: "file",
     multiple: true,
-    accept: ".csv,.xls,.xlsx,.pdf,.doc,.docx",
+    accept: ".csv,.xls,.xlsx",
     showUploadList: false,
     beforeUpload: (file: File) => {
       const isValidType =
@@ -67,7 +67,12 @@ const Upload: React.FC = () => {
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
       if (!isValidType) {
-        message.error("You can only upload CSV, Excel, PDF, or Word files!");
+        message.error("You can only upload CSV or Excel files!");
+        return false;
+      }
+
+      if (files.length >= 3) {
+        message.error("You can only upload up to 3 files!");
         return false;
       }
 
@@ -135,6 +140,27 @@ const Upload: React.FC = () => {
 
   const handleSubmit = () => {
     message.success("Files submitted successfully!");
+  };
+
+  const handleSampleDownload = () => {
+    // Create dummy data for XLS file
+    const dummyData = [
+      ['Column 1', 'Column 2', 'Column 3'],
+      ['Sample Data 1', 'Sample Data 2', 'Sample Data 3'],
+      ['Sample Data 4', 'Sample Data 5', 'Sample Data 6']
+    ];
+    
+    // Convert to CSV format
+    const csvContent = dummyData.map(row => row.join(',')).join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'sample_file.csv';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
   };
 
   const tabItems = [
@@ -232,7 +258,8 @@ const Upload: React.FC = () => {
             {/* Upload Area - Left Side */}
             <Dragger
               {...uploadProps}
-              className={`cls-upload-area ${dragOver ? 'cls-drag-over' : ''}`}
+              disabled={files.length >= 3}
+              className={`cls-upload-area ${dragOver ? 'cls-drag-over' : ''} ${files.length >= 3 ? 'cls-disabled' : ''}`}
             >
               {/* File Type and Limit Info */}
               <div className="cls-file-info">
@@ -263,7 +290,10 @@ const Upload: React.FC = () => {
               </div>
 
               {/* Sample File Button */}
-              <Button className="cls-sample-file-btn">
+              <Button 
+                className="cls-sample-file-btn"
+                onClick={handleSampleDownload}
+              >
                 <DownloadOutlined />
                 Sample file
               </Button>

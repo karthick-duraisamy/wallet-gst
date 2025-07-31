@@ -39,9 +39,9 @@ const { Title, Text } = Typography;
 const { Option } = Select;
 
 const Dashboard: React.FC = () => {
-  const [timePeriod, setTimePeriod] = useState('select');
-  const [month, setMonth] = useState('select');
-  const [travelVendor, setTravelVendor] = useState('select');
+  const [timePeriod, setTimePeriod] = useState('fy-2024-2025');
+  const [month, setMonth] = useState('apr');
+  const [travelVendor, setTravelVendor] = useState('atyourprice');
   const [invoiceType, setInvoiceType] = useState('invoices-count');
   const [airlineFilter, setAirlineFilter] = useState('all');
   const [pendingFilesType, setPendingFilesType] = useState('invoices-count');
@@ -222,11 +222,11 @@ const Dashboard: React.FC = () => {
                 style={{ width: 150 }}
                 placeholder="Select"
               >
-                <Option value="fy-2016-2017">FY 2016-2017</Option>
-                <Option value="fy-2017-2018">FY 2017-2018</Option>
-                <Option value="fy-2018-2019">FY 2018-2019</Option>
-                <Option value="fy-2019-2020">FY 2019-2020</Option>
                 <Option value="fy-2020-2021">FY 2020-2021</Option>
+                <Option value="fy-2021-2022">FY 2021-2022</Option>
+                <Option value="fy-2022-2023">FY 2022-2023</Option>
+                <Option value="fy-2023-2024">FY 2023-2024</Option>
+                <Option value="fy-2024-2025">FY 2024-2025</Option>
               </Select>
             </div>
           </Col>
@@ -272,7 +272,7 @@ const Dashboard: React.FC = () => {
               </Select>
             </div>
           </Col>
-          <Col>
+          <Col flex="auto" style={{ display: 'flex', justifyContent: 'center' }}>
             <Button type="primary" className="cls-apply-button">
               Apply →
             </Button>
@@ -456,7 +456,6 @@ const Dashboard: React.FC = () => {
         <Col xs={24} lg={12}>
           <Card 
             title={translate('invoiceStatus')}
-            extra={<DownloadOutlined style={{ cursor: 'pointer' }} />}
             style={{ 
               borderRadius: 12, 
               border: 'none',
@@ -464,9 +463,43 @@ const Dashboard: React.FC = () => {
               height: 400 
             }}
           >
-            <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
-              <Button size="small" type="primary">All</Button>
-              <Button size="small">Airlines</Button>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+              <div style={{ 
+                display: 'inline-flex', 
+                background: '#f5f5f5', 
+                borderRadius: '6px', 
+                padding: '2px',
+                border: '1px solid #e0e0e0'
+              }}>
+                <Button 
+                  size="small" 
+                  type={invoiceType === 'all' ? 'primary' : 'text'}
+                  onClick={() => setInvoiceType('all')}
+                  style={{
+                    backgroundColor: invoiceType === 'all' ? '#1890ff' : 'transparent',
+                    borderColor: 'transparent',
+                    color: invoiceType === 'all' ? 'white' : '#666',
+                    borderRadius: '4px',
+                    margin: 0
+                  }}
+                >
+                  All
+                </Button>
+                <Button 
+                  size="small" 
+                  type={invoiceType === 'airlines' ? 'primary' : 'text'}
+                  onClick={() => setInvoiceType('airlines')}
+                  style={{
+                    backgroundColor: invoiceType === 'airlines' ? '#1890ff' : 'transparent',
+                    borderColor: 'transparent',
+                    color: invoiceType === 'airlines' ? 'white' : '#666',
+                    borderRadius: '4px',
+                    margin: 0
+                  }}
+                >
+                  Airlines
+                </Button>
+              </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <Text style={{ fontSize: '12px' }}>Type:</Text>
                 <Select
@@ -500,21 +533,18 @@ const Dashboard: React.FC = () => {
           <Card 
             title={translate('airlineWiseClaimable')}
             extra={
-              <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                <Select
-                  value={airlineFilter}
-                  onChange={setAirlineFilter}
-                  size="small"
-                  style={{ width: 100 }}
-                >
-                  <Option value="all">All</Option>
-                  <Option value="sg">SG</Option>
-                  <Option value="ai">AI</Option>
-                  <Option value="6e">6E</Option>
-                  <Option value="uk">UK</Option>
-                </Select>
-                <DownloadOutlined style={{ cursor: 'pointer' }} />
-              </div>
+              <Select
+                value={airlineFilter}
+                onChange={setAirlineFilter}
+                size="small"
+                style={{ width: 100 }}
+              >
+                <Option value="all">All</Option>
+                <Option value="sg">SG</Option>
+                <Option value="ai">AI</Option>
+                <Option value="6e">6E</Option>
+                <Option value="uk">UK</Option>
+              </Select>
             }
             style={{ 
               borderRadius: 12, 

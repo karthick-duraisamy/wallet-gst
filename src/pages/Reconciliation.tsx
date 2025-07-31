@@ -26,6 +26,9 @@ const Reconciliation: React.FC = () => {
 
   const handleClearFilters = () => {
     dispatch(clearFilters());
+    setSearchText('');
+    setCurrentPage(1);
+    // Reset any other local state as needed
   };
 
   const handlePageChange = (page: number, size?: number) => {
@@ -476,20 +479,12 @@ const Reconciliation: React.FC = () => {
         </div>
 
         <div>
-          <label style={{ display: 'block', marginBottom: 4, fontSize: '14px' }}>{translate('startEndDate')}</label>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <DatePicker 
-              placeholder="Start Date" 
-              suffixIcon={<CalendarOutlined />}
-              style={{ width: 110 }}
-            />
-            <span>to</span>
-            <DatePicker 
-              placeholder="End Date" 
-              suffixIcon={<CalendarOutlined />}
-              style={{ width: 110 }}
-            />
-          </div>
+          <label style={{ display: 'block', marginBottom: 4, fontSize: '14px' }}>{translate('dateRange')}</label>
+          <RangePicker 
+            placeholder={['Start Date', 'End Date']}
+            suffixIcon={<CalendarOutlined />}
+            style={{ width: 230 }}
+          />
         </div>
 
         <div>
@@ -500,6 +495,8 @@ const Reconciliation: React.FC = () => {
             defaultValue="all"
           >
             <Option value="all">{translate('all')}</Option>
+            <Option value="cleartrip">ClearTrip</Option>
+            <Option value="makemytrip">MakeMyTrip</Option>
           </Select>
         </div>
 
