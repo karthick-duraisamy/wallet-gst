@@ -87,8 +87,8 @@ const Dashboard: React.FC = () => {
     }
   ];
 
-  // Chart data
-  const invoiceStatusData = [
+  // Chart data - base data for all invoices
+  const baseInvoiceStatusData = [
     { month: 'Apr', Submitted: 180, 'Pending to File': 40, 'Invoice Missing': 20, 'Additional in GSTR -2A': 10 },
     { month: 'May', Submitted: 200, 'Pending to File': 35, 'Invoice Missing': 25, 'Additional in GSTR -2A': 15 },
     { month: 'Jun', Submitted: 220, 'Pending to File': 30, 'Invoice Missing': 30, 'Additional in GSTR -2A': 20 },
@@ -102,6 +102,42 @@ const Dashboard: React.FC = () => {
     { month: 'Feb', Submitted: 210, 'Pending to File': 45, 'Invoice Missing': 25, 'Additional in GSTR -2A': 20 },
     { month: 'Mar', Submitted: 180, 'Pending to File': 25, 'Invoice Missing': 35, 'Additional in GSTR -2A': 30 }
   ];
+
+  // Airlines-only data (reduced values to simulate airline-specific data)
+  const airlinesInvoiceStatusData = [
+    { month: 'Apr', Submitted: 120, 'Pending to File': 28, 'Invoice Missing': 14, 'Additional in GSTR -2A': 7 },
+    { month: 'May', Submitted: 140, 'Pending to File': 25, 'Invoice Missing': 18, 'Additional in GSTR -2A': 10 },
+    { month: 'Jun', Submitted: 154, 'Pending to File': 21, 'Invoice Missing': 21, 'Additional in GSTR -2A': 14 },
+    { month: 'Jul', Submitted: 133, 'Pending to File': 32, 'Invoice Missing': 11, 'Additional in GSTR -2A': 18 },
+    { month: 'Aug', Submitted: 147, 'Pending to File': 18, 'Invoice Missing': 25, 'Additional in GSTR -2A': 7 },
+    { month: 'Sep', Submitted: 126, 'Pending to File': 35, 'Invoice Missing': 14, 'Additional in GSTR -2A': 21 },
+    { month: 'Oct', Submitted: 168, 'Pending to File': 14, 'Invoice Missing': 18, 'Additional in GSTR -2A': 11 },
+    { month: 'Nov', Submitted: 140, 'Pending to File': 28, 'Invoice Missing': 21, 'Additional in GSTR -2A': 14 },
+    { month: 'Dec', Submitted: 154, 'Pending to File': 25, 'Invoice Missing': 14, 'Additional in GSTR -2A': 18 },
+    { month: 'Jan', Submitted: 133, 'Pending to File': 21, 'Invoice Missing': 28, 'Additional in GSTR -2A': 11 },
+    { month: 'Feb', Submitted: 147, 'Pending to File': 32, 'Invoice Missing': 18, 'Additional in GSTR -2A': 14 },
+    { month: 'Mar', Submitted: 126, 'Pending to File': 18, 'Invoice Missing': 25, 'Additional in GSTR -2A': 21 }
+  ];
+
+  // Get filtered data based on invoice tab and type
+  const getInvoiceStatusData = () => {
+    const rawData = invoiceTab === 'all' ? baseInvoiceStatusData : airlinesInvoiceStatusData;
+    
+    if (invoiceType === 'amount') {
+      // Convert to amount values (multiply by approximate amount per invoice)
+      return rawData.map(item => ({
+        month: item.month,
+        Submitted: item.Submitted * 5000,
+        'Pending to File': item['Pending to File'] * 5000,
+        'Invoice Missing': item['Invoice Missing'] * 5000,
+        'Additional in GSTR -2A': item['Additional in GSTR -2A'] * 5000
+      }));
+    }
+    
+    return rawData;
+  };
+
+  const invoiceStatusData = getInvoiceStatusData();
 
   // Recent failures data
   const recentFailures = [];
@@ -464,7 +500,7 @@ const Dashboard: React.FC = () => {
               height: 400 
             }}
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 16, marginBottom: 16 }}>
               <div style={{ 
                 display: 'flex', 
                 background: '#f0f0f0', 
