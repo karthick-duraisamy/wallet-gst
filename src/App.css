@@ -477,6 +477,7 @@ body {
     opacity: 0;
     transform: translateY(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -534,95 +535,97 @@ body {
   }
 
 
-/* Upload Dragger Hover Effects */
-.upload-dragger-hover:hover {
-  border-color: #4f46e5 !important;
-  background: #f8f9ff !important;
-  transform: translateY(-4px) !important;
-  box-shadow: 0 12px 28px rgba(79, 70, 229, 0.15) !important;
-}
-
-.upload-dragger-hover:hover .anticon {
-  transform: scale(1.1);
-  color: #4f46e5 !important;
-  transition: all 0.3s ease;
-}
-
-.upload-dragger-hover:hover p {
-  color: #4f46e5 !important;
-}
-
-.upload-dragger-hover:hover .ant-btn-link {
-  color: #4f46e5 !important;
-}
-
-.upload-dragger-hover .anticon {
-  transition: all 0.3s ease;
-}
-
-.upload-dragger-hover p {
-  transition: all 0.3s ease;
-}
-
-.upload-dragger-hover .ant-btn-link {
-  transition: all 0.3s ease;
-}
-
-/* Card hover effects */
-.ant-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
-  transition: all 0.3s ease;
-}
-
-/* Button hover enhancements */
-.ant-btn:hover {
-  transform: translateY(-1px);
-  transition: all 0.2s ease;
-}
-
-.ant-btn-primary:hover {
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
-}
-
-/* Upload icon container animation */
-.upload-dragger-hover:hover .upload-icon-container {
-  animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
+  /* Upload Dragger Hover Effects */
+  .upload-dragger-hover:hover {
+    border-color: #4f46e5 !important;
+    background: #f8f9ff !important;
+    transform: translateY(-4px) !important;
+    box-shadow: 0 12px 28px rgba(79, 70, 229, 0.15) !important;
   }
-  50% {
-    transform: scale(1.05);
+
+  .upload-dragger-hover:hover .anticon {
+    transform: scale(1.1);
+    color: #4f46e5 !important;
+    transition: all 0.3s ease;
   }
-  100% {
-    transform: scale(1);
+
+  .upload-dragger-hover:hover p {
+    color: #4f46e5 !important;
   }
-}
 
-/* File card hover effects */
-.upload-file-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
-  border-color: #4f46e5;
-  background: #f8f9ff;
-  transition: all 0.3s ease;
-}
+  .upload-dragger-hover:hover .ant-btn-link {
+    color: #4f46e5 !important;
+  }
 
-.upload-file-card:hover {
-  transform: translateY(-2px) scale(1.01);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
-  border-color: #4f46e5;
-}
+  .upload-dragger-hover .anticon {
+    transition: all 0.3s ease;
+  }
 
-/* Smooth transitions for all interactive elements */
-.ant-card,
-.ant-btn,
-.upload-file-card {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
+  .upload-dragger-hover p {
+    transition: all 0.3s ease;
+  }
+
+  .upload-dragger-hover .ant-btn-link {
+    transition: all 0.3s ease;
+  }
+
+  /* Card hover effects */
+  .ant-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+    transition: all 0.3s ease;
+  }
+
+  /* Button hover enhancements */
+  .ant-btn:hover {
+    transform: translateY(-1px);
+    transition: all 0.2s ease;
+  }
+
+  .ant-btn-primary:hover {
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+  }
+
+  /* Upload icon container animation */
+  .upload-dragger-hover:hover .upload-icon-container {
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+
+    50% {
+      transform: scale(1.05);
+    }
+
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  /* File card hover effects */
+  .upload-file-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    border-color: #4f46e5;
+    background: #f8f9ff;
+    transition: all 0.3s ease;
+  }
+
+  .upload-file-card:hover {
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    border-color: #4f46e5;
+  }
+
+  /* Smooth transitions for all interactive elements */
+  .ant-card,
+  .ant-btn,
+  .upload-file-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
   .auth-illustration svg {
     width: 300px;
@@ -1112,6 +1115,7 @@ body {
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -1143,8 +1147,17 @@ body {
 }
 
 @keyframes twinkle {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.7; transform: scale(1.1); }
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
 }
 
 .upload-subtitle {
@@ -1246,6 +1259,7 @@ body {
     opacity: 0;
     transform: translateX(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -1265,7 +1279,7 @@ body {
   margin-bottom: 12px;
 }
 
-.upload-file-info > div:first-child {
+.upload-file-info>div:first-child {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -1341,13 +1355,16 @@ body {
     opacity: 0;
     transform: scale(0.3);
   }
+
   50% {
     opacity: 1;
     transform: scale(1.05);
   }
+
   70% {
     transform: scale(0.9);
   }
+
   100% {
     opacity: 1;
     transform: scale(1);
@@ -1410,19 +1427,19 @@ body {
   .upload-page-container {
     padding: 20px 16px;
   }
-  
+
   .upload-main-card {
     padding: 24px;
   }
-  
+
   .upload-title {
     font-size: 20px;
   }
-  
+
   .upload-actions {
     flex-direction: column;
   }
-  
+
   .upload-file-tags {
     justify-content: center;
   }
@@ -1856,7 +1873,7 @@ body {
   overflow: hidden;
 }
 
-.custom-table .ant-table-thead > tr > th {
+.custom-table .ant-table-thead>tr>th {
   background-color: #f8fafc !important;
   font-weight: 600 !important;
   font-size: 14px !important;
@@ -1865,12 +1882,12 @@ body {
   white-space: nowrap !important;
 }
 
-.custom-table .ant-table-tbody > tr > td {
+.custom-table .ant-table-tbody>tr>td {
   padding: 12px 16px !important;
   border-bottom: 1px solid #f1f5f9 !important;
 }
 
-.custom-table .ant-table-tbody > tr:hover > td {
+.custom-table .ant-table-tbody>tr:hover>td {
   background-color: #f8fafc !important;
 }
 
@@ -2152,18 +2169,26 @@ body {
 :where(.css-dev-only-do-not-override-1336i4k).ant-btn-variant-solid:not(:disabled):not(.ant-btn-disabled):hover {
   background-color: rgba(102, 126, 234, 0.9);
 }
-.ant-drawer-content-wrapper{
+
+.ant-drawer-content-wrapper {
   width: 300px !important;
 }
-:where(.css-dev-only-do-not-override-1y53vaa).ant-pagination .ant-pagination-item-active{
+
+:where(.css-dev-only-do-not-override-1y53vaa).ant-pagination .ant-pagination-item-active {
   border: unset;
   margin-right: 5px !important;
 }
-.cls-button{
+
+.cls-button {
   display: flex;
   gap: 15px;
 }
-.cls-sprt{
-    display: flex;
-    gap: 16px;
+
+.cls-sprt {
+  display: flex;
+  gap: 16px;
+}
+
+tr.ant-table-measure-row td {
+  display: none;
 }
