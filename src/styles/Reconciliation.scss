@@ -1,259 +1,155 @@
-
 @import 'common';
 
-.cls-reconciliation-container {
+.reconciliation-container {
   padding: 24px;
   background: #f5f5f5;
-  min-height: 100vh;
-  padding-top: 0px;
-}
+  min-height: calc(100vh - 128px);
 
-.cls-reconciliation-title {
-  font-size: 24px;
-  font-weight: 600;
-  color: #722ed1;
-  margin-bottom: 24px;
-}
+  .reconciliation-header {
+    margin-bottom: 24px;
 
-.cls-type-selection {
-  margin-bottom: 24px;
+    .reconciliation-title {
+      color: #5A4FCF;
+      margin-bottom: 8px;
+    }
 
-  .ant-radio-wrapper {
-    font-weight: 500;
-  }
-}
-
-.cls-filters-section {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 24px;
-  align-items: flex-end;
-  flex-wrap: wrap;
-
-  .cls-filter-group {
-    .cls-filter-label {
-      display: block;
-      margin-bottom: 4px;
-      font-size: 14px;
+    .reconciliation-description {
+      color: #666;
     }
   }
 
-  .cls-date-range-group {
-    .cls-date-range-inputs {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+  .filters-card {
+    margin-bottom: 24px;
+    background: #fff;
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 
-      .cls-date-separator {
-        font-size: 12px;
+    .filter-row {
+      .filter-item {
+        .filter-label {
+          font-size: 12px;
+          color: #666;
+          display: block;
+          margin-bottom: 4px;
+        }
+
+        .ant-select,
+        .ant-picker,
+        .ant-input {
+          width: 100%;
+        }
+      }
+
+      .filter-actions {
+        padding-top: 18px;
       }
     }
   }
 
-  .cls-filter-actions {
-    .cls-reset-button {
-      border: unset;
-      background: unset;
-      color: #734cce;
-      text-decoration: underline;
-      padding: 0px;
-      box-shadow: unset;
-    }
+  .status-cards {
+    margin-bottom: 24px;
 
-    .cls-submit-button {
-      background-color: #4f46e5;
+    .status-card {
+      text-align: center;
+      background: #fff;
+      border-radius: 8px;
+
+      &.submitted {
+        border: 1px solid #52c41a;
+
+        .status-count {
+          color: #52c41a;
+        }
+      }
+
+      &.pending {
+        border: 1px solid #faad14;
+
+        .status-count {
+          color: #faad14;
+        }
+      }
+
+      &.missing {
+        border: 1px solid #f5222d;
+
+        .status-count {
+          color: #f5222d;
+        }
+      }
+
+      &.additional {
+        border: 1px solid #1890ff;
+
+        .status-count {
+          color: #1890ff;
+        }
+      }
+
+      .status-count {
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      .status-label {
+        font-size: 12px;
+        color: #666;
+      }
     }
   }
-}
 
-.cls-status-option {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  .cls-status-count {
-    color: #666;
-    font-size: 12px;
-  }
-}
-
-.cls-export-controls {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-bottom: 16px;
-
-  .cls-export-btn {
-    color: white;
+  .data-table-card {
+    background: #fff;
+    border-radius: 12px;
     border: none;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-
-    &.cls-xls {
-      background-color: #1d4ed8;
-    }
-
-    &.cls-csv {
-      background-color: #059669;
-    }
-  }
-
-  .cls-search-input {
-    width: 200px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   }
 }
 
-.cls-data-table-card {
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+// Fix z-index issues for Ant Design components
+.ant-select-dropdown {
+  z-index: 9999 !important;
 }
 
-.cls-table-container {
-  .ant-table {
-    .ant-table-thead > tr > th {
-      background-color: #f8fafc !important;
-      font-weight: 600 !important;
-      font-size: 14px !important;
-      border-bottom: 2px solid #e2e8f0 !important;
-      padding: 12px 16px !important;
-      white-space: nowrap !important;
-    }
-
-    .ant-table-tbody > tr > td {
-      padding: 12px 16px !important;
-      border-bottom: 1px solid #f1f5f9 !important;
-    }
-
-    .ant-table-tbody > tr:hover > td {
-      background-color: #f8fafc !important;
-    }
-  }
+.ant-picker-dropdown {
+  z-index: 9999 !important;
 }
 
-.cls-tax-claimable {
-  color: #52c41a;
-  font-weight: 600;
+.ant-table-filter-dropdown {
+  z-index: 9999 !important;
 }
 
-.cls-status-tag {
-  color: #722ed1;
-  border-radius: 12px;
+.ant-dropdown {
+  z-index: 9999 !important;
 }
 
-.cls-filter-header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  .cls-filter-button {
-    border: none;
-    padding: 0;
-    background: transparent;
-  }
-
-  .cls-filter-dropdown {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    background: white;
-    border: 1px solid #d9d9d9;
-    border-radius: 6px;
-    padding: 16px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    z-index: 1000;
-    min-width: 200px;
-
-    .cls-dropdown-title {
-      margin-bottom: 8px;
-      font-weight: 600;
-    }
-
-    .cls-dropdown-option {
-      margin-bottom: 8px;
-    }
-  }
+// Ensure table filters don't get hidden
+.ant-table-thead > tr > th .ant-table-filter-trigger {
+  z-index: 10 !important;
 }
 
-.cls-pagination-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid #f0f0f0;
+.ant-table-filter-dropdown-container {
+  z-index: 9999 !important;
 }
 
-.cls-pagination-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+// Dark mode support
+.reconciliation-container.dark-mode {
+  background: #141414;
 
-  .cls-page-size-selector {
-    width: 60px;
+  .filters-card,
+  .data-table-card,
+  .status-card {
+    background: #1f1f1f !important;
   }
 
-  .cls-info-text {
-    font-size: 14px;
-  }
-}
-
-.cls-pagination-controls {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  .cls-nav-button {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #d9d9d9;
+  .reconciliation-title {
+    color: #5A4FCF !important;
   }
 
-  .cls-page-number {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    &.cls-active {
-      background-color: #4f46e5;
-      border-color: #4f46e5;
-      color: white;
-    }
-
-    &.cls-inactive {
-      background-color: white;
-      border-color: #d9d9d9;
-      color: #000;
-    }
-  }
-
-  .cls-ellipsis {
-    margin: 0 8px;
-  }
-}
-
-.cls-goto-page {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  .cls-goto-text {
-    font-size: 14px;
-  }
-
-  .cls-goto-input {
-    width: 60px;
-  }
-
-  .cls-goto-button {
-    background-color: #4f46e5;
-    border-radius: 16px;
+  .reconciliation-description,
+  .filter-label,
+  .status-label {
+    color: #999 !important;
   }
 }

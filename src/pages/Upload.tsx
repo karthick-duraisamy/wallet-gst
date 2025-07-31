@@ -1,351 +1,374 @@
 
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  Card,
-  Radio,
-  Button,
-  Upload as AntUpload,
+import React, { useState, useCallback } from 'react';
+import { 
+  Card, 
+  Upload as AntUpload, 
+  Button, 
+  Typography, 
+  Space, 
+  Alert,
   message,
   Progress,
-  Alert,
-  Tabs,
-  Typography,
-} from "antd";
-import {
-  InboxOutlined,
-  CloseOutlined,
-  FileOutlined,
+  List,
+  Tag,
+  Row,
+  Col
+} from 'antd';
+import { 
+  InboxOutlined, 
+  UploadOutlined, 
+  DeleteOutlined,
   DownloadOutlined,
-  InfoCircleOutlined,
-  PlusOutlined,
-} from "@ant-design/icons";
-import { Tooltip } from "antd";
-import { RootState } from "../store/store";
-import {
-  setUploadType,
-  setSubOption,
-  addFiles,
-  removeFile,
-  updateFileStatus,
-  clearFiles,
-} from "../store/slices/uploadSlice";
-import { useTheme } from "../contexts/ThemeContext";
-import "../styles/Upload.scss";
+  FileExcelOutlined,
+  FilePdfOutlined,
+  FileTextOutlined
+} from '@ant-design/icons';
+import { useTheme } from '../contexts/ThemeContext';
+import type { UploadFile, UploadProps } from 'antd/es/upload/interface';
+import '../styles/Upload.scss';
 
+const { Title, Text } = Typography;
 const { Dragger } = AntUpload;
-const { Text } = Typography;
+
+interface UploadedFile {
+  uid: string;
+  name: string;
+  status: 'uploading' | 'done' | 'error';
+  size: number;
+  type: string;
+  progress?: number;
+}
 
 const Upload: React.FC = () => {
-  const dispatch = useDispatch();
-  const { files, uploadType, subOption, loading } = useSelector(
-    (state: RootState) => state.upload,
-  );
-  const { translate } = useTheme();
-  const [dragOver, setDragOver] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [activeTab, setActiveTab] = useState("non-ayp");
+  const { isDarkMode, translate } = useTheme();
+  const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
+  const [uploading, setUploading] = useState(false);
 
-  const handleUploadTypeChange = (e: any) => {
-    dispatch(setUploadType(e.target.value));
+  const MAX_FILES = 3;
+
+  // Create and download sample XLS file
+  const downloadSampleFile = () => {
+    // Create sample data
+    const sampleData = [
+      ['Invoice Number', 'Date', 'Amount', 'Vendor', 'Status'],
+      ['INV001', '2024-01-15', '15000', 'SpiceJet', 'Pending'],
+      ['INV002', '2024-01-16', '25000', 'IndiGo', 'Processed'],
+      ['INV003', '2024-01-17', '18500', 'Air India', 'Pending'],
+      ['INV004', '2024-01-18', '32000', 'Vistara', 'Processed'],
+      ['INV005', '2024-01-19', '12500', 'GoAir', 'Pending']
+    ];
+
+    // Convert to CSV format (simpler than XLS)
+    const csvContent = sampleData.map(row => row.join(',')).join('\n');
+    
+    // Create blob and download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'sample_invoice_data.csv');
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    message.success('Sample file downloaded successfully!');
   };
 
-  const [uploadProgress, setUploadProgress] = useState<{
-    [key: string]: number;
-  }>({});
+  const isValidFileType = (file: File) => {
+    const validTypes = [
+      'text/csv',
+      'application/vnd.ms-excel',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    ];
+    const validExtensions = ['.csv', '.xls', '.xlsx'];
+    
+    return validTypes.includes(file.type) || 
+           validExtensions.some(ext => file.name.toLowerCase().endsWith(ext));
+  };
 
-  const uploadProps = {
-    name: "file",
-    multiple: true,
-    accept: ".csv,.xls,.xlsx,.pdf,.doc,.docx",
-    showUploadList: false,
-    beforeUpload: (file: File) => {
-      const isValidType =
-        file.type === "text/csv" ||
-        file.type === "application/vnd.ms-excel" ||
-        file.type ===
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+  const beforeUpload = (file: File) => {
+    // Check file type
+    if (!isValidFileType(file)) {
+      message.error('Only CSV and XLS/XLSX files are allowed!');
+      return false;
+    }
 
-      if (!isValidType) {
-        message.error("You can only upload CSV, Excel, PDF, or Word files!");
-        return false;
-      }
+    // Check file count limit
+    if (uploadedFiles.length >= MAX_FILES) {
+      message.error(`Maximum ${MAX_FILES} files allowed!`);
+      return false;
+    }
 
-      const isValidSize = file.size / 1024 / 1024 < 50;
-      if (!isValidSize) {
-        message.error("File must be smaller than 50MB!");
-        return false;
-      }
+    // Check file size (limit to 10MB)
+    const isLt10M = file.size / 1024 / 1024 < 10;
+    if (!isLt10M) {
+      message.error('File must be smaller than 10MB!');
+      return false;
+    }
 
-      const newFile = {
-        id: Date.now().toString(),
+    return true;
+  };
+
+  const handleUpload = (info: any) => {
+    const { file, fileList } = info;
+    
+    if (file.status === 'uploading') {
+      const newFile: UploadedFile = {
+        uid: file.uid,
         name: file.name,
+        status: 'uploading',
         size: file.size,
         type: file.type,
-        status: "uploading" as const,
+        progress: 0
       };
-
-      dispatch(addFiles([newFile]));
-
-      // Simulate upload progress with real-time updates
-      let progress = 0;
-      const interval = setInterval(() => {
-        progress += Math.random() * 15 + 5; // More consistent progress increments
-        if (progress >= 100) {
-          progress = 100;
-          clearInterval(interval);
-          setUploadProgress((prev) => ({ ...prev, [newFile.id]: progress }));
-          dispatch(updateFileStatus({ id: newFile.id, status: "success" }));
-        } else {
-          setUploadProgress((prev) => ({ ...prev, [newFile.id]: progress }));
+      
+      setUploadedFiles(prev => {
+        const existing = prev.find(f => f.uid === file.uid);
+        if (existing) {
+          return prev.map(f => f.uid === file.uid ? { ...f, progress: file.percent } : f);
         }
-      }, 300);
-
-      return false;
-    },
-    onDragEnter: (e: any) => {
-      e.preventDefault();
-      setDragOver(true);
-    },
-    onDragLeave: (e: any) => {
-      e.preventDefault();
-      setDragOver(false);
-    },
-    onDragOver: (e: any) => {
-      e.preventDefault();
-      setDragOver(true);
-    },
-    onDrop: (e: any) => {
-      e.preventDefault();
-      setDragOver(false);
-    },
+        return [...prev, newFile];
+      });
+    }
+    
+    if (file.status === 'done') {
+      setUploadedFiles(prev => 
+        prev.map(f => f.uid === file.uid ? { ...f, status: 'done', progress: 100 } : f)
+      );
+      message.success(`${file.name} uploaded successfully!`);
+    }
+    
+    if (file.status === 'error') {
+      setUploadedFiles(prev => 
+        prev.map(f => f.uid === file.uid ? { ...f, status: 'error' } : f)
+      );
+      message.error(`${file.name} upload failed!`);
+    }
   };
 
-  const handleRemoveFile = (fileId: string) => {
-    dispatch(removeFile(fileId));
+  const removeFile = (uid: string) => {
+    setUploadedFiles(prev => prev.filter(file => file.uid !== uid));
+    message.success('File removed successfully');
+  };
+
+  const getFileIcon = (fileName: string) => {
+    const extension = fileName.split('.').pop()?.toLowerCase();
+    switch (extension) {
+      case 'xls':
+      case 'xlsx':
+        return <FileExcelOutlined style={{ color: '#52c41a' }} />;
+      case 'csv':
+        return <FileTextOutlined style={{ color: '#1890ff' }} />;
+      default:
+        return <FileTextOutlined style={{ color: '#666' }} />;
+    }
   };
 
   const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return "0 Bytes";
+    if (bytes === 0) return '0 Bytes';
     const k = 1024;
-    const sizes = ["Bytes", "KB", "MB", "GB"];
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(0)) + " " + sizes[i];
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
-  const handleSubmit = () => {
-    message.success("Files submitted successfully!");
+  const uploadProps: UploadProps = {
+    name: 'file',
+    multiple: true,
+    showUploadList: false,
+    beforeUpload,
+    onChange: handleUpload,
+    disabled: uploadedFiles.length >= MAX_FILES,
+    accept: '.csv,.xls,.xlsx'
   };
-
-  const tabItems = [
-    {
-      key: "non-ayp",
-      label: (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span>Non-AYP Bookings</span>
-          <Tooltip 
-            title="Bookings done via a designated platform or channel (e.g., Amadeus, Yatra, proprietary travel system, etc.)"
-            placement="top"
-          >
-            <InfoCircleOutlined style={{ color: '#1890ff', fontSize: '14px' }} />
-          </Tooltip>
-        </div>
-      ),
-      children: (
-        <div className="cls-tab-content">
-          <InfoCircleOutlined />
-          Kindly upload the file downloaded from GSTR-2A of respective travel
-          agencies for reconciliation of the booking fees.
-        </div>
-      ),
-    },
-    {
-      key: "gstr-2a",
-      label: (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span>GSTR-2A</span>
-          <Tooltip 
-            title="A system-generated return that reflects all purchases and inward supplies made by a business, as reported by its suppliers in their GSTR-1 returns."
-            placement="top"
-          >
-            <InfoCircleOutlined style={{ color: '#1890ff', fontSize: '14px' }} />
-          </Tooltip>
-        </div>
-      ),
-      children: (
-        <div className="cls-tab-content">
-          <InfoCircleOutlined />
-          Upload GSTR-2A data for tax reconciliation purposes.
-        </div>
-      ),
-    },
-  ];
 
   return (
-    <div className="slide-up cls-upload-container">
-      {/* Page Title */}
-      <h2 className="cls-page-title">
-        {translate("uploadFiles")}
-      </h2>
-
-      {/* Success Message */}
-      {successMessage && (
-        <Alert
-          message={successMessage}
-          type="success"
-          showIcon
-          closable
-          onClose={() => setSuccessMessage("")}
-          className="cls-success-alert"
-        />
-      )}
-
-      {/* Type Selection */}
-      <div className="cls-upload-type-section">
-        <Radio.Group
-          value={uploadType}
-          onChange={handleUploadTypeChange}
-          size="large"
-        >
-          <Radio value="agency">
-            {translate("agency")}
-          </Radio>
-          <Radio value="airline">
-            {translate("airline")}
-          </Radio>
-        </Radio.Group>
+    <div style={{ 
+      background: isDarkMode ? '#141414' : '#f5f5f5',
+      minHeight: 'calc(100vh - 128px)',
+      padding: '24px'
+    }}>
+      {/* Header */}
+      <div style={{ marginBottom: '24px' }}>
+        <Title level={2} style={{ color: '#5A4FCF', marginBottom: '8px' }}>
+          Upload Files
+        </Title>
+        <Text style={{ color: '#666' }}>
+          Upload your invoice and reconciliation files
+        </Text>
       </div>
 
-      {/* Single Upload Card with Tabs */}
-      <Card className="cls-upload-card">
-        <div className="cls-tabs-container">
-          <Tabs
-            activeKey={activeTab}
-            onChange={setActiveTab}
-            items={tabItems}
-          />
-        </div>
-
-        <div className="cls-upload-content">
-          {/* Main Upload Section with Side-by-side Layout */}
-          <div className="cls-upload-layout">
-            {/* Upload Area - Left Side */}
-            <Dragger
-              {...uploadProps}
-              className={`cls-upload-area ${dragOver ? 'cls-drag-over' : ''}`}
-            >
-              {/* File Type and Limit Info */}
-              <div className="cls-file-info">
-                <div>
-                  Supported Files: <strong>CSV, XLS</strong>
-                </div>
-                <div>Upload up to 3 file. Each max file size 5MB</div>
-              </div>
-
-              <div className="cls-upload-center">
-                <div className="cls-upload-icon-border">
-                  <div className="cls-upload-icon">
-                    <PlusOutlined />
-                  </div>
-                </div>
-
-                <div className="cls-upload-main-text">
-                  Drag & drop your file here
-                </div>
-
-                <div className="cls-upload-or-text">
-                  or
-                </div>
-
-                <Button type="link" className="cls-select-file-btn">
-                  Select File
+      <Row gutter={[24, 24]}>
+        {/* Upload Section */}
+        <Col xs={24} lg={16}>
+          <Card 
+            style={{ 
+              background: isDarkMode ? '#1f1f1f' : '#fff',
+              borderRadius: '12px',
+              border: 'none',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+            }}
+          >
+            <div style={{ marginBottom: '16px' }}>
+              <Space>
+                <Button 
+                  type="primary" 
+                  icon={<DownloadOutlined />}
+                  onClick={downloadSampleFile}
+                  style={{ 
+                    backgroundColor: '#52c41a',
+                    borderColor: '#52c41a'
+                  }}
+                >
+                  Download Sample
                 </Button>
-              </div>
+                <Text style={{ color: '#666', fontSize: '12px' }}>
+                  Download sample file format
+                </Text>
+              </Space>
+            </div>
 
-              {/* Sample File Button */}
-              <Button className="cls-sample-file-btn">
-                <DownloadOutlined />
-                Sample file
-              </Button>
+            <Dragger 
+              {...uploadProps}
+              style={{ 
+                background: uploadedFiles.length >= MAX_FILES ? '#f5f5f5' : 'transparent',
+                border: uploadedFiles.length >= MAX_FILES ? '2px dashed #d9d9d9' : '2px dashed #d9d9d9'
+              }}
+            >
+              <p className="ant-upload-drag-icon">
+                <InboxOutlined style={{ 
+                  color: uploadedFiles.length >= MAX_FILES ? '#ccc' : '#5A4FCF' 
+                }} />
+              </p>
+              <p className="ant-upload-text" style={{ 
+                color: uploadedFiles.length >= MAX_FILES ? '#ccc' : undefined 
+              }}>
+                {uploadedFiles.length >= MAX_FILES 
+                  ? 'Maximum file limit reached' 
+                  : 'Click or drag files to this area to upload'
+                }
+              </p>
+              <p className="ant-upload-hint" style={{ 
+                color: uploadedFiles.length >= MAX_FILES ? '#ccc' : '#666' 
+              }}>
+                Only CSV and XLS/XLSX files are supported. Maximum {MAX_FILES} files allowed.
+              </p>
             </Dragger>
 
-            {/* Files Display - Right Side */}
-            {files.length > 0 && (
-              <div className="cls-files-display">
-                <div className="cls-files-header">
-                  {files.some((file) => file.status === "uploading")
-                    ? "Files are uploading ..."
-                    : ""}
-                </div>
-
-                {files.map((file) => (
-                  <div key={file.id} className="cls-file-item">
-                    <div className="cls-file-header">
-                      <div className="cls-file-info-section">
-                        <div className="cls-file-icon">
-                          <FileOutlined />
-                        </div>
-                        <div className="cls-file-details">
-                          <div className="cls-file-name">
-                            {file.name}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="cls-file-actions">
-                        <span className="cls-file-size">
-                          {formatFileSize(file.size)}
-                        </span>
-                        <CloseOutlined
-                          className="cls-remove-file"
-                          onClick={() => handleRemoveFile(file.id)}
-                        />
-                      </div>
-                    </div>
-
-                    {file.status === "uploading" && (
-                      <div className="cls-progress-section">
-                        <div className="cls-upload-spinner">
-                          <div className="cls-spinner"></div>
-                          <Text style={{ fontSize: 12, color: '#666', marginLeft: 8 }}>
-                            Uploading...
-                          </Text>
-                        </div>
-                        <Progress
-                          percent={Math.floor(uploadProgress[file.id] || 0)}
-                          size="small"
-                          strokeColor="#1890ff"
-                          showInfo={false}
-                        />
-                      </div>
-                    )}
-
-                    {file.status === "success" && (
-                      <div className="cls-success-indicator">
-                        <div className="cls-success-tick">✓</div>
-                        <Text style={{ fontSize: 12, color: '#52c41a', marginLeft: 8 }}>
-                          Upload completed
-                        </Text>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
+            {uploadedFiles.length >= MAX_FILES && (
+              <Alert
+                message="File Limit Reached"
+                description={`You have reached the maximum limit of ${MAX_FILES} files. Remove some files to upload more.`}
+                type="warning"
+                showIcon
+                style={{ marginTop: '16px' }}
+              />
             )}
-          </div>
+          </Card>
+        </Col>
 
-          {/* Submit Section */}
-          <div className="cls-submit-section">
-            <Button
-              type="primary"
-              size="large"
-              onClick={handleSubmit}
-              className="cls-submit-btn"
-            >
-              {translate("submit")}
-            </Button>
-          </div>
-        </div>
-      </Card>
+        {/* Instructions */}
+        <Col xs={24} lg={8}>
+          <Card 
+            title="Upload Instructions"
+            style={{ 
+              background: isDarkMode ? '#1f1f1f' : '#fff',
+              borderRadius: '12px',
+              border: 'none',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+            }}
+          >
+            <List
+              size="small"
+              dataSource={[
+                'Only CSV and XLS/XLSX files are accepted',
+                `Maximum ${MAX_FILES} files can be uploaded`,
+                'File size should be less than 10MB',
+                'Download sample file for correct format',
+                'Ensure data is properly formatted',
+                'Remove files to upload new ones if limit reached'
+              ]}
+              renderItem={(item, index) => (
+                <List.Item>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                    <span style={{ 
+                      color: '#5A4FCF', 
+                      fontWeight: 'bold',
+                      minWidth: '20px'
+                    }}>
+                      {index + 1}.
+                    </span>
+                    <span style={{ fontSize: '14px' }}>{item}</span>
+                  </div>
+                </List.Item>
+              )}
+            />
+          </Card>
+        </Col>
+      </Row>
+
+      {/* Uploaded Files List */}
+      {uploadedFiles.length > 0 && (
+        <Card 
+          title={`Uploaded Files (${uploadedFiles.length}/${MAX_FILES})`}
+          style={{ 
+            marginTop: '24px',
+            background: isDarkMode ? '#1f1f1f' : '#fff',
+            borderRadius: '12px',
+            border: 'none',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+          }}
+        >
+          <List
+            dataSource={uploadedFiles}
+            renderItem={(file) => (
+              <List.Item
+                actions={[
+                  <Button 
+                    type="text" 
+                    danger 
+                    icon={<DeleteOutlined />}
+                    onClick={() => removeFile(file.uid)}
+                  >
+                    Remove
+                  </Button>
+                ]}
+              >
+                <List.Item.Meta
+                  avatar={getFileIcon(file.name)}
+                  title={
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span>{file.name}</span>
+                      <Tag color={
+                        file.status === 'done' ? 'green' : 
+                        file.status === 'error' ? 'red' : 'blue'
+                      }>
+                        {file.status === 'done' ? 'Uploaded' : 
+                         file.status === 'error' ? 'Failed' : 'Uploading'}
+                      </Tag>
+                    </div>
+                  }
+                  description={
+                    <div>
+                      <div style={{ marginBottom: '4px' }}>
+                        Size: {formatFileSize(file.size)}
+                      </div>
+                      {file.status === 'uploading' && (
+                        <Progress 
+                          percent={file.progress || 0} 
+                          size="small" 
+                          status="active"
+                        />
+                      )}
+                    </div>
+                  }
+                />
+              </List.Item>
+            )}
+          />
+        </Card>
+      )}
     </div>
   );
 };
