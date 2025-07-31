@@ -11,12 +11,44 @@
 .cls-dashboard-header {
   margin-bottom: 24px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
 
   .cls-dashboard-title {
     margin: 0;
     color: rgb(114, 46, 209);
+  }
+}
+
+.cls-filter-section {
+  margin-bottom: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border: 1px solid #f0f0f0;
+
+  .cls-filter-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+
+    .cls-filter-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #333;
+    }
+  }
+
+  .cls-apply-button {
+    background-color: #4f46e5;
+    border-color: #4f46e5;
+    border-radius: 20px;
+    font-weight: 500;
+    height: 36px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 }
 

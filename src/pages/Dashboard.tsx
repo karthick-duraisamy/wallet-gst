@@ -40,7 +40,12 @@ const { Option } = Select;
 
 const Dashboard: React.FC = () => {
   const [timePeriod, setTimePeriod] = useState('select');
+  const [month, setMonth] = useState('select');
   const [travelVendor, setTravelVendor] = useState('select');
+  const [invoiceType, setInvoiceType] = useState('invoices-count');
+  const [airlineFilter, setAirlineFilter] = useState('all');
+  const [pendingFilesType, setPendingFilesType] = useState('invoices-count');
+  const [pendingFilesAirline, setPendingFilesAirline] = useState('all');
   const { translate, isDarkMode } = useTheme();
 
   // Overview summary data
@@ -203,12 +208,77 @@ const Dashboard: React.FC = () => {
       {/* Header */}
       <div className="cls-dashboard-header">
         <Title level={3} className="cls-dashboard-title">{translate('dashboard')}</Title>
-        <Select defaultValue="This month" style={{ width: 120 }}>
-          <Option value="This month">{translate('thisMonth')}</Option>
-          <Option value="Last month">{translate('lastMonth')}</Option>
-          <Option value="This year">{translate('thisYear')}</Option>
-        </Select>
       </div>
+
+      {/* Filter Section */}
+      <Card className="cls-filter-section">
+        <Row gutter={[16, 16]} align="middle">
+          <Col>
+            <div className="cls-filter-item">
+              <Text className="cls-filter-label">Time Period:</Text>
+              <Select
+                value={timePeriod}
+                onChange={setTimePeriod}
+                style={{ width: 150 }}
+                placeholder="Select"
+              >
+                <Option value="fy-2016-2017">FY 2016-2017</Option>
+                <Option value="fy-2017-2018">FY 2017-2018</Option>
+                <Option value="fy-2018-2019">FY 2018-2019</Option>
+                <Option value="fy-2019-2020">FY 2019-2020</Option>
+                <Option value="fy-2020-2021">FY 2020-2021</Option>
+              </Select>
+            </div>
+          </Col>
+          <Col>
+            <div className="cls-filter-item">
+              <Text className="cls-filter-label">Month:</Text>
+              <Select
+                value={month}
+                onChange={setMonth}
+                style={{ width: 120 }}
+                placeholder="Select"
+              >
+                <Option value="apr">Apr</Option>
+                <Option value="may">May</Option>
+                <Option value="jun">Jun</Option>
+                <Option value="jul">Jul</Option>
+                <Option value="aug">Aug</Option>
+                <Option value="sep">Sep</Option>
+                <Option value="oct">Oct</Option>
+                <Option value="nov">Nov</Option>
+                <Option value="dec">Dec</Option>
+                <Option value="jan">Jan</Option>
+                <Option value="feb">Feb</Option>
+                <Option value="mar">Mar</Option>
+              </Select>
+            </div>
+          </Col>
+          <Col>
+            <div className="cls-filter-item">
+              <Text className="cls-filter-label">Travel Vendors:</Text>
+              <Select
+                value={travelVendor}
+                onChange={setTravelVendor}
+                style={{ width: 150 }}
+                placeholder="Select"
+              >
+                <Option value="atyourprice">AtYourPrice</Option>
+                <Option value="sotc">SOTC</Option>
+                <Option value="fcm">FCM</Option>
+                <Option value="makemytrip">Make My Trip</Option>
+                <Option value="cleartrip">ClearTrip</Option>
+                <Option value="goibibo">Goibibo</Option>
+              </Select>
+            </div>
+          </Col>
+          <Col>
+            <Button type="primary" className="cls-apply-button">
+              Apply →
+            </Button>
+          </Col>
+        </Row>
+      </Card>
 
       {/* Overall Summary Section */}
       <div className="cls-overall-summary">
@@ -397,12 +467,18 @@ const Dashboard: React.FC = () => {
             <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
               <Button size="small" type="primary">All</Button>
               <Button size="small">Airlines</Button>
-              <Select size="small" defaultValue="Type" style={{ width: 80 }}>
-                <Option value="Type">Type</Option>
-              </Select>
-              <Select size="small" defaultValue="Invoices Count" style={{ width: 120 }}>
-                <Option value="Invoices Count">Invoices Count</Option>
-              </Select>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <Text style={{ fontSize: '12px' }}>Type:</Text>
+                <Select
+                  value={invoiceType}
+                  onChange={setInvoiceType}
+                  size="small"
+                  style={{ width: 140 }}
+                >
+                  <Option value="invoices-count">Invoices Count</Option>
+                  <Option value="amount">Amount</Option>
+                </Select>
+              </div>
             </div>
             <ResponsiveContainer width="100%" height={280}>
               <BarChart data={invoiceStatusData}>
@@ -425,8 +501,17 @@ const Dashboard: React.FC = () => {
             title={translate('airlineWiseClaimable')}
             extra={
               <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                <Select size="small" defaultValue="Airlines" style={{ width: 100 }}>
-                  <Option value="Airlines">Airlines</Option>
+                <Select
+                  value={airlineFilter}
+                  onChange={setAirlineFilter}
+                  size="small"
+                  style={{ width: 100 }}
+                >
+                  <Option value="all">All</Option>
+                  <Option value="sg">SG</Option>
+                  <Option value="ai">AI</Option>
+                  <Option value="6e">6E</Option>
+                  <Option value="uk">UK</Option>
                 </Select>
                 <DownloadOutlined style={{ cursor: 'pointer' }} />
               </div>
@@ -454,12 +539,27 @@ const Dashboard: React.FC = () => {
             extra={
               <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                 <Text>Type:</Text>
-                <Select size="small" defaultValue="Invoices Count" style={{ width: 120 }}>
-                  <Option value="Invoices Count">Invoices Count</Option>
+                <Select
+                  value={pendingFilesType}
+                  onChange={setPendingFilesType}
+                  size="small"
+                  style={{ width: 120 }}
+                >
+                  <Option value="invoices-count">Invoices Count</Option>
+                  <Option value="amount">Amount</Option>
                 </Select>
                 <Text>Airlines:</Text>
-                <Select size="small" defaultValue="All" style={{ width: 80 }}>
-                  <Option value="All">All</Option>
+                <Select
+                  value={pendingFilesAirline}
+                  onChange={setPendingFilesAirline}
+                  size="small"
+                  style={{ width: 80 }}
+                >
+                  <Option value="all">All</Option>
+                  <Option value="sg">SG</Option>
+                  <Option value="ai">AI</Option>
+                  <Option value="6e">6E</Option>
+                  <Option value="uk">UK</Option>
                 </Select>
               </div>
             }

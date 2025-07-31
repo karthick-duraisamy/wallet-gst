@@ -302,12 +302,27 @@ const Upload: React.FC = () => {
 
                     {file.status === "uploading" && (
                       <div className="cls-progress-section">
+                        <div className="cls-upload-spinner">
+                          <div className="cls-spinner"></div>
+                          <Text style={{ fontSize: 12, color: '#666', marginLeft: 8 }}>
+                            Uploading...
+                          </Text>
+                        </div>
                         <Progress
                           percent={Math.floor(uploadProgress[file.id] || 0)}
                           size="small"
                           strokeColor="#1890ff"
                           showInfo={false}
                         />
+                      </div>
+                    )}
+
+                    {file.status === "success" && (
+                      <div className="cls-success-indicator">
+                        <div className="cls-success-tick">✓</div>
+                        <Text style={{ fontSize: 12, color: '#52c41a', marginLeft: 8 }}>
+                          Upload completed
+                        </Text>
                       </div>
                     )}
                   </div>

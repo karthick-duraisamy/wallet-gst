@@ -17,6 +17,8 @@ import { RootState } from '../../store/store';
 import { logout } from '../../store/slices/authSlice';
 import { useTheme } from '../../contexts/ThemeContext';
 import SettingsModal from '../SettingsModal';
+import { Modal } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 const { Header, Content, Sider } = Layout;
 
@@ -29,8 +31,17 @@ const MainLayout: React.FC = () => {
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
 
   const handleLogout = () => {
-    dispatch(logout());
-    navigate('/auth/login');
+    Modal.confirm({
+      title: 'Sign Out',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Are you sure you want to sign out?',
+      okText: 'Sign Out',
+      cancelText: 'Cancel',
+      onOk() {
+        dispatch(logout());
+        navigate('/auth/login');
+      },
+    });
   };
 
   const userMenuItems = [
@@ -211,7 +222,7 @@ const MainLayout: React.FC = () => {
               >
                 🎨
               </Button>
-              
+
               <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
                 <Button 
                   type="text" 
@@ -343,7 +354,7 @@ const MainLayout: React.FC = () => {
             ))}
           </div>
 
-          
+
         </div>
       </Sider>
 
@@ -503,7 +514,7 @@ const MainLayout: React.FC = () => {
           >
             ⛶
           </Button> */}
-          
+
           <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
             <Button 
               type="text" 
