@@ -39,10 +39,11 @@ const { Title, Text } = Typography;
 const { Option } = Select;
 
 const Dashboard: React.FC = () => {
-  const [timePeriod, setTimePeriod] = useState('select');
-  const [month, setMonth] = useState('select');
-  const [travelVendor, setTravelVendor] = useState('select');
+  const [timePeriod, setTimePeriod] = useState('fy-2023-2024');
+  const [month, setMonth] = useState('apr');
+  const [travelVendor, setTravelVendor] = useState('makemytrip');
   const [invoiceType, setInvoiceType] = useState('invoices-count');
+  const [invoiceTab, setInvoiceTab] = useState('all');
   const [airlineFilter, setAirlineFilter] = useState('all');
   const [pendingFilesType, setPendingFilesType] = useState('invoices-count');
   const [pendingFilesAirline, setPendingFilesAirline] = useState('all');
@@ -272,7 +273,7 @@ const Dashboard: React.FC = () => {
               </Select>
             </div>
           </Col>
-          <Col>
+          <Col flex="auto" style={{ display: 'flex', justifyContent: 'center' }}>
             <Button type="primary" className="cls-apply-button">
               Apply →
             </Button>
@@ -456,7 +457,6 @@ const Dashboard: React.FC = () => {
         <Col xs={24} lg={12}>
           <Card 
             title={translate('invoiceStatus')}
-            extra={<DownloadOutlined style={{ cursor: 'pointer' }} />}
             style={{ 
               borderRadius: 12, 
               border: 'none',
@@ -464,9 +464,41 @@ const Dashboard: React.FC = () => {
               height: 400 
             }}
           >
-            <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
-              <Button size="small" type="primary">All</Button>
-              <Button size="small">Airlines</Button>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+              <div style={{ 
+                display: 'flex', 
+                background: '#f0f0f0', 
+                borderRadius: '6px', 
+                padding: '2px',
+                gap: '2px'
+              }}>
+                <Button 
+                  size="small" 
+                  type={invoiceTab === 'all' ? 'primary' : 'text'}
+                  onClick={() => setInvoiceTab('all')}
+                  style={{ 
+                    borderRadius: '4px',
+                    border: 'none',
+                    background: invoiceTab === 'all' ? '#1890ff' : 'transparent',
+                    color: invoiceTab === 'all' ? 'white' : '#666'
+                  }}
+                >
+                  All
+                </Button>
+                <Button 
+                  size="small" 
+                  type={invoiceTab === 'airlines' ? 'primary' : 'text'}
+                  onClick={() => setInvoiceTab('airlines')}
+                  style={{ 
+                    borderRadius: '4px',
+                    border: 'none',
+                    background: invoiceTab === 'airlines' ? '#1890ff' : 'transparent',
+                    color: invoiceTab === 'airlines' ? 'white' : '#666'
+                  }}
+                >
+                  Airlines
+                </Button>
+              </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <Text style={{ fontSize: '12px' }}>Type:</Text>
                 <Select
@@ -513,7 +545,6 @@ const Dashboard: React.FC = () => {
                   <Option value="6e">6E</Option>
                   <Option value="uk">UK</Option>
                 </Select>
-                <DownloadOutlined style={{ cursor: 'pointer' }} />
               </div>
             }
             style={{ 
@@ -525,7 +556,7 @@ const Dashboard: React.FC = () => {
           >
             <Table
               columns={airlineColumns}
-              dataSource={airlineData}
+              dataSource={airlineFilter === 'all' ? airlineData : airlineData.filter(item => item.airline.toLowerCase() === airlineFilter.toLowerCase())}
               pagination={false}
               size="small"
             />
