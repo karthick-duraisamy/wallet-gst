@@ -100,7 +100,7 @@
   cursor: pointer;
   flex: 1;
   padding-top: 15px;
-  max-width: 650px;
+  max-width: 500px;
   width: 100%;
   transform: translateY(0);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -196,7 +196,7 @@
 }
 
 .cls-files-display {
-  width: 320px;
+  width: 280px;
   border-radius: 12px;
   padding: 20px;
   min-height: 240px;
@@ -379,8 +379,4 @@
     opacity: 1;
     transform: translate3d(0, 0, 0);
   }
-}
-:where(.css-dev-only-do-not-override-1y53vaa).ant-upload-wrapper .ant-upload-drag{
-  background: unset;
-  border: unset;
 }

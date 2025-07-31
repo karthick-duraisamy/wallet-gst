@@ -51,17 +51,24 @@
 }
 
 .cls-upload-button {
-  width: 100%;
   height: 40px;
+  min-width: 200px;
   text-align: left;
-  border: none;
-  background: rgb(245, 245, 245);
+  border: 1px solid #e1e5e9;
+  background: #fff;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   border-radius: 6px;
+  padding: 0 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 
+  &:hover {
+    border-color: #4f46e5;
+    box-shadow: 0 4px 8px rgba(79, 70, 229, 0.15);
+  }
 
   span:first-child {
     color: #4f46e5;
@@ -114,14 +121,15 @@
   padding: 24px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.15);
   position: relative;
-  width: 300px;
+  width: 100%;
+  max-width: 400px;
   z-index: 10;
 
   .cls-close-button {
     position: absolute;
-    top: 0px;
-    right: 15px;
-    color: red;
+    top: 16px;
+    right: 16px;
+    color: #999;
     font-size: 20px;
     width: 28px;
     height: 28px;
