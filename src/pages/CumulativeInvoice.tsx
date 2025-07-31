@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { 
   Card, 
@@ -111,6 +112,17 @@ const CumulativeInvoice: React.FC = () => {
     // pnrTicketNo: true, // Example: uncomment to make PNR non-scrollable
   };
 
+  // Column mapping for display titles
+  const columnTitleMapping = {
+    supplierName: translate('supplierName'),
+    pnrTicketNo: translate('pnrTicketNumber'),
+    invoiceNo: translate('invoiceNumber'),
+    invoiceDate: translate('invoiceDate'),
+    type: translate('type'),
+    travelVendor: translate('travelVendor'),
+    action: 'Action',
+  };
+
   // Define all columns directly
   const allColumns = [
     {
@@ -166,40 +178,58 @@ const CumulativeInvoice: React.FC = () => {
     },
     {
       title: (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
           <Button
             type="text"
             icon={<FilterOutlined />}
             onClick={() => setFilterDropdownVisible(!filterDropdownVisible)}
-            style={{ border: 'none', padding: 0, background: 'transparent' }}
+            style={{ 
+              border: 'none', 
+              padding: 0, 
+              background: 'transparent',
+              color: '#1890ff',
+              fontSize: '16px'
+            }}
           />
           {filterDropdownVisible && (
-            <div style={{
-              position: 'absolute',
-              top: '100%',
-              right: 0,
-              background: 'white',
-              border: '1px solid #d9d9d9',
-              borderRadius: 6,
-              padding: 16,
-              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-              zIndex: 1000,
-              minWidth: 200
-            }}>
-              <div style={{ marginBottom: 8, fontWeight: 600 }}>Show/Hide Columns</div>
-              {Object.keys(visibleColumns).map((key) => (
-                <div key={key} style={{ marginBottom: 8 }}>
-                  <Checkbox
-                    checked={visibleColumns[key as keyof typeof visibleColumns]}
-                    onChange={(e) => setVisibleColumns(prev => ({
-                      ...prev,
-                      [key]: e.target.checked
-                    }))}
-                  >
-                    {allColumns.find(col => col.key === key)?.title}
-                  </Checkbox>
-                </div>
-              ))}
+            <div className="cls-filter-dropdown">
+              <div className="cls-filter-header">
+                <span className="cls-filter-title">Show/Hide Columns</span>
+                <Button
+                  type="text"
+                  onClick={() => setFilterDropdownVisible(false)}
+                  style={{ 
+                    position: 'absolute',
+                    top: '8px',
+                    right: '8px',
+                    color: '#999',
+                    fontSize: '16px',
+                    padding: 0,
+                    width: '20px',
+                    height: '20px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  ×
+                </Button>
+              </div>
+              <div className="cls-filter-content">
+                {Object.keys(visibleColumns).map((key) => (
+                  <div key={key} className="cls-filter-option">
+                    <Checkbox
+                      checked={visibleColumns[key as keyof typeof visibleColumns]}
+                      onChange={(e) => setVisibleColumns(prev => ({
+                        ...prev,
+                        [key]: e.target.checked
+                      }))}
+                    >
+                      {columnTitleMapping[key as keyof typeof columnTitleMapping] || key}
+                    </Checkbox>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>
