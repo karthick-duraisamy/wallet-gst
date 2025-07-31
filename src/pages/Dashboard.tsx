@@ -236,9 +236,26 @@ const Dashboard: React.FC = () => {
     },
   ];
 
-  const pendingFilesData = [
-    { month: 'SG', value: 8 },{month: 'IN', value: 10}, {month: 'FZ', value: 4}
+  // Pending files data - base data for all airlines
+  const basePendingFilesData = [
+    { month: 'SG', value: 8 }, { month: 'IN', value: 10 }, { month: 'FZ', value: 4 }, { month: 'AI', value: 6 }, { month: '6E', value: 12 }, { month: 'UK', value: 3 }
   ];
+
+  // Get filtered pending files data
+  const getPendingFilesData = () => {
+    let filteredData = pendingFilesAirline === 'all' ? basePendingFilesData : basePendingFilesData.filter(item => item.month.toLowerCase() === pendingFilesAirline.toLowerCase());
+    
+    if (pendingFilesType === 'amount') {
+      return filteredData.map(item => ({
+        ...item,
+        value: item.value * 2500 // Convert to amount
+      }));
+    }
+    
+    return filteredData;
+  };
+
+  const pendingFilesData = getPendingFilesData();
 
   return (
     <div className="slide-up cls-dashboard-container">
@@ -492,7 +509,61 @@ const Dashboard: React.FC = () => {
         {/* Invoice Status Chart */}
         <Col xs={24} lg={12}>
           <Card 
-            title={translate('invoiceStatus')}
+            title={
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span>{translate('invoiceStatus')}</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                  <div style={{ 
+                    display: 'flex', 
+                    background: '#f0f0f0', 
+                    borderRadius: '6px', 
+                    padding: '4px',
+                    gap: '2px'
+                  }}>
+                    <Button 
+                      size="small" 
+                      type={invoiceTab === 'all' ? 'primary' : 'text'}
+                      onClick={() => setInvoiceTab('all')}
+                      style={{ 
+                        borderRadius: '4px',
+                        border: 'none',
+                        background: invoiceTab === 'all' ? '#1890ff' : 'transparent',
+                        color: invoiceTab === 'all' ? 'white' : '#666',
+                        minWidth: '50px'
+                      }}
+                    >
+                      All
+                    </Button>
+                    <Button 
+                      size="small" 
+                      type={invoiceTab === 'airlines' ? 'primary' : 'text'}
+                      onClick={() => setInvoiceTab('airlines')}
+                      style={{ 
+                        borderRadius: '4px',
+                        border: 'none',
+                        background: invoiceTab === 'airlines' ? '#1890ff' : 'transparent',
+                        color: invoiceTab === 'airlines' ? 'white' : '#666',
+                        minWidth: '60px'
+                      }}
+                    >
+                      Airlines
+                    </Button>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <Text style={{ fontSize: '12px' }}>Type:</Text>
+                    <Select
+                      value={invoiceType}
+                      onChange={setInvoiceType}
+                      size="small"
+                      style={{ width: 140 }}
+                    >
+                      <Option value="invoices-count">Invoices Count</Option>
+                      <Option value="amount">Amount</Option>
+                    </Select>
+                  </div>
+                </div>
+              </div>
+            }
             style={{ 
               borderRadius: 12, 
               border: 'none',
@@ -500,54 +571,6 @@ const Dashboard: React.FC = () => {
               height: 400 
             }}
           >
-            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 16, marginBottom: 16 }}>
-              <div style={{ 
-                display: 'flex', 
-                background: '#f0f0f0', 
-                borderRadius: '6px', 
-                padding: '2px',
-                gap: '2px'
-              }}>
-                <Button 
-                  size="small" 
-                  type={invoiceTab === 'all' ? 'primary' : 'text'}
-                  onClick={() => setInvoiceTab('all')}
-                  style={{ 
-                    borderRadius: '4px',
-                    border: 'none',
-                    background: invoiceTab === 'all' ? '#1890ff' : 'transparent',
-                    color: invoiceTab === 'all' ? 'white' : '#666'
-                  }}
-                >
-                  All
-                </Button>
-                <Button 
-                  size="small" 
-                  type={invoiceTab === 'airlines' ? 'primary' : 'text'}
-                  onClick={() => setInvoiceTab('airlines')}
-                  style={{ 
-                    borderRadius: '4px',
-                    border: 'none',
-                    background: invoiceTab === 'airlines' ? '#1890ff' : 'transparent',
-                    color: invoiceTab === 'airlines' ? 'white' : '#666'
-                  }}
-                >
-                  Airlines
-                </Button>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <Text style={{ fontSize: '12px' }}>Type:</Text>
-                <Select
-                  value={invoiceType}
-                  onChange={setInvoiceType}
-                  size="small"
-                  style={{ width: 140 }}
-                >
-                  <Option value="invoices-count">Invoices Count</Option>
-                  <Option value="amount">Amount</Option>
-                </Select>
-              </div>
-            </div>
             <ResponsiveContainer width="100%" height={280}>
               <BarChart data={invoiceStatusData}>
                 <CartesianGrid strokeDasharray="3 3" />
@@ -569,6 +592,7 @@ const Dashboard: React.FC = () => {
             title={translate('airlineWiseClaimable')}
             extra={
               <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                <Text style={{ fontSize: '12px' }}>Airline:</Text>
                 <Select
                   value={airlineFilter}
                   onChange={setAirlineFilter}

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Card, Table, Button, Select, DatePicker, Input, Space, Tag, Radio, Badge, Checkbox } from 'antd';
-import { SearchOutlined, DownloadOutlined, FilterOutlined, CalendarOutlined } from '@ant-design/icons';
+import { Card, Table, Button, Select, DatePicker, Input, Space, Tag, Radio, Badge, Checkbox, Typography, Row, Col, Statistic, Progress } from 'antd';
+import { SearchOutlined, DownloadOutlined, FilterOutlined, CalendarOutlined, SettingOutlined, EyeOutlined, MoreOutlined } from '@ant-design/icons';
+import dayjs from 'dayjs';
 import { RootState } from '../store/store';
 import { setFilters, clearFilters } from '../store/slices/reconciliationSlice';
 import { useTheme } from '../contexts/ThemeContext';
@@ -19,6 +20,9 @@ const Reconciliation: React.FC = () => {
   const [pageSize, setPageSize] = useState(5);
   const [goToPageValue, setGoToPageValue] = useState('');
   const [searchText, setSearchText] = useState('');
+  const [dateRange, setDateRange] = useState<[dayjs.Dayjs | null, dayjs.Dayjs | null]>([null, null]);
+  const [travelVendor, setTravelVendor] = useState<string>('all');
+  const [status, setStatus] = useState<string>('all');
 
   const handleFilterChange = (key: string, value: any) => {
     dispatch(setFilters({ [key]: value }));
@@ -391,6 +395,21 @@ const Reconciliation: React.FC = () => {
     );
   });
 
+    const handleReset = () => {
+    setDateRange([null, null]);
+    setTravelVendor('all');
+    setStatus('all');
+    setSearchText('');
+  };
+
+  // Status counts
+  const statusCounts = {
+    all: 150,
+    processed: 89,
+    pending: 45,
+    failed: 16
+  };
+
   // Calculate pagination
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
@@ -476,21 +495,14 @@ const Reconciliation: React.FC = () => {
         </div>
 
         <div>
-          <label style={{ display: 'block', marginBottom: 4, fontSize: '14px' }}>{translate('startEndDate')}</label>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <DatePicker 
-              placeholder="Start Date" 
-              suffixIcon={<CalendarOutlined />}
-              style={{ width: 110 }}
-            />
-            <span>to</span>
-            <DatePicker 
-              placeholder="End Date" 
-              suffixIcon={<CalendarOutlined />}
-              style={{ width: 110 }}
+            <label style={{ display: 'block', marginBottom: 4, fontSize: '14px' }}>{translate('startEndDate')}</label>
+            <RangePicker
+              value={dateRange}
+              onChange={(dates) => setDateRange(dates || [null, null])}
+              placeholder={[translate('startDate'), translate('endDate')]}
+              style={{ width: 220 }}
             />
           </div>
-        </div>
 
         <div>
           <label style={{ display: 'block', marginBottom: 4, fontSize: '14px' }}>{translate('travelVendor')}</label>
@@ -606,14 +618,14 @@ const Reconciliation: React.FC = () => {
                 border: '1px solid #d9d9d9'
               }}
             />
-            
+
             {/* Page numbers */}
             {(() => {
               const pages = [];
               const maxVisible = 5;
               let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
               let end = Math.min(totalPages, start + maxVisible - 1);
-              
+
               if (end - start < maxVisible - 1) {
                 start = Math.max(1, end - maxVisible + 1);
               }
