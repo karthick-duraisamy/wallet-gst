@@ -56,22 +56,17 @@ const Upload: React.FC = () => {
   const uploadProps = {
     name: "file",
     multiple: true,
-    accept: ".csv,.xls,.xlsx",
+    accept: ".csv,.xls,.xlsx,.pdf,.doc,.docx",
     showUploadList: false,
-    disabled: files.length >= 3,
     beforeUpload: (file: File) => {
-      if (files.length >= 3) {
-        message.error("Maximum 3 files allowed!");
-        return false;
-      }
-
       const isValidType =
         file.type === "text/csv" ||
         file.type === "application/vnd.ms-excel" ||
-        file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        file.type ===
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
       if (!isValidType) {
-        message.error("You can only upload CSV and XLS files!");
+        message.error("You can only upload CSV, Excel, PDF, or Word files!");
         return false;
       }
 
@@ -141,44 +136,12 @@ const Upload: React.FC = () => {
     message.success("Files submitted successfully!");
   };
 
-  const handleSampleFileDownload = () => {
-    // Create sample data for XLS file
-    const sampleData = [
-      ['PNR', 'Ticket Number', 'Passenger Name', 'Amount', 'Date'],
-      ['ABC123', 'TKT001', 'John Doe', '5000', '2024-01-15'],
-      ['DEF456', 'TKT002', 'Jane Smith', '7500', '2024-01-16'],
-      ['GHI789', 'TKT003', 'Mike Johnson', '6200', '2024-01-17'],
-    ];
-
-    // Convert to CSV format
-    const csvContent = sampleData.map(row => row.join(',')).join('\n');
-    
-    // Create and download file
-    const blob = new Blob([csvContent], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'sample_data.csv';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
-  };
-
   const tabItems = [
     {
       key: "non-ayp",
       label: (
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <span>Non-AYP Bookings</span>
-          <Tooltip
-            title="Bookings done via a designated platform or channel (e.g., Amadeus, Yatra, proprietary travel system, etc.)"
-            placement="top"
-          >
-            <InfoCircleOutlined
-              style={{ color: "#1890ff", fontSize: "14px" }}
-            />
-          </Tooltip>
         </div>
       ),
       children: (
@@ -265,7 +228,7 @@ const Upload: React.FC = () => {
                 <div>
                   Supported Files: <strong>CSV, XLS</strong>
                 </div>
-                <div>Upload up to 3 files. Each max file size 50MB</div>
+                <div>Upload up to 3 file. Each max file size 5MB</div>
               </div>
 
               <div className="cls-upload-center">
@@ -276,91 +239,95 @@ const Upload: React.FC = () => {
                 </div>
 
                 <div className="cls-upload-main-text">
-                  {files.length >= 3 ? 'Maximum files reached (3/3)' : 'Drag & drop your file here'}
+                  Drag & drop your file here
                 </div>
 
-                <div className="cls-upload-or-text">or</div>
+                {/* <div className="cls-upload-or-text">or</div>
 
                 <Button type="link" className="cls-select-file-btn">
                   Select File
-                </Button>
+                </Button> */}
               </div>
 
               {/* Sample File Button */}
-              <Button className="cls-sample-file-btn" onClick={handleSampleFileDownload}>
+              <Button className="cls-sample-file-btn">
                 <DownloadOutlined />
                 Sample file
               </Button>
             </Dragger>
 
             {/* Files Display - Right Side */}
-            {/* {files.length > 0 && ( */}
-            <div className="cls-files-display">
-              <div className="cls-files-header">
-                {files.some((file) => file.status === "uploading")
-                  ? "Files are uploading ..."
-                  : ""}
-              </div>
+            {files.length > 0 && (
+              <div className="cls-files-display">
+                <div className="cls-files-header">
+                  {files.some((file) => file.status === "uploading")
+                    ? "Files are uploading ..."
+                    : ""}
+                </div>
 
-              {files.map((file) => (
-                <div key={file.id} className="cls-file-item">
-                  <div className="cls-file-header">
-                    <div className="cls-file-info-section">
-                      <div className="cls-file-icon">
-                        <FileOutlined />
+                {files.map((file) => (
+                  <div key={file.id} className="cls-file-item">
+                    <div className="cls-file-header">
+                      <div className="cls-file-info-section">
+                        <div className="cls-file-icon">
+                          <FileOutlined />
+                        </div>
+                        <div className="cls-file-details">
+                          <div className="cls-file-name">{file.name}</div>
+                        </div>
                       </div>
-                      <div className="cls-file-details">
-                        <div className="cls-file-name">{file.name}</div>
+                      <div className="cls-file-actions">
+                        <span className="cls-file-size">
+                          {formatFileSize(file.size)}
+                        </span>
+                        <CloseOutlined
+                          className="cls-remove-file"
+                          onClick={() => handleRemoveFile(file.id)}
+                        />
                       </div>
                     </div>
-                    <div className="cls-file-actions">
-                      <span className="cls-file-size">
-                        {formatFileSize(file.size)}
-                      </span>
-                      <CloseOutlined
-                        className="cls-remove-file"
-                        onClick={() => handleRemoveFile(file.id)}
-                      />
-                    </div>
-                  </div>
 
-                  {file.status === "uploading" && (
-                    <div className="cls-progress-section">
-                      <div className="cls-upload-spinner">
-                        <div className="cls-spinner"></div>
+                    {file.status === "uploading" && (
+                      <div className="cls-progress-section">
+                        <div className="cls-upload-spinner">
+                          <div className="cls-spinner"></div>
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              color: "#666",
+                              marginLeft: 8,
+                            }}
+                          >
+                            Uploading...
+                          </Text>
+                        </div>
+                        <Progress
+                          percent={Math.floor(uploadProgress[file.id] || 0)}
+                          size="small"
+                          strokeColor="#1890ff"
+                          showInfo={false}
+                        />
+                      </div>
+                    )}
+
+                    {file.status === "success" && (
+                      <div className="cls-success-indicator">
+                        <div className="cls-success-tick">✓</div>
                         <Text
-                          style={{ fontSize: 12, color: "#666", marginLeft: 8 }}
+                          style={{
+                            fontSize: 12,
+                            color: "#52c41a",
+                            marginLeft: 8,
+                          }}
                         >
-                          Uploading...
+                          Upload completed
                         </Text>
                       </div>
-                      <Progress
-                        percent={Math.floor(uploadProgress[file.id] || 0)}
-                        size="small"
-                        strokeColor="#1890ff"
-                        showInfo={false}
-                      />
-                    </div>
-                  )}
-
-                  {file.status === "success" && (
-                    <div className="cls-success-indicator">
-                      <div className="cls-success-tick">✓</div>
-                      <Text
-                        style={{
-                          fontSize: 12,
-                          color: "#52c41a",
-                          marginLeft: 8,
-                        }}
-                      >
-                        Upload completed
-                      </Text>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-            {/* )} */}
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Submit Section */}
@@ -370,7 +337,6 @@ const Upload: React.FC = () => {
               size="large"
               onClick={handleSubmit}
               className="cls-submit-btn"
-              disabled={files.length === 0}
             >
               {translate("submit")}
             </Button>
