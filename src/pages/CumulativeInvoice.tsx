@@ -994,6 +994,10 @@ const CumulativeInvoice: React.FC = () => {
     }
   };
 
+  const handleFilterClick = () => {
+    setFilterDropdownVisible(!filterDropdownVisible);
+  };
+
   return (
     <div className="slide-up cls-cumulative-container">
       {/* Breadcrumb
@@ -1061,7 +1065,14 @@ const CumulativeInvoice: React.FC = () => {
 
         {/* Data Table */}
         <Card className="cls-data-table">
-          <Table
+          <div className="cls-table-container">
+              <div className="cls-table-header-actions">
+                <FilterOutlined 
+                  className="cls-external-filter-icon" 
+                  onClick={handleFilterClick}
+                />
+              </div>
+              <Table
             columns={visibleColumnsData}
             dataSource={paginatedTableData}
             pagination={false}
@@ -1071,6 +1082,7 @@ const CumulativeInvoice: React.FC = () => {
             scroll={{ x: 1200 }}
             tableLayout="fixed"
           />
+          </div>
 
           {/* Custom Pagination Footer */}
           <div
