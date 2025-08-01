@@ -326,6 +326,9 @@ const Dashboard: React.FC = () => {
 
   const invoiceStatusData = getInvoiceStatusData();
 
+  // Calculate visible items for carousel (max 3)
+  const getVisibleItems = (sections: any[]) => Math.min(3, sections.length);
+
   // Recent failures data
   const recentFailures = [];
 
@@ -546,7 +549,9 @@ const Dashboard: React.FC = () => {
         <Row gutter={[16, 16]} className="cls-overview-grid">
           {overviewData.map((item, index) => {
             const currentIndex = carouselStates[item.carouselKey as keyof typeof carouselStates] || 0;
-            const currentSection = item.sections[currentIndex];
+            const visibleItems = getVisibleItems(item.sections);
+            const startIndex = Math.max(0, Math.min(currentIndex, item.sections.length - visibleItems));
+            const visibleSections = item.sections.slice(startIndex, startIndex + visibleItems);
 
             return (
               <Col xs={24} sm={12} lg={6} key={index}>
@@ -565,32 +570,41 @@ const Dashboard: React.FC = () => {
                   {/* Carousel Section */}
                   <div className="cls-card-sections">
                     <div className="cls-carousel-container">
-                      {/* Current Section */}
-                      <div
-                        className={`cls-card-section cls-carousel-section ${currentSection.variant === "light" ? "cls-light-variant" : ""}`}
-                        style={{
-                          backgroundColor:
-                            currentSection.variant === "light"
-                              ? `rgba(${parseInt(currentSection.backgroundColor.slice(1, 3), 16)}, ${parseInt(currentSection.backgroundColor.slice(3, 5), 16)}, ${parseInt(currentSection.backgroundColor.slice(5, 7), 16)}, 0.15)`
-                              : currentSection.backgroundColor,
-                          color:
-                            currentSection.variant === "light"
-                              ? currentSection.backgroundColor
-                              : "white",
-                        }}
-                      >
-                        <div className="cls-section-content">
-                          <Text className="cls-section-label">
-                            {currentSection.label}
-                          </Text>
-                          <Text className="cls-section-value">
-                            {currentSection.value}
-                          </Text>
-                        </div>
+                      {/* Display up to 3 sections */}
+                      <div className="cls-sections-display">
+                        {visibleSections.map((section, sectionIndex) => (
+                          <div
+                            key={sectionIndex}
+                            className={`cls-card-section ${section.variant === "light" ? "cls-light-variant" : ""}`}
+                            style={{
+                              backgroundColor:
+                                section.variant === "light"
+                                  ? `rgba(${parseInt(section.backgroundColor.slice(1, 3), 16)}, ${parseInt(section.backgroundColor.slice(3, 5), 16)}, ${parseInt(section.backgroundColor.slice(5, 7), 16)}, 0.15)`
+                                  : section.backgroundColor,
+                              color:
+                                section.variant === "light"
+                                  ? section.backgroundColor
+                                  : "white",
+                              flex: `1 0 ${100 / visibleItems}%`,
+                            }}
+                          >
+                            <div className="cls-section-content">
+                              <Text className="cls-section-label">
+                                {section.label}
+                              </Text>
+                              <Text className="cls-section-value">
+                                {section.value}
+                              </Text>
+                            </div>
+                            {sectionIndex < visibleSections.length - 1 && (
+                              <div className="cls-section-divider" />
+                            )}
+                          </div>
+                        ))}
                       </div>
 
                       {/* Navigation Arrow - Only show right arrow when there are more items */}
-                      {currentIndex < item.sections.length - 1 && (
+                      {startIndex + visibleItems < item.sections.length && (
                         <button
                           className="cls-carousel-arrow cls-carousel-arrow-right"
                           onClick={() => handleCarouselNext(item.carouselKey, item.sections.length)}
@@ -601,8 +615,8 @@ const Dashboard: React.FC = () => {
                         </button>
                       )}
                       
-                      {/* Left Arrow - Only show when not on first item */}
-                      {currentIndex > 0 && (
+                      {/* Left Arrow - Only show when not at the beginning */}
+                      {startIndex > 0 && (
                         <button
                           className="cls-carousel-arrow cls-carousel-arrow-left"
                           onClick={() => handleCarouselPrev(item.carouselKey, item.sections.length)}
@@ -793,30 +807,8 @@ const Dashboard: React.FC = () => {
             }}
           >
             <ResponsiveContainer width="100%" height={280}>
-              <LineChart data={invoiceStatusData}>
-                <defs>
-                  <linearGradient
-                    id="submittedGradient"
-                    x1="0"
-                    y1="0"
-                    x2="0"
-                    y2="1"
-                  >
-                    <stop offset="5%" stopColor="#1890ff" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="#1890ff" stopOpacity={0.1} />
-                  </linearGradient>
-                  <linearGradient
-                    id="pendingGradient"
-                    x1="0"
-                    y1="0"
-                    x2="0"
-                    y2="1"
-                  >
-                    <stop offset="5%" stopColor="#52c41a" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="#52c41a" stopOpacity={0.1} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="1 1" stroke="#f0f0f0" />
+              <BarChart data={invoiceStatusData} barCategoryGap="20%">
+                <CartesianGrid strokeDasharray="1 1" stroke="#f0f0f0" vertical={false} />
                 <XAxis
                   dataKey="month"
                   axisLine={false}
@@ -836,29 +828,31 @@ const Dashboard: React.FC = () => {
                     boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
                   }}
                 />
-                <ReferenceLine
-                  y={200}
-                  stroke="#52c41a"
-                  strokeDasharray="3 3"
-                  strokeWidth={2}
-                />
-                <Line
-                  type="monotone"
+                <Bar
                   dataKey="Submitted"
-                  stroke="#1890ff"
-                  strokeWidth={3}
-                  dot={{ fill: "#1890ff", strokeWidth: 2, r: 4 }}
-                  activeDot={{ r: 6, fill: "#1890ff" }}
+                  fill="#1890ff"
+                  radius={[4, 4, 0, 0]}
+                  maxBarSize={40}
                 />
-                <Line
-                  type="monotone"
+                <Bar
                   dataKey="Pending to File"
-                  stroke="#52c41a"
-                  strokeWidth={3}
-                  dot={{ fill: "#52c41a", strokeWidth: 2, r: 4 }}
-                  activeDot={{ r: 6, fill: "#52c41a" }}
+                  fill="#52c41a"
+                  radius={[4, 4, 0, 0]}
+                  maxBarSize={40}
                 />
-              </LineChart>
+                <Bar
+                  dataKey="Invoice Missing"
+                  fill="#fa8c16"
+                  radius={[4, 4, 0, 0]}
+                  maxBarSize={40}
+                />
+                <Bar
+                  dataKey="Additional in GSTR -2A"
+                  fill="#f5222d"
+                  radius={[4, 4, 0, 0]}
+                  maxBarSize={40}
+                />
+              </BarChart>
             </ResponsiveContainer>
           </Card>
         </Col>
@@ -947,16 +941,8 @@ const Dashboard: React.FC = () => {
             }}
           >
             <ResponsiveContainer width="100%" height={200}>
-              <AreaChart data={pendingFilesData}>
-                <defs>
-                  <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#1890ff" stopOpacity={0.4} />
-                    <stop offset="25%" stopColor="#1890ff" stopOpacity={0.3} />
-                    <stop offset="75%" stopColor="#1890ff" stopOpacity={0.15} />
-                    <stop offset="95%" stopColor="#1890ff" stopOpacity={0.05} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="1 1" stroke="#f0f0f0" />
+              <BarChart data={pendingFilesData}>
+                <CartesianGrid strokeDasharray="1 1" stroke="#f0f0f0" vertical={false} />
                 <XAxis
                   dataKey="month"
                   axisLine={false}
@@ -976,16 +962,13 @@ const Dashboard: React.FC = () => {
                     boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
                   }}
                 />
-                <Area
-                  type="monotone"
+                <Bar
                   dataKey="value"
-                  stroke="#1890ff"
-                  strokeWidth={3}
-                  fill="url(#areaGradient)"
-                  dot={{ fill: "#1890ff", strokeWidth: 2, r: 4 }}
-                  activeDot={{ r: 6, fill: "#1890ff", strokeWidth: 2 }}
+                  fill="#1890ff"
+                  radius={[8, 8, 0, 0]}
+                  maxBarSize={60}
                 />
-              </AreaChart>
+              </BarChart>
             </ResponsiveContainer>
           </Card>
         </Col>

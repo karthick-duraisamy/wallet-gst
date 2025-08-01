@@ -137,6 +137,13 @@
   overflow: hidden;
 }
 
+.cls-sections-display {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 .cls-carousel-section {
   flex: 1;
   height: 100%;
