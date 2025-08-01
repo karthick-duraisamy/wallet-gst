@@ -516,90 +516,44 @@ const Dashboard: React.FC = () => {
             <Col xs={24} sm={12} lg={6} key={index}>
               <div className="cls-overview-card">
                 {/* Header */}
-                <div
-                  style={{
-                    backgroundColor: "white",
-                    padding: "12px 16px",
-                    borderBottom: "1px solid #f0f0f0",
-                    flex: "0 0 auto",
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      fontWeight: 600,
-                      color: "#333",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "8px",
-                    }}
-                  >
+                <div className="cls-card-header">
+                  <Text className="cls-card-title">
                     {item.title}
                     {(item.title.includes("Amount") ||
                       item.title.includes("Airlines")) && (
-                      <InfoCircleOutlined
-                        style={{ fontSize: 12, color: "#999" }}
-                      />
+                      <InfoCircleOutlined className="cls-info-icon" />
                     )}
                   </Text>
                 </div>
 
                 {/* Sections */}
-                <div
-                  style={{
-                    display: "flex",
-                    flex: 1,
-                    height: "80px",
-                  }}
-                >
+                <div className="cls-card-sections">
                   {item.sections.map((section, sectionIndex) => (
                     <div
                       key={sectionIndex}
+                      className={`cls-card-section ${section.variant === "light" ? "cls-light-variant" : ""}`}
                       style={{
-                        flex: 1,
                         backgroundColor:
                           section.variant === "light"
-                            ? `${section.backgroundColor}33`
+                            ? `${section.backgroundColor}20`
                             : section.backgroundColor,
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        alignItems: "center",
                         color:
                           section.variant === "light"
                             ? section.backgroundColor
                             : "white",
-                        padding: "8px",
-                        position: "relative",
                       }}
                     >
-                      <Text
-                        style={{
-                          color:
-                            section.variant === "light"
-                              ? section.backgroundColor
-                              : "white",
-                          fontSize: 12,
-                          fontWeight: 500,
-                          textAlign: "center",
-                          lineHeight: "14px",
-                          marginBottom: 4,
-                        }}
-                      >
-                        {section.label}
-                      </Text>
-                      <Text
-                        style={{
-                          color:
-                            section.variant === "light"
-                              ? section.backgroundColor
-                              : "white",
-                          fontSize: 18,
-                          fontWeight: 700,
-                        }}
-                      >
-                        {section.value}
-                      </Text>
+                      <div className="cls-section-content">
+                        <Text className="cls-section-label">
+                          {section.label}
+                        </Text>
+                        <Text className="cls-section-value">
+                          {section.value}
+                        </Text>
+                      </div>
+                      {sectionIndex < item.sections.length - 1 && (
+                        <div className="cls-section-divider"></div>
+                      )}
                     </div>
                   ))}
                 </div>

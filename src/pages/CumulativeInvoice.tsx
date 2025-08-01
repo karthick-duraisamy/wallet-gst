@@ -118,6 +118,7 @@ const CumulativeInvoice: React.FC = () => {
     action: { disabled: false },
   };
   const [filterDropdownVisible, setFilterDropdownVisible] = useState(false);
+  const filterDropdownRef = React.useRef(null);
 
   // Configuration for fixed columns (non-scrollable)
   const fixedColumnsConfig = {
@@ -1005,7 +1006,7 @@ const CumulativeInvoice: React.FC = () => {
                 onClick={() => setFilterDropdownVisible(!filterDropdownVisible)}
               />
               {filterDropdownVisible && (
-                <div className="cls-filter-dropdown">
+                <div className="cls-filter-dropdown" ref={filterDropdownRef}>
                   <div className="cls-filter-header">
                     <span className="cls-filter-title">Show/Hide Columns</span>
                     <Button

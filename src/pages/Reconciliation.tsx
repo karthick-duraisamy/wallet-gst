@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, Table, Button, Select, DatePicker, Input, Space, Tag, Radio, Badge, Checkbox, Typography, Row, Col, Statistic, Progress } from 'antd';
 import { SearchOutlined, DownloadOutlined, FilterOutlined, CalendarOutlined, SettingOutlined, EyeOutlined, MoreOutlined } from '@ant-design/icons';
@@ -24,6 +24,24 @@ const Reconciliation: React.FC = () => {
   const [travelVendor, setTravelVendor] = useState<string>('all');
   const [status, setStatus] = useState<string>('all');
   const [filterDropdownVisible, setFilterDropdownVisible] = useState(false);
+  const filterDropdownRef = useRef<HTMLDivElement>(null);
+
+  // Click outside to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (filterDropdownRef.current && !filterDropdownRef.current.contains(event.target as Node)) {
+        setFilterDropdownVisible(false);
+      }
+    };
+
+    if (filterDropdownVisible) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [filterDropdownVisible]);
 
   // Column configuration with disabled flags
   const columnConfig = {
@@ -66,14 +84,25 @@ const Reconciliation: React.FC = () => {
   };
 
   const statusOptions = [
-    { label: 'All', count: 76 },
-    { label: 'New', count: 0 },
-    { label: 'Matched', count: 0 },
-    { label: 'Pending to file', count: 0 },
-    { label: 'Invoice missing', count: 0 },
-    { label: 'Additional in GSTR-2A', count: 917 },
-    { label: 'Invoice received', count: 0 },
+    { label: 'All' },
+    { label: 'New' },
+    { label: 'Matched' },
+    { label: 'Pending to file' },
+    { label: 'Invoice missing' },
+    { label: 'Additional in GSTR-2A' },
+    { label: 'Invoice received' },
+    { label: 'Pending' },
   ];
+
+  // Status counts for display below form
+  const statusCounts = {
+    new: 0,
+    matched: 0,
+    pendingToFile: 0,
+    invoiceMissing: 0,
+    additionalInGSTR2A: 917,
+    invoiceReceived: 0
+  };
 
   const [visibleColumns, setVisibleColumns] = useState({
     supplierName: true,
@@ -444,10 +473,7 @@ const Reconciliation: React.FC = () => {
           >
             {statusOptions.map((status, index) => (
               <Option key={index} value={status.label.toLowerCase().replace(/\s+/g, '-')}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span>{status.label}</span>
-                  <span style={{ color: '#666', fontSize: '12px' }}>{status.count}</span>
-                </div>
+                {status.label}
               </Option>
             ))}
           </Select>
@@ -502,7 +528,33 @@ const Reconciliation: React.FC = () => {
         </Button>
       </div>
 
-
+      {/* Status Count Display */}
+      <div className="cls-status-counts">
+        <div className="cls-status-item">
+          <span className="cls-status-label">New:</span>
+          <span className="cls-status-value">{statusCounts.new}</span>
+        </div>
+        <div className="cls-status-item">
+          <span className="cls-status-label">Matched:</span>
+          <span className="cls-status-value">{statusCounts.matched}</span>
+        </div>
+        <div className="cls-status-item">
+          <span className="cls-status-label">Pending to file:</span>
+          <span className="cls-status-value">{statusCounts.pendingToFile}</span>
+        </div>
+        <div className="cls-status-item">
+          <span className="cls-status-label">Invoice missing:</span>
+          <span className="cls-status-value">{statusCounts.invoiceMissing}</span>
+        </div>
+        <div className="cls-status-item">
+          <span className="cls-status-label">Additional in GSTR-2A:</span>
+          <span className="cls-status-value">{statusCounts.additionalInGSTR2A}</span>
+        </div>
+        <div className="cls-status-item">
+          <span className="cls-status-label">Invoice received:</span>
+          <span className="cls-status-value">{statusCounts.invoiceReceived}</span>
+        </div>
+      </div>
 
       {/* Export Buttons */}
       <div className="cls-export-controls">
@@ -539,7 +591,7 @@ const Reconciliation: React.FC = () => {
               onClick={() => setFilterDropdownVisible(!filterDropdownVisible)}
             />
             {filterDropdownVisible && (
-              <div className="cls-filter-dropdown">
+              <div className="cls-filter-dropdown" ref={filterDropdownRef}>
                 <div className="cls-filter-header">
                   <span className="cls-filter-title">Show/Hide Columns</span>
                   <Button
