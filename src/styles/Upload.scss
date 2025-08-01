@@ -51,12 +51,12 @@
   font-size: 14px;
   margin: 25px 15px;
   padding: 8px 14px;
-  background: #e6f3ff;
+  background: #dddd001c;
   border-radius: 8px;
-  border: 1px solid #91d5ff;
+  border: 1px solid #dddd001c;
 
   .anticon {
-    color: #1890ff;
+    color: #93930c;
     margin-right: 8px;
   }
 }
@@ -397,7 +397,14 @@
   border: unset;
   background: unset;
 }
-
+.cls-info{
+    background: #18caff26;
+    padding: 10px 12px;
+    border-radius: 8px;
+    color: #666666;
+    text-align: left;
+    margin-bottom: 15px;
+}
 @keyframes slideInDown {
   from {
     opacity: 0;

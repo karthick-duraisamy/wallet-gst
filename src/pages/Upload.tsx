@@ -147,8 +147,7 @@ const Upload: React.FC = () => {
       children: (
         <div className="cls-tab-content">
           <InfoCircleOutlined />
-          Kindly upload the file downloaded from GSTR-2A of respective travel
-          agencies for reconciliation of the booking fees.
+          Non-AYP bookings are reservations made outside the approved AYP program or policy.
         </div>
       ),
     },
@@ -157,20 +156,12 @@ const Upload: React.FC = () => {
       label: (
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <span>GSTR-2A</span>
-          <Tooltip
-            title="A system-generated return that reflects all purchases and inward supplies made by a business, as reported by its suppliers in their GSTR-1 returns."
-            placement="top"
-          >
-            <InfoCircleOutlined
-              style={{ color: "#1890ff", fontSize: "14px" }}
-            />
-          </Tooltip>
         </div>
       ),
       children: (
         <div className="cls-tab-content">
           <InfoCircleOutlined />
-          Upload GSTR-2A data for tax reconciliation purposes.
+            It is an auto-drafted purchase return statement showing inward supplies from your suppliers as per their GSTR-1 filings
         </div>
       ),
     },
@@ -223,7 +214,20 @@ const Upload: React.FC = () => {
               {...uploadProps}
               className={`cls-upload-area ${dragOver ? "cls-drag-over" : ""}`}
             >
-              {/* File Type and Limit Info */}
+              <div className="cls-upload-center">
+                <div className="cls-upload-icon-border">
+                  <div className="cls-upload-icon">
+                    <PlusOutlined />
+                  </div>
+                </div>
+                 <div className="cls-info">
+                  <InfoCircleOutlined />
+                  You can upload bookings of any other travel agency. Kindly upload the booking data in given sample format.
+                </div>
+                <div className="cls-upload-main-text">
+                  Drag & drop your file here
+                </div>
+                 {/* File Type and Limit Info */}
               <div className="cls-file-info">
                 <div>
                   Supported Files: <strong>CSV, XLS</strong>
@@ -231,16 +235,7 @@ const Upload: React.FC = () => {
                 <div>Upload up to 3 file. Each max file size 5MB</div>
               </div>
 
-              <div className="cls-upload-center">
-                <div className="cls-upload-icon-border">
-                  <div className="cls-upload-icon">
-                    <PlusOutlined />
-                  </div>
-                </div>
-
-                <div className="cls-upload-main-text">
-                  Drag & drop your file here
-                </div>
+                
 
                 {/* <div className="cls-upload-or-text">or</div>
 
