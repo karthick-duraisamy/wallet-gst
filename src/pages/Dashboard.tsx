@@ -60,50 +60,50 @@ const Dashboard: React.FC = () => {
   const overviewData = [
     {
       title: "All Travel History",
-      backgroundColor: "#4CAF50",
+      backgroundColor: "#6366F1",
       carouselKey: "travelHistory",
       sections: [
-        { label: "Bookings", value: 0, backgroundColor: "#4CAF50" },
-        { label: "Cancellations", value: 0, backgroundColor: "#2E7D32" },
+        { label: "Bookings", value: 0, backgroundColor: "#6366F1" },
+        { label: "Cancellations", value: 0, backgroundColor: "#4F46E5" },
       ],
     },
     {
       title: "Airline Invoices",
-      backgroundColor: "#3F51B5",
+      backgroundColor: "#06B6D4",
       carouselKey: "airlineInvoices",
       sections: [
-        { label: "Available", value: 0, backgroundColor: "#3F51B5" },
-        { label: "GST - Filed", value: 0, backgroundColor: "#1A237E" },
+        { label: "Available", value: 0, backgroundColor: "#06B6D4" },
+        { label: "GST - Filed", value: 0, backgroundColor: "#0891B2" },
         {
           label: "Pending to File",
           value: 0,
-          backgroundColor: "#3F51B5",
+          backgroundColor: "#06B6D4",
           variant: "light",
         },
       ],
     },
     {
       title: "All Invoices",
-      backgroundColor: "#9C27B0",
+      backgroundColor: "#8B5CF6",
       carouselKey: "allInvoices",
       sections: [
-        { label: "Available", value: 0, backgroundColor: "#9C27B0" },
-        { label: "GST - Filed", value: 0, backgroundColor: "#4A148C" },
+        { label: "Available", value: 0, backgroundColor: "#8B5CF6" },
+        { label: "GST - Filed", value: 0, backgroundColor: "#7C3AED" },
         {
           label: "Pending to File",
           value: 0,
-          backgroundColor: "#9C27B0",
+          backgroundColor: "#8B5CF6",
           variant: "light",
         },
       ],
     },
     {
       title: "Net Claimable Amount(INR)",
-      backgroundColor: "#F44336",
+      backgroundColor: "#F59E0B",
       carouselKey: "netClaimable",
       sections: [
-        { label: "Airlines", value: 0, backgroundColor: "#F44336" },
-        { label: "All", value: 0, backgroundColor: "#C62828" },
+        { label: "Airlines", value: 0, backgroundColor: "#F59E0B" },
+        { label: "All", value: 0, backgroundColor: "#D97706" },
       ],
     },
   ];
@@ -565,27 +565,17 @@ const Dashboard: React.FC = () => {
                   {/* Carousel Section */}
                   <div className="cls-card-sections">
                     <div className="cls-carousel-container">
-                      {/* Navigation Arrows */}
-                      {currentIndex > 0 && (
-                        <button
-                          className="cls-carousel-arrow cls-carousel-arrow-left"
-                          onClick={() => handleCarouselPrev(item.carouselKey, item.sections.length)}
-                        >
-                          <LeftOutlined />
-                        </button>
-                      )}
-
                       {/* Current Section */}
                       <div
                         className={`cls-card-section cls-carousel-section ${currentSection.variant === "light" ? "cls-light-variant" : ""}`}
                         style={{
                           backgroundColor:
                             currentSection.variant === "light"
-                              ? `rgba(${parseInt(currentSection.backgroundColor.slice(1, 3), 16)}, ${parseInt(currentSection.backgroundColor.slice(3, 5), 16)}, ${parseInt(currentSection.backgroundColor.slice(5, 7), 16)}, 0.3)`
+                              ? `rgba(${parseInt(currentSection.backgroundColor.slice(1, 3), 16)}, ${parseInt(currentSection.backgroundColor.slice(3, 5), 16)}, ${parseInt(currentSection.backgroundColor.slice(5, 7), 16)}, 0.15)`
                               : currentSection.backgroundColor,
                           color:
                             currentSection.variant === "light"
-                              ? "#52b488"
+                              ? currentSection.backgroundColor
                               : "white",
                         }}
                       >
@@ -599,13 +589,27 @@ const Dashboard: React.FC = () => {
                         </div>
                       </div>
 
-                      {/* Right Arrow */}
+                      {/* Navigation Arrow - Only show right arrow when there are more items */}
                       {currentIndex < item.sections.length - 1 && (
                         <button
                           className="cls-carousel-arrow cls-carousel-arrow-right"
                           onClick={() => handleCarouselNext(item.carouselKey, item.sections.length)}
                         >
-                          <RightOutlined />
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="9,18 15,12 9,6"></polyline>
+                          </svg>
+                        </button>
+                      )}
+                      
+                      {/* Left Arrow - Only show when not on first item */}
+                      {currentIndex > 0 && (
+                        <button
+                          className="cls-carousel-arrow cls-carousel-arrow-left"
+                          onClick={() => handleCarouselPrev(item.carouselKey, item.sections.length)}
+                        >
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="15,18 9,12 15,6"></polyline>
+                          </svg>
                         </button>
                       )}
                     </div>
