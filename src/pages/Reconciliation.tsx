@@ -25,6 +25,17 @@ const Reconciliation: React.FC = () => {
   const [status, setStatus] = useState<string>('all');
   const [filterDropdownVisible, setFilterDropdownVisible] = useState(false);
 
+  // Column configuration with disabled flags
+  const columnConfig = {
+    supplierName: { disabled: true },
+    pnrTicketNumber: { disabled: true },
+    invoiceNumber: { disabled: true },
+    invoiceDate: { disabled: true },
+    type: { disabled: false },
+    taxClaimable: { disabled: false },
+    status: { disabled: false },
+  };
+
   const handleFilterChange = (key: string, value: any) => {
     dispatch(setFilters({ [key]: value }));
   };
@@ -556,6 +567,9 @@ const Reconciliation: React.FC = () => {
                     <div key={key} className="cls-filter-option">
                       <Checkbox
                         checked={visibleColumns[key as keyof typeof visibleColumns]}
+                        disabled={
+                          columnConfig[key as keyof typeof columnConfig]?.disabled || false
+                        }
                         onChange={(e) => setVisibleColumns(prev => ({
                           ...prev,
                           [key]: e.target.checked

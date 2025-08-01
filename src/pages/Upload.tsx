@@ -218,13 +218,15 @@ const Upload: React.FC = () => {
             >
               <div className="cls-info">
                 <InfoCircleOutlined />
-                You can upload bookings of any other travel agency. Kindly
-                upload the booking data in given sample format.
+                {activeTab === "non-ayp" 
+                  ? "You can upload bookings of any other travel agency. Kindly upload the booking data in the given sample format."
+                  : "GSTR-2A is an auto-drafted purchase return statement showing inward supplies from your suppliers as per their GSTR-1 filings."
+                }
               </div>
               <div className="cls-upload-center">
                 <div className="cls-upload-icon-border">
                   <div className="cls-upload-icon">
-                    <PlusOutlined />
+                    <FileOutlined />
                   </div>
                 </div>
                 <div className="cls-upload-main-text">
