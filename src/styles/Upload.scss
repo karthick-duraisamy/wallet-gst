@@ -159,7 +159,7 @@
 }
 
 .cls-upload-icon {
-  color: white;
+  color: #774ed4;
   font-size: 32px;
   display: flex;
   align-items: center;
@@ -191,14 +191,19 @@
 }
 
 @keyframes uploadBounce {
-  0%, 50%, 100% {
+
+  0%,
+  50%,
+  100% {
     transform: translateY(0);
     opacity: 1;
   }
+
   25% {
     transform: translateY(-4px);
     opacity: 0.8;
   }
+
   75% {
     transform: translateY(2px);
     opacity: 0.9;
@@ -457,9 +462,12 @@
 /* Styles for the filter icon outside the table */
 .cls-filter-wrapper {
   display: flex;
-  justify-content: flex-end; /* Align to the right */
-  align-items: center; /* Vertically center if needed */
-  margin-top: 10px; /* Adjust spacing as needed */
+  justify-content: flex-end;
+  /* Align to the right */
+  align-items: center;
+  /* Vertically center if needed */
+  margin-top: 10px;
+  /* Adjust spacing as needed */
 }
 
 .cls-filter-icon {

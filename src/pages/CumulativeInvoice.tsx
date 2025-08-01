@@ -1014,9 +1014,9 @@ const CumulativeInvoice: React.FC = () => {
                       onClick={() => setFilterDropdownVisible(false)}
                       style={{
                         position: "absolute",
-                        top: "8px",
-                        right: "8px",
-                        color: "#999",
+                        top: "4px",
+                        right: "6px",
+                        color: "red",
                         fontSize: "16px",
                         padding: 0,
                         width: "20px",
@@ -1037,7 +1037,8 @@ const CumulativeInvoice: React.FC = () => {
                             visibleColumns[key as keyof typeof visibleColumns]
                           }
                           disabled={
-                            columnConfig[key as keyof typeof columnConfig]?.disabled || false
+                            columnConfig[key as keyof typeof columnConfig]
+                              ?.disabled || false
                           }
                           onChange={(e) =>
                             setVisibleColumns((prev) => ({
