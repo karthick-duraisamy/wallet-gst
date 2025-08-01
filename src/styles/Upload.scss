@@ -159,23 +159,54 @@
 }
 
 .cls-upload-icon {
-  /* Remove the + icon and surrounding circle */
-  /* width: 48px; */
-  /* height: 48px; */
-  /* background: #4C1D95; */
-  /* border-radius: 50%; */
+  color: #774ed4;
+  font-size: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 12px;
-  transition: all 0.3s ease;
-  position: relative;
-  /* top: 35px; */
-  /* left: 34px; */
+}
 
-  .anticon {
-    color: #4C1D95; /* Use primary color for the file icon */
-    font-size: 48px; /* Increase size for better visibility */
+.cls-animated-upload {
+  svg {
+    width: 32px;
+    height: 32px;
+    transition: all 0.3s ease;
+  }
+
+  .cls-upload-arrow {
+    animation: uploadBounce 2s infinite ease-in-out;
+    transform-origin: center;
+  }
+
+  &:hover {
+    svg {
+      transform: scale(1.1);
+    }
+
+    .cls-upload-arrow {
+      animation-duration: 0.8s;
+      fill: #52c41a;
+    }
+  }
+}
+
+@keyframes uploadBounce {
+
+  0%,
+  50%,
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  25% {
+    transform: translateY(-4px);
+    opacity: 0.8;
+  }
+
+  75% {
+    transform: translateY(2px);
+    opacity: 0.9;
   }
 }
 
@@ -431,9 +462,12 @@
 /* Styles for the filter icon outside the table */
 .cls-filter-wrapper {
   display: flex;
-  justify-content: flex-end; /* Align to the right */
-  align-items: center; /* Vertically center if needed */
-  margin-top: 10px; /* Adjust spacing as needed */
+  justify-content: flex-end;
+  /* Align to the right */
+  align-items: center;
+  /* Vertically center if needed */
+  margin-top: 10px;
+  /* Adjust spacing as needed */
 }
 
 .cls-filter-icon {
