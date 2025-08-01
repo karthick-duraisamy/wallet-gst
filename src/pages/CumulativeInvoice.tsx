@@ -180,88 +180,12 @@ const CumulativeInvoice: React.FC = () => {
       align: "center" as const,
       render: () => "Edit",
     },
-    {
-      title: (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            position: "relative",
-          }}
-        >
-          <Button
-            type="text"
-            icon={<FilterOutlined />}
-            onClick={() => setFilterDropdownVisible(!filterDropdownVisible)}
-            style={{
-              border: "none",
-              padding: 0,
-              background: "transparent",
-              color: "#1890ff",
-              fontSize: "16px",
-            }}
-          />
-          {filterDropdownVisible && (
-            <div className="cls-filter-dropdown">
-              <div className="cls-filter-header">
-                <span className="cls-filter-title">Show/Hide Columns</span>
-                <Button
-                  type="text"
-                  onClick={() => setFilterDropdownVisible(false)}
-                  style={{
-                    position: "absolute",
-                    top: "8px",
-                    right: "8px",
-                    color: "#999",
-                    fontSize: "16px",
-                    padding: 0,
-                    width: "20px",
-                    height: "20px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  ×
-                </Button>
-              </div>
-              <div className="cls-filter-content">
-                {Object.keys(visibleColumns).map((key) => (
-                  <div key={key} className="cls-filter-option">
-                    <Checkbox
-                      checked={
-                        visibleColumns[key as keyof typeof visibleColumns]
-                      }
-                      onChange={(e) =>
-                        setVisibleColumns((prev) => ({
-                          ...prev,
-                          [key]: e.target.checked,
-                        }))
-                      }
-                    >
-                      {columnTitleMapping[
-                        key as keyof typeof columnTitleMapping
-                      ] || key}
-                    </Checkbox>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      ),
-      key: "filter",
-      width: 60,
-      fixed: "right" as const,
-      render: () => null,
-    },
+    
   ];
 
   // Filter visible columns
   const visibleColumnsData = allColumns.filter(
     (col) =>
-      col.key === "filter" ||
       visibleColumns[col.key as keyof typeof visibleColumns],
   );
 
@@ -994,6 +918,10 @@ const CumulativeInvoice: React.FC = () => {
     }
   };
 
+  const handleFilterClick = () => {
+    setFilterDropdownVisible(!filterDropdownVisible);
+  };
+
   return (
     <div className="slide-up cls-cumulative-container">
       {/* Breadcrumb
@@ -1061,16 +989,71 @@ const CumulativeInvoice: React.FC = () => {
 
         {/* Data Table */}
         <Card className="cls-data-table">
-          <Table
-            columns={visibleColumnsData}
-            dataSource={paginatedTableData}
-            pagination={false}
-            size="middle"
-            bordered={false}
-            className="custom-table"
-            scroll={{ x: 1200 }}
-            tableLayout="fixed"
-          />
+          <div className="cls-table-container">
+            <div className="cls-table-header-actions">
+              <FilterOutlined 
+                className="cls-external-filter-icon" 
+                onClick={() => setFilterDropdownVisible(!filterDropdownVisible)}
+              />
+              {filterDropdownVisible && (
+                <div className="cls-filter-dropdown">
+                  <div className="cls-filter-header">
+                    <span className="cls-filter-title">Show/Hide Columns</span>
+                    <Button
+                      type="text"
+                      onClick={() => setFilterDropdownVisible(false)}
+                      style={{
+                        position: "absolute",
+                        top: "8px",
+                        right: "8px",
+                        color: "#999",
+                        fontSize: "16px",
+                        padding: 0,
+                        width: "20px",
+                        height: "20px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      ×
+                    </Button>
+                  </div>
+                  <div className="cls-filter-content">
+                    {Object.keys(visibleColumns).map((key) => (
+                      <div key={key} className="cls-filter-option">
+                        <Checkbox
+                          checked={
+                            visibleColumns[key as keyof typeof visibleColumns]
+                          }
+                          onChange={(e) =>
+                            setVisibleColumns((prev) => ({
+                              ...prev,
+                              [key]: e.target.checked,
+                            }))
+                          }
+                        >
+                          {columnTitleMapping[
+                            key as keyof typeof columnTitleMapping
+                          ] || key}
+                        </Checkbox>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+            <Table
+              columns={visibleColumnsData}
+              dataSource={paginatedTableData}
+              pagination={false}
+              size="middle"
+              bordered={false}
+              className="custom-table"
+              scroll={{ x: 1200 }}
+              tableLayout="fixed"
+            />
+          </div>
 
           {/* Custom Pagination Footer */}
           <div

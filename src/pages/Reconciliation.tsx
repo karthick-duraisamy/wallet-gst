@@ -23,6 +23,7 @@ const Reconciliation: React.FC = () => {
   const [dateRange, setDateRange] = useState<[dayjs.Dayjs | null, dayjs.Dayjs | null]>([null, null]);
   const [travelVendor, setTravelVendor] = useState<string>('all');
   const [status, setStatus] = useState<string>('all');
+  const [filterDropdownVisible, setFilterDropdownVisible] = useState(false);
 
   const handleFilterChange = (key: string, value: any) => {
     dispatch(setFilters({ [key]: value }));
@@ -72,7 +73,7 @@ const Reconciliation: React.FC = () => {
     taxClaimable: true,
     status: true,
   });
-  const [filterDropdownVisible, setFilterDropdownVisible] = useState(false);
+
 
   const allColumns = [
     {
@@ -128,55 +129,11 @@ const Reconciliation: React.FC = () => {
         </Tag>
       ),
     },
-    {
-      title: (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <Button
-            type="text"
-            icon={<FilterOutlined />}
-            onClick={() => setFilterDropdownVisible(!filterDropdownVisible)}
-            style={{ border: 'none', padding: 0, background: 'transparent' }}
-          />
-          {filterDropdownVisible && (
-            <div style={{
-              position: 'absolute',
-              top: '100%',
-              right: 0,
-              background: 'white',
-              border: '1px solid #d9d9d9',
-              borderRadius: 6,
-              padding: 16,
-              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-              zIndex: 1000,
-              minWidth: 200
-            }}>
-              <div style={{ marginBottom: 8, fontWeight: 600 }}>Show/Hide Columns</div>
-              {Object.keys(visibleColumns).map((key) => (
-                <div key={key} style={{ marginBottom: 8 }}>
-                  <Checkbox
-                    checked={visibleColumns[key as keyof typeof visibleColumns]}
-                    onChange={(e) => setVisibleColumns(prev => ({
-                      ...prev,
-                      [key]: e.target.checked
-                    }))}
-                  >
-                    {translate(key.replace(/([A-Z])/g, ' $1').toLowerCase().trim())}
-                  </Checkbox>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      ),
-      key: 'filter',
-      width: 60,
-      fixed: 'right' as const,
-      render: () => null,
-    },
+    
   ];
 
   const visibleColumnsData = allColumns.filter(col => 
-    col.key === 'filter' || visibleColumns[col.key as keyof typeof visibleColumns]
+    visibleColumns[col.key as keyof typeof visibleColumns]
   );
 
   const mockData = [
@@ -423,6 +380,10 @@ const Reconciliation: React.FC = () => {
     },
   };
 
+  const handleFilterClick = () => {
+    setFilterDropdownVisible(!filterDropdownVisible);
+  };
+
   return (
     <div className="slide-up cls-reconciliation-container">
       {/* Breadcrumb */}
@@ -560,162 +521,211 @@ const Reconciliation: React.FC = () => {
 
       {/* Data Table */}
       <Card className="cls-data-table-card">
-        <Table
-          columns={visibleColumnsData}
-          dataSource={paginatedData}
-          pagination={false}
-          size="middle"
-          bordered={false}
-          className="custom-table"
-          scroll={{ x: 1200 }}
-          tableLayout="fixed"
-        />
-
-        {/* Custom Pagination Footer */}
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'space-between', 
-          alignItems: 'center', 
-          marginTop: 16,
-          paddingTop: 16,
-          borderTop: '1px solid #f0f0f0'
-        }}>
-          {/* Left side - Displaying info with page size selector */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span style={{ fontSize: '14px' }}>Displaying</span>
-            <Select
-              value={pageSize}
-              onChange={(value) => {
-                setPageSize(value);
-                setCurrentPage(1);
-              }}
-              style={{ width: 60 }}
-              size="small"
-              options={[
-                { value: 5, label: '5' },
-                { value: 10, label: '10' },
-                { value: 20, label: '20' },
-                { value: 30, label: '30' },
-                { value: 50, label: '50' },
-              ]}
+        <div className="cls-table-container">
+          <div className="cls-table-header-actions">
+            <FilterOutlined
+              className="cls-external-filter-icon"
+              onClick={() => setFilterDropdownVisible(!filterDropdownVisible)}
             />
-            <span style={{ fontSize: '14px' }}>Out of {filteredData.length}</span>
-          </div>
-
-          {/* Center - Page navigation */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <Button
-              icon="<"
-              disabled={currentPage === 1}
-              onClick={() => setCurrentPage(currentPage - 1)}
-              style={{
-                width: 32,
-                height: 32,
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                border: '1px solid #d9d9d9'
-              }}
-            />
-
-            {/* Page numbers */}
-            {(() => {
-              const pages = [];
-              const maxVisible = 5;
-              let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
-              let end = Math.min(totalPages, start + maxVisible - 1);
-
-              if (end - start < maxVisible - 1) {
-                start = Math.max(1, end - maxVisible + 1);
-              }
-
-              for (let i = start; i <= end; i++) {
-                pages.push(
+            {filterDropdownVisible && (
+              <div className="cls-filter-dropdown">
+                <div className="cls-filter-header">
+                  <span className="cls-filter-title">Show/Hide Columns</span>
                   <Button
-                    key={i}
-                    onClick={() => setCurrentPage(i)}
+                    type="text"
+                    onClick={() => setFilterDropdownVisible(false)}
                     style={{
-                      width: 32,
-                      height: 32,
-                      borderRadius: '50%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      backgroundColor: i === currentPage ? '#4f46e5' : 'white',
-                      borderColor: i === currentPage ? '#4f46e5' : '#d9d9d9',
-                      color: i === currentPage ? 'white' : '#000'
+                      position: "absolute",
+                      top: "8px",
+                      right: "8px",
+                      color: "#999",
+                      fontSize: "16px",
+                      padding: 0,
+                      width: "20px",
+                      height: "20px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
                     }}
                   >
-                    {i}
+                    ×
                   </Button>
-                );
-              }
+                </div>
+                <div className="cls-filter-content">
+                  {Object.keys(visibleColumns).map((key) => (
+                    <div key={key} className="cls-filter-option">
+                      <Checkbox
+                        checked={visibleColumns[key as keyof typeof visibleColumns]}
+                        onChange={(e) => setVisibleColumns(prev => ({
+                          ...prev,
+                          [key]: e.target.checked
+                        }))}
+                      >
+                        {translate(key.replace(/([A-Z])/g, ' $1').toLowerCase().trim())}
+                      </Checkbox>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+          <Table
+            columns={visibleColumnsData}
+            dataSource={paginatedData}
+            pagination={false}
+            size="middle"
+            bordered={false}
+            className="custom-table"
+            scroll={{ x: 1200 }}
+            tableLayout="fixed"
+          />
 
-              // Add ellipsis and last page if needed
-              if (end < totalPages) {
-                if (end < totalPages - 1) {
-                  pages.push(<span key="ellipsis" style={{ margin: '0 8px' }}>...</span>);
+          {/* Custom Pagination Footer */}
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginTop: 16,
+            paddingTop: 16,
+            borderTop: '1px solid #f0f0f0'
+          }}>
+            {/* Left side - Displaying info with page size selector */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span style={{ fontSize: '14px' }}>Displaying</span>
+              <Select
+                value={pageSize}
+                onChange={(value) => {
+                  setPageSize(value);
+                  setCurrentPage(1);
+                }}
+                style={{ width: 60 }}
+                size="small"
+                options={[
+                  { value: 5, label: '5' },
+                  { value: 10, label: '10' },
+                  { value: 20, label: '20' },
+                  { value: 30, label: '30' },
+                  { value: 50, label: '50' },
+                ]}
+              />
+              <span style={{ fontSize: '14px' }}>Out of {filteredData.length}</span>
+            </div>
+
+            {/* Center - Page navigation */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <Button
+                icon="<"
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage(currentPage - 1)}
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  border: '1px solid #d9d9d9'
+                }}
+              />
+
+              {/* Page numbers */}
+              {(() => {
+                const pages = [];
+                const maxVisible = 5;
+                let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+                let end = Math.min(totalPages, start + maxVisible - 1);
+
+                if (end - start < maxVisible - 1) {
+                  start = Math.max(1, end - maxVisible + 1);
                 }
-                pages.push(
-                  <Button
-                    key={totalPages}
-                    onClick={() => setCurrentPage(totalPages)}
-                    style={{
-                      width: 32,
-                      height: 32,
-                      borderRadius: '50%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      backgroundColor: totalPages === currentPage ? '#4f46e5' : 'white',
-                      borderColor: totalPages === currentPage ? '#4f46e5' : '#d9d9d9',
-                      color: totalPages === currentPage ? 'white' : '#000'
-                    }}
-                  >
-                    {totalPages}
-                  </Button>
-                );
-              }
 
-              return pages;
-            })()}
+                for (let i = start; i <= end; i++) {
+                  pages.push(
+                    <Button
+                      key={i}
+                      onClick={() => setCurrentPage(i)}
+                      style={{
+                        width: 32,
+                        height: 32,
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: i === currentPage ? '#4f46e5' : 'white',
+                        borderColor: i === currentPage ? '#4f46e5' : '#d9d9d9',
+                        color: i === currentPage ? 'white' : '#000'
+                      }}
+                    >
+                      {i}
+                    </Button>
+                  );
+                }
 
-            <Button
-              icon=">"
-              disabled={currentPage === totalPages}
-              onClick={() => setCurrentPage(currentPage + 1)}
-              style={{
-                width: 32,
-                height: 32,
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                border: '1px solid #d9d9d9'
-              }}
-            />
-          </div>
+                // Add ellipsis and last page if needed
+                if (end < totalPages) {
+                  if (end < totalPages - 1) {
+                    pages.push(<span key="ellipsis" style={{ margin: '0 8px' }}>...</span>);
+                  }
+                  pages.push(
+                    <Button
+                      key={totalPages}
+                      onClick={() => setCurrentPage(totalPages)}
+                      style={{
+                        width: 32,
+                        height: 32,
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: totalPages === currentPage ? '#4f46e5' : 'white',
+                        borderColor: totalPages === currentPage ? '#4f46e5' : '#d9d9d9',
+                        color: totalPages === currentPage ? 'white' : '#000'
+                      }}
+                    >
+                      {totalPages}
+                    </Button>
+                  );
+                }
 
-          {/* Right side - Go to page */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span style={{ fontSize: '14px' }}>Go to Page</span>
-            <Input 
-              style={{ width: 60 }} 
-              value={goToPageValue}
-              onChange={(e) => setGoToPageValue(e.target.value)}
-              onPressEnter={handleGoToPage}
-              placeholder={`1-${totalPages}`}
-              size="small"
-            />
-            <Button 
-              type="primary" 
-              style={{ backgroundColor: '#4f46e5', borderRadius: '16px' }}
-              onClick={handleGoToPage}
-              size="small"
-            >
-              Go
-            </Button>
+                return pages;
+              })()}
+
+              <Button
+                icon=">"
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage(currentPage + 1)}
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  border: '1px solid #d9d9d9'
+                }}
+              />
+            </div>
+
+            {/* Right side - Go to page */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span style={{ fontSize: '14px' }}>Go to Page</span>
+              <Input
+                style={{ width: 60 }}
+                value={goToPageValue}
+                onChange={(e) => setGoToPageValue(e.target.value)}
+                onPressEnter={handleGoToPage}
+                placeholder={`1-${totalPages}`}
+                size="small"
+              />
+              <Button
+                type="primary"
+                style={{ backgroundColor: '#4f46e5', borderRadius: '16px' }}
+                onClick={handleGoToPage}
+                size="small"
+              >
+                Go
+              </Button>
+            </div>
           </div>
         </div>
       </Card>

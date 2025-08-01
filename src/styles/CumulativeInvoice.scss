@@ -413,3 +413,25 @@
     }
   }
 }
+
+.cls-table-header-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 16px 8px 0;
+  position: relative;
+  z-index: 10;
+}
+
+.cls-external-filter-icon {
+  cursor: pointer;
+  font-size: 16px;
+  color: #1890ff;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: #40a9ff;
+    background: #f0f8ff;
+  }
+}
