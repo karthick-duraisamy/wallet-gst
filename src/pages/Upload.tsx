@@ -147,7 +147,8 @@ const Upload: React.FC = () => {
       children: (
         <div className="cls-tab-content">
           <InfoCircleOutlined />
-          Non-AYP bookings are reservations made outside the approved AYP program or policy.
+          Non-AYP bookings are reservations made outside the approved AYP
+          program or policy.
         </div>
       ),
     },
@@ -161,7 +162,8 @@ const Upload: React.FC = () => {
       children: (
         <div className="cls-tab-content">
           <InfoCircleOutlined />
-            It is an auto-drafted purchase return statement showing inward supplies from your suppliers as per their GSTR-1 filings
+          It is an auto-drafted purchase return statement showing inward
+          supplies from your suppliers as per their GSTR-1 filings
         </div>
       ),
     },
@@ -214,28 +216,27 @@ const Upload: React.FC = () => {
               {...uploadProps}
               className={`cls-upload-area ${dragOver ? "cls-drag-over" : ""}`}
             >
+              <div className="cls-info">
+                <InfoCircleOutlined />
+                You can upload bookings of any other travel agency. Kindly
+                upload the booking data in given sample format.
+              </div>
               <div className="cls-upload-center">
                 <div className="cls-upload-icon-border">
                   <div className="cls-upload-icon">
                     <PlusOutlined />
                   </div>
                 </div>
-                 <div className="cls-info">
-                  <InfoCircleOutlined />
-                  You can upload bookings of any other travel agency. Kindly upload the booking data in given sample format.
-                </div>
                 <div className="cls-upload-main-text">
                   Drag & drop your file here
                 </div>
-                 {/* File Type and Limit Info */}
-              <div className="cls-file-info">
-                <div>
-                  Supported Files: <strong>CSV, XLS</strong>
+                {/* File Type and Limit Info */}
+                <div className="cls-file-info">
+                  <div>
+                    Supported Files: <strong>CSV, XLS</strong>
+                  </div>
+                  <div>Upload up to 3 file. Each max file size 5MB</div>
                 </div>
-                <div>Upload up to 3 file. Each max file size 5MB</div>
-              </div>
-
-                
 
                 {/* <div className="cls-upload-or-text">or</div>
 

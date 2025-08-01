@@ -397,14 +397,20 @@
   border: unset;
   background: unset;
 }
-.cls-info{
-    background: #18caff26;
-    padding: 10px 12px;
-    border-radius: 8px;
-    color: #666666;
-    text-align: left;
-    margin-bottom: 15px;
+
+.cls-info {
+  background: #18caff26;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: #666666;
+  text-align: left;
+  margin-bottom: 15px;
+
+  span {
+    margin-right: 10px;
+  }
 }
+
 @keyframes slideInDown {
   from {
     opacity: 0;
