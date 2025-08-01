@@ -36,6 +36,8 @@ import {
   WhatsAppOutlined,
   BellOutlined,
   EyeOutlined,
+  LeftOutlined,
+  RightOutlined,
 } from "@ant-design/icons";
 import { useTheme } from "../contexts/ThemeContext";
 import "../styles/Dashboard.scss";
@@ -59,6 +61,7 @@ const Dashboard: React.FC = () => {
     {
       title: "All Travel History",
       backgroundColor: "#4CAF50",
+      carouselKey: "travelHistory",
       sections: [
         { label: "Bookings", value: 0, backgroundColor: "#4CAF50" },
         { label: "Cancellations", value: 0, backgroundColor: "#2E7D32" },
@@ -67,6 +70,7 @@ const Dashboard: React.FC = () => {
     {
       title: "Airline Invoices",
       backgroundColor: "#3F51B5",
+      carouselKey: "airlineInvoices",
       sections: [
         { label: "Available", value: 0, backgroundColor: "#3F51B5" },
         { label: "GST - Filed", value: 0, backgroundColor: "#1A237E" },
@@ -81,6 +85,7 @@ const Dashboard: React.FC = () => {
     {
       title: "All Invoices",
       backgroundColor: "#9C27B0",
+      carouselKey: "allInvoices",
       sections: [
         { label: "Available", value: 0, backgroundColor: "#9C27B0" },
         { label: "GST - Filed", value: 0, backgroundColor: "#4A148C" },
@@ -95,12 +100,34 @@ const Dashboard: React.FC = () => {
     {
       title: "Net Claimable Amount(INR)",
       backgroundColor: "#F44336",
+      carouselKey: "netClaimable",
       sections: [
         { label: "Airlines", value: 0, backgroundColor: "#F44336" },
         { label: "All", value: 0, backgroundColor: "#C62828" },
       ],
     },
   ];
+
+  const initialCarouselStates: { [key: string]: number } = {};
+  overviewData.forEach((item) => {
+    initialCarouselStates[item.carouselKey] = 0;
+  });
+
+  const [carouselStates, setCarouselStates] = useState(initialCarouselStates);
+
+  const handleCarouselNext = (carouselKey: string, sectionLength: number) => {
+    setCarouselStates((prev) => ({
+      ...prev,
+      [carouselKey]: Math.min((prev[carouselKey] || 0) + 1, sectionLength - 1),
+    }));
+  };
+
+  const handleCarouselPrev = (carouselKey: string, sectionLength: number) => {
+    setCarouselStates((prev) => ({
+      ...prev,
+      [carouselKey]: Math.max((prev[carouselKey] || 0) - 1, 0),
+    }));
+  };
 
   // Chart data - base data for all invoices
   const baseInvoiceStatusData = [
@@ -517,54 +544,76 @@ const Dashboard: React.FC = () => {
           {translate("overallSummary")}
         </Title>
         <Row gutter={[16, 16]} className="cls-overview-grid">
-          {overviewData.map((item, index) => (
-            <Col xs={24} sm={12} lg={6} key={index}>
-              <div className="cls-overview-card">
-                {/* Header */}
-                <div className="cls-card-header">
-                  <Text className="cls-card-title">
-                    {item.title}
-                    {(item.title.includes("Amount") ||
-                      item.title.includes("Airlines")) && (
-                      <InfoCircleOutlined className="cls-info-icon" />
-                    )}
-                  </Text>
-                </div>
+          {overviewData.map((item, index) => {
+            const currentIndex = carouselStates[item.carouselKey as keyof typeof carouselStates] || 0;
+            const currentSection = item.sections[currentIndex];
 
-                {/* Sections */}
-                <div className="cls-card-sections">
-                  {item.sections.map((section, sectionIndex) => (
-                    <div
-                      key={sectionIndex}
-                      className={`cls-card-section ${section.variant === "light" ? "cls-light-variant" : ""}`}
-                      style={{
-                        backgroundColor:
-                          section.variant === "light"
-                            ? `#57c796`
-                            : section.backgroundColor,
-                        color:
-                          section.variant === "light"
-                            ? section.backgroundColor
-                            : "white",
-                      }}
-                    >
-                      <div className="cls-section-content">
-                        <Text className="cls-section-label">
-                          {section.label}
-                        </Text>
-                        <Text className="cls-section-value">
-                          {section.value}
-                        </Text>
+            return (
+              <Col xs={24} sm={12} lg={6} key={index}>
+                <div className="cls-overview-card">
+                  {/* Header */}
+                  <div className="cls-card-header">
+                    <Text className="cls-card-title">
+                      {item.title}
+                      {(item.title.includes("Amount") ||
+                        item.title.includes("Airlines")) && (
+                        <InfoCircleOutlined className="cls-info-icon" />
+                      )}
+                    </Text>
+                  </div>
+
+                  {/* Carousel Section */}
+                  <div className="cls-card-sections">
+                    <div className="cls-carousel-container">
+                      {/* Navigation Arrows */}
+                      {currentIndex > 0 && (
+                        <button
+                          className="cls-carousel-arrow cls-carousel-arrow-left"
+                          onClick={() => handleCarouselPrev(item.carouselKey, item.sections.length)}
+                        >
+                          <LeftOutlined />
+                        </button>
+                      )}
+
+                      {/* Current Section */}
+                      <div
+                        className={`cls-card-section cls-carousel-section ${currentSection.variant === "light" ? "cls-light-variant" : ""}`}
+                        style={{
+                          backgroundColor:
+                            currentSection.variant === "light"
+                              ? `rgba(${parseInt(currentSection.backgroundColor.slice(1, 3), 16)}, ${parseInt(currentSection.backgroundColor.slice(3, 5), 16)}, ${parseInt(currentSection.backgroundColor.slice(5, 7), 16)}, 0.3)`
+                              : currentSection.backgroundColor,
+                          color:
+                            currentSection.variant === "light"
+                              ? "#52b488"
+                              : "white",
+                        }}
+                      >
+                        <div className="cls-section-content">
+                          <Text className="cls-section-label">
+                            {currentSection.label}
+                          </Text>
+                          <Text className="cls-section-value">
+                            {currentSection.value}
+                          </Text>
+                        </div>
                       </div>
-                      {sectionIndex < item.sections.length - 1 && (
-                        <div className="cls-section-divider"></div>
+
+                      {/* Right Arrow */}
+                      {currentIndex < item.sections.length - 1 && (
+                        <button
+                          className="cls-carousel-arrow cls-carousel-arrow-right"
+                          onClick={() => handleCarouselNext(item.carouselKey, item.sections.length)}
+                        >
+                          <RightOutlined />
+                        </button>
                       )}
                     </div>
-                  ))}
+                  </div>
                 </div>
-              </div>
-            </Col>
-          ))}
+              </Col>
+            );
+          })}
         </Row>
       </div>
 
