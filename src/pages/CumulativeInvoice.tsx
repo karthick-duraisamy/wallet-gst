@@ -180,13 +180,11 @@ const CumulativeInvoice: React.FC = () => {
       align: "center" as const,
       render: () => "Edit",
     },
-    
   ];
 
   // Filter visible columns
   const visibleColumnsData = allColumns.filter(
-    (col) =>
-      visibleColumns[col.key as keyof typeof visibleColumns],
+    (col) => visibleColumns[col.key as keyof typeof visibleColumns],
   );
 
   const mockData = [
@@ -991,8 +989,8 @@ const CumulativeInvoice: React.FC = () => {
         <Card className="cls-data-table">
           <div className="cls-table-container">
             <div className="cls-table-header-actions">
-              <FilterOutlined 
-                className="cls-external-filter-icon" 
+              <FilterOutlined
+                className="cls-external-filter-icon"
                 onClick={() => setFilterDropdownVisible(!filterDropdownVisible)}
               />
               {filterDropdownVisible && (
