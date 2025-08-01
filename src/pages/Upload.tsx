@@ -214,16 +214,17 @@ const Upload: React.FC = () => {
               {...uploadProps}
               className={`cls-upload-area ${dragOver ? "cls-drag-over" : ""}`}
             >
+               <div className="cls-info">
+                  <InfoCircleOutlined />
+                  You can upload bookings of any other travel agency. Kindly upload the booking data in given sample format.
+                </div>
               <div className="cls-upload-center">
                 <div className="cls-upload-icon-border">
                   <div className="cls-upload-icon">
                     <PlusOutlined />
                   </div>
                 </div>
-                 <div className="cls-info">
-                  <InfoCircleOutlined />
-                  You can upload bookings of any other travel agency. Kindly upload the booking data in given sample format.
-                </div>
+                
                 <div className="cls-upload-main-text">
                   Drag & drop your file here
                 </div>
