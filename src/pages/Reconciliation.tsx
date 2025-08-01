@@ -399,13 +399,7 @@ const Reconciliation: React.FC = () => {
     setSearchText('');
   };
 
-  // Status counts
-  const statusCounts = {
-    all: 150,
-    processed: 89,
-    pending: 45,
-    failed: 16
-  };
+  
 
   // Calculate pagination
   const startIndex = (currentPage - 1) * pageSize;

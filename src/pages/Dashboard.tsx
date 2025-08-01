@@ -23,6 +23,11 @@ import {
   PieChart,
   Pie,
   Cell,
+  LineChart,
+  Line,
+  AreaChart,
+  Area,
+  ReferenceLine,
 } from "recharts";
 import {
   DownloadOutlined,
@@ -735,20 +740,60 @@ const Dashboard: React.FC = () => {
             }}
           >
             <ResponsiveContainer width="100%" height={280}>
-              <BarChart data={invoiceStatusData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="Submitted" stackId="a" fill="#1890ff" />
-                <Bar dataKey="Pending to File" stackId="a" fill="#52c41a" />
-                <Bar dataKey="Invoice Missing" stackId="a" fill="#faad14" />
-                <Bar
-                  dataKey="Additional in GSTR -2A"
-                  stackId="a"
-                  fill="#ff4d4f"
+              <LineChart data={invoiceStatusData}>
+                <defs>
+                  <linearGradient id="submittedGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#1890ff" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#1890ff" stopOpacity={0.1}/>
+                  </linearGradient>
+                  <linearGradient id="pendingGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#52c41a" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#52c41a" stopOpacity={0.1}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="1 1" stroke="#f0f0f0" />
+                <XAxis 
+                  dataKey="month" 
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fontSize: 12, fill: '#666' }}
                 />
-              </BarChart>
+                <YAxis 
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fontSize: 12, fill: '#666' }}
+                />
+                <Tooltip 
+                  contentStyle={{
+                    backgroundColor: 'white',
+                    border: '1px solid #e8e8e8',
+                    borderRadius: '8px',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                  }}
+                />
+                <ReferenceLine 
+                  y={200} 
+                  stroke="#52c41a" 
+                  strokeDasharray="3 3" 
+                  strokeWidth={2}
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="Submitted" 
+                  stroke="#1890ff" 
+                  strokeWidth={3}
+                  dot={{ fill: '#1890ff', strokeWidth: 2, r: 4 }}
+                  activeDot={{ r: 6, fill: '#1890ff' }}
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="Pending to File" 
+                  stroke="#52c41a" 
+                  strokeWidth={3}
+                  dot={{ fill: '#52c41a', strokeWidth: 2, r: 4 }}
+                  activeDot={{ r: 6, fill: '#52c41a' }}
+                />
+              </LineChart>
             </ResponsiveContainer>
           </Card>
         </Col>
@@ -837,13 +882,45 @@ const Dashboard: React.FC = () => {
             }}
           >
             <ResponsiveContainer width="100%" height={200}>
-              <BarChart data={pendingFilesData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="value" fill="#1890ff" />
-              </BarChart>
+              <AreaChart data={pendingFilesData}>
+                <defs>
+                  <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#1890ff" stopOpacity={0.4}/>
+                    <stop offset="25%" stopColor="#1890ff" stopOpacity={0.3}/>
+                    <stop offset="75%" stopColor="#1890ff" stopOpacity={0.15}/>
+                    <stop offset="95%" stopColor="#1890ff" stopOpacity={0.05}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="1 1" stroke="#f0f0f0" />
+                <XAxis 
+                  dataKey="month" 
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fontSize: 12, fill: '#666' }}
+                />
+                <YAxis 
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fontSize: 12, fill: '#666' }}
+                />
+                <Tooltip 
+                  contentStyle={{
+                    backgroundColor: 'white',
+                    border: '1px solid #e8e8e8',
+                    borderRadius: '8px',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                  }}
+                />
+                <Area 
+                  type="monotone" 
+                  dataKey="value" 
+                  stroke="#1890ff" 
+                  strokeWidth={3}
+                  fill="url(#areaGradient)"
+                  dot={{ fill: '#1890ff', strokeWidth: 2, r: 4 }}
+                  activeDot={{ r: 6, fill: '#1890ff', strokeWidth: 2 }}
+                />
+              </AreaChart>
             </ResponsiveContainer>
           </Card>
         </Col>
