@@ -106,6 +106,17 @@ const CumulativeInvoice: React.FC = () => {
     travelVendor: true,
     action: true,
   });
+
+  // Column configuration with disabled flags
+  const columnConfig = {
+    supplierName: { disabled: true },
+    pnrTicketNo: { disabled: true },
+    invoiceNo: { disabled: true },
+    invoiceDate: { disabled: true },
+    type: { disabled: false },
+    travelVendor: { disabled: false },
+    action: { disabled: false },
+  };
   const [filterDropdownVisible, setFilterDropdownVisible] = useState(false);
 
   // Configuration for fixed columns (non-scrollable)
@@ -180,13 +191,11 @@ const CumulativeInvoice: React.FC = () => {
       align: "center" as const,
       render: () => "Edit",
     },
-    
   ];
 
   // Filter visible columns
   const visibleColumnsData = allColumns.filter(
-    (col) =>
-      visibleColumns[col.key as keyof typeof visibleColumns],
+    (col) => visibleColumns[col.key as keyof typeof visibleColumns],
   );
 
   const mockData = [
@@ -991,8 +1000,8 @@ const CumulativeInvoice: React.FC = () => {
         <Card className="cls-data-table">
           <div className="cls-table-container">
             <div className="cls-table-header-actions">
-              <FilterOutlined 
-                className="cls-external-filter-icon" 
+              <FilterOutlined
+                className="cls-external-filter-icon"
                 onClick={() => setFilterDropdownVisible(!filterDropdownVisible)}
               />
               {filterDropdownVisible && (
@@ -1025,6 +1034,9 @@ const CumulativeInvoice: React.FC = () => {
                         <Checkbox
                           checked={
                             visibleColumns[key as keyof typeof visibleColumns]
+                          }
+                          disabled={
+                            columnConfig[key as keyof typeof columnConfig]?.disabled || false
                           }
                           onChange={(e) =>
                             setVisibleColumns((prev) => ({
