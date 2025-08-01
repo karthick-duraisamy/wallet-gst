@@ -129,55 +129,11 @@ const Reconciliation: React.FC = () => {
         </Tag>
       ),
     },
-    {
-      title: (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <Button
-            type="text"
-            icon={<FilterOutlined />}
-            onClick={() => setFilterDropdownVisible(!filterDropdownVisible)}
-            style={{ border: 'none', padding: 0, background: 'transparent' }}
-          />
-          {filterDropdownVisible && (
-            <div style={{
-              position: 'absolute',
-              top: '100%',
-              right: 0,
-              background: 'white',
-              border: '1px solid #d9d9d9',
-              borderRadius: 6,
-              padding: 16,
-              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-              zIndex: 1000,
-              minWidth: 200
-            }}>
-              <div style={{ marginBottom: 8, fontWeight: 600 }}>Show/Hide Columns</div>
-              {Object.keys(visibleColumns).map((key) => (
-                <div key={key} style={{ marginBottom: 8 }}>
-                  <Checkbox
-                    checked={visibleColumns[key as keyof typeof visibleColumns]}
-                    onChange={(e) => setVisibleColumns(prev => ({
-                      ...prev,
-                      [key]: e.target.checked
-                    }))}
-                  >
-                    {translate(key.replace(/([A-Z])/g, ' $1').toLowerCase().trim())}
-                  </Checkbox>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      ),
-      key: 'filter',
-      width: 60,
-      fixed: 'right' as const,
-      render: () => null,
-    },
+    
   ];
 
   const visibleColumnsData = allColumns.filter(col => 
-    col.key === 'filter' || visibleColumns[col.key as keyof typeof visibleColumns]
+    visibleColumns[col.key as keyof typeof visibleColumns]
   );
 
   const mockData = [
@@ -569,8 +525,49 @@ const Reconciliation: React.FC = () => {
           <div className="cls-table-header-actions">
             <FilterOutlined
               className="cls-external-filter-icon"
-              onClick={handleFilterClick}
+              onClick={() => setFilterDropdownVisible(!filterDropdownVisible)}
             />
+            {filterDropdownVisible && (
+              <div className="cls-filter-dropdown">
+                <div className="cls-filter-header">
+                  <span className="cls-filter-title">Show/Hide Columns</span>
+                  <Button
+                    type="text"
+                    onClick={() => setFilterDropdownVisible(false)}
+                    style={{
+                      position: "absolute",
+                      top: "8px",
+                      right: "8px",
+                      color: "#999",
+                      fontSize: "16px",
+                      padding: 0,
+                      width: "20px",
+                      height: "20px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    ×
+                  </Button>
+                </div>
+                <div className="cls-filter-content">
+                  {Object.keys(visibleColumns).map((key) => (
+                    <div key={key} className="cls-filter-option">
+                      <Checkbox
+                        checked={visibleColumns[key as keyof typeof visibleColumns]}
+                        onChange={(e) => setVisibleColumns(prev => ({
+                          ...prev,
+                          [key]: e.target.checked
+                        }))}
+                      >
+                        {translate(key.replace(/([A-Z])/g, ' $1').toLowerCase().trim())}
+                      </Checkbox>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
           <Table
             columns={visibleColumnsData}
