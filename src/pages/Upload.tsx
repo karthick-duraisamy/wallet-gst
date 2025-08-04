@@ -56,23 +56,33 @@ const Upload: React.FC = () => {
   const uploadProps = {
     name: "file",
     multiple: true,
-    accept: ".csv,.xls,.xlsx,.pdf,.doc,.docx",
+    accept: ".csv,.xls,.xlsx",
     showUploadList: false,
+    disabled: files.length >= 3,
     beforeUpload: (file: File) => {
+      // Check file limit first
+      if (files.length >= 3) {
+        message.error("Maximum 3 files allowed. Remove existing files to upload new ones.", 5);
+        return false;
+      }
+
       const isValidType =
         file.type === "text/csv" ||
         file.type === "application/vnd.ms-excel" ||
         file.type ===
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
+        file.name.toLowerCase().endsWith('.csv') ||
+        file.name.toLowerCase().endsWith('.xls') ||
+        file.name.toLowerCase().endsWith('.xlsx');
 
       if (!isValidType) {
-        message.error("You can only upload CSV, Excel, PDF, or Word files!");
+        message.error("You can only upload CSV and Excel (.xls, .xlsx) files!");
         return false;
       }
 
-      const isValidSize = file.size / 1024 / 1024 < 50;
+      const isValidSize = file.size / 1024 / 1024 < 5;
       if (!isValidSize) {
-        message.error("File must be smaller than 50MB!");
+        message.error("File must be smaller than 5MB!");
         return false;
       }
 
@@ -238,9 +248,19 @@ const Upload: React.FC = () => {
                 {/* File Type and Limit Info */}
                 <div className="cls-file-info">
                   <div>
-                    Supported Files: <strong>CSV, XLS</strong>
+                    Supported Files: <strong>CSV, XLS, XLSX</strong>
                   </div>
-                  <div>Upload up to 3 file. Each max file size 5MB</div>
+                  <div>Upload up to 3 files. Each max file size 5MB</div>
+                  {files.length > 0 && (
+                    <div style={{ 
+                      color: files.length >= 3 ? '#ff4d4f' : '#52c41a',
+                      fontWeight: 500,
+                      marginTop: '4px'
+                    }}>
+                      {files.length}/3 files uploaded
+                      {files.length >= 3 && ' - Limit reached'}
+                    </div>
+                  )}
                 </div>
 
                 {/* <div className="cls-upload-or-text">or</div>
