@@ -1,4 +1,3 @@
-
 @import 'common';
 
 .cls-status {
@@ -7,29 +6,6 @@
   overflow-x: auto;
   overflow-y: hidden;
   padding-bottom: 8px;
-  
-  /* Custom scrollbar for webkit browsers */
-  &::-webkit-scrollbar {
-    height: 6px;
-  }
-  
-  &::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 3px;
-  }
-  
-  &::-webkit-scrollbar-thumb {
-    background: #c1c1c1;
-    border-radius: 3px;
-  }
-  
-  &::-webkit-scrollbar-thumb:hover {
-    background: #a8a8a8;
-  }
-  
-  /* For Firefox */
-  scrollbar-width: thin;
-  scrollbar-color: #c1c1c1 #f1f1f1;
 }
 
 .cls-status-item {
@@ -416,4 +392,5 @@
 .cls-status {
   display: flex;
   gap: 6px;
+  width: 650px;
 }
