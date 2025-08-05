@@ -2214,3 +2214,6 @@ tr.ant-table-measure-row td {
 ::-webkit-scrollbar-thumb:window-inactive {
   background: rgba(255, 255, 255, 0.3);
 }
+.cls-table-container .ant-table .ant-table-thead > tr > th{
+  text-transform: capitalize;
+}
