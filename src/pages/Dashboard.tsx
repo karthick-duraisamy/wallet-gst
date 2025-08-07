@@ -555,10 +555,10 @@ const Dashboard: React.FC = () => {
 
             return (
               <Col xs={24} sm={12} lg={6} key={index}>
-                <div className="cls-overview-card">
+                <div className="cls-modern-card">
                   {/* Header */}
-                  <div className="cls-card-header">
-                    <Text className="cls-card-title">
+                  <div className="cls-modern-card-header">
+                    <Text className="cls-modern-card-title">
                       {item.title}
                       {(item.title.includes("Amount") ||
                         item.title.includes("Airlines")) && (
@@ -567,66 +567,60 @@ const Dashboard: React.FC = () => {
                     </Text>
                   </div>
 
-                  {/* Carousel Section */}
-                  <div className="cls-card-sections">
-                    <div className="cls-carousel-container">
-                      {/* Display up to 3 sections */}
-                      <div className="cls-sections-display">
-                        {visibleSections.map((section, sectionIndex) => (
-                          <div
-                            key={sectionIndex}
-                            className={`cls-card-section ${section.variant === "light" ? "cls-light-variant" : ""}`}
-                            style={{
-                              backgroundColor:
-                                section.variant === "light"
-                                  ? `rgba(${parseInt(section.backgroundColor.slice(1, 3), 16)}, ${parseInt(section.backgroundColor.slice(3, 5), 16)}, ${parseInt(section.backgroundColor.slice(5, 7), 16)}, 0.15)`
-                                  : section.backgroundColor,
-                              color:
-                                section.variant === "light"
-                                  ? section.backgroundColor
-                                  : "white",
-                              flex: `1 0 ${100 / visibleItems}%`,
-                            }}
-                          >
-                            <div className="cls-section-content">
-                              <Text className="cls-section-label">
-                                {section.label}
-                              </Text>
-                              <Text className="cls-section-value">
-                                {section.value}
-                              </Text>
-                            </div>
-                            {sectionIndex < visibleSections.length - 1 && (
-                              <div className="cls-section-divider" />
-                            )}
-                          </div>
-                        ))}
+                  {/* Card Content */}
+                  <div className="cls-modern-card-content">
+                    {visibleSections.map((section, sectionIndex) => (
+                      <div
+                        key={sectionIndex}
+                        className="cls-modern-card-item"
+                        style={{
+                          backgroundColor:
+                            section.variant === "light"
+                              ? `rgba(${parseInt(section.backgroundColor.slice(1, 3), 16)}, ${parseInt(section.backgroundColor.slice(3, 5), 16)}, ${parseInt(section.backgroundColor.slice(5, 7), 16)}, 0.15)`
+                              : section.backgroundColor,
+                          color:
+                            section.variant === "light"
+                              ? section.backgroundColor
+                              : "white",
+                        }}
+                      >
+                        <div className="cls-modern-item-content">
+                          <Text className="cls-modern-item-label">
+                            {section.label}
+                          </Text>
+                          <Text className="cls-modern-item-value">
+                            {section.value}
+                          </Text>
+                        </div>
                       </div>
+                    ))}
 
-                      {/* Navigation Arrow - Only show right arrow when there are more items */}
-                      {startIndex + visibleItems < item.sections.length && (
-                        <button
-                          className="cls-carousel-arrow cls-carousel-arrow-right"
-                          onClick={() => handleCarouselNext(item.carouselKey, item.sections.length)}
-                        >
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <polyline points="9,18 15,12 9,6"></polyline>
-                          </svg>
-                        </button>
-                      )}
-                      
-                      {/* Left Arrow - Only show when not at the beginning */}
-                      {startIndex > 0 && (
-                        <button
-                          className="cls-carousel-arrow cls-carousel-arrow-left"
-                          onClick={() => handleCarouselPrev(item.carouselKey, item.sections.length)}
-                        >
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <polyline points="15,18 9,12 15,6"></polyline>
-                          </svg>
-                        </button>
-                      )}
-                    </div>
+                    {/* Navigation Arrows */}
+                    {item.sections.length > visibleItems && (
+                      <div className="cls-modern-card-navigation">
+                        {startIndex > 0 && (
+                          <button
+                            className="cls-modern-nav-arrow cls-nav-left"
+                            onClick={() => handleCarouselPrev(item.carouselKey, item.sections.length)}
+                          >
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <polyline points="15,18 9,12 15,6"></polyline>
+                            </svg>
+                          </button>
+                        )}
+                        
+                        {startIndex + visibleItems < item.sections.length && (
+                          <button
+                            className="cls-modern-nav-arrow cls-nav-right"
+                            onClick={() => handleCarouselNext(item.carouselKey, item.sections.length)}
+                          >
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <polyline points="9,18 15,12 9,6"></polyline>
+                            </svg>
+                          </button>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               </Col>

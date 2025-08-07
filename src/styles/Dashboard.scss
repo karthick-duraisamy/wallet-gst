@@ -84,7 +84,7 @@
 }
 
 .cls-overview-grid {
-  align-items: center;
+  align-items: stretch;
 }
 
 .cls-overview-card {
@@ -96,6 +96,121 @@
   flex-direction: column;
   height: 140px;
   border: 1px solid #f0f0f0;
+}
+
+// Modern card styles to match reference image
+.cls-modern-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f0f0f0;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.cls-modern-card-header {
+  padding: 20px 20px 16px;
+  background: white;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.cls-modern-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #4a5568;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.cls-modern-card-content {
+  padding: 16px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+}
+
+.cls-modern-card-item {
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  
+  &:hover {
+    transform: translateX(2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.cls-modern-item-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.cls-modern-item-label {
+  font-size: 13px;
+  font-weight: 500;
+  opacity: 0.9;
+  margin: 0;
+}
+
+.cls-modern-item-value {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.cls-modern-card-navigation {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cls-modern-nav-arrow {
+  background: rgba(255, 255, 255, 0.95);
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #64748b;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  
+  &:hover {
+    background: white;
+    color: #4f46e5;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  &:active {
+    transform: scale(0.95);
+  }
+  
+  svg {
+    width: 14px;
+    height: 14px;
+  }
 }
 
 .cls-card-header {
