@@ -19,7 +19,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
       title={
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '16px' }}>🎨</span>
+            <span className='cls-contrast'></span>
             <span>{translate('themeSettings')}</span>
           </div>
           <CloseOutlined 

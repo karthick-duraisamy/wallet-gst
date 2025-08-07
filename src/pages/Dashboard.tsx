@@ -574,16 +574,14 @@ const Dashboard: React.FC = () => {
                         key={sectionIndex}
                         className="cls-modern-card-item"
                         style={{
-                          backgroundColor:
-                            section.variant === "light"
-                              ? `rgba(${parseInt(section.backgroundColor.slice(1, 3), 16)}, ${parseInt(section.backgroundColor.slice(3, 5), 16)}, ${parseInt(section.backgroundColor.slice(5, 7), 16)}, 0.15)`
-                              : section.backgroundColor,
-                          color:
-                            section.variant === "light"
-                              ? section.backgroundColor
-                              : "white",
-                        }}
-                      >
+                            backgroundColor: `rgba(
+                              ${parseInt(section.backgroundColor.slice(1, 3), 16)},
+                              ${parseInt(section.backgroundColor.slice(3, 5), 16)},
+                              ${parseInt(section.backgroundColor.slice(5, 7), 16)},
+                              0.08
+                            )`, // Light, soft background for all variants
+                            color: section.backgroundColor, // Keep text color from original
+                          }}>
                         <div className="cls-modern-item-content">
                           <Text className="cls-modern-item-label">
                             {section.label}

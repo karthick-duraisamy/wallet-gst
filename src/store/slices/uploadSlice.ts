@@ -7,11 +7,11 @@ interface UploadFile {
   type: string;
   status: 'uploading' | 'success' | 'error';
 }
-type SubOption = 'non-ayp' | 'gstr-2a';
+export type SubOption = 'non-ayp' | 'gstr-2a';
 interface UploadState {
   files: Record<SubOption, UploadFile[]>; // Fix: files per subOption
   uploadType: 'agency' | 'airline';
-  subOption: 'non-ayp' | 'gstr-2a';
+  subOption: SubOption;
   loading: boolean;
 }
 
@@ -32,7 +32,7 @@ const uploadSlice = createSlice({
     setUploadType: (state, action: PayloadAction<'agency' | 'airline'>) => {
       state.uploadType = action.payload;
     },
-    setSubOption: (state, action: PayloadAction<'non-ayp' | 'gstr-2a'>) => {
+    setSubOption: (state, action: PayloadAction<SubOption>) => {
       state.subOption = action.payload;
     },
     addFiles: (state, action: PayloadAction<{ tabKey: keyof UploadState['files']; files: UploadFile[] }>) => {

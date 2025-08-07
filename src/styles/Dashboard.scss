@@ -101,11 +101,12 @@
 // Modern card styles to match reference image
 .cls-modern-card {
   background: white;
-  border-radius: 16px;
+  border-radius: 10px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   border: 1px solid #f0f0f0;
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  height: 100%;
   
   &:hover {
     transform: translateY(-2px);
@@ -138,8 +139,8 @@
 }
 
 .cls-modern-card-item {
-  border-radius: 12px;
-  padding: 16px;
+  border-radius: 10px;
+  padding: 6px 15px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -167,7 +168,7 @@
 }
 
 .cls-modern-item-value {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
   margin: 0;
 }

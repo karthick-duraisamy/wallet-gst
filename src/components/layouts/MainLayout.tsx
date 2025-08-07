@@ -604,18 +604,7 @@ const MainLayout: React.FC = () => {
                 }}
                 onClick={() => setSettingsModalOpen(true)}
               >
-                <div
-                  style={{
-                    width: "20px",
-                    height: "20px",
-                    borderRadius: "50%",
-                    background: isDarkMode
-                      ? "linear-gradient(90deg, #666 50%, transparent 50%)"
-                      : "linear-gradient(90deg, #333 50%, transparent 50%)",
-                    border: isDarkMode ? "2px solid #666" : "2px solid #333",
-                    transition: "all 0.3s ease",
-                  }}
-                />
+              <div className="cls-contrast"/>
               </Button>
 
               {/* <Button 
