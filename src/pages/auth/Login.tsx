@@ -17,6 +17,7 @@ import {
 } from "../../store/slices/authSlice";
 import { useTheme } from "../../contexts/ThemeContext";
 import "../../styles/Login.scss";
+import { Logo } from '../../components/Icons/Logo'
 
 interface LoginForm {
   email: string;
@@ -95,7 +96,7 @@ const Login: React.FC = () => {
       <div className="auth-left">
         <div className="auth-brand">
           <div className="auth-brand-icon">
-            <img src="/src/assets/gst-logo.svg" alt="GST Claim" />
+            <Logo />
           </div>
           <p>
             Streamline your GST claim process with our comprehensive management

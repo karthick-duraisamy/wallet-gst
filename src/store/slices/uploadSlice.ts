@@ -7,19 +7,22 @@ interface UploadFile {
   type: string;
   status: 'uploading' | 'success' | 'error';
 }
-
+type SubOption = 'non-ayp' | 'gstr-2a';
 interface UploadState {
-  files: UploadFile[];
+  files: Record<SubOption, UploadFile[]>; // Fix: files per subOption
   uploadType: 'agency' | 'airline';
   subOption: 'non-ayp' | 'gstr-2a';
   loading: boolean;
 }
 
 const initialState: UploadState = {
-  files: [],
   uploadType: 'agency',
   subOption: 'non-ayp',
   loading: false,
+  files: {
+    "non-ayp":[],
+    "gstr-2a":[]
+  },
 };
 
 const uploadSlice = createSlice({
@@ -32,20 +35,25 @@ const uploadSlice = createSlice({
     setSubOption: (state, action: PayloadAction<'non-ayp' | 'gstr-2a'>) => {
       state.subOption = action.payload;
     },
-    addFiles: (state, action: PayloadAction<UploadFile[]>) => {
-      state.files = [...state.files, ...action.payload].slice(0, 3); // Max 3 files
+    addFiles: (state, action: PayloadAction<{ tabKey: keyof UploadState['files']; files: UploadFile[] }>) => {
+      const { tabKey, files } = action.payload;
+      state.files[tabKey] = [...state.files[tabKey], ...files].slice(0, 3);
     },
-    removeFile: (state, action: PayloadAction<string>) => {
-      state.files = state.files.filter(file => file.id !== action.payload);
+    removeFile: (state, action: PayloadAction<{ tabKey: keyof UploadState['files']; fileId: string }>) => {
+      const { tabKey, fileId } = action.payload;
+      state.files[tabKey] = state.files[tabKey].filter(file => file.id !== fileId);
     },
-    updateFileStatus: (state, action: PayloadAction<{ id: string; status: UploadFile['status'] }>) => {
-      const file = state.files.find(f => f.id === action.payload.id);
+    updateFileStatus: (state, action: PayloadAction<{ tabKey: keyof UploadState['files']; id: string; status: UploadFile['status'] }>) => {
+      const { tabKey, id, status } = action.payload;
+      const file = state.files[tabKey].find(f => f.id === id);
       if (file) {
-        file.status = action.payload.status;
+        file.status = status;
       }
     },
-    clearFiles: (state) => {
-      state.files = [];
+
+    clearFiles: (state, action: PayloadAction<{ tabKey: SubOption }>) => {
+      const { tabKey } = action.payload;
+      state.files[tabKey] = [];
     },
   },
 });

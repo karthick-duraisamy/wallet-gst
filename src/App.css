@@ -2214,6 +2214,41 @@ tr.ant-table-measure-row td {
 ::-webkit-scrollbar-thumb:window-inactive {
   background: rgba(255, 255, 255, 0.3);
 }
-.cls-table-container .ant-table .ant-table-thead > tr > th{
-  text-transform: capitalize;
+.cls-table-head{
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.cls-export-button, .cls-export-btn {
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  &.cls-xls {
+    background-color: #1d4ed8;
+    &:hover{
+      border: 1px solid #1d4ed8 !important;
+    }
+  }
+
+  &.cls-csv {
+    background-color: #059669;
+     &:hover{
+      border: 1px solid #059669 !important;
+    }
+  }
+}
+.cls-langBox{
+    width: 20px;
+    height: 14px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    line-height: 1;
+    background: #5a4fcf45;
+    padding: 15px 15px;
+    border-radius: 100%;
 }

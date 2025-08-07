@@ -19,6 +19,7 @@ import { useTheme } from '../../contexts/ThemeContext';
 import SettingsModal from '../SettingsModal';
 import { Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { Logo } from '../../components/Icons/Logo'
 
 const { Header, Content, Sider } = Layout;
 
@@ -119,7 +120,8 @@ const MainLayout: React.FC = () => {
           }}>
             <div className="header-left" style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <img src="/src/assets/gst-logo.svg" alt="GST Claim" />
+                <Logo/>
+                {/* <img src="/src/assets/gst-logo.svg" alt="GST Claim" /> */}
               </div>
             </div>
 
@@ -140,7 +142,7 @@ const MainLayout: React.FC = () => {
                             alignItems: 'center',
                             justifyContent: 'center',
                             fontSize: '14px',
-                            lineHeight: '1'
+                            lineHeight: '1',
                           }}>
                             🇺🇸
                           </div>
@@ -377,7 +379,8 @@ const MainLayout: React.FC = () => {
       }}>
         <div className="header-left" style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <img src="/src/assets/gst-logo.svg" alt="GST Claim"/>
+            {/* <img src="/src/assets/gst-logo.svg" alt="GST Claim"/> */}
+            <Logo/>
           </div>
 
           <div style={{ 
@@ -464,17 +467,7 @@ const MainLayout: React.FC = () => {
                 padding: '4px 8px'
               }}
             >
-              <div style={{ 
-                width: '20px', 
-                height: '14px', 
-                borderRadius: '2px', 
-                overflow: 'hidden',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '14px',
-                lineHeight: '1'
-              }}>
+              <div className="cls-langBox">
                 {language === 'en' ? '🇺🇸' : '🇮🇳'}
               </div>
               {language === 'en' ? translate('english') : translate('hindi')}

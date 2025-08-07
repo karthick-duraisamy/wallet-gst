@@ -63,8 +63,8 @@ const Dashboard: React.FC = () => {
       backgroundColor: "#6366F1",
       carouselKey: "travelHistory",
       sections: [
-        { label: "Bookings", value: 0, backgroundColor: "#6366F1" },
-        { label: "Cancellations", value: 0, backgroundColor: "#4F46E5" },
+        { label: "Bookings", value: 10, backgroundColor: "#6366F1" },
+        { label: "Cancellations", value: 2, backgroundColor: "#4F46E5" },
       ],
     },
     {
@@ -72,11 +72,11 @@ const Dashboard: React.FC = () => {
       backgroundColor: "#06B6D4",
       carouselKey: "airlineInvoices",
       sections: [
-        { label: "Available", value: 0, backgroundColor: "#06B6D4" },
-        { label: "GST - Filed", value: 0, backgroundColor: "#0891B2" },
+        { label: "Available", value: 100, backgroundColor: "#06B6D4" },
+        { label: "GST - Filed", value: 60, backgroundColor: "#0891B2" },
         {
           label: "Pending to File",
-          value: 0,
+          value: 40,
           backgroundColor: "#06B6D4",
           variant: "light",
         },
@@ -87,11 +87,11 @@ const Dashboard: React.FC = () => {
       backgroundColor: "#8B5CF6",
       carouselKey: "allInvoices",
       sections: [
-        { label: "Available", value: 0, backgroundColor: "#8B5CF6" },
-        { label: "GST - Filed", value: 0, backgroundColor: "#7C3AED" },
+        { label: "Available", value: 80, backgroundColor: "#8B5CF6" },
+        { label: "GST - Filed", value: 60, backgroundColor: "#7C3AED" },
         {
           label: "Pending to File",
-          value: 0,
+          value: 50,
           backgroundColor: "#8B5CF6",
           variant: "light",
         },
@@ -102,8 +102,8 @@ const Dashboard: React.FC = () => {
       backgroundColor: "#F59E0B",
       carouselKey: "netClaimable",
       sections: [
-        { label: "Airlines", value: 0, backgroundColor: "#F59E0B" },
-        { label: "All", value: 0, backgroundColor: "#D97706" },
+        { label: "Airlines", value: 60, backgroundColor: "#F59E0B" },
+        { label: "All", value: 30, backgroundColor: "#D97706" },
       ],
     },
   ];
@@ -759,7 +759,7 @@ const Dashboard: React.FC = () => {
                         borderRadius: "4px",
                         border: "none",
                         background:
-                          invoiceTab === "all" ? "#1890ff" : "transparent",
+                          invoiceTab === "all" ? "#4c1d95" : "transparent",
                         color: invoiceTab === "all" ? "white" : "#666",
                         minWidth: "50px",
                       }}
@@ -774,7 +774,7 @@ const Dashboard: React.FC = () => {
                         borderRadius: "4px",
                         border: "none",
                         background:
-                          invoiceTab === "airlines" ? "#1890ff" : "transparent",
+                          invoiceTab === "airlines" ? "#4c1d95" : "transparent",
                         color: invoiceTab === "airlines" ? "white" : "#666",
                         minWidth: "60px",
                       }}

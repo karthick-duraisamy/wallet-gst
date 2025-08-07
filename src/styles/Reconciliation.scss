@@ -2,16 +2,9 @@
 
 .cls-status {
   display: flex;
-  gap: 16px;
-  overflow-x: auto;
-  overflow-y: hidden;
+  flex-wrap: wrap;
+  gap: 12px;
   padding-bottom: 8px;
-}
-
-.cls-status-item {
-  flex: 0 0 auto;
-  min-width: 120px;
-  white-space: nowrap;
 }
 
 .cls-reconciliation-container {
@@ -369,8 +362,9 @@
     display: flex;
     align-items: center;
     background: #E5EAF8;
-    padding: 6px;
+    padding: 6px 12px;
     border-radius: 6px;
+    gap:10px;
 
     .cls-status-label {
       font-size: 13px;
@@ -380,14 +374,8 @@
     .cls-status-value {
       font-size: 14px;
       font-weight: 600;
-      color: #333;
+      color: #4c1d95;
       text-align: center;
     }
   }
-}
-
-.cls-status {
-  display: flex;
-  gap: 6px;
-  width: 650px;
 }

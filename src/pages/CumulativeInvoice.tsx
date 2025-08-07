@@ -1,44 +1,28 @@
-import React, { useState } from "react";
-import {
-  Card,
-  Radio,
-  Tabs,
-  Input,
-  Button,
-  Select,
-  Typography,
-  Space,
-  Empty,
-  Table,
-  Checkbox,
-  Tag,
-  DatePicker,
-} from "antd";
-import {
-  SearchOutlined,
-  DownloadOutlined,
-  CalendarOutlined,
-  FilterOutlined,
-} from "@ant-design/icons";
+import React, { useState, useEffect } from "react";
+import { Card, Radio, Tabs, Input, Button, Select, Typography, Table, Checkbox, DatePicker } from "antd";
+import { SearchOutlined, DownloadOutlined, CalendarOutlined, FilterOutlined, EditOutlined } from "@ant-design/icons";
+import { usePostInvoiceFilterMutation } from '../services/variables/variables'
+import dayjs from "dayjs"
 import { useTheme } from "../contexts/ThemeContext";
 import "../styles/CumulativeInvoice.scss";
+import { downloadCSV, downloadXLS } from '../Utils/commonFunctions'
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 const { TextArea } = Input;
 const { Option } = Select;
+const { RangePicker } = DatePicker;
 
 const CumulativeInvoice: React.FC = () => {
-  const [entityType, setEntityType] = useState("agency");
   const [activeTab, setActiveTab] = useState("upload-pnr");
-  const [uploadType, setUploadType] = useState("pnr");
-  const [pnrInput, setPnrInput] = useState("");
   const [invoiceType, setInvoiceType] = useState("all");
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(6);
   const [goToPageValue, setGoToPageValue] = useState("");
   const [searchText, setSearchText] = useState("");
   const { translate } = useTheme();
+  const [dateRange, setDateRange] = useState<
+      [dayjs.Dayjs | null, dayjs.Dayjs | null]
+    >([null, null]);
 
   // Form states
   const [isInvoiceExpanded, setIsInvoiceExpanded] = useState(false);
@@ -46,24 +30,16 @@ const CumulativeInvoice: React.FC = () => {
   const [isPnrDropdownOpen, setIsPnrDropdownOpen] = useState(false);
   const [pnrTicketType, setPnrTicketType] = useState("pnr");
   const [pnrTicketText, setPnrTicketText] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const handleSubmit = () => {
     console.log("Submit clicked");
   };
-
-  const handleResetAll = () => {
-    setPnrInput("");
-    setInvoiceType("all");
-    setUploadType("pnr");
-  };
-
   const handleInvoiceToggle = () => {
     setIsInvoiceExpanded(!isInvoiceExpanded);
   };
 
   const handleInvoiceSubmit = () => {
-    // Process the invoiceText data here
-    console.log("Invoice data:", invoiceText);
     setIsInvoiceExpanded(false);
   };
 
@@ -98,7 +74,7 @@ const CumulativeInvoice: React.FC = () => {
 
   // Column visibility state
   const [visibleColumns, setVisibleColumns] = useState({
-    supplierName: true,
+    AirlineName: true,
     pnrTicketNo: true,
     invoiceNo: true,
     invoiceDate: true,
@@ -109,7 +85,7 @@ const CumulativeInvoice: React.FC = () => {
 
   // Column configuration with disabled flags
   const columnConfig = {
-    supplierName: { disabled: true },
+    AirlineName: { disabled: true },
     pnrTicketNo: { disabled: true },
     invoiceNo: { disabled: true },
     invoiceDate: { disabled: true },
@@ -130,7 +106,7 @@ const CumulativeInvoice: React.FC = () => {
 
   // Column mapping for display titles
   const columnTitleMapping = {
-    supplierName: translate("supplierName"),
+    AirlineName: translate("Airline name"),
     pnrTicketNo: translate("pnrTicketNumber"),
     invoiceNo: translate("invoiceNumber"),
     invoiceDate: translate("invoiceDate"),
@@ -138,237 +114,138 @@ const CumulativeInvoice: React.FC = () => {
     travelVendor: translate("travelVendor"),
     action: "Action",
   };
+  const [postInvoiceFilter, { data }] = usePostInvoiceFilterMutation();
+  const [totalRecords, setTotalRecords] = useState(0);
+
+  useEffect(() => {
+    postInvoiceFilter({ page: currentPage, page_size: pageSize});
+  }, [currentPage, pageSize]);
+
+  useEffect(() => {
+    if (data?.records) {
+      setTotalRecords(data.count);
+    }
+  }, [data]);
+ useEffect(() => {
+    if (data?.category && data.category.length > 0 && !selectedCategory) {
+      setSelectedCategory(data.category[0].name.toLowerCase());
+    }
+  }, [data?.category, selectedCategory]);
 
   // Define all columns directly
+  // const allColumns = [
+  // {
+  //   title: translate("Airline name"),
+  //   dataIndex: "airline_name", // match your backend field
+  //   key: "airline_name",
+  //   render: (text: string) => text || "-", // default fallback
+  //   ...(fixedColumnsConfig.AirlineName && { fixed: "left" as const }),
+  // },
+  // {
+  //   title: translate("pnrTicketNumber"),
+  //   dataIndex: "pnr",
+  //   key: "pnr",
+  //   render: (text: string) => text || "-",
+  //   ...(fixedColumnsConfig.pnrTicketNo && { fixed: "left" as const }),
+  // },
+  // {
+  //   title: translate("invoiceNumber"),
+  //   dataIndex: "invoice_number",
+  //   key: "invoice_number",
+  //   render: (text: string) => text || "-",
+  //   ...(fixedColumnsConfig.invoiceNo && { fixed: "left" as const }),
+  // },
+  // {
+  //   title: translate("invoiceDate"),
+  //   dataIndex: "invoice_date",
+  //   key: "invoice_date",
+  //   render: (text: string) => text || "-",
+  //   ...(fixedColumnsConfig.invoiceDate && { fixed: "left" as const }),
+  // },
+  // {
+  //   title: translate("type"),
+  //   dataIndex: "invoice_type",
+  //   key: "invoice_type",
+  //   render: (text: string) => text || "-",
+  //   ...(fixedColumnsConfig.type && { fixed: "left" as const }),
+  // },
+  // {
+  //   title: translate("travelVendor"),
+  //   dataIndex: "vendor_name",
+  //   key: "vendor_name",
+  //   render: (text: string) => text || "-",
+  //   ...(fixedColumnsConfig.travelVendor && { fixed: "left" as const }),
+  // },
+  // {
+  //   title: "Action",
+  //   dataIndex: "action",
+  //   key: "action",
+  //   width: 80,
+  //   fixed: "right" as const,
+  //   align: "center" as const,
+  //   render: () => <EditOutlined/>,
+  // },
+  // ];
   const allColumns = [
-    {
-      title: translate("supplierName"),
-      dataIndex: "supplierName",
-      key: "supplierName",
-      render: (text: string) => text || "Spice Jet",
-      ...(fixedColumnsConfig.supplierName && { fixed: "left" as const }),
-    },
-    {
-      title: translate("pnrTicketNumber"),
-      dataIndex: "pnrTicketNo",
-      key: "pnrTicketNo",
-      render: (text: string) => text || "ADA123",
-      ...(fixedColumnsConfig.pnrTicketNo && { fixed: "left" as const }),
-    },
-    {
-      title: translate("invoiceNumber"),
-      dataIndex: "invoiceNo",
-      key: "invoiceNo",
-      render: (text: string) => text || "INV123456",
-      ...(fixedColumnsConfig.invoiceNo && { fixed: "left" as const }),
-    },
-    {
-      title: translate("invoiceDate"),
-      dataIndex: "invoiceDate",
-      key: "invoiceDate",
-      render: (text: string) => text || "15-Jan-2024",
-      ...(fixedColumnsConfig.invoiceDate && { fixed: "left" as const }),
-    },
-    {
-      title: translate("type"),
-      dataIndex: "type",
-      key: "type",
-      render: (text: string) => text || "Invoice",
-      ...(fixedColumnsConfig.type && { fixed: "left" as const }),
-    },
-    {
-      title: translate("travelVendor"),
-      dataIndex: "travelVendor",
-      key: "travelVendor",
-      render: (text: string) => text || "AtYourPrice",
-      ...(fixedColumnsConfig.travelVendor && { fixed: "left" as const }),
-    },
-    {
-      title: "Action",
-      dataIndex: "action",
-      key: "action",
-      width: 80,
-      fixed: "right" as const,
-      align: "center" as const,
-      render: () => "Edit",
-    },
-  ];
-
-  // Filter visible columns
-  const visibleColumnsData = allColumns.filter(
-    (col) => visibleColumns[col.key as keyof typeof visibleColumns],
-  );
-
-  const mockData = [
-    {
-      key: "1",
-      supplierName: "Spice Jet",
-      pnrTicketNo: "ADA123",
-      invoiceNo: "INV001234",
-      invoiceDate: "15-Jan-2024",
-      type: "Invoice",
-      travelVendor: "AtYourPrice",
-    },
-    {
-      key: "2",
-      supplierName: "IndiGo",
-      pnrTicketNo: "BCD456",
-      invoiceNo: "CNT002345",
-      invoiceDate: "16-Jan-2024",
-      type: "Credit note",
-      travelVendor: "AtYourPrice",
-    },
-    {
-      key: "3",
-      supplierName: "Air India",
-      pnrTicketNo: "ASSA789",
-      invoiceNo: "INV003456",
-      invoiceDate: "17-Jan-2024",
-      type: "Invoice",
-      travelVendor: "AtYourPrice",
-    },
-    {
-      key: "4",
-      supplierName: "Vistara",
-      pnrTicketNo: "ASAS012",
-      invoiceNo: "INV004567",
-      invoiceDate: "18-Jan-2024",
-      type: "Invoice",
-      travelVendor: "AtYourPrice",
-    },
-    {
-      key: "5",
-      supplierName: "GoAir",
-      pnrTicketNo: "WXYZ345",
-      invoiceNo: "INV005678",
-      invoiceDate: "19-Jan-2024",
-      type: "Invoice",
-      travelVendor: "AtYourPrice",
-    },
-    {
-      key: "6",
-      supplierName: "Alliance Air",
-      pnrTicketNo: "ASSA789",
-      invoiceNo: "INV006789",
-      invoiceDate: "20-Jan-2024",
-      type: "Invoice",
-      travelVendor: "AtYourPrice",
-    },
-    {
-      key: "7",
-      supplierName: "Air Asia",
-      pnrTicketNo: "QWER456",
-      invoiceNo: "INV007890",
-      invoiceDate: "21-Jan-2024",
-      type: "Credit Note",
-      travelVendor: "AtYourPrice",
-    },
-    {
-      key: "8",
-      supplierName: "Spice Jet",
-      pnrTicketNo: "ZXCV123",
-      invoiceNo: "INV008901",
-      invoiceDate: "22-Jan-2024",
-      type: "Invoice",
-      travelVendor: "AtYourPrice",
-    },
-    {
-      key: "9",
-      supplierName: "IndiGo",
-      pnrTicketNo: "TYUI567",
-      invoiceNo: "INV009012",
-      invoiceDate: "23-Jan-2024",
-      type: "Invoice",
-      travelVendor: "AtYourPrice",
-    },
-    {
-      key: "10",
-      supplierName: "Air India",
-      pnrTicketNo: "GHJK234",
-      invoiceNo: "INV010123",
-      invoiceDate: "24-Jan-2024",
-      type: "Debit Note",
-      travelVendor: "AtYourPrice",
-    },
-    {
-      key: "11",
-      supplierName: "Vistara",
-      pnrTicketNo: "BNMS890",
-      invoiceNo: "INV011234",
-      invoiceDate: "25-Jan-2024",
-      type: "Invoice",
-      travelVendor: "AtYourPrice",
-    },
-    {
-      key: "12",
-      supplierName: "GoAir",
-      pnrTicketNo: "LKJH567",
-      invoiceNo: "INV012345",
-      invoiceDate: "26-Jan-2024",
-      type: "Invoice",
-      travelVendor: "AtYourPrice",
-    },
-    {
-      key: "13",
-      supplierName: "Alliance Air",
-      pnrTicketNo: "POIU234",
-      invoiceNo: "INV013456",
-      invoiceDate: "27-Jan-2024",
-      type: "Credit Note",
-      travelVendor: "AtYourPrice",
-    },
-    {
-      key: "14",
-      supplierName: "Air Asia",
-      pnrTicketNo: "ASDF890",
-      invoiceNo: "INV014567",
-      invoiceDate: "28-Jan-2024",
-      type: "Invoice",
-      travelVendor: "AtYourPrice",
-    },
-    {
-      key: "15",
-      supplierName: "Spice Jet",
-      pnrTicketNo: "MNBV567",
-      invoiceNo: "INV015678",
-      invoiceDate: "29-Jan-2024",
-      type: "Debit Note",
-      travelVendor: "AtYourPrice",
-    },
-  ];
-
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: (newSelectedRowKeys: React.Key[]) => {
-      setSelectedRowKeys(newSelectedRowKeys);
-    },
-  };
-
-  // Filter data based on search text
-  const filteredData = mockData.filter((item) =>
-    Object.values(item).some((value) =>
-      value.toString().toLowerCase().includes(searchText.toLowerCase()),
+  {
+    title: 'Airline Name',
+    dataIndex: 'airline_name',
+    key: 'AirlineName',
+    render: (text: string) => text,
+  },
+  {
+    title: 'PNR/Ticket No',
+    dataIndex: 'pnr',
+    key: 'pnrTicketNo',
+  },
+  {
+    title: 'Invoice Number',
+    dataIndex: 'invoice_number',
+    key: 'invoiceNo',
+  },
+  {
+    title: 'Invoice Date',
+    dataIndex: 'invoice_date',
+    key: 'invoiceDate',
+  },
+  {
+    title: 'Type',
+    dataIndex: 'transaction_type',
+    key: 'type',
+  },
+  {
+    title: 'Travel Vendor',
+    dataIndex: 'vendor_name',
+    key: 'travelVendor',
+  },
+  {
+    title: 'Action',
+    key: 'action',
+    width: 80,
+    fixed: "right" as const,
+    align: "center" as const,
+    render: (_, record) => (
+        <EditOutlined/>
     ),
-  );
+  },
+  ];
+const filteredColumns = allColumns.filter(
+  (col) => visibleColumns[col.key as keyof typeof visibleColumns]
+);
 
   // Calculate pagination for table data
-  const startIndex = (currentPage - 1) * pageSize;
-  const endIndex = startIndex + pageSize;
-  const paginatedTableData = filteredData.slice(startIndex, endIndex);
-  const totalPages = Math.ceil(filteredData.length / pageSize);
-
-  const handlePageChange = (page: number, pageSize: number) => {
-    setCurrentPage(page);
-    setPageSize(pageSize);
-  };
-
-  const handlePageSizeChange = (current: number, size: number) => {
-    setCurrentPage(1);
-    setPageSize(size);
-  };
-
+  const paginatedTableData = data?.records;
+  const category = data?.category;
+  console.log(category,'category');
+  // Removed invalid category assignment
+ 
+  
+  const totalPages = Math.ceil(totalRecords / pageSize);
+  console.log(totalPages);
+  
   const handleGoToPage = () => {
     const page = Number(goToPageValue);
+    const totalPages = Math.ceil(totalRecords / pageSize);
     if (!isNaN(page) && page >= 1 && page <= totalPages) {
       setCurrentPage(page);
     }
@@ -477,7 +354,7 @@ const CumulativeInvoice: React.FC = () => {
                 <Button type="primary" onClick={handleSubmit} size="large">
                   {translate("submit")}
                 </Button>
-                <Button onClick={handleResetAll} size="large">
+                <Button  size="large">
                   {translate("resetAll")}
                 </Button>
               </div>
@@ -703,7 +580,7 @@ const CumulativeInvoice: React.FC = () => {
                 <Button type="primary" onClick={handleSubmit} size="large">
                   Submit
                 </Button>
-                <Button onClick={handleResetAll} size="large">
+                <Button size="large">
                   Reset all
                 </Button>
               </div>
@@ -758,7 +635,7 @@ const CumulativeInvoice: React.FC = () => {
                 <Button type="primary" onClick={handleSubmit} size="large">
                   Submit
                 </Button>
-                <Button onClick={handleResetAll} size="large">
+                <Button  size="large">
                   Reset all
                 </Button>
               </div>
@@ -878,35 +755,21 @@ const CumulativeInvoice: React.FC = () => {
                 </div>
 
                 <div>
-                  <span
-                    style={{
-                      fontSize: "12px",
-                      color: "#666",
-                      display: "block",
-                      marginBottom: 4,
-                    }}
-                  >
-                    Start / end date *
-                  </span>
-                  <div
-                    style={{ display: "flex", alignItems: "center", gap: 8 }}
-                  >
-                    <DatePicker
-                      placeholder="Start date"
-                      suffixIcon={<CalendarOutlined />}
-                      style={{ width: 100 }}
-                      size="large"
-                    />
-                    <span style={{ fontSize: "12px" }}>to</span>
-                    <DatePicker
-                      placeholder="End date"
-                      suffixIcon={<CalendarOutlined />}
-                      style={{ width: 100 }}
-                      size="large"
-                    />
-                  </div>
-                </div>
-              </div>
+                   <div>
+          <label
+            style={{ display: "block", marginBottom: 4, fontSize: "14px" }}
+          >
+            {translate("startEndDate")}
+          </label>
+          <RangePicker
+            value={dateRange}
+            onChange={(dates) => setDateRange(dates || [null, null])}
+            placeholder={[translate("startDate"), translate("endDate")]}
+            style={{ width: 220 }}
+          />
+                    </div>
+                   </div>
+               </div>
 
               <div className="cls-button">
                 <Button type="primary" onClick={handleSubmit} size="large">
@@ -915,7 +778,7 @@ const CumulativeInvoice: React.FC = () => {
                 {/* </div> */}
 
                 {/* <div style={{ alignSelf: 'flex-end' }}> */}
-                <Button onClick={handleResetAll} size="large">
+                <Button  size="large">
                   Reset all
                 </Button>
               </div>
@@ -928,9 +791,6 @@ const CumulativeInvoice: React.FC = () => {
     }
   };
 
-  const handleFilterClick = () => {
-    setFilterDropdownVisible(!filterDropdownVisible);
-  };
 
   return (
     <div className="slide-up cls-cumulative-container">
@@ -946,14 +806,18 @@ const CumulativeInvoice: React.FC = () => {
 
       {/* Entity Type Selection */}
       <div className="cls-entity-type-section">
-        <Radio.Group
-          value={entityType}
-          onChange={(e) => setEntityType(e.target.value)}
-          size="large"
-        >
-          <Radio value="agency">{translate("agency")}</Radio>
-          <Radio value="airline">{translate("airline")}</Radio>
-        </Radio.Group>
+       {data?.category && (
+            <Radio.Group
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+            >
+              {data.category.map((item) => (
+                <Radio key={item.name} value={item.name.toLowerCase()}>
+                  {translate(item.name.toLowerCase())}
+                </Radio>
+              ))}
+            </Radio.Group>
+        )}
       </div>
 
       {/* Tabs */}
@@ -972,93 +836,97 @@ const CumulativeInvoice: React.FC = () => {
       {/* Data Table Section */}
       <div>
         {/* Export Buttons and Search */}
-        <div className="cls-export-section">
-          <Button
-            icon={<DownloadOutlined />}
-            className="cls-export-button cls-xls"
-          >
-            XLS
-          </Button>
-          <Button
-            icon={<DownloadOutlined />}
-            className="cls-export-button cls-csv"
-          >
-            CSV
-          </Button>
-          <Input
-            placeholder="Search"
-            prefix={<SearchOutlined />}
-            className="cls-search-input"
-            value={searchText}
-            onChange={(e) => {
-              setSearchText(e.target.value);
-              setCurrentPage(1); // Reset to first page when searching
-            }}
-          />
-        </div>
+
 
         {/* Data Table */}
         <Card className="cls-data-table">
           <div className="cls-table-container">
-            <div className="cls-table-header-actions">
-              <FilterOutlined
-                className="cls-external-filter-icon"
-                onClick={() => setFilterDropdownVisible(!filterDropdownVisible)}
-              />
-              {filterDropdownVisible && (
-                <div className="cls-filter-dropdown" ref={filterDropdownRef}>
-                  <div className="cls-filter-header">
-                    <span className="cls-filter-title">Show/Hide Columns</span>
-                    <Button
-                      type="text"
-                      onClick={() => setFilterDropdownVisible(false)}
-                      style={{
-                        position: "absolute",
-                        top: "4px",
-                        right: "6px",
-                        color: "red",
-                        fontSize: "16px",
-                        padding: 0,
-                        width: "20px",
-                        height: "20px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      ×
-                    </Button>
+            <div className="cls-table-head">
+              <div className="cls-export-section">
+                <Input
+                  placeholder="Search"
+                  prefix={<SearchOutlined />}
+                  className="cls-search-input"
+                  value={searchText}
+                  onChange={(e) => {
+                    setSearchText(e.target.value);
+                    setCurrentPage(1); // Reset to first page when searching
+                  }}
+                />
+              </div>
+              <div className="cls-table-header-actions">
+                
+                <FilterOutlined
+                  className="cls-external-filter-icon"
+                  onClick={() => setFilterDropdownVisible(!filterDropdownVisible)}
+                />
+                 <Button
+                  icon={<DownloadOutlined />}
+                  className="cls-export-button cls-xls" onClick={() => downloadXLS()}
+                >
+                  XLS
+                </Button>
+                <Button
+                  icon={<DownloadOutlined />}
+                  className="cls-export-button cls-csv" onClick={() => downloadCSV()}
+                >
+                  CSV
+                </Button>
+                {filterDropdownVisible && (
+                  <div className="cls-filter-dropdown" ref={filterDropdownRef}>
+                    <div className="cls-filter-header">
+                      <span className="cls-filter-title">Show/Hide Columns</span>
+                      <Button
+                        type="text"
+                        onClick={() => setFilterDropdownVisible(false)}
+                        style={{
+                          position: "absolute",
+                          top: "15px",
+                          right: "10px",
+                          color: "red",
+                          fontSize: "22px",
+                          padding: 0,
+                          width: "20px",
+                          height: "20px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        ×
+                      </Button>
+                    </div>
+                    <div className="cls-filter-content">
+                      {Object.keys(visibleColumns).map((key) => (
+                        <div key={key} className="cls-filter-option">
+                          <Checkbox
+                            checked={
+                              visibleColumns[key as keyof typeof visibleColumns]
+                            }
+                            disabled={
+                              columnConfig[key as keyof typeof columnConfig]
+                                ?.disabled || false
+                            }
+                            onChange={(e) =>
+                              setVisibleColumns((prev) => ({
+                                ...prev,
+                                [key]: e.target.checked,
+                              }))
+                            }
+                          >
+                            {columnTitleMapping[
+                              key as keyof typeof columnTitleMapping
+                            ] || key}
+                          </Checkbox>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                  <div className="cls-filter-content">
-                    {Object.keys(visibleColumns).map((key) => (
-                      <div key={key} className="cls-filter-option">
-                        <Checkbox
-                          checked={
-                            visibleColumns[key as keyof typeof visibleColumns]
-                          }
-                          disabled={
-                            columnConfig[key as keyof typeof columnConfig]
-                              ?.disabled || false
-                          }
-                          onChange={(e) =>
-                            setVisibleColumns((prev) => ({
-                              ...prev,
-                              [key]: e.target.checked,
-                            }))
-                          }
-                        >
-                          {columnTitleMapping[
-                            key as keyof typeof columnTitleMapping
-                          ] || key}
-                        </Checkbox>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
             <Table
-              columns={visibleColumnsData}
+              columns={filteredColumns}
               dataSource={paginatedTableData}
               pagination={false}
               size="middle"
@@ -1066,6 +934,7 @@ const CumulativeInvoice: React.FC = () => {
               className="custom-table"
               scroll={{ x: 1200 }}
               tableLayout="fixed"
+              rowKey="invoice_number" 
             />
           </div>
 
@@ -1083,29 +952,32 @@ const CumulativeInvoice: React.FC = () => {
             {/* Left side - Displaying info with page size selector */}
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <span style={{ fontSize: "14px" }}>Displaying</span>
+              
               <Select
                 value={pageSize}
                 onChange={(value) => {
                   setPageSize(value);
-                  setCurrentPage(1);
+                  setCurrentPage(1); // Reset to page 1 when size changes
                 }}
                 style={{ width: 60 }}
                 size="small"
                 options={[
-                  { value: 5, label: "5" },
-                  { value: 10, label: "10" },
-                  { value: 20, label: "20" },
+                  { value: 6, label: "6" },
+                  { value: 12, label: "12" },
                   { value: 30, label: "30" },
-                  { value: 50, label: "50" },
+                  { value: 60, label: "60" },
+                  { value: 100, label: "100" },
                 ]}
               />
+              
               <span style={{ fontSize: "14px" }}>
-                Out of {filteredData.length}
+                Out of {totalRecords}
               </span>
             </div>
 
+
             {/* Center - Page navigation */}
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <div className="page" style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <Button
                 icon="<"
                 disabled={currentPage === 1}
@@ -1213,13 +1085,26 @@ const CumulativeInvoice: React.FC = () => {
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <span style={{ fontSize: "14px" }}>Go to Page</span>
               <Input
-                style={{ width: 60 }}
-                value={goToPageValue}
-                onChange={(e) => setGoToPageValue(e.target.value)}
-                onPressEnter={handleGoToPage}
-                placeholder={`1-${totalPages}`}
-                size="small"
-              />
+                  style={{ width: 60 }}
+                  value={goToPageValue}
+                  onChange={(e) => {
+                    const value = e.target.value;
+
+                    // Allow only numbers
+                    if (/^\d*$/.test(value)) {
+                      const numericValue = Number(value);
+                      if (numericValue <= totalPages) {
+                        setGoToPageValue(value);
+                      } else if (value === "") {
+                        setGoToPageValue("");
+                      }
+                    }
+                  }}
+                  onPressEnter={handleGoToPage}
+                  placeholder={`1-${totalPages}`}
+                  size="small"
+                />
+
               <Button
                 type="primary"
                 style={{ backgroundColor: "#4f46e5", borderRadius: "16px" }}

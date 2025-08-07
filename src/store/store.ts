@@ -1,16 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authSlice from './slices/authSlice';
-import uploadSlice from './slices/uploadSlice';
-import reconciliationSlice from './slices/reconciliationSlice';
-import invoiceSlice from './slices/invoiceSlice';
+import { CommonService } from '../services/service';
+import uploadReducer from "./slices/uploadSlice";
 
 export const store = configureStore({
   reducer: {
     auth: authSlice,
-    upload: uploadSlice,
-    reconciliation: reconciliationSlice,
-    invoice: invoiceSlice,
+    [CommonService.reducerPath]: CommonService.reducer,
+    upload: uploadReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(CommonService.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

@@ -1,46 +1,22 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Card,
-  Table,
-  Button,
-  Select,
-  DatePicker,
-  Input,
-  Space,
-  Tag,
-  Radio,
-  Badge,
-  Checkbox,
-  Typography,
-  Row,
-  Col,
-  Statistic,
-  Progress,
-} from "antd";
-import {
-  SearchOutlined,
-  DownloadOutlined,
-  FilterOutlined,
-  CalendarOutlined,
-  SettingOutlined,
-  EyeOutlined,
-  MoreOutlined,
-} from "@ant-design/icons";
+import { Card,Table,Button,Select,DatePicker,Input,Tag,Radio,Checkbox} from "antd";
+import {SearchOutlined,DownloadOutlined,FilterOutlined} from "@ant-design/icons";
 import dayjs from "dayjs";
-import { RootState } from "../store/store";
+// import { RootState } from "../store/store";
 import { setFilters, clearFilters } from "../store/slices/reconciliationSlice";
 import { useTheme } from "../contexts/ThemeContext";
 import "../styles/Reconciliation.scss";
+import { downloadCSV, downloadXLS } from '../Utils/commonFunctions'
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 
 const Reconciliation: React.FC = () => {
   const dispatch = useDispatch();
-  const { records, filters, loading, pagination } = useSelector(
-    (state: RootState) => state.reconciliation,
-  );
+  // const { records, filters, loading, pagination } = useSelector(
+  //   (state: RootState) => state.reconciliation,
+  // );
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const { translate } = useTheme();
   const [currentPage, setCurrentPage] = useState(1);
@@ -128,12 +104,12 @@ const Reconciliation: React.FC = () => {
 
   // Status counts for display below form
   const statusCounts = {
-    new: 0,
-    matched: 0,
-    pendingToFile: 0,
-    invoiceMissing: 0,
+    new: 10,
+    matched: 20,
+    pendingToFile: 30,
+    invoiceMissing: 40,
     additionalInGSTR2A: 917,
-    invoiceReceived: 0,
+    invoiceReceived: 50,
   };
 
   const [visibleColumns, setVisibleColumns] = useState({
@@ -573,73 +549,74 @@ const Reconciliation: React.FC = () => {
       <div className="cls-status-counts">
         <div className="cls-status">
           <div className="cls-status-item">
-            <span className="cls-status-label">New:</span>
+            <span className="cls-status-label">New :</span>
             <span className="cls-status-value">{statusCounts.new}</span>
           </div>
           <div className="cls-status-item">
-            <span className="cls-status-label">Matched:</span>
+            <span className="cls-status-label">Matched :</span>
             <span className="cls-status-value">{statusCounts.matched}</span>
           </div>
           <div className="cls-status-item">
-            <span className="cls-status-label">Pending to file:</span>
+            <span className="cls-status-label">Pending to file :</span>
             <span className="cls-status-value">
               {statusCounts.pendingToFile}
             </span>
           </div>
           <div className="cls-status-item">
-            <span className="cls-status-label">Invoice missing:</span>
+            <span className="cls-status-label">Invoice missing :</span>
             <span className="cls-status-value">
               {statusCounts.invoiceMissing}
             </span>
           </div>
           <div className="cls-status-item">
-            <span className="cls-status-label">Additional in GSTR-2A:</span>
+            <span className="cls-status-label">Additional in GSTR-2A :</span>
             <span className="cls-status-value">
               {statusCounts.additionalInGSTR2A}
             </span>
           </div>
           <div className="cls-status-item">
-            <span className="cls-status-label">Invoice received:</span>
-            <span className="cls-status-value">
+            <span className="cls-status-label">Invoice received :</span>
+            <span className="cls-status-value"> 
               {statusCounts.invoiceReceived}
             </span>
           </div>
-        </div>
-        {/* Export Buttons */}
-        <div className="cls-export-controls">
-          <Button
-            icon={<DownloadOutlined />}
-            className="cls-export-btn cls-xls"
-          >
-            XLS
-          </Button>
-          <Button
-            icon={<DownloadOutlined />}
-            className="cls-export-btn cls-csv"
-          >
-            CSV
-          </Button>
-          <Input
-            placeholder="search"
-            prefix={<SearchOutlined />}
-            className="cls-search-input"
-            value={searchText}
-            onChange={(e) => {
-              setSearchText(e.target.value);
-              setCurrentPage(1); // Reset to first page when searching
-            }}
-          />
         </div>
       </div>
 
       {/* Data Table */}
       <Card className="cls-data-table-card">
         <div className="cls-table-container">
+          <div className="cls-table-head">
+          {/* Export Buttons */}
+          <div className="cls-export-controls">
+            <Input
+              placeholder="search"
+              prefix={<SearchOutlined />}
+              className="cls-search-input"
+              value={searchText}
+              onChange={(e) => {
+                setSearchText(e.target.value);
+                setCurrentPage(1); // Reset to first page when searching
+              }}
+            />
+          </div>
           <div className="cls-table-header-actions">
             <FilterOutlined
               className="cls-external-filter-icon"
               onClick={() => setFilterDropdownVisible(!filterDropdownVisible)}
             />
+            <Button
+            icon={<DownloadOutlined />}
+            className="cls-export-btn cls-xls" onClick={() => downloadXLS()}
+          >
+            XLS
+          </Button>
+          <Button
+            icon={<DownloadOutlined />}
+            className="cls-export-btn cls-csv" onClick={() => downloadCSV()}
+          >
+            CSV
+          </Button>
             {filterDropdownVisible && (
               <div className="cls-filter-dropdown" ref={filterDropdownRef}>
                 <div className="cls-filter-header">
@@ -649,10 +626,10 @@ const Reconciliation: React.FC = () => {
                     onClick={() => setFilterDropdownVisible(false)}
                     style={{
                       position: "absolute",
-                      top: "4px",
-                      right: "6px",
+                      top: "14px",
+                      right: "10px",
                       color: "red",
-                      fontSize: "16px",
+                      fontSize: "22px",
                       padding: 0,
                       width: "20px",
                       height: "20px",
@@ -694,6 +671,7 @@ const Reconciliation: React.FC = () => {
                 </div>
               </div>
             )}
+          </div>
           </div>
           <Table
             columns={visibleColumnsData}
@@ -849,14 +827,26 @@ const Reconciliation: React.FC = () => {
             {/* Right side - Go to page */}
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <span style={{ fontSize: "14px" }}>Go to Page</span>
-              <Input
-                style={{ width: 60 }}
-                value={goToPageValue}
-                onChange={(e) => setGoToPageValue(e.target.value)}
-                onPressEnter={handleGoToPage}
-                placeholder={`1-${totalPages}`}
-                size="small"
-              />
+             <Input
+                  style={{ width: 60 }}
+                  value={goToPageValue}
+                  onChange={(e) => {
+                    const value = e.target.value;
+
+                    // Allow only numbers
+                    if (/^\d*$/.test(value)) {
+                      const numericValue = Number(value);
+                      if (numericValue <= totalPages) {
+                        setGoToPageValue(value);
+                      } else if (value === "") {
+                        setGoToPageValue("");
+                      }
+                    }
+                  }}
+                  onPressEnter={handleGoToPage}
+                  placeholder={`1-${totalPages}`}
+                  size="small"
+                />
               <Button
                 type="primary"
                 style={{ backgroundColor: "#4f46e5", borderRadius: "16px" }}

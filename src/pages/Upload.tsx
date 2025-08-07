@@ -10,24 +10,22 @@ import {
   Alert,
   Tabs,
   Typography,
+  UploadFile
 } from "antd";
 import {
-  InboxOutlined,
   CloseOutlined,
   FileOutlined,
   DownloadOutlined,
   InfoCircleOutlined,
-  PlusOutlined,
 } from "@ant-design/icons";
-import { Tooltip } from "antd";
 import { RootState } from "../store/store";
+// type SubOption = 'non-ayp' | 'gstr-2a';
 import {
   setUploadType,
-  setSubOption,
   addFiles,
   removeFile,
   updateFileStatus,
-  clearFiles,
+  setSubOption, SubOption
 } from "../store/slices/uploadSlice";
 import { useTheme } from "../contexts/ThemeContext";
 import "../styles/Upload.scss";
@@ -37,13 +35,13 @@ const { Text } = Typography;
 
 const Upload: React.FC = () => {
   const dispatch = useDispatch();
-  const { files, uploadType, subOption, loading } = useSelector(
-    (state: RootState) => state.upload,
-  );
+    const activeTab = useSelector((state: RootState) => state.upload.subOption);
+  const allFiles = useSelector((state: RootState) => state.upload.files);
+  const files = allFiles[activeTab];
+  const uploadType = useSelector((state: RootState) => state.upload.uploadType);
   const { translate } = useTheme();
   const [dragOver, setDragOver] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-  const [activeTab, setActiveTab] = useState("non-ayp");
 
   const handleUploadTypeChange = (e: any) => {
     dispatch(setUploadType(e.target.value));
@@ -94,7 +92,7 @@ const Upload: React.FC = () => {
         status: "uploading" as const,
       };
 
-      dispatch(addFiles([newFile]));
+      dispatch(addFiles({ tabKey: activeTab, files: [newFile] }));
 
       // Simulate upload progress with real-time updates
       let progress = 0;
@@ -104,7 +102,7 @@ const Upload: React.FC = () => {
           progress = 100;
           clearInterval(interval);
           setUploadProgress((prev) => ({ ...prev, [newFile.id]: progress }));
-          dispatch(updateFileStatus({ id: newFile.id, status: "success" }));
+          dispatch(updateFileStatus({ tabKey: activeTab, id: newFile.id, status: "success" }));
         } else {
           setUploadProgress((prev) => ({ ...prev, [newFile.id]: progress }));
         }
@@ -130,8 +128,8 @@ const Upload: React.FC = () => {
     },
   };
 
-  const handleRemoveFile = (fileId: string) => {
-    dispatch(removeFile(fileId));
+  const handleRemoveFile = (file: UploadFile) => {
+    dispatch(removeFile({ tabKey: activeTab, fileId: file.id }));
   };
 
   const formatFileSize = (bytes: number) => {
@@ -213,7 +211,7 @@ const Upload: React.FC = () => {
         <div className="cls-tabs-container">
           <Tabs
             activeKey={activeTab}
-            onChange={setActiveTab}
+            onChange={(key) => dispatch(setSubOption(key as SubOption))}
             items={tabItems}
           />
         </div>
@@ -297,13 +295,14 @@ const Upload: React.FC = () => {
                           <div className="cls-file-name">{file.name}</div>
                         </div>
                       </div>
+
                       <div className="cls-file-actions">
                         <span className="cls-file-size">
                           {formatFileSize(file.size)}
                         </span>
                         <CloseOutlined
                           className="cls-remove-file"
-                          onClick={() => handleRemoveFile(file.id)}
+                          onClick={() => handleRemoveFile(file)}
                         />
                       </div>
                     </div>
@@ -312,13 +311,7 @@ const Upload: React.FC = () => {
                       <div className="cls-progress-section">
                         <div className="cls-upload-spinner">
                           <div className="cls-spinner"></div>
-                          <Text
-                            style={{
-                              fontSize: 12,
-                              color: "#666",
-                              marginLeft: 8,
-                            }}
-                          >
+                          <Text style={{ fontSize: 12, color: "#666", marginLeft: 8 }}>
                             Uploading...
                           </Text>
                         </div>
@@ -334,19 +327,14 @@ const Upload: React.FC = () => {
                     {file.status === "success" && (
                       <div className="cls-success-indicator">
                         <div className="cls-success-tick">✓</div>
-                        <Text
-                          style={{
-                            fontSize: 12,
-                            color: "#52c41a",
-                            marginLeft: 8,
-                          }}
-                        >
+                        <Text style={{ fontSize: 12, color: "#52c41a", marginLeft: 8 }}>
                           Upload completed
                         </Text>
                       </div>
                     )}
                   </div>
                 ))}
+
               </div>
             )}
           </div>

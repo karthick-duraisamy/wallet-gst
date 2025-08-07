@@ -3,6 +3,9 @@
   padding: 0px 24px;
   background: #f5f5f5;
   min-height: 100vh;
+  h3{
+    color: #722ed1;
+  }
 }
 
 .cls-cumulative-title {
@@ -262,22 +265,6 @@
   align-items: center;
 }
 
-.cls-export-button {
-  color: white;
-  border: none;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-
-  &.cls-xls {
-    background-color: #1d4ed8;
-  }
-
-  &.cls-csv {
-    background-color: #059669;
-  }
-}
-
 .cls-search-input {
   width: 200px;
 }
@@ -418,7 +405,10 @@
   justify-content: flex-end;
   padding: 0 16px 8px 0;
   position: relative;
+  flex-direction: row-reverse;
   z-index: 10;
+  gap: 15px;
+  align-items: center;
 }
 
 .cls-external-filter-icon {
@@ -433,4 +423,7 @@
     color: #40a9ff;
     background: #f0f8ff;
   }
+}
+:where(.css-dev-only-do-not-override-1y53vaa).ant-table-wrapper .ant-table{
+  scrollbar-color: unset;
 }
