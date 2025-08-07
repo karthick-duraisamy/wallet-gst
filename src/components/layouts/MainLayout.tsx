@@ -171,7 +171,7 @@ const MainLayout: React.FC = () => {
                               lineHeight: "1",
                             }}
                           >
-                            🇺🇸
+                            🇬🇧
                           </div>
                           {translate("english")}
                         </div>
@@ -238,7 +238,7 @@ const MainLayout: React.FC = () => {
                       lineHeight: "1",
                     }}
                   >
-                    {language === "en" ? "🇺🇸" : "🇮🇳"}
+                    {language === "en" ? "🇬🇧" : "🇮🇳"}
                   </div>
                   {language === "en"
                     ? translate("english")
@@ -526,7 +526,7 @@ const MainLayout: React.FC = () => {
                               lineHeight: "1",
                             }}
                           >
-                            🇺🇸
+                            🇬🇧
                           </div>
                           {translate("english")}
                         </div>
@@ -581,7 +581,7 @@ const MainLayout: React.FC = () => {
                   }}
                 >
                   <div className="cls-langBox">
-                    {language === "en" ? "🇺🇸" : "🇮🇳"}
+                    {language === "en" ? "🇬🇧" : "🇮🇳"}
                   </div>
                   {language === "en"
                     ? translate("english")
