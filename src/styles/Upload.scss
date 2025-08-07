@@ -459,6 +459,61 @@
   }
 }
 
+// Responsive Design
+@media (max-width: 768px) {
+  .cls-upload-container {
+    padding: 16px;
+    padding-top: 0;
+  }
+  
+  .cls-upload-layout {
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .cls-upload-area {
+    width: 100% !important;
+    min-height: 180px;
+  }
+  
+  .cls-files-display {
+    width: 100% !important;
+  }
+  
+  .cls-upload-main-text {
+    font-size: 14px;
+  }
+  
+  .cls-sample-file-btn {
+    font-size: 12px;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cls-upload-container {
+    padding: 12px;
+    padding-top: 0;
+  }
+  
+  .cls-page-title {
+    font-size: 20px;
+  }
+  
+  .cls-upload-area {
+    min-height: 160px;
+    padding-top: 10px;
+  }
+  
+  .cls-upload-main-text {
+    font-size: 13px;
+  }
+  
+  .cls-file-name {
+    width: 80px;
+  }
+}
+
 /* Styles for the filter icon outside the table */
 .cls-filter-wrapper {
   display: flex;

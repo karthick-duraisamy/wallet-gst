@@ -17,6 +17,7 @@ import { RootState } from '../../store/store';
 import { logout } from '../../store/slices/authSlice';
 import { useTheme } from '../../contexts/ThemeContext';
 import SettingsModal from '../SettingsModal';
+import ProfileModal from '../ProfileModal';
 import { Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { Logo } from '../../components/Icons/Logo'
@@ -30,6 +31,7 @@ const MainLayout: React.FC = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   const { isDarkMode, language, menuLayout, setLanguage, translate } = useTheme();
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
+  const [profileModalOpen, setProfileModalOpen] = useState(false);
 
   const handleLogout = () => {
     Modal.confirm({
@@ -50,6 +52,7 @@ const MainLayout: React.FC = () => {
       key: 'profile',
       icon: <UserOutlined />,
       label: translate('profile'),
+      onClick: () => setProfileModalOpen(true),
     },
     {
       key: 'logout',
@@ -218,11 +221,20 @@ const MainLayout: React.FC = () => {
                   width: '40px',
                   height: '40px',
                   border: 'none',
-                  fontSize: '18px'
+                  fontSize: '20px'
                 }} 
                 onClick={() => setSettingsModalOpen(true)}
               >
-                🎨
+                <div style={{ 
+                  width: '20px', 
+                  height: '20px', 
+                  borderRadius: '50%', 
+                  background: isDarkMode ? 
+                    'linear-gradient(90deg, #666 50%, transparent 50%)' : 
+                    'linear-gradient(90deg, #333 50%, transparent 50%)',
+                  border: isDarkMode ? '2px solid #666' : '2px solid #333',
+                  transition: 'all 0.3s ease'
+                }} />
               </Button>
 
               <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
@@ -485,11 +497,20 @@ const MainLayout: React.FC = () => {
               width: '40px',
               height: '40px',
               border: 'none',
-              fontSize: '18px'
+              fontSize: '20px'
             }} 
             onClick={() => setSettingsModalOpen(true)}
           >
-            🎨
+            <div style={{ 
+              width: '20px', 
+              height: '20px', 
+              borderRadius: '50%', 
+              background: isDarkMode ? 
+                'linear-gradient(90deg, #666 50%, transparent 50%)' : 
+                'linear-gradient(90deg, #333 50%, transparent 50%)',
+              border: isDarkMode ? '2px solid #666' : '2px solid #333',
+              transition: 'all 0.3s ease'
+            }} />
           </Button>
 
           {/* <Button 
@@ -568,6 +589,12 @@ const MainLayout: React.FC = () => {
       <SettingsModal 
         open={settingsModalOpen} 
         onClose={() => setSettingsModalOpen(false)} 
+      />
+
+      {/* Profile Modal */}
+      <ProfileModal 
+        open={profileModalOpen} 
+        onClose={() => setProfileModalOpen(false)} 
       />
     </Layout>
   );
