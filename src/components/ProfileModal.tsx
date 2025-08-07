@@ -226,21 +226,8 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, onClose }) => {
               borderColor: '#4f46e5',
               fontWeight: '500',
               height: '40px',
-              borderRadius: '8px',
               paddingLeft: '24px',
-              paddingRight: '24px',
-              boxShadow: '0 2px 8px rgba(79, 70, 229, 0.2)',
-              transition: 'all 0.3s ease'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#3b36d1';
-              e.currentTarget.style.transform = 'translateY(-1px)';
-              e.currentTarget.style.boxShadow = '0 4px 12px rgba(79, 70, 229, 0.3)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = '#4f46e5';
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 2px 8px rgba(79, 70, 229, 0.2)';
+              paddingRight: '24px'
             }}
           >
             Update
@@ -248,30 +235,14 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, onClose }) => {
           <Button 
             onClick={onClose}
             style={{
-              background: isDarkMode ? '#2f2f2f' : '#f5f5f5',
-              border: `1px solid ${isDarkMode ? '#424242' : '#d9d9d9'}`,
-              color: isDarkMode ? '#ffffff' : '#333',
+              background: 'transparent',
+              border: 'none',
+              color: isDarkMode ? '#a6a6a6' : '#666',
               fontWeight: '500',
-              height: '40px',
-              borderRadius: '8px',
-              paddingLeft: '20px',
-              paddingRight: '20px',
-              transition: 'all 0.3s ease'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = '#1890ff';
-              e.currentTarget.style.color = '#1890ff';
-              e.currentTarget.style.transform = 'translateY(-1px)';
-              e.currentTarget.style.boxShadow = '0 2px 8px rgba(24, 144, 255, 0.1)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = isDarkMode ? '#424242' : '#d9d9d9';
-              e.currentTarget.style.color = isDarkMode ? '#ffffff' : '#333';
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = 'none';
+              textDecoration: 'underline'
             }}
           >
-            Cancel
+            cancel
           </Button>
         </div>
       </Form>
