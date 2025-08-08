@@ -62,7 +62,7 @@ const Dashboard: React.FC = () => {
       localStorage.setItem("dashboardCardDesign", "old");
       return false;
     }
-    return saved === "new";
+    return saved === "old";
   });
 
   // Listen for localStorage changes
