@@ -5,17 +5,18 @@
 
   // Modern chart styles
   .recharts-wrapper {
+
     .recharts-cartesian-grid-horizontal line,
     .recharts-cartesian-grid-vertical line {
       stroke-opacity: 0.3;
     }
 
     .recharts-tooltip-wrapper {
-      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.1));
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
     }
 
     .recharts-active-dot {
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
     }
 
     .recharts-line {
@@ -43,7 +44,7 @@
 .cls-filter-section {
   margin-bottom: 24px;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   border: 1px solid #f0f0f0;
 
   .cls-filter-item {
@@ -390,7 +391,7 @@
   .cls-chart-card {
     border-radius: 12px;
     border: none;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     height: 400px;
 
     .cls-chart-filters {
@@ -435,7 +436,7 @@
   .cls-full-chart-card {
     border-radius: 12px;
     border: none;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     height: 300px;
 
     .cls-full-chart-extra {
@@ -596,26 +597,32 @@
                 border-radius: 50%;
                 box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
-                &.bookings { 
-                  background: linear-gradient(135deg, #10b981, #059669); 
+                &.bookings {
+                  background: linear-gradient(135deg, #10b981, #059669);
                 }
-                &.cancellations { 
-                  background: linear-gradient(135deg, #ef4444, #dc2626); 
+
+                &.cancellations {
+                  background: linear-gradient(135deg, #ef4444, #dc2626);
                 }
-                &.available { 
-                  background: linear-gradient(135deg, #3b82f6, #2563eb); 
+
+                &.available {
+                  background: linear-gradient(135deg, #3b82f6, #2563eb);
                 }
-                &.filed { 
-                  background: linear-gradient(135deg, #10b981, #059669); 
+
+                &.filed {
+                  background: linear-gradient(135deg, #10b981, #059669);
                 }
-                &.pending { 
-                  background: linear-gradient(135deg, #f59e0b, #d97706); 
+
+                &.pending {
+                  background: linear-gradient(135deg, #f59e0b, #d97706);
                 }
-                &.airlines { 
-                  background: linear-gradient(135deg, #8b5cf6, #7c3aed); 
+
+                &.airlines {
+                  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
                 }
-                &.all { 
-                  background: linear-gradient(135deg, #06b6d4, #0891b2); 
+
+                &.all {
+                  background: linear-gradient(135deg, #06b6d4, #0891b2);
                 }
               }
 
@@ -716,7 +723,7 @@
 }
 
 .cls-old-section-label {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
   line-height: 13px;
   text-align: center;
