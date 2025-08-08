@@ -99,8 +99,8 @@
   border: 1px solid #f0f0f0;
 }
 
-// Modern card styles to match reference image exactly
-.cls-modern-card {
+// New card styles to match reference image exactly
+.cls-new-card {
   background: white;
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -115,13 +115,13 @@
   }
 }
 
-.cls-modern-card-header {
+.cls-new-card-header {
   padding: 16px 16px 12px;
   background: #f8f9fa;
   border-bottom: 1px solid #e9ecef;
 }
 
-.cls-modern-card-title {
+.cls-new-card-title {
   font-size: 14px;
   font-weight: 600;
   color: #6c757d;
@@ -131,7 +131,7 @@
   margin: 0;
 }
 
-.cls-modern-card-content {
+.cls-new-card-content {
   padding: 16px;
   display: flex;
   flex-direction: column;
@@ -140,7 +140,7 @@
   min-height: 140px;
 }
 
-.cls-modern-card-item {
+.cls-new-card-item {
   border-radius: 0;
   padding: 12px 0;
   display: flex;
@@ -162,28 +162,28 @@
   }
 }
 
-.cls-modern-item-content {
+.cls-new-item-content {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
 }
 
-.cls-modern-item-label {
+.cls-new-item-label {
   font-size: 13px;
   font-weight: 400;
   color: #6c757d;
   margin: 0;
 }
 
-.cls-modern-item-value {
+.cls-new-item-value {
   font-size: 18px;
   font-weight: 600;
   color: #212529;
   margin: 0;
 }
 
-.cls-modern-card-navigation {
+.cls-new-card-navigation {
   position: absolute;
   top: 50%;
   right: 16px;
@@ -193,7 +193,7 @@
   gap: 4px;
 }
 
-.cls-modern-nav-arrow {
+.cls-new-nav-arrow {
   background: rgba(255, 255, 255, 0.95);
   border: 1px solid #e9ecef;
   border-radius: 4px;

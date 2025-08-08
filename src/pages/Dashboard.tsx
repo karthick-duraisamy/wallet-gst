@@ -55,21 +55,21 @@ const Dashboard: React.FC = () => {
   const [pendingFilesType, setPendingFilesType] = useState("invoices-count");
   const [pendingFilesAirline, setPendingFilesAirline] = useState("all");
   const { translate, isDarkMode } = useTheme();
-  const [useModernCards, setUseModernCards] = useState(() => {
+  const [useNewCards, setUseNewCards] = useState(() => {
     const saved = localStorage.getItem("dashboardCardDesign");
     // Default to old design if no value is set
     if (saved === null) {
       localStorage.setItem("dashboardCardDesign", "old");
       return false;
     }
-    return saved === "modern";
+    return saved === "new";
   });
 
   // Listen for localStorage changes
   useEffect(() => {
     const handleStorageChange = () => {
       const saved = localStorage.getItem("dashboardCardDesign");
-      setUseModernCards(saved === "modern");
+      setUseNewCards(saved === "new");
     };
 
     window.addEventListener("storage", handleStorageChange);
@@ -77,9 +77,9 @@ const Dashboard: React.FC = () => {
     // Also check for manual updates within the same tab
     const checkInterval = setInterval(() => {
       const saved = localStorage.getItem("dashboardCardDesign");
-      const currentSetting = saved === "modern";
-      if (currentSetting !== useModernCards) {
-        setUseModernCards(currentSetting);
+      const currentSetting = saved === "new";
+      if (currentSetting !== useNewCards) {
+        setUseNewCards(currentSetting);
       }
     }, 100);
 
@@ -87,7 +87,7 @@ const Dashboard: React.FC = () => {
       window.removeEventListener("storage", handleStorageChange);
       clearInterval(checkInterval);
     };
-  }, [useModernCards]);
+  }, [useNewCards]);
 
   // Overview summary data
   const overviewData = [
@@ -596,12 +596,12 @@ const Dashboard: React.FC = () => {
 
             return (
               <Col xs={24} sm={12} lg={6} key={index}>
-                {useModernCards ? (
-                  // Modern Card Design
-                  <div className="cls-modern-card">
+                {useNewCards ? (
+                  // New Card Design
+                  <div className="cls-new-card">
                     {/* Header */}
-                    <div className="cls-modern-card-header">
-                      <Text className="cls-modern-card-title">
+                    <div className="cls-new-card-header">
+                      <Text className="cls-new-card-title">
                         {item.title}
                         {(item.title.includes("Amount") ||
                           item.title.includes("Airlines")) && (
@@ -611,11 +611,11 @@ const Dashboard: React.FC = () => {
                     </div>
 
                     {/* Card Content */}
-                    <div className="cls-modern-card-content">
+                    <div className="cls-new-card-content">
                       {visibleSections.map((section, sectionIndex) => (
                         <div
                           key={sectionIndex}
-                          className="cls-modern-card-item"
+                          className="cls-new-card-item"
                           style={{
                             backgroundColor: `rgba(
                                 ${parseInt(section.backgroundColor.slice(1, 3), 16)},
@@ -626,11 +626,11 @@ const Dashboard: React.FC = () => {
                             color: section.backgroundColor, // Keep text color from original
                           }}
                         >
-                          <div className="cls-modern-item-content">
-                            <Text className="cls-modern-item-label">
+                          <div className="cls-new-item-content">
+                            <Text className="cls-new-item-label">
                               {section.label}
                             </Text>
-                            <Text className="cls-modern-item-value">
+                            <Text className="cls-new-item-value">
                               {section.value}
                             </Text>
                           </div>
@@ -639,10 +639,10 @@ const Dashboard: React.FC = () => {
 
                       {/* Navigation Arrows */}
                       {item.sections.length > visibleItems && (
-                        <div className="cls-modern-card-navigation">
+                        <div className="cls-new-card-navigation">
                           {startIndex > 0 && (
                             <button
-                              className="cls-modern-nav-arrow cls-nav-left"
+                              className="cls-new-nav-arrow cls-nav-left"
                               onClick={() =>
                                 handleCarouselPrev(
                                   item.carouselKey,
@@ -667,7 +667,7 @@ const Dashboard: React.FC = () => {
 
                           {startIndex + visibleItems < item.sections.length && (
                             <button
-                              className="cls-modern-nav-arrow cls-nav-right"
+                              className="cls-new-nav-arrow cls-nav-right"
                               onClick={() =>
                                 handleCarouselNext(
                                   item.carouselKey,

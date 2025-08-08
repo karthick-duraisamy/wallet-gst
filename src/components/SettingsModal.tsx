@@ -60,7 +60,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
                 <Button 
                   type={(() => {
                     const saved = localStorage.getItem('dashboardCardDesign');
-                    return (saved === null || saved !== 'modern') ? 'primary' : 'default';
+                    return (saved === null || saved !== 'new') ? 'primary' : 'default';
                   })()}
                   onClick={() => {
                     localStorage.setItem('dashboardCardDesign', 'old');
@@ -75,18 +75,18 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
                   Old Design
                 </Button>
                 <Button 
-                  type={localStorage.getItem('dashboardCardDesign') === 'modern' ? 'primary' : 'default'}
+                  type={localStorage.getItem('dashboardCardDesign') === 'new' ? 'primary' : 'default'}
                   onClick={() => {
-                    localStorage.setItem('dashboardCardDesign', 'modern');
+                    localStorage.setItem('dashboardCardDesign', 'new');
                     // Trigger a storage event manually for same-tab updates
                     window.dispatchEvent(new StorageEvent('storage', {
                       key: 'dashboardCardDesign',
-                      newValue: 'modern'
+                      newValue: 'new'
                     }));
                   }}
                   style={{ flex: 1 }}
                 >
-                  Modern Design
+                  New Design
                 </Button>
               </div>
             </div>
