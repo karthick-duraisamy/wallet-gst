@@ -27,7 +27,15 @@ const SavedReports: React.FC = () => {
   const navigate = useNavigate();
   const { isDarkMode } = useTheme();
   const [searchText, setSearchText] = useState('');
-  const [reportType, setReportType] = useState("DSR");
+  const [reportType, setReportType] = useState(() => {
+    return localStorage.getItem('selectedSavedReportType') || "DSR";
+  });
+
+  // Save report type to localStorage when it changes
+  const handleReportTypeChange = (type: string) => {
+    setReportType(type);
+    localStorage.setItem('selectedSavedReportType', type);
+  };
   const [savedReportsData, setSavedReportsData] = useState<any[]>([]);
 
   const reportTypes = ["DSR", "Ledger", "Commission", "Top-up", "Sales"];
@@ -209,7 +217,7 @@ const SavedReports: React.FC = () => {
                   transition: "all 0.2s ease",
                   textAlign: "center",
                 }}
-                onClick={() => setReportType(type)}
+                onClick={() => handleReportTypeChange(type)}
               >
                 {type}
               </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Row,
   Col,
@@ -55,6 +55,31 @@ const Dashboard: React.FC = () => {
   const [pendingFilesType, setPendingFilesType] = useState("invoices-count");
   const [pendingFilesAirline, setPendingFilesAirline] = useState("all");
   const { translate, isDarkMode } = useTheme();
+  const [useModernCards, setUseModernCards] = useState(() => {
+    return localStorage.getItem('dashboardCardDesign') === 'modern';
+  });
+
+  // Listen for localStorage changes
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setUseModernCards(localStorage.getItem('dashboardCardDesign') === 'modern');
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Also check for manual updates within the same tab
+    const checkInterval = setInterval(() => {
+      const currentSetting = localStorage.getItem('dashboardCardDesign') === 'modern';
+      if (currentSetting !== useModernCards) {
+        setUseModernCards(currentSetting);
+      }
+    }, 100);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(checkInterval);
+    };
+  }, [useModernCards]);
 
   // Overview summary data
   const overviewData = [
@@ -555,72 +580,112 @@ const Dashboard: React.FC = () => {
 
             return (
               <Col xs={24} sm={12} lg={6} key={index}>
-                <div className="cls-modern-card">
-                  {/* Header */}
-                  <div className="cls-modern-card-header">
-                    <Text className="cls-modern-card-title">
-                      {item.title}
-                      {(item.title.includes("Amount") ||
-                        item.title.includes("Airlines")) && (
-                        <InfoCircleOutlined className="cls-info-icon" />
-                      )}
-                    </Text>
-                  </div>
+                {useModernCards ? (
+                  // Modern Card Design
+                  <div className="cls-modern-card">
+                    {/* Header */}
+                    <div className="cls-modern-card-header">
+                      <Text className="cls-modern-card-title">
+                        {item.title}
+                        {(item.title.includes("Amount") ||
+                          item.title.includes("Airlines")) && (
+                          <InfoCircleOutlined className="cls-info-icon" />
+                        )}
+                      </Text>
+                    </div>
 
-                  {/* Card Content */}
-                  <div className="cls-modern-card-content">
-                    {visibleSections.map((section, sectionIndex) => (
-                      <div
-                        key={sectionIndex}
-                        className="cls-modern-card-item"
-                        style={{
-                            backgroundColor: `rgba(
-                              ${parseInt(section.backgroundColor.slice(1, 3), 16)},
-                              ${parseInt(section.backgroundColor.slice(3, 5), 16)},
-                              ${parseInt(section.backgroundColor.slice(5, 7), 16)},
-                              0.08
-                            )`, // Light, soft background for all variants
-                            color: section.backgroundColor, // Keep text color from original
-                          }}>
-                        <div className="cls-modern-item-content">
-                          <Text className="cls-modern-item-label">
-                            {section.label}
-                          </Text>
-                          <Text className="cls-modern-item-value">
-                            {section.value}
-                          </Text>
+                    {/* Card Content */}
+                    <div className="cls-modern-card-content">
+                      {visibleSections.map((section, sectionIndex) => (
+                        <div
+                          key={sectionIndex}
+                          className="cls-modern-card-item"
+                          style={{
+                              backgroundColor: `rgba(
+                                ${parseInt(section.backgroundColor.slice(1, 3), 16)},
+                                ${parseInt(section.backgroundColor.slice(3, 5), 16)},
+                                ${parseInt(section.backgroundColor.slice(5, 7), 16)},
+                                0.08
+                              )`, // Light, soft background for all variants
+                              color: section.backgroundColor, // Keep text color from original
+                            }}>
+                          <div className="cls-modern-item-content">
+                            <Text className="cls-modern-item-label">
+                              {section.label}
+                            </Text>
+                            <Text className="cls-modern-item-value">
+                              {section.value}
+                            </Text>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
 
-                    {/* Navigation Arrows */}
-                    {item.sections.length > visibleItems && (
-                      <div className="cls-modern-card-navigation">
-                        {startIndex > 0 && (
-                          <button
-                            className="cls-modern-nav-arrow cls-nav-left"
-                            onClick={() => handleCarouselPrev(item.carouselKey, item.sections.length)}
-                          >
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                              <polyline points="15,18 9,12 15,6"></polyline>
-                            </svg>
-                          </button>
-                        )}
-                        
-                        {startIndex + visibleItems < item.sections.length && (
-                          <button
-                            className="cls-modern-nav-arrow cls-nav-right"
-                            onClick={() => handleCarouselNext(item.carouselKey, item.sections.length)}
-                          >
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                              <polyline points="9,18 15,12 9,6"></polyline>
-                            </svg>
-                          </button>
-                        )}
-                      </div>
-                    )}
+                      {/* Navigation Arrows */}
+                      {item.sections.length > visibleItems && (
+                        <div className="cls-modern-card-navigation">
+                          {startIndex > 0 && (
+                            <button
+                              className="cls-modern-nav-arrow cls-nav-left"
+                              onClick={() => handleCarouselPrev(item.carouselKey, item.sections.length)}
+                            >
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <polyline points="15,18 9,12 15,6"></polyline>
+                              </svg>
+                            </button>
+                          )}
+                          
+                          {startIndex + visibleItems < item.sections.length && (
+                            <button
+                              className="cls-modern-nav-arrow cls-nav-right"
+                              onClick={() => handleCarouselNext(item.carouselKey, item.sections.length)}
+                            >
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <polyline points="9,18 15,12 9,6"></polyline>
+                              </svg>
+                            </button>
+                          )}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  // Old Card Design (like reference image)
+                  <div className="cls-old-overview-card">
+                    {/* Header */}
+                    <div className="cls-old-card-header">
+                      <Text className="cls-old-card-title">
+                        {item.title}
+                        {(item.title.includes("Amount") ||
+                          item.title.includes("Airlines")) && (
+                          <InfoCircleOutlined className="cls-info-icon" />
+                        )}
+                      </Text>
+                    </div>
+
+                    {/* Card Sections Display */}
+                    <div className="cls-old-card-sections">
+                      {item.sections.map((section, sectionIndex) => (
+                        <div
+                          key={sectionIndex}
+                          className="cls-old-card-section"
+                          style={{
+                            backgroundColor: section.backgroundColor,
+                            flex: 1,
+                          }}
+                        >
+                          <div className="cls-old-section-content">
+                            <Text className="cls-old-section-label">
+                              {section.label}
+                            </Text>
+                            <Text className="cls-old-section-value">
+                              {section.value}
+                            </Text>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </Col>
             );
           })}

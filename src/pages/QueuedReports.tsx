@@ -29,7 +29,15 @@ const QueuedReports: React.FC = () => {
   const navigate = useNavigate();
   const { isDarkMode } = useTheme();
   const [searchText, setSearchText] = useState('');
-  const [reportType, setReportType] = useState("DSR");
+  const [reportType, setReportType] = useState(() => {
+    return localStorage.getItem('selectedQueuedReportType') || "DSR";
+  });
+
+  // Save report type to localStorage when it changes
+  const handleReportTypeChange = (type: string) => {
+    setReportType(type);
+    localStorage.setItem('selectedQueuedReportType', type);
+  };
 
   const reportTypes = ["DSR", "Ledger", "Commission", "Top-up", "Sales"];
 
@@ -212,7 +220,7 @@ const QueuedReports: React.FC = () => {
                   transition: "all 0.2s ease",
                   textAlign: "center",
                 }}
-                onClick={() => setReportType(type)}
+                onClick={() => handleReportTypeChange(type)}
               >
                 {type}
               </div>

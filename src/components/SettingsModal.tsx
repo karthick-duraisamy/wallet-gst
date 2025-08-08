@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Drawer, Switch, Typography, Space, Divider } from 'antd';
+import { Drawer, Switch, Typography, Space, Divider, Button } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import { useTheme } from '../contexts/ThemeContext';
 
@@ -53,6 +52,41 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
           <Title level={5} style={{ margin: '0 0 16px 0', color: isDarkMode ? '#ffffff' : '#000000' }}>
             {translate('theme')}
           </Title>
+
+          {/* Dashboard Card Design Toggle */}
+            <div style={{ marginBottom: '24px' }}>
+              <Text style={{ fontSize: '14px', fontWeight: 500, marginBottom: '12px' }}>Dashboard Card Design</Text>
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <Button 
+                  type={localStorage.getItem('dashboardCardDesign') !== 'modern' ? 'primary' : 'default'}
+                  onClick={() => {
+                    localStorage.setItem('dashboardCardDesign', 'old');
+                    // Trigger a storage event manually for same-tab updates
+                    window.dispatchEvent(new StorageEvent('storage', {
+                      key: 'dashboardCardDesign',
+                      newValue: 'old'
+                    }));
+                  }}
+                  style={{ flex: 1 }}
+                >
+                  Old Design
+                </Button>
+                <Button 
+                  type={localStorage.getItem('dashboardCardDesign') === 'modern' ? 'primary' : 'default'}
+                  onClick={() => {
+                    localStorage.setItem('dashboardCardDesign', 'modern');
+                    // Trigger a storage event manually for same-tab updates
+                    window.dispatchEvent(new StorageEvent('storage', {
+                      key: 'dashboardCardDesign',
+                      newValue: 'modern'
+                    }));
+                  }}
+                  style={{ flex: 1 }}
+                >
+                  Modern Design
+                </Button>
+              </div>
+            </div>
 
           {/* Theme Toggle Cards */}
           <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
@@ -168,7 +202,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
             </Title>
             <Switch checked={true} />
           </div>
-          
+
           <div style={{ display: 'flex', gap: '12px' }}>
             <div style={{
               width: '40px',
@@ -204,7 +238,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
           <Title level={5} style={{ margin: '0 0 16px 0', color: isDarkMode ? '#ffffff' : '#000000' }}>
             Menu layout
           </Title>
-          
+
           <div style={{ display: 'flex', gap: '12px' }}>
             {/* Side Vertical Layout */}
             <div 

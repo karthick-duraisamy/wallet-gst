@@ -42,7 +42,15 @@ const Report: React.FC = () => {
   const navigate = useNavigate();
   const { isDarkMode } = useTheme();
   const [currentStep, setCurrentStep] = useState(0);
-  const [reportType, setReportType] = useState("DSR");
+  const [reportType, setReportType] = useState(() => {
+    return localStorage.getItem('selectedReportType') || "DSR";
+  });
+
+  // Save report type to localStorage when it changes
+  const handleReportTypeChange = (type: string) => {
+    setReportType(type);
+    localStorage.setItem('selectedReportType', type);
+  };
   const [selectedFields, setSelectedFields] = useState<{
     [key: string]: string[];
   }>({
@@ -973,7 +981,7 @@ const Report: React.FC = () => {
                   fontSize: "14px",
                   transition: "all 0.2s ease",
                 }}
-                onClick={() => setReportType(type)}
+                onClick={() => handleReportTypeChange(type)}
               >
                 {type}
               </div>
