@@ -56,27 +56,30 @@ const Dashboard: React.FC = () => {
   const [pendingFilesAirline, setPendingFilesAirline] = useState("all");
   const { translate, isDarkMode } = useTheme();
   const [useModernCards, setUseModernCards] = useState(() => {
-    return localStorage.getItem('dashboardCardDesign') === 'modern';
+    return localStorage.getItem("dashboardCardDesign") === "modern";
   });
 
   // Listen for localStorage changes
   useEffect(() => {
     const handleStorageChange = () => {
-      setUseModernCards(localStorage.getItem('dashboardCardDesign') === 'modern');
+      setUseModernCards(
+        localStorage.getItem("dashboardCardDesign") === "modern",
+      );
     };
 
-    window.addEventListener('storage', handleStorageChange);
-    
+    window.addEventListener("storage", handleStorageChange);
+
     // Also check for manual updates within the same tab
     const checkInterval = setInterval(() => {
-      const currentSetting = localStorage.getItem('dashboardCardDesign') === 'modern';
+      const currentSetting =
+        localStorage.getItem("dashboardCardDesign") === "modern";
       if (currentSetting !== useModernCards) {
         setUseModernCards(currentSetting);
       }
     }, 100);
 
     return () => {
-      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener("storage", handleStorageChange);
       clearInterval(checkInterval);
     };
   }, [useModernCards]);
@@ -98,9 +101,9 @@ const Dashboard: React.FC = () => {
       carouselKey: "airlineInvoices",
       sections: [
         { label: "Available", value: 100, backgroundColor: "#06B6D4" },
-        { label: "GST - Filed", value: 60, backgroundColor: "#0891B2" },
+        { label: "GST Filed", value: 60, backgroundColor: "#0891B2" },
         {
-          label: "Pending to File",
+          label: "Pending File",
           value: 40,
           backgroundColor: "#06B6D4",
           variant: "light",
@@ -115,7 +118,7 @@ const Dashboard: React.FC = () => {
         { label: "Available", value: 80, backgroundColor: "#8B5CF6" },
         { label: "GST - Filed", value: 60, backgroundColor: "#7C3AED" },
         {
-          label: "Pending to File",
+          label: "Pending File",
           value: 50,
           backgroundColor: "#8B5CF6",
           variant: "light",
@@ -573,10 +576,18 @@ const Dashboard: React.FC = () => {
         </Title>
         <Row gutter={[16, 16]} className="cls-overview-grid">
           {overviewData.map((item, index) => {
-            const currentIndex = carouselStates[item.carouselKey as keyof typeof carouselStates] || 0;
+            const currentIndex =
+              carouselStates[item.carouselKey as keyof typeof carouselStates] ||
+              0;
             const visibleItems = getVisibleItems(item.sections);
-            const startIndex = Math.max(0, Math.min(currentIndex, item.sections.length - visibleItems));
-            const visibleSections = item.sections.slice(startIndex, startIndex + visibleItems);
+            const startIndex = Math.max(
+              0,
+              Math.min(currentIndex, item.sections.length - visibleItems),
+            );
+            const visibleSections = item.sections.slice(
+              startIndex,
+              startIndex + visibleItems,
+            );
 
             return (
               <Col xs={24} sm={12} lg={6} key={index}>
@@ -601,14 +612,15 @@ const Dashboard: React.FC = () => {
                           key={sectionIndex}
                           className="cls-modern-card-item"
                           style={{
-                              backgroundColor: `rgba(
+                            backgroundColor: `rgba(
                                 ${parseInt(section.backgroundColor.slice(1, 3), 16)},
                                 ${parseInt(section.backgroundColor.slice(3, 5), 16)},
                                 ${parseInt(section.backgroundColor.slice(5, 7), 16)},
                                 0.08
                               )`, // Light, soft background for all variants
-                              color: section.backgroundColor, // Keep text color from original
-                            }}>
+                            color: section.backgroundColor, // Keep text color from original
+                          }}
+                        >
                           <div className="cls-modern-item-content">
                             <Text className="cls-modern-item-label">
                               {section.label}
@@ -626,20 +638,48 @@ const Dashboard: React.FC = () => {
                           {startIndex > 0 && (
                             <button
                               className="cls-modern-nav-arrow cls-nav-left"
-                              onClick={() => handleCarouselPrev(item.carouselKey, item.sections.length)}
+                              onClick={() =>
+                                handleCarouselPrev(
+                                  item.carouselKey,
+                                  item.sections.length,
+                                )
+                              }
                             >
-                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <svg
+                                width="16"
+                                height="16"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              >
                                 <polyline points="15,18 9,12 15,6"></polyline>
                               </svg>
                             </button>
                           )}
-                          
+
                           {startIndex + visibleItems < item.sections.length && (
                             <button
                               className="cls-modern-nav-arrow cls-nav-right"
-                              onClick={() => handleCarouselNext(item.carouselKey, item.sections.length)}
+                              onClick={() =>
+                                handleCarouselNext(
+                                  item.carouselKey,
+                                  item.sections.length,
+                                )
+                              }
                             >
-                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <svg
+                                width="16"
+                                height="16"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              >
                                 <polyline points="9,18 15,12 9,6"></polyline>
                               </svg>
                             </button>
@@ -865,7 +905,11 @@ const Dashboard: React.FC = () => {
           >
             <ResponsiveContainer width="100%" height={280}>
               <BarChart data={invoiceStatusData} barCategoryGap="20%">
-                <CartesianGrid strokeDasharray="1 1" stroke="#f0f0f0" vertical={false} />
+                <CartesianGrid
+                  strokeDasharray="1 1"
+                  stroke="#f0f0f0"
+                  vertical={false}
+                />
                 <XAxis
                   dataKey="month"
                   axisLine={false}
@@ -999,7 +1043,11 @@ const Dashboard: React.FC = () => {
           >
             <ResponsiveContainer width="100%" height={200}>
               <BarChart data={pendingFilesData}>
-                <CartesianGrid strokeDasharray="1 1" stroke="#f0f0f0" vertical={false} />
+                <CartesianGrid
+                  strokeDasharray="1 1"
+                  stroke="#f0f0f0"
+                  vertical={false}
+                />
                 <XAxis
                   dataKey="month"
                   axisLine={false}
