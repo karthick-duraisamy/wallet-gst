@@ -97,6 +97,12 @@ const MainLayout: React.FC = () => {
   ];
 
   const getCurrentKey = () => {
+    // Handle report-related paths
+    if (location.pathname.startsWith('/report') || 
+        location.pathname === '/saved-reports' || 
+        location.pathname === '/queued-reports') {
+      return '/report';
+    }
     return location.pathname;
   };
 
@@ -489,7 +495,9 @@ const MainLayout: React.FC = () => {
                         ? translate("reconciliation")
                         : location.pathname === "/cumulative-invoice"
                           ? translate("cumulative")
-                          : location.pathname.startsWith("/report")
+                          : location.pathname.startsWith("/report") || 
+                            location.pathname === "/saved-reports" || 
+                            location.pathname === "/queued-reports"
                             ? "Report"
                             : translate("dashboard")}
                 </span>

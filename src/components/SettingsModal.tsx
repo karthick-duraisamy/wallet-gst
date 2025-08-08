@@ -58,7 +58,10 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
               <Text style={{ fontSize: '14px', fontWeight: 500, marginBottom: '12px' }}>Dashboard Card Design</Text>
               <div style={{ display: 'flex', gap: '12px' }}>
                 <Button 
-                  type={localStorage.getItem('dashboardCardDesign') !== 'modern' ? 'primary' : 'default'}
+                  type={(() => {
+                    const saved = localStorage.getItem('dashboardCardDesign');
+                    return (saved === null || saved !== 'modern') ? 'primary' : 'default';
+                  })()}
                   onClick={() => {
                     localStorage.setItem('dashboardCardDesign', 'old');
                     // Trigger a storage event manually for same-tab updates

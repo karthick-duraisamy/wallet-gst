@@ -56,23 +56,28 @@ const Dashboard: React.FC = () => {
   const [pendingFilesAirline, setPendingFilesAirline] = useState("all");
   const { translate, isDarkMode } = useTheme();
   const [useModernCards, setUseModernCards] = useState(() => {
-    return localStorage.getItem("dashboardCardDesign") === "modern";
+    const saved = localStorage.getItem("dashboardCardDesign");
+    // Default to old design if no value is set
+    if (saved === null) {
+      localStorage.setItem("dashboardCardDesign", "old");
+      return false;
+    }
+    return saved === "modern";
   });
 
   // Listen for localStorage changes
   useEffect(() => {
     const handleStorageChange = () => {
-      setUseModernCards(
-        localStorage.getItem("dashboardCardDesign") === "modern",
-      );
+      const saved = localStorage.getItem("dashboardCardDesign");
+      setUseModernCards(saved === "modern");
     };
 
     window.addEventListener("storage", handleStorageChange);
 
     // Also check for manual updates within the same tab
     const checkInterval = setInterval(() => {
-      const currentSetting =
-        localStorage.getItem("dashboardCardDesign") === "modern";
+      const saved = localStorage.getItem("dashboardCardDesign");
+      const currentSetting = saved === "modern";
       if (currentSetting !== useModernCards) {
         setUseModernCards(currentSetting);
       }
