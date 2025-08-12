@@ -50,10 +50,22 @@ const Dashboard: React.FC = () => {
           break;
         case "Type":
           setInvoiceType(values[key]);
-          setPendingFilesType(values[key]);
           break;
         case "Airline":
           setAirlineFilter(values[key]);
+          break;
+      }
+    });
+  };
+
+  // Separate handler for pending files filters
+  const handlePendingFilesFilterChange = (values: Record<string, any>) => {
+    Object.keys(values).forEach(key => {
+      switch(key) {
+        case "Type":
+          setPendingFilesType(values[key]);
+          break;
+        case "Airline":
           setPendingFilesAirline(values[key]);
           break;
       }
@@ -348,7 +360,7 @@ const Dashboard: React.FC = () => {
     const rawData =
       invoiceTab === "all" ? baseInvoiceStatusData : airlinesInvoiceStatusData;
 
-    if (invoiceType === "amount") {
+    if (invoiceType === "Amount" || invoiceType === "amount") {
       // Convert to amount values (multiply by approximate amount per invoice)
       return rawData.map((item) => ({
         month: item.month,
@@ -480,14 +492,14 @@ const Dashboard: React.FC = () => {
   // Get filtered pending files data
   const getPendingFilesData = () => {
     let filteredData =
-      pendingFilesAirline === "all"
+      pendingFilesAirline === "All" || pendingFilesAirline === "all"
         ? basePendingFilesData
         : basePendingFilesData.filter(
             (item) =>
               item.month.toLowerCase() === pendingFilesAirline.toLowerCase(),
           );
 
-    if (pendingFilesType === "amount") {
+    if (pendingFilesType === "Amount" || pendingFilesType === "amount") {
       return filteredData.map((item) => ({
         ...item,
         value: item.value * 2500, // Convert to amount
@@ -1035,11 +1047,11 @@ const Dashboard: React.FC = () => {
               columns={airlineColumns}
               className="cls-price"
               dataSource={
-                airlineFilter === "all"
+                airlineFilter === "All" || airlineFilter === "all"
                   ? airlineData
                   : airlineData.filter(
                       (item) =>
-                        item.airline.toLowerCase() ===
+                        item.airlineCode.toLowerCase() ===
                         airlineFilter.toLowerCase(),
                     )
               }
@@ -1066,7 +1078,7 @@ const Dashboard: React.FC = () => {
                         }))
                     }
                     pathname="/dashboard"
-                    onChange={handleFilterChange}
+                    onChange={handlePendingFilesFilterChange}
                   />
 
               </div>
