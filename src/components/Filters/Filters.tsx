@@ -117,38 +117,20 @@ const Filter: React.FC<IProps> = ({ fields, pathname, onChange, showButtons = fa
     }}>
       <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "end" }}>
         {visibleFields.map((field) => (
-          <div key={field.key} style={{ display: "flex", flexDirection: "column" }}>
+          <div key={field.key} className={field.key} style={{ display: "flex", flexDirection: "column" }}>
             {field.label && <label style={{ marginBottom: 4, fontSize: '12px', fontWeight: 500 }}>{field.label}</label>}
             {renderField(field)}
           </div>
         ))}
       </div>
       {showButtons && (
-        <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", alignItems: "end" }}>
-          <button 
-            style={{
-              padding: '6px 16px',
-              backgroundColor: '#4f46e5',
-              color: 'white',
-              border: 'none',
-              borderRadius: '6px',
-              fontSize: '14px',
-              cursor: 'pointer'
-            }}
+        <div className="cls-btnItems">
+          <button className="cls-submitBtn"
             onClick={() => console.log('Submit:', values)}
           >
             Submit
           </button>
-          <button 
-            style={{
-              padding: '6px 16px',
-              backgroundColor: '#f5f5f5',
-              color: '#666',
-              border: '1px solid #d9d9d9',
-              borderRadius: '6px',
-              fontSize: '14px',
-              cursor: 'pointer'
-            }}
+          <button className="cls-resetBtn"
             onClick={handleReset}
           >
             Reset All

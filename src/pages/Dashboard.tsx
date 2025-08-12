@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Row,
-  Col,
+import { Row, Col,
   Card,
   Select,
   Button,
@@ -17,13 +15,13 @@ import {
   Tooltip,
   ResponsiveContainer
 } from "recharts";
-import {InfoCircleOutlined} from "@ant-design/icons";
+import { InfoCircleOutlined } from "@ant-design/icons";
 import { useTheme } from "../contexts/ThemeContext";
 import "../styles/Dashboard.scss";
 import Filter from '../components/Filters/Filters'
 
 const { Title, Text } = Typography;
-const { Option } = Select;
+// const { Option } = Select;
 
 const Dashboard: React.FC = () => {
   const [timePeriod, setTimePeriod] = useState("fy-2023-2024");
@@ -34,11 +32,11 @@ const Dashboard: React.FC = () => {
   const [airlineFilter, setAirlineFilter] = useState("all");
   const [pendingFilesType, setPendingFilesType] = useState("invoices-count");
   const [pendingFilesAirline, setPendingFilesAirline] = useState("all");
-  
+
   // Dynamic filter change handler
   const handleFilterChange = (values: Record<string, any>) => {
     Object.keys(values).forEach(key => {
-      switch(key) {
+      switch (key) {
         case "Time period":
           setTimePeriod(values[key]);
           break;
@@ -61,7 +59,7 @@ const Dashboard: React.FC = () => {
   // Separate handler for pending files filters
   const handlePendingFilesFilterChange = (values: Record<string, any>) => {
     Object.keys(values).forEach(key => {
-      switch(key) {
+      switch (key) {
         case "Type":
           setPendingFilesType(values[key]);
           break;
@@ -384,7 +382,7 @@ const Dashboard: React.FC = () => {
     {
       key: "1",
       airline: "https://ui.cltpstatic.com/images/logos/air-logos/SG.png",
-      airlineCode:'SG',
+      airlineCode: 'SG',
       code: "6132",
       bookings: "1024 tickets",
       cancellations: "11364",
@@ -394,7 +392,7 @@ const Dashboard: React.FC = () => {
     {
       key: "2",
       airline: "https://ui.cltpstatic.com/images/logos/air-logos/AI.png",
-      airlineCode:'AI',
+      airlineCode: 'AI',
       code: "324",
       bookings: "324 tickets",
       cancellations: "1032",
@@ -404,7 +402,7 @@ const Dashboard: React.FC = () => {
     {
       key: "3",
       airline: "https://ui.cltpstatic.com/images/logos/air-logos/6E.png",
-      airlineCode:'6E',
+      airlineCode: '6E',
       code: "529",
       bookings: "529 tickets",
       cancellations: "1356",
@@ -414,7 +412,7 @@ const Dashboard: React.FC = () => {
     {
       key: "4",
       airline: "https://ui.cltpstatic.com/images/logos/air-logos/UK.png",
-      airlineCode:'UK',
+      airlineCode: 'UK',
       code: "168",
       bookings: "168 tickets",
       cancellations: "312",
@@ -429,13 +427,13 @@ const Dashboard: React.FC = () => {
       dataIndex: "airline",
       key: "airline",
       render: (text: string, record: any) => (
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <img
-              src={record.airline}
-              alt={record.airlineCode}
-              title={record.airlineCode}
-              style={{ width: 26, height: 26, marginRight: 8, borderRadius: 6,}}
-            />
+        <div className="cls-airline-Logo">
+          <img
+            src={record.airline}
+            alt={record.airlineCode}
+            title={record.airlineCode}
+            style={{ width: 26, height: 26, marginRight: 8, borderRadius: 6, }}
+          />
           <Text strong>{record.airlineCode}</Text>
         </div>
       ),
@@ -495,9 +493,9 @@ const Dashboard: React.FC = () => {
       pendingFilesAirline === "All" || pendingFilesAirline === "all"
         ? basePendingFilesData
         : basePendingFilesData.filter(
-            (item) =>
-              item.month.toLowerCase() === pendingFilesAirline.toLowerCase(),
-          );
+          (item) =>
+            item.month.toLowerCase() === pendingFilesAirline.toLowerCase(),
+        );
 
     if (pendingFilesType === "Amount" || pendingFilesType === "amount") {
       return filteredData.map((item) => ({
@@ -510,7 +508,7 @@ const Dashboard: React.FC = () => {
   };
 
   const pendingFilesData = getPendingFilesData();
-    // Define a type for filter field
+  // Define a type for filter field
   type FilterField = {
     key: string;
     type: string;
@@ -519,7 +517,7 @@ const Dashboard: React.FC = () => {
     defaultValue?: string;
     placeholder?: string;
   };
-  const filterFields : FilterField[] = [
+  const filterFields: FilterField[] = [
     {
       key: "Time period",
       type: "select",
@@ -584,7 +582,7 @@ const Dashboard: React.FC = () => {
         { label: "SG", value: "SG" },
         { label: "6E", value: "6E" },
         { label: "AI", value: "AI" },
-        { label: "UK", value: "6E" },
+        { label: "UK", value: "UK" },
       ],
       defaultValue: "All"
     }
@@ -602,21 +600,21 @@ const Dashboard: React.FC = () => {
       <Card className="cls-filter-section">
         <Row gutter={[16, 16]} align="middle">
           <Col>
-          <div style={{display:"flex", width: "100%"}}>
-            <Filter
-              fields={
-                filterFields
-                  .filter(f => f.key === "Time period" || f.key === "Month" || f.key === "vendorName")
-                  .map(field => ({
-                    ...field,
-                    type: "select" as const, // Explicit type
-                  }))
-              }
-              pathname="/dashboard"
-              showButtons={false}
-              onChange={handleFilterChange}
-            />
-          </div>
+            <div className="cls-filter-con">
+              <Filter
+                fields={
+                  filterFields
+                    .filter(f => f.key === "Time period" || f.key === "Month" || f.key === "vendorName")
+                    .map(field => ({
+                      ...field,
+                      type: "select" as const, // Explicit type
+                    }))
+                }
+                pathname="/dashboard"
+                showButtons={false}
+                onChange={handleFilterChange}
+              />
+            </div>
           </Col>
           <Col flex="auto" style={{ display: "flex", justifyContent: "end" }}>
             <Button type="primary" className="cls-apply-button">
@@ -657,8 +655,8 @@ const Dashboard: React.FC = () => {
                         {item.title}
                         {(item.title.includes("Amount") ||
                           item.title.includes("Airlines")) && (
-                          <InfoCircleOutlined className="cls-info-icon" />
-                        )}
+                            <InfoCircleOutlined className="cls-info-icon" />
+                          )}
                       </Text>
                     </div>
 
@@ -745,7 +743,7 @@ const Dashboard: React.FC = () => {
                       )}
                     </div>
                   </div>
-                  ) : (
+                ) : (
                   // Old Card Design (like reference image)
                   <div className="cls-old-overview-card">
                     {/* Header */}
@@ -754,8 +752,8 @@ const Dashboard: React.FC = () => {
                         {item.title}
                         {(item.title.includes("Amount") ||
                           item.title.includes("Airlines")) && (
-                          <InfoCircleOutlined className="cls-info-icon" />
-                        )}
+                            <InfoCircleOutlined className="cls-info-icon" />
+                          )}
                       </Text>
                     </div>
 
@@ -788,99 +786,6 @@ const Dashboard: React.FC = () => {
           })}
         </Row>
       </div>
-
-      {/* Recent failures section */}
-      {/* <Row gutter={[24, 24]} style={{ marginBottom: 32 }}>
-        <Col xs={24} lg={16}>
-          <Card 
-            title={
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Text style={{ fontSize: 16, fontWeight: 600 }}>{translate('recentFailures')}</Text>
-                <Button type="link" icon={<EyeOutlined />} style={{ color: '#1890ff' }}>
-                  {translate('viewAllFailures')}
-                </Button>
-              </div>
-            }
-            style={{ 
-              borderRadius: 12, 
-              border: 'none',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-              minHeight: 300
-            }}
-          >
-            {recentFailures.length === 0 ? (
-              <div style={{ 
-                textAlign: 'center', 
-                padding: '60px 20px',
-                color: '#999'
-              }}>
-                <div style={{ marginBottom: 16 }}>
-                  <svg width="80" height="80" viewBox="0 0 80 80" fill="none" style={{ margin: '0 auto' }}>
-                    <rect x="20" y="20" width="40" height="30" rx="4" stroke="#e0e0e0" strokeWidth="2" fill="none"/>
-                    <rect x="25" y="25" width="30" height="20" rx="2" fill="#f5f5f5"/>
-                    <circle cx="40" cy="35" r="3" fill="#e0e0e0"/>
-                    <rect x="30" y="55" width="20" height="8" rx="4" fill="#f0f0f0"/>
-                  </svg>
-                </div>
-                <Text style={{ fontSize: 16, color: '#999' }}>{translate('noDataAvailable')}</Text>
-              </div>
-            ) : (
-              <Table
-                columns={[
-                  { title: 'Tracking ID', dataIndex: 'trackingId', key: 'trackingId' },
-                  { title: 'Details', dataIndex: 'details', key: 'details' },
-                  { title: 'Status', dataIndex: 'status', key: 'status' },
-                  { title: 'Created At', dataIndex: 'createdAt', key: 'createdAt' },
-                  { title: 'Action', dataIndex: 'action', key: 'action' },
-                ]}
-                dataSource={recentFailures}
-                pagination={false}
-              />
-            )}
-          </Card>
-        </Col>
-
-        <Col xs={24} lg={8}>
-          <Card 
-            title={
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Text style={{ fontSize: 16, fontWeight: 600 }}>{translate('topSentNotifications')}</Text>
-              </div>
-            }
-            style={{ 
-              borderRadius: 12, 
-              border: 'none',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-              minHeight: 300
-            }}
-          >
-            <div style={{ textAlign: 'center', padding: '20px' }}>
-              <div style={{ marginBottom: 16 }}>
-                <Text style={{ fontSize: 14, color: '#666' }}>{translate('aiMailAgent')}</Text>
-              </div>
-              <Button type="primary" style={{ marginBottom: 20 }}>
-                {translate('pushNotification')}
-              </Button>
-              <div style={{ 
-                textAlign: 'center', 
-                padding: '20px',
-                color: '#999'
-              }}>
-                <div style={{ marginBottom: 16 }}>
-                  <svg width="120" height="80" viewBox="0 0 120 80" fill="none" style={{ margin: '0 auto' }}>
-                    <rect x="20" y="15" width="80" height="50" rx="8" stroke="#e0e0e0" strokeWidth="2" fill="white"/>
-                    <rect x="30" y="25" width="60" height="4" rx="2" fill="#f0f0f0"/>
-                    <rect x="30" y="35" width="40" height="4" rx="2" fill="#f0f0f0"/>
-                    <rect x="30" y="45" width="50" height="4" rx="2" fill="#f0f0f0"/>
-                    <text x="60" y="75" fontSize="10" fill="#ccc" textAnchor="middle">Empty</text>
-                  </svg>
-                </div>
-                <Text style={{ fontSize: 14, color: '#999' }}>Notification not sent</Text>
-              </div>
-            </div>
-          </Card>
-        </Col>
-      </Row> */}
 
       <Row gutter={[24, 24]}>
         {/* Invoice Status Chart */}
@@ -939,19 +844,19 @@ const Dashboard: React.FC = () => {
                   <div
                     style={{ display: "flex", alignItems: "center", gap: 8 }}
                   >
-                   <Filter
-                    fields={[
-                      {
-                        ...filterFields.find(f => f.key === "Type")!,
-                        type: "select" as "select", // Explicitly cast type
-                        label: ""
-                      }
-                    ]}
-                    pathname="/dashboard"
-                    onChange={handleFilterChange}
-                  />
-                  </div>  
-                  
+                    <Filter
+                      fields={[
+                        {
+                          ...filterFields.find(f => f.key === "Type")!,
+                          type: "select" as "select", // Explicitly cast type
+                          label: ""
+                        }
+                      ]}
+                      pathname="/dashboard"
+                      onChange={handleFilterChange}
+                    />
+                  </div>
+
                 </div>
               </div>
             }
@@ -1024,16 +929,16 @@ const Dashboard: React.FC = () => {
             extra={
               <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
                 <Filter
-                    fields={[
-                      {
-                        ...filterFields.find(f => f.key === "Airline")!,
-                        type: "select" as "select", // Explicitly cast type
-                        label: ""
-                      }
-                    ]}
-                    pathname="/dashboard"
-                    onChange={handleFilterChange}
-                  />
+                  fields={[
+                    {
+                      ...filterFields.find(f => f.key === "Airline")!,
+                      type: "select" as "select", // Explicitly cast type
+                      label: ""
+                    }
+                  ]}
+                  pathname="/dashboard"
+                  onChange={handleFilterChange}
+                />
               </div>
             }
             style={{
@@ -1050,10 +955,10 @@ const Dashboard: React.FC = () => {
                 airlineFilter === "All" || airlineFilter === "all"
                   ? airlineData
                   : airlineData.filter(
-                      (item) =>
-                        item.airlineCode.toLowerCase() ===
-                        airlineFilter.toLowerCase(),
-                    )
+                    (item) =>
+                      item.airlineCode.toLowerCase() ===
+                      airlineFilter.toLowerCase(),
+                  )
               }
               pagination={false}
               size="small"
@@ -1068,18 +973,18 @@ const Dashboard: React.FC = () => {
             extra={
               <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
                 <Filter
-                    fields={
-                      filterFields
-                        .filter(f => f.key === "Type" || f.key === "Airline")
-                        .map(field => ({
-                          ...field,
-                          type: "select" as const, // Explicit type
-                          label: "",               // Hide label
-                        }))
-                    }
-                    pathname="/dashboard"
-                    onChange={handlePendingFilesFilterChange}
-                  />
+                  fields={
+                    filterFields
+                      .filter(f => f.key === "Type" || f.key === "Airline")
+                      .map(field => ({
+                        ...field,
+                        type: "select" as const, // Explicit type
+                        label: "",               // Hide label
+                      }))
+                  }
+                  pathname="/dashboard"
+                  onChange={handlePendingFilesFilterChange}
+                />
 
               </div>
             }

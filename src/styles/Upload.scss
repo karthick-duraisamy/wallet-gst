@@ -1,6 +1,6 @@
 .cls-upload-container {
   padding: 24px;
-  background: #f5f5f5;
+  background: $BACKGROUND-COLOR;
   min-height: 100vh;
   padding-top: 0px;
 }
@@ -8,7 +8,7 @@
 .cls-page-title {
   font-size: 24px;
   font-weight: 600;
-  color: #722ed1;
+  color: $SECONDARYCOLOR;
   margin-bottom: 24px;
 }
 
@@ -47,8 +47,8 @@
 
 .cls-tab-content {
   text-align: left;
-  color: #666;
-  font-size: 14px;
+  color: $GREY;
+  font-size: $FONT-14;
   margin: 25px 15px;
   padding: 8px 14px;
   background: #dddd001c;
@@ -75,8 +75,8 @@
 .cls-file-info {
   text-align: center;
   margin-bottom: 24px;
-  font-size: 14px;
-  color: #666;
+  font-size: $FONT-14;
+  color: $GREY;
 
   div:first-child {
     margin-bottom: 4px;
@@ -88,7 +88,7 @@
 }
 
 .cls-upload-area {
-  border: 2px dashed #d9d9d9;
+  border: 2px dashed $BORDER-COLOR;
   border-radius: 12px;
   background: #fafafa;
   margin-bottom: 16px;
@@ -116,8 +116,8 @@
   }
 
   &.ant-upload-disabled {
-    background: #f5f5f5;
-    border-color: #d9d9d9;
+    background: $BACKGROUND-COLOR;
+    border-color: $BORDER-COLOR;
     opacity: 0.6;
     cursor: not-allowed;
 
@@ -185,7 +185,7 @@
 
     .cls-upload-arrow {
       animation-duration: 0.8s;
-      fill: #52c41a;
+      fill: $SUCCESS-COLOR;
     }
   }
 }
@@ -211,21 +211,21 @@
 }
 
 .cls-upload-main-text {
-  font-size: 16px;
-  color: #333;
+  font-size: $FONT-16;
+  color: $TEXT-COLOR;
   margin-bottom: 8px;
 }
 
 .cls-upload-or-text {
-  font-size: 14px;
-  color: #666;
+  font-size: $FONT-14;
+  color: $GREY;
   margin-bottom: 12px;
 }
 
 .cls-select-file-btn {
-  color: #1890ff;
+  color: $INFO-COLOR;
   font-weight: 500;
-  font-size: 14px;
+  font-size: $FONT-14;
   text-decoration: underline;
 }
 
@@ -233,19 +233,19 @@
   position: absolute;
   bottom: 0;
   right: 0;
-  background: #52c41a;
-  border-color: #52c41a;
+  background: $SUCCESS-COLOR;
+  border-color: $SUCCESS-COLOR;
   color: white;
   border-radius: 20px 0px 0px 0px;
   font-weight: 500;
-  font-size: 14px;
+  font-size: $FONT-14;
   height: 45px;
   padding: 15px;
   align-items: center;
   gap: 6px;
 
   .anticon {
-    font-size: 16px;
+    font-size: $FONT-16;
   }
 }
 
@@ -256,9 +256,9 @@
 }
 
 .cls-files-header {
-  font-size: 14px;
+  font-size: $FONT-14;
   font-weight: 600;
-  color: #333;
+  color: $TEXT-COLOR;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -290,7 +290,7 @@
 .cls-file-icon {
   width: 24px;
   height: 24px;
-  background: #1890ff;
+  background: $INFO-COLOR;
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -298,7 +298,7 @@
 
   .anticon {
     color: white;
-    font-size: 12px;
+    font-size: $FONT-12;
   }
 }
 
@@ -309,7 +309,7 @@
 .cls-file-name {
   font-size: 13px;
   font-weight: 500;
-  color: #333;
+  color: $TEXT-COLOR;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -323,14 +323,14 @@
 }
 
 .cls-file-size {
-  font-size: 12px;
-  color: #666;
+  font-size: $FONT-12;
+  color: $GREY;
 }
 
 .cls-remove-file {
   color: red;
   cursor: pointer;
-  font-size: 12px;
+  font-size: $FONT-12;
 }
 
 .cls-progress-section {
@@ -345,7 +345,7 @@
       width: 16px;
       height: 16px;
       border: 2px solid #f3f3f3;
-      border-top: 2px solid #1890ff;
+      border-top: 2px solid $INFO-COLOR;
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
@@ -355,7 +355,7 @@
     margin: 0;
 
     .ant-progress-bg {
-      background-color: #1890ff;
+      background-color: $INFO-COLOR;
     }
   }
 }
@@ -368,7 +368,7 @@
   .cls-success-tick {
     width: 16px;
     height: 16px;
-    background-color: #52c41a;
+    background-color: $SUCCESS-COLOR;
     color: white;
     border-radius: 50%;
     display: flex;
@@ -433,7 +433,7 @@
   background: #18caff26;
   padding: 10px 12px;
   border-radius: 8px;
-  color: #666666;
+  color: $GREY;
   text-align: left;
   margin-bottom: 15px;
 
@@ -476,11 +476,11 @@
   }
   
   .cls-upload-main-text {
-    font-size: 14px;
+    font-size: $FONT-14;
   }
   
   .cls-sample-file-btn {
-    font-size: 12px;
+    font-size: $FONT-12;
     padding: 12px;
   }
 }
@@ -492,7 +492,7 @@
   }
   
   .cls-page-title {
-    font-size: 20px;
+    font-size: $FONT-20;
   }
   
   .cls-upload-area {
@@ -523,7 +523,7 @@
 .cls-filter-icon {
   /* Style your filter icon here */
   /* Example styles: */
-  font-size: 20px;
+  font-size: $FONT-20;
   color: #999;
   cursor: pointer;
 }

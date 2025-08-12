@@ -7,7 +7,7 @@
 
 .cls-reconciliation-container {
   padding: 24px;
-  background: #f5f5f5;
+  background: $BACKGROUND-COLOR;
   min-height: 100vh;
 
   .cls-customFilter {
@@ -19,7 +19,7 @@
 .cls-reconciliation-title {
   font-size: 24px;
   font-weight: 600;
-  color: #722ed1;
+  color: $SECONDARYCOLOR;
   margin-bottom: 24px;
 }
 
@@ -42,7 +42,7 @@
     .cls-filter-label {
       display: block;
       margin-bottom: 4px;
-      font-size: 14px;
+      font-size: $FONT-14;
     }
   }
 
@@ -53,7 +53,7 @@
       gap: 8px;
 
       .cls-date-separator {
-        font-size: 12px;
+        font-size: $FONT-12;
       }
     }
   }
@@ -80,8 +80,8 @@
   align-items: center;
 
   .cls-status-count {
-    color: #666;
-    font-size: 12px;
+    color: $GREY;
+    font-size: $FONT-12;
   }
 }
 
@@ -122,7 +122,7 @@
     .ant-table-thead>tr>th {
       background-color: #f8fafc !important;
       font-weight: 600 !important;
-      font-size: 14px !important;
+      font-size: $FONT-14 !important;
       border-bottom: 2px solid #e2e8f0 !important;
       padding: 12px 16px !important;
       white-space: nowrap !important;
@@ -140,12 +140,12 @@
 }
 
 .cls-tax-claimable {
-  color: #52c41a;
+  color: $SUCCESS-COLOR;
   font-weight: 600;
 }
 
 .cls-status-tag {
-  color: #722ed1;
+  color: $SECONDARYCOLOR;
   border-radius: 12px;
 }
 
@@ -164,7 +164,7 @@
     top: 100%;
     right: 0;
     background: white;
-    border: 1px solid #d9d9d9;
+    border: 1px solid $BORDER-COLOR;
     border-radius: 6px;
     padding: 16px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -201,7 +201,7 @@
   }
 
   .cls-info-text {
-    font-size: 14px;
+    font-size: $FONT-14;
   }
 }
 
@@ -217,7 +217,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid #d9d9d9;
+    border: 1px solid $BORDER-COLOR;
   }
 
   .cls-page-number {
@@ -236,7 +236,7 @@
 
     &.cls-inactive {
       background-color: white;
-      border-color: #d9d9d9;
+      border-color: $BORDER-COLOR;
       color: #000;
     }
   }
@@ -252,7 +252,7 @@
   gap: 8px;
 
   .cls-goto-text {
-    font-size: 14px;
+    font-size: $FONT-14;
   }
 
   .cls-goto-input {
@@ -275,8 +275,8 @@
 
 .cls-external-filter-icon {
   cursor: pointer;
-  font-size: 16px;
-  color: #1890ff;
+  font-size: $FONT-16;
+  color: $INFO-COLOR;
   padding: 4px;
   border-radius: 4px;
   transition: all 0.2s ease;
@@ -311,7 +311,7 @@
   .cls-filter-title {
     margin: 0;
     font-weight: 600;
-    font-size: 14px;
+    font-size: $FONT-14;
     color: #24292f;
   }
 
@@ -370,11 +370,11 @@
 
     .cls-status-label {
       font-size: 13px;
-      color: #666;
+      color: $GREY;
     }
 
     .cls-status-value {
-      font-size: 14px;
+      font-size: $FONT-14;
       font-weight: 600;
       color: #4c1d95;
       text-align: center;

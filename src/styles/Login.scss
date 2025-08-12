@@ -13,7 +13,7 @@
 }
 
 .cls-auth-card {
-  background: #ffffff;
+  background: $WHITE;
   border-radius: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -83,7 +83,7 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  color: #ffffff;
+  color: $WHITE;
   position: relative;
 }
 
@@ -94,14 +94,14 @@
     font-size: 36px;
     font-weight: 700;
     margin-bottom: 16px;
-    background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
+    background: linear-gradient(135deg, $WHITE 0%, #e0e7ff 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
   p {
-    font-size: 18px;
+    font-size: $FONT-18;
     opacity: 0.9;
     line-height: 1.6;
     max-width: 400px;
@@ -118,7 +118,7 @@
   justify-content: center;
   margin: 0 auto 24px;
   font-size: 36px;
-  color: #ffffff;
+  color: $WHITE;
 }
 
 .cls-auth-illustration {
@@ -144,13 +144,13 @@
   h1 {
     font-size: 32px;
     font-weight: 700;
-    color: #666;
+    color: $GREY;
     margin-bottom: 8px;
   }
 
   p {
-    font-size: 16px;
-    color: #666;
+    font-size: $FONT-16;
+    color: $GREY;
   }
 }
 
@@ -172,14 +172,14 @@
     }
 
     .ant-input {
-      font-size: 16px;
+      font-size: $FONT-16;
       border: none;
       box-shadow: none;
     }
 
     .anticon {
-      color: #666;
-      font-size: 18px;
+      color: $GREY;
+      font-size: $FONT-18;
     }
   }
 }
@@ -191,8 +191,8 @@
   margin-bottom: 24px;
 
   .ant-checkbox-wrapper {
-    font-size: 14px;
-    color: #666;
+    font-size: $FONT-14;
+    color: $GREY;
   }
 
   a {
@@ -211,7 +211,7 @@
   width: 100%;
   height: 48px;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: $FONT-16;
   font-weight: 600;
   background: #4f46e5;
   border-color: #4f46e5;
@@ -231,7 +231,7 @@
   border-top: 1px solid #e1e5e9;
 
   p {
-    color: #666;
+    color: $GREY;
     margin-bottom: 0;
 
     a {

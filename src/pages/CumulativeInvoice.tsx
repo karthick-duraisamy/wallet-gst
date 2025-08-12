@@ -6,7 +6,7 @@ import dayjs from "dayjs"
 import { useTheme } from "../contexts/ThemeContext";
 import "../styles/CumulativeInvoice.scss";
 import { downloadCSV, downloadXLS } from '../Utils/commonFunctions'
-import Filter from "../components/Filters/Filters"; 
+import Filter from "../components/Filters/Filters";
 const { Title } = Typography;
 const { TextArea } = Input;
 
@@ -113,77 +113,77 @@ const CumulativeInvoice: React.FC = () => {
   const [totalRecords, setTotalRecords] = useState(0);
 
   // Define a type for filter field
-type FilterField = {
-  key: string;
-  type: string;
-  label: string;
-  options?: { label: string; value: string }[];
-  defaultValue?: string;
-  placeholder?: string;
-};
+  type FilterField = {
+    key: string;
+    type: string;
+    label: string;
+    options?: { label: string; value: string }[];
+    defaultValue?: string;
+    placeholder?: string;
+  };
 
-const filterFields: FilterField[] = [
-  {
-    key: "airline",
-    type: "select",
-    label: "Airline",
-    options: [
-      { label: "All", value: "all" },
-      { label: "IndiGo", value: "indigo" },
-      { label: "Air India", value: "air-india" }
-    ],
-    defaultValue: "all"
-  },
-  {
-    key: "Type",
-    type: "select",
-    label: "Type",
-     options: [
-      { label: "All", value: "All" },
-      { label: "Tax invoice", value: "Tax invoice" },
-      { label: "credit note", value: "credit note" },
-    ],
-    placeholder: "Enter vendor name",
-    defaultValue: "All"
-  },
-  {
-    key: "TravelMode",
-    type: "select",
-    label: "Travel mode",
+  const filterFields: FilterField[] = [
+    {
+      key: "airline",
+      type: "select",
+      label: "Airline",
+      options: [
+        { label: "All", value: "all" },
+        { label: "IndiGo", value: "indigo" },
+        { label: "Air India", value: "air-india" }
+      ],
+      defaultValue: "all"
+    },
+    {
+      key: "Type",
+      type: "select",
+      label: "Type",
+      options: [
+        { label: "All", value: "All" },
+        { label: "Tax invoice", value: "Tax invoice" },
+        { label: "credit note", value: "credit note" },
+      ],
+      placeholder: "Enter vendor name",
+      defaultValue: "All"
+    },
+    {
+      key: "TravelMode",
+      type: "select",
+      label: "Travel mode",
       options: [
         { label: "All", value: "All" },
         { label: "Flight", value: "Flight" },
         { label: "train", value: "Train" },
       ],
-    placeholder: "Enter travel mode",
-    defaultValue: "All"
-  },
-  {
-    key: "PlaceOfSupply",
-    type: "select",
-    label: "Place of supply",
-     options: [
-      { label: "All states", value: "All states" },
-      { label: "Delhi", value: "Delhi" },
-      { label: "Mumbai", value: "Cleartrip" },
-    ],
-    placeholder: "Enter vendor name",
-    defaultValue: "MakemyTrip"
-  },
-  {
-    key: "travelDate",
-    type: "dateRange",
-    label: "Travel Date"
-  },
-];
-const handleFilterChange = (values: Record<string, any>) => {
-  console.log('Filter values changed:', values);
-  // Handle specific filter changes here
-  // You can update state based on the values received
-};
+      placeholder: "Enter travel mode",
+      defaultValue: "All"
+    },
+    {
+      key: "PlaceOfSupply",
+      type: "select",
+      label: "Place of supply",
+      options: [
+        { label: "All states", value: "All states" },
+        { label: "Delhi", value: "Delhi" },
+        { label: "Mumbai", value: "Cleartrip" },
+      ],
+      placeholder: "Enter vendor name",
+      defaultValue: "MakemyTrip"
+    },
+    {
+      key: "travelDate",
+      type: "dateRange",
+      label: "Travel Date"
+    },
+  ];
+  const handleFilterChange = (values: Record<string, any>) => {
+    console.log('Filter values changed:', values);
+    // Handle specific filter changes here
+    // You can update state based on the values received
+  };
 
   useEffect(() => {
-    postInvoiceFilter({ page: currentPage, page_size: pageSize});
+    postInvoiceFilter({ page: currentPage, page_size: pageSize });
   }, [currentPage, pageSize]);
 
   useEffect(() => {
@@ -191,7 +191,7 @@ const handleFilterChange = (values: Record<string, any>) => {
       setTotalRecords(data.count);
     }
   }, [data]);
- useEffect(() => {
+  useEffect(() => {
     if (data?.category && data.category.length > 0 && !selectedCategory) {
       setSelectedCategory(data.category[0].name.toLowerCase());
     }
@@ -252,62 +252,62 @@ const handleFilterChange = (values: Record<string, any>) => {
   // },
   // ];
   const allColumns = [
-  {
-    title: 'Airline Name',
-    dataIndex: 'airline_name',
-    key: 'AirlineName',
-    render: (text: string) => text,
-  },
-  {
-    title: 'PNR/Ticket No',
-    dataIndex: 'pnr',
-    key: 'pnrTicketNo',
-  },
-  {
-    title: 'Invoice Number',
-    dataIndex: 'invoice_number',
-    key: 'invoiceNo',
-  },
-  {
-    title: 'Invoice Date',
-    dataIndex: 'invoice_date',
-    key: 'invoiceDate',
-  },
-  {
-    title: 'Type',
-    dataIndex: 'transaction_type',
-    key: 'type',
-  },
-  {
-    title: 'Travel Vendor',
-    dataIndex: 'vendor_name',
-    key: 'travelVendor',
-  },
-  {
-    title: 'Action',
-    key: 'action',
-    width: 80,
-    fixed: "right" as const,
-    align: "center" as const,
-    render: (_, record) => (
-        <EditOutlined/>
-    ),
-  },
+    {
+      title: 'Airline Name',
+      dataIndex: 'airline_name',
+      key: 'AirlineName',
+      render: (text: string) => text,
+    },
+    {
+      title: 'PNR/Ticket No',
+      dataIndex: 'pnr',
+      key: 'pnrTicketNo',
+    },
+    {
+      title: 'Invoice Number',
+      dataIndex: 'invoice_number',
+      key: 'invoiceNo',
+    },
+    {
+      title: 'Invoice Date',
+      dataIndex: 'invoice_date',
+      key: 'invoiceDate',
+    },
+    {
+      title: 'Type',
+      dataIndex: 'transaction_type',
+      key: 'type',
+    },
+    {
+      title: 'Travel Vendor',
+      dataIndex: 'vendor_name',
+      key: 'travelVendor',
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      width: 80,
+      fixed: "right" as const,
+      align: "center" as const,
+      render: (_, record) => (
+        <EditOutlined />
+      ),
+    },
   ];
-const filteredColumns = allColumns.filter(
-  (col) => visibleColumns[col.key as keyof typeof visibleColumns]
-);
+  const filteredColumns = allColumns.filter(
+    (col) => visibleColumns[col.key as keyof typeof visibleColumns]
+  );
 
   // Calculate pagination for table data
   const paginatedTableData = data?.records;
   const category = data?.category;
-  console.log(category,'category');
+  console.log(category, 'category');
   // Removed invalid category assignment
- 
-  
+
+
   const totalPages = Math.ceil(totalRecords / pageSize);
   console.log(totalPages);
-  
+
   const handleGoToPage = () => {
     const page = Number(goToPageValue);
     const totalPages = Math.ceil(totalRecords / pageSize);
@@ -404,16 +404,24 @@ const filteredColumns = allColumns.filter(
                 </div>
 
                 <Filter
-                    fields={[
-                      {
-                        ...filterFields.find(f => f.key === "Type")!,
-                        type: "select" as "select", // Explicitly cast type
-                        label: ""
-                      }
-                    ]}
-                    pathname="/cumulative"
-                    onChange={handleFilterChange}
-                  />
+                  fields={[
+                    {
+                      ...filterFields.find(f => f.key === "Type")!,
+                      type: "select" as "select", // Explicitly cast type
+                      label: ""
+                    }
+                  ]}
+                  pathname="/cumulative"
+                  onChange={handleFilterChange}
+                />
+              </div>
+              <div style={{ display: "flex", gap: 15 }}>
+                <Button onClick={handleSubmit} className="cls-submitBtn">
+                  Submit
+                </Button>
+                <Button className="cls-resetBtn">
+                  Reset all
+                </Button>
               </div>
             </div>
           </div>
@@ -622,16 +630,24 @@ const filteredColumns = allColumns.filter(
                   )}
                 </div>
                 <Filter
-                    fields={[
-                      {
-                        ...filterFields.find(f => f.key === "Type")!,
-                        type: "select" as "select", // Explicitly cast type
-                        label: ""
-                      }
-                    ]}
-                    pathname="/cumulative"
-                    onChange={handleFilterChange}
-                  />
+                  fields={[
+                    {
+                      ...filterFields.find(f => f.key === "Type")!,
+                      type: "select" as "select", // Explicitly cast type
+                      label: ""
+                    }
+                  ]}
+                  pathname="/cumulative"
+                  onChange={handleFilterChange}
+                />
+              </div>
+              <div style={{ display: "flex", gap: 15 }}>
+                <Button onClick={handleSubmit} className="cls-submitBtn">
+                  Submit
+                </Button>
+                <Button className="cls-resetBtn">
+                  Reset all
+                </Button>
               </div>
             </div>
           </div>
@@ -669,16 +685,24 @@ const filteredColumns = allColumns.filter(
                   />
                 </div>
                 <Filter
-                    fields={[
-                      {
-                        ...filterFields.find(f => f.key === "Type")!,
-                        type: "select" as "select", // Explicitly cast type
-                        label: ""
-                      }
-                    ]}
-                    pathname="/cumulative"
-                    onChange={handleFilterChange}
-                  />
+                  fields={[
+                    {
+                      ...filterFields.find(f => f.key === "Type")!,
+                      type: "select" as "select", // Explicitly cast type
+                      label: ""
+                    }
+                  ]}
+                  pathname="/cumulative"
+                  onChange={handleFilterChange}
+                />
+              </div>
+              <div style={{ display: "flex", gap: 15 }}>
+                <Button onClick={handleSubmit} className="cls-submitBtn">
+                  Submit
+                </Button>
+                <Button className="cls-resetBtn">
+                  Reset all
+                </Button>
               </div>
             </div>
           </div>
@@ -695,13 +719,13 @@ const filteredColumns = allColumns.filter(
               marginBottom: 24,
             }}
           >
-         
-          <Filter 
-                  fields={filterFields}
-                  pathname="/cumulative"
-                  showButtons={true}
-                  onChange={handleFilterChange}
-                  />
+
+            <Filter
+              fields={filterFields}
+              pathname="/cumulative"
+              showButtons={true}
+              onChange={handleFilterChange}
+            />
           </div>
         );
 
@@ -725,17 +749,17 @@ const filteredColumns = allColumns.filter(
 
       {/* Entity Type Selection */}
       <div className="cls-entity-type-section">
-       {data?.category && (
-            <Radio.Group
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-            >
-              {data.category.map((item) => (
-                <Radio key={item.name} value={item.name.toLowerCase()}>
-                  {translate(item.name.toLowerCase())}
-                </Radio>
-              ))}
-            </Radio.Group>
+        {data?.category && (
+          <Radio.Group
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+          >
+            {data.category.map((item) => (
+              <Radio key={item.name} value={item.name.toLowerCase()}>
+                {translate(item.name.toLowerCase())}
+              </Radio>
+            ))}
+          </Radio.Group>
         )}
       </div>
 
@@ -774,12 +798,12 @@ const filteredColumns = allColumns.filter(
                 />
               </div>
               <div className="cls-table-header-actions">
-                
+
                 <FilterOutlined
                   className="cls-external-filter-icon"
                   onClick={() => setFilterDropdownVisible(!filterDropdownVisible)}
                 />
-                 <Button
+                <Button
                   icon={<DownloadOutlined />}
                   className="cls-export-button cls-xls" onClick={() => downloadXLS()}
                 >
@@ -853,7 +877,7 @@ const filteredColumns = allColumns.filter(
               className="custom-table"
               scroll={{ x: 1200 }}
               tableLayout="fixed"
-              rowKey="invoice_number" 
+              rowKey="invoice_number"
             />
           </div>
 
@@ -871,7 +895,7 @@ const filteredColumns = allColumns.filter(
             {/* Left side - Displaying info with page size selector */}
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <span style={{ fontSize: "14px" }}>Displaying</span>
-              
+
               <Select
                 value={pageSize}
                 onChange={(value) => {
@@ -888,7 +912,7 @@ const filteredColumns = allColumns.filter(
                   { value: 100, label: "100" },
                 ]}
               />
-              
+
               <span style={{ fontSize: "14px" }}>
                 Out of {totalRecords}
               </span>
@@ -1004,25 +1028,25 @@ const filteredColumns = allColumns.filter(
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <span style={{ fontSize: "14px" }}>Go to Page</span>
               <Input
-                  style={{ width: 60 }}
-                  value={goToPageValue}
-                  onChange={(e) => {
-                    const value = e.target.value;
+                style={{ width: 60 }}
+                value={goToPageValue}
+                onChange={(e) => {
+                  const value = e.target.value;
 
-                    // Allow only numbers
-                    if (/^\d*$/.test(value)) {
-                      const numericValue = Number(value);
-                      if (numericValue <= totalPages) {
-                        setGoToPageValue(value);
-                      } else if (value === "") {
-                        setGoToPageValue("");
-                      }
+                  // Allow only numbers
+                  if (/^\d*$/.test(value)) {
+                    const numericValue = Number(value);
+                    if (numericValue <= totalPages) {
+                      setGoToPageValue(value);
+                    } else if (value === "") {
+                      setGoToPageValue("");
                     }
-                  }}
-                  onPressEnter={handleGoToPage}
-                  placeholder={`1-${totalPages}`}
-                  size="small"
-                />
+                  }
+                }}
+                onPressEnter={handleGoToPage}
+                placeholder={`1-${totalPages}`}
+                size="small"
+              />
 
               <Button
                 type="primary"

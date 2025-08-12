@@ -2383,3 +2383,9 @@ tr.ant-table-measure-row td {
   border: 2px solid #333;
   transition: all 0.3s ease;
 }
+.cls-btnItems{
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    align-items: end;
+}

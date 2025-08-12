@@ -1,3 +1,4 @@
+
 .cls-dashboard-container {
   padding: 24px;
   background-color: var(--bg-color);
@@ -37,7 +38,7 @@
 
   .cls-dashboard-title {
     margin: 0;
-    color: rgb(114, 46, 209);
+    color: $PRIMARYCOLOR;
   }
 }
 
@@ -54,15 +55,15 @@
     align-items: flex-start;
 
     .cls-filter-label {
-      font-size: 14px;
+      font-size: $FONT-14;
       font-weight: 500;
-      color: #333;
+      color: $TEXT-COLOR;
     }
   }
 
   .cls-apply-button {
-    background-color: #4f46e5;
-    border-color: #4f46e5;
+    background-color: $PRIMARYCOLOR;
+    border-color: $PRIMARYCOLOR;
     border-radius: 20px;
     font-weight: 500;
     height: 36px;
@@ -71,6 +72,18 @@
     align-items: center;
     gap: 8px;
   }
+
+  .cls-customFilter {
+    .Time {
+      .ant-select {
+        width: 150px !important;
+      }
+    }
+  }
+  .cls-filter-con{
+    display: flex; 
+    width: 100% 
+  }
 }
 
 .cls-overall-summary {
@@ -78,8 +91,8 @@
 
   .cls-summary-title {
     margin-bottom: 20px;
-    color: #333;
-    font-size: 18px;
+    color: $TEXT-COLOR;
+    font-size: $FONT-18;
     font-weight: 600;
   }
 }
@@ -92,7 +105,7 @@
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  background: white;
+  background: $WHITE;
   display: flex;
   flex-direction: column;
   height: 140px;
@@ -121,7 +134,7 @@
 }
 
 .cls-new-card-title {
-  font-size: 14px;
+  font-size: $FONT-14;
   font-weight: 600;
   color: #6c757d;
   display: flex;
@@ -176,7 +189,7 @@
 }
 
 .cls-new-item-value {
-  font-size: 16px;
+  font-size: $FONT-16;
   font-weight: 600;
   color: #212529;
   margin: 0;
@@ -231,16 +244,16 @@
 }
 
 .cls-card-title {
-  font-size: 14px;
+  font-size: $FONT-14;
   font-weight: 600;
-  color: #333;
+  color: $TEXT-COLOR;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
 .cls-info-icon {
-  font-size: 12px;
+  font-size: $FONT-12;
   color: #999;
 }
 
@@ -298,7 +311,7 @@
   &:hover {
     background: white;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    color: #4f46e5;
+    color: $PRIMARYCOLOR;
     transform: scale(1.1);
   }
 
@@ -354,7 +367,7 @@
 }
 
 .cls-section-label {
-  font-size: 12px;
+  font-size: $FONT-12;
   font-weight: 500;
   line-height: 14px;
   text-align: center;
@@ -362,7 +375,7 @@
 }
 
 .cls-section-value {
-  font-size: 20px;
+  font-size: $FONT-20;
   font-weight: 700;
   line-height: 1.2;
 }
@@ -400,13 +413,13 @@
 
       .ant-btn {
         &.ant-btn-primary {
-          font-size: 12px;
+          font-size: $FONT-12;
         }
       }
 
       .ant-select {
         &.ant-select-sm {
-          font-size: 12px;
+          font-size: $FONT-12;
         }
       }
     }
@@ -424,7 +437,7 @@
 
   .cls-airline-table {
     .ant-table {
-      font-size: 12px;
+      font-size: $FONT-12;
     }
   }
 }
@@ -444,7 +457,7 @@
       align-items: center;
 
       .ant-select-sm {
-        font-size: 12px;
+        font-size: $FONT-12;
       }
     }
   }
@@ -472,8 +485,8 @@
   }
 
   .cls-booking-tickets {
-    font-size: 12px;
-    color: #666;
+    font-size: $FONT-12;
+    color: $GREY;
   }
 }
 
@@ -483,8 +496,8 @@
   }
 
   .cls-cancellation-tickets {
-    font-size: 12px;
-    color: #666;
+    font-size: $FONT-12;
+    color: $GREY;
   }
 }
 
@@ -496,7 +509,7 @@
   }
 
   &.cls-positive {
-    color: #52c41a;
+    color: $SUCCESS-COLOR;
   }
 }
 
@@ -626,14 +639,14 @@
               }
 
               .cls-item-label {
-                font-size: 14px;
+                font-size: $FONT-14;
                 color: #374151;
                 font-weight: 500;
               }
             }
 
             .cls-item-value {
-              font-size: 18px;
+              font-size: $FONT-18;
               font-weight: 700;
               color: #1f2937;
               background: linear-gradient(135deg, #6366f1, #8b5cf6);
@@ -678,9 +691,9 @@
 }
 
 .cls-old-card-title {
-  font-size: 14px;
+  font-size: $FONT-14;
   font-weight: 600;
-  color: #333;
+  color: $TEXT-COLOR;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -722,7 +735,7 @@
 }
 
 .cls-old-section-label {
-  font-size: 12px;
+  font-size: $FONT-12;
   font-weight: 500;
   line-height: 13px;
   text-align: center;
@@ -738,12 +751,13 @@
   color: white;
   margin: 0;
 }
-.cls-price{
-  table{
-    tbody{
-      tr{
-        td:nth-of-type(4){
-          span{
+
+.cls-price {
+  table {
+    tbody {
+      tr {
+        td:nth-of-type(4) {
+          span {
             width: 100%;
             display: inline-block;
             text-align: right;
@@ -752,4 +766,9 @@
       }
     }
   }
+}
+.cls-airline-Logo{
+  display: flex;
+  align-items: center; 
+  gap: 8;
 }
