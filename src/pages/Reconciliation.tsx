@@ -461,7 +461,9 @@ const filterFields: FilterField[] = [
       <Filter  
         fields={filterFields}
         pathname="/reconciliation"
-        onChange={handleFilterChange}/>
+        showButtons={true}
+        onChange={handleFilterChange}
+        />
 
       {/* Status Count Display */}
       <div className="cls-status-counts">

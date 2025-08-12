@@ -34,6 +34,31 @@ const Dashboard: React.FC = () => {
   const [airlineFilter, setAirlineFilter] = useState("all");
   const [pendingFilesType, setPendingFilesType] = useState("invoices-count");
   const [pendingFilesAirline, setPendingFilesAirline] = useState("all");
+  
+  // Dynamic filter change handler
+  const handleFilterChange = (values: Record<string, any>) => {
+    Object.keys(values).forEach(key => {
+      switch(key) {
+        case "Time period":
+          setTimePeriod(values[key]);
+          break;
+        case "Month":
+          setMonth(values[key]);
+          break;
+        case "vendorName":
+          setTravelVendor(values[key]);
+          break;
+        case "Type":
+          setInvoiceType(values[key]);
+          setPendingFilesType(values[key]);
+          break;
+        case "Airline":
+          setAirlineFilter(values[key]);
+          setPendingFilesAirline(values[key]);
+          break;
+      }
+    });
+  };
   const { translate } = useTheme();
   const [useNewCards, setUseNewCards] = useState(() => {
     const saved = localStorage.getItem("dashboardCardDesign");
@@ -565,7 +590,7 @@ const Dashboard: React.FC = () => {
       <Card className="cls-filter-section">
         <Row gutter={[16, 16]} align="middle">
           <Col>
-          <div style={{display:"flex"}}>
+          <div style={{display:"flex", width: "100%"}}>
             <Filter
               fields={
                 filterFields
@@ -576,10 +601,9 @@ const Dashboard: React.FC = () => {
                   }))
               }
               pathname="/dashboard"
-              showButtons={true} // separate prop for buttons
-              onChange={(value) => console.log("Selected:", value)}
+              showButtons={false}
+              onChange={handleFilterChange}
             />
-
           </div>
           </Col>
           <Col flex="auto" style={{ display: "flex", justifyContent: "end" }}>
@@ -908,14 +932,11 @@ const Dashboard: React.FC = () => {
                       {
                         ...filterFields.find(f => f.key === "Type")!,
                         type: "select" as "select", // Explicitly cast type
-                        showButtons: true,
                         label: ""
                       }
                     ]}
                     pathname="/dashboard"
-                   onChange={(value) => {
-                    setInvoiceType(value.Airline); // ✅ same as before but with Filter
-                  }}
+                    onChange={handleFilterChange}
                   />
                   </div>  
                   
@@ -995,14 +1016,11 @@ const Dashboard: React.FC = () => {
                       {
                         ...filterFields.find(f => f.key === "Airline")!,
                         type: "select" as "select", // Explicitly cast type
-                        showButtons: true,
                         label: ""
                       }
                     ]}
                     pathname="/dashboard"
-                    onChange={(value) => {
-                      setInvoiceType(value.Airline); // triggers the same useEffect as before
-                    }}
+                    onChange={handleFilterChange}
                   />
               </div>
             }
@@ -1048,8 +1066,7 @@ const Dashboard: React.FC = () => {
                         }))
                     }
                     pathname="/dashboard"
-                    showButtons={true} // separate prop for buttons
-                    onChange={(value) => console.log("Selected:", value)}
+                    onChange={handleFilterChange}
                   />
 
               </div>

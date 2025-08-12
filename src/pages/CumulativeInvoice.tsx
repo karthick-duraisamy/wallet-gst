@@ -176,10 +176,11 @@ const filterFields: FilterField[] = [
     label: "Travel Date"
   },
 ];
-const handleFilterChange=()=>{
-  console.log('hiw');
-  
-}
+const handleFilterChange = (values: Record<string, any>) => {
+  console.log('Filter values changed:', values);
+  // Handle specific filter changes here
+  // You can update state based on the values received
+};
 
   useEffect(() => {
     postInvoiceFilter({ page: currentPage, page_size: pageSize});
@@ -407,13 +408,11 @@ const filteredColumns = allColumns.filter(
                       {
                         ...filterFields.find(f => f.key === "Type")!,
                         type: "select" as "select", // Explicitly cast type
-                        label: "", // or undefined if your Filter component checks for it
-                        showButtons: true
-
+                        label: ""
                       }
                     ]}
                     pathname="/cumulative"
-                    onChange={(value) => console.log("Selected:", value)}
+                    onChange={handleFilterChange}
                   />
               </div>
             </div>
@@ -627,12 +626,11 @@ const filteredColumns = allColumns.filter(
                       {
                         ...filterFields.find(f => f.key === "Type")!,
                         type: "select" as "select", // Explicitly cast type
-                        label: "",
-                        showButtons : true
-
+                        label: ""
                       }
                     ]}
                     pathname="/cumulative"
+                    onChange={handleFilterChange}
                   />
               </div>
             </div>
@@ -675,13 +673,11 @@ const filteredColumns = allColumns.filter(
                       {
                         ...filterFields.find(f => f.key === "Type")!,
                         type: "select" as "select", // Explicitly cast type
-                        label: "", // or undefined if your Filter component checks for it
-                        showButtons : true
+                        label: ""
                       }
                     ]}
                     pathname="/cumulative"
-                    onChange={(value) => console.log("Selected:", value)}
-
+                    onChange={handleFilterChange}
                   />
               </div>
             </div>
@@ -700,10 +696,12 @@ const filteredColumns = allColumns.filter(
             }}
           >
          
-          <Filter fields={filterFields}
+          <Filter 
+                  fields={filterFields}
                   pathname="/cumulative"
-                  showButtons = {true}
-                  onChange={handleFilterChange}/>
+                  showButtons={true}
+                  onChange={handleFilterChange}
+                  />
           </div>
         );
 

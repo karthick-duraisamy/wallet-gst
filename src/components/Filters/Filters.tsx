@@ -12,17 +12,26 @@ export interface IField {
   options?: { label: string; value: string }[]; // only for select/dropdown
   defaultValue?: string;
   placeholder?: string;
-  showButtons: Boolean
+  showButtons?: boolean;
 }
 
 interface IProps {
   fields: IField[];
   pathname: string;
   onChange: (values: Record<string, any>) => void;
+  showButtons?: boolean;
 }
 
-const Filter: React.FC<IProps> = ({ fields, pathname, onChange }) => {
-  const [values, setValues] = useState<Record<string, any>>({});
+const Filter: React.FC<IProps> = ({ fields, pathname, onChange, showButtons = false }) => {
+  const [values, setValues] = useState<Record<string, any>>(() => {
+    const initialValues: Record<string, any> = {};
+    fields.forEach(field => {
+      if (field.defaultValue) {
+        initialValues[field.key] = field.defaultValue;
+      }
+    });
+    return initialValues;
+  });
 
   const handleChange = (key: string, value: any) => {
     const updated = { ...values, [key]: value };
@@ -30,12 +39,23 @@ const Filter: React.FC<IProps> = ({ fields, pathname, onChange }) => {
     onChange(updated);
   };
 
+  const handleReset = () => {
+    const resetValues: Record<string, any> = {};
+    fields.forEach(field => {
+      if (field.defaultValue) {
+        resetValues[field.key] = field.defaultValue;
+      }
+    });
+    setValues(resetValues);
+    onChange(resetValues);
+  };
+
   const renderField = (field: IField) => {
     switch (field.type) {
       case "select":
         return (
           <Select
-            defaultValue={field.defaultValue}
+            value={values[field.key] || field.defaultValue}
             style={{ width: 120 }}
             onChange={(val) => handleChange(field.key, val)}
           >
@@ -52,6 +72,7 @@ const Filter: React.FC<IProps> = ({ fields, pathname, onChange }) => {
           <Input
             placeholder={field.placeholder}
             style={{ width: 120 }}
+            value={values[field.key] || ''}
             onChange={(e) => handleChange(field.key, e.target.value)}
           />
         );
@@ -60,6 +81,7 @@ const Filter: React.FC<IProps> = ({ fields, pathname, onChange }) => {
         return (
           <DatePicker
             style={{ width: 120 }}
+            value={values[field.key]}
             onChange={(date) => handleChange(field.key, date)}
           />
         );
@@ -68,6 +90,7 @@ const Filter: React.FC<IProps> = ({ fields, pathname, onChange }) => {
         return (
           <RangePicker
             style={{ width: 200 }}
+            value={values[field.key]}
             onChange={(dates) => handleChange(field.key, dates)}
           />
         );
@@ -83,32 +106,55 @@ const Filter: React.FC<IProps> = ({ fields, pathname, onChange }) => {
     return true;
   });
 
-  // Determine if any field has showButtons set to true
-  const showButtons = fields.some((field) => field.showButtons);
-  // console.log(showButtons, fields);
-  
-
   return (
-    <div  className="cls-customFilter" style={{ display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "end", 
-    justifyContent: 'space-between'}}>
-        <div  style={{ display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "end" }}>
-            {visibleFields.map((field) => (
-                <div key={field.key} style={{ display: "flex", flexDirection: "column" }}>
-                <label style={{ marginBottom: 4 }}>{field.label}</label>
-                {renderField(field)}
-                </div>
-            ))}
+    <div className="cls-customFilter" style={{ 
+      display: "flex", 
+      gap: "1rem", 
+      flexWrap: "wrap", 
+      alignItems: "end", 
+      justifyContent: showButtons ? 'space-between' : 'flex-start',
+      width: '100%'
+    }}>
+      <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "end" }}>
+        {visibleFields.map((field) => (
+          <div key={field.key} style={{ display: "flex", flexDirection: "column" }}>
+            {field.label && <label style={{ marginBottom: 4, fontSize: '12px', fontWeight: 500 }}>{field.label}</label>}
+            {renderField(field)}
+          </div>
+        ))}
+      </div>
+      {showButtons && (
+        <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", alignItems: "end" }}>
+          <button 
+            style={{
+              padding: '6px 16px',
+              backgroundColor: '#4f46e5',
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              fontSize: '14px',
+              cursor: 'pointer'
+            }}
+            onClick={() => console.log('Submit:', values)}
+          >
+            Submit
+          </button>
+          <button 
+            style={{
+              padding: '6px 16px',
+              backgroundColor: '#f5f5f5',
+              color: '#666',
+              border: '1px solid #d9d9d9',
+              borderRadius: '6px',
+              fontSize: '14px',
+              cursor: 'pointer'
+            }}
+            onClick={handleReset}
+          >
+            Reset All
+          </button>
         </div>
-        {/* {showButtons && ( */}
-            {/* <div  style={{ display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "end" }}>
-                <Button type="primary" onClick={() => console.log(values)}>
-                    Submit
-                </Button>
-                <Button onClick={() => console.log(values)}>
-                    Reset All
-                </Button>
-            </div> */}
-        {/* )} */}
+      )}
     </div>
   );
 };
