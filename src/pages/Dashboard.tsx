@@ -6,11 +6,7 @@ import {
   Select,
   Button,
   Table,
-  Progress,
   Typography,
-  Space,
-  Divider,
-  Statistic,
 } from "antd";
 import {
   BarChart,
@@ -19,28 +15,12 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-  LineChart,
-  Line,
-  AreaChart,
-  Area,
-  ReferenceLine,
+  ResponsiveContainer
 } from "recharts";
-import {
-  DownloadOutlined,
-  InfoCircleOutlined,
-  MailOutlined,
-  WhatsAppOutlined,
-  BellOutlined,
-  EyeOutlined,
-  LeftOutlined,
-  RightOutlined,
-} from "@ant-design/icons";
+import {InfoCircleOutlined} from "@ant-design/icons";
 import { useTheme } from "../contexts/ThemeContext";
 import "../styles/Dashboard.scss";
+import Filter from '../components/Filters/Filters'
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -54,7 +34,7 @@ const Dashboard: React.FC = () => {
   const [airlineFilter, setAirlineFilter] = useState("all");
   const [pendingFilesType, setPendingFilesType] = useState("invoices-count");
   const [pendingFilesAirline, setPendingFilesAirline] = useState("all");
-  const { translate, isDarkMode } = useTheme();
+  const { translate } = useTheme();
   const [useNewCards, setUseNewCards] = useState(() => {
     const saved = localStorage.getItem("dashboardCardDesign");
     // Default to old design if no value is set
@@ -96,8 +76,8 @@ const Dashboard: React.FC = () => {
       backgroundColor: "#6366F1",
       carouselKey: "travelHistory",
       sections: [
-        { label: "Bookings", value: 10, backgroundColor: "#6366F1" },
-        { label: "Cancellations", value: 2, backgroundColor: "#4F46E5" },
+        { label: "Bookings", value: 1000, backgroundColor: "#6366F1" },
+        { label: "Cancellations", value: 2000, backgroundColor: "#4F46E5" },
       ],
     },
     {
@@ -105,8 +85,8 @@ const Dashboard: React.FC = () => {
       backgroundColor: "#06B6D4",
       carouselKey: "airlineInvoices",
       sections: [
-        { label: "Available", value: 100, backgroundColor: "#06B6D4" },
-        { label: "GST Filed", value: 60, backgroundColor: "#0891B2" },
+        { label: "Available", value: 3000, backgroundColor: "#06B6D4" },
+        { label: "GST Filed", value: 6000, backgroundColor: "#0891B2" },
         {
           label: "Pending File",
           value: 40,
@@ -120,8 +100,8 @@ const Dashboard: React.FC = () => {
       backgroundColor: "#8B5CF6",
       carouselKey: "allInvoices",
       sections: [
-        { label: "Available", value: 80, backgroundColor: "#8B5CF6" },
-        { label: "GST - Filed", value: 60, backgroundColor: "#7C3AED" },
+        { label: "Available", value: 80000, backgroundColor: "#8B5CF6" },
+        { label: "GST - Filed", value: 6000, backgroundColor: "#7C3AED" },
         {
           label: "Pending File",
           value: 50,
@@ -135,8 +115,8 @@ const Dashboard: React.FC = () => {
       backgroundColor: "#F59E0B",
       carouselKey: "netClaimable",
       sections: [
-        { label: "Airlines", value: 60, backgroundColor: "#F59E0B" },
-        { label: "All", value: 30, backgroundColor: "#D97706" },
+        { label: "Airlines", value: 90000, backgroundColor: "#F59E0B" },
+        { label: "All", value: 3000, backgroundColor: "#D97706" },
       ],
     },
   ];
@@ -362,45 +342,46 @@ const Dashboard: React.FC = () => {
   // Calculate visible items for carousel (max 3)
   const getVisibleItems = (sections: any[]) => Math.min(3, sections.length);
 
-  // Recent failures data
-  const recentFailures = [];
-
   // Airline data
   const airlineData = [
     {
       key: "1",
-      airline: "SG",
+      airline: "https://ui.cltpstatic.com/images/logos/air-logos/SG.png",
+      airlineCode:'SG',
       code: "6132",
       bookings: "1024 tickets",
       cancellations: "11364",
-      amount: "INR -5232",
+      amount: "₹ 5232",
       color: "#ff4d4f",
     },
     {
       key: "2",
-      airline: "AI",
+      airline: "https://ui.cltpstatic.com/images/logos/air-logos/AI.png",
+      airlineCode:'AI',
       code: "324",
       bookings: "324 tickets",
       cancellations: "1032",
-      amount: "INR -708",
+      amount: "₹ 708",
       color: "#722ed1",
     },
     {
       key: "3",
-      airline: "6E",
+      airline: "https://ui.cltpstatic.com/images/logos/air-logos/6E.png",
+      airlineCode:'6E',
       code: "529",
       bookings: "529 tickets",
       cancellations: "1356",
-      amount: "INR -1428",
+      amount: "₹ 1428",
       color: "#1890ff",
     },
     {
       key: "4",
-      airline: "UK",
+      airline: "https://ui.cltpstatic.com/images/logos/air-logos/UK.png",
+      airlineCode:'UK',
       code: "168",
       bookings: "168 tickets",
       cancellations: "312",
-      amount: "INR -144",
+      amount: "₹ 144",
       color: "#fa8c16",
     },
   ];
@@ -412,15 +393,13 @@ const Dashboard: React.FC = () => {
       key: "airline",
       render: (text: string, record: any) => (
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <div
-            style={{
-              width: 16,
-              height: 16,
-              backgroundColor: record.color,
-              borderRadius: 2,
-            }}
-          />
-          <Text strong>{text}</Text>
+            <img
+              src={record.airline}
+              alt={record.airlineCode}
+              title={record.airlineCode}
+              style={{ width: 26, height: 26, marginRight: 8, borderRadius: 6,}}
+            />
+          <Text strong>{record.airlineCode}</Text>
         </div>
       ),
     },
@@ -494,7 +473,85 @@ const Dashboard: React.FC = () => {
   };
 
   const pendingFilesData = getPendingFilesData();
+    // Define a type for filter field
+  type FilterField = {
+    key: string;
+    type: string;
+    label: string;
+    options?: { label: string; value: string }[];
+    defaultValue?: string;
+    placeholder?: string;
+  };
+  const filterFields : FilterField[] = [
+    {
+      key: "Time period",
+      type: "select",
+      label: "Time period",
+      options: [
+        { label: "FY 2016-2017", value: "FY 2016-2017" },
+        { label: "FY 2017-2018", value: "FY 2017-2018" },
+        { label: "FY 2018-2019", value: "FY 2018-2019" },
+      ],
+      defaultValue: "FY 2016-2017"
+    },
+    {
+      key: "Month",
+      type: "select",
+      label: "Month",
+      options: [
+        { label: "Jan", value: "Jan" },
+        { label: "Feb", value: "Feb" },
+        { label: "Mar", value: "Mar" },
+        { label: "Apr", value: "Apr" },
+        { label: "May", value: "May" },
+        { label: "Jun", value: "Jun" },
+        { label: "Jul", value: "Jul" },
+        { label: "Aug", value: "Aug" },
+        { label: "Sep", value: "Sep" },
+        { label: "Oct", value: "Oct" },
+        { label: "Nov", value: "Nov" },
+        { label: "Dec", value: "Dec" },
 
+      ],
+      defaultValue: "Jan"
+    },
+    {
+      key: "vendorName",
+      type: "select",
+      label: "Vendor Name",
+      options: [
+        { label: "MakemyTrip", value: "MakemyTrip" },
+        { label: "Cleartrip", value: "Cleartrip" },
+        { label: "AtYourPrice", value: "AtYourPrice" },
+        { label: "Goibibo", value: "Goibibo" }
+      ],
+      placeholder: "Enter vendor name",
+      defaultValue: "MakemyTrip"
+    },
+    {
+      key: "Type",
+      type: "select",
+      label: "Type :",
+      options: [
+        { label: "Invoice count", value: "Invoice count" },
+        { label: "Amount", value: "Amount" },
+      ],
+      defaultValue: "Invoice count"
+    },
+    {
+      key: "Airline",
+      type: "select",
+      label: "Airline",
+      options: [
+        { label: "All", value: "All" },
+        { label: "SG", value: "SG" },
+        { label: "6E", value: "6E" },
+        { label: "AI", value: "AI" },
+        { label: "UK", value: "6E" },
+      ],
+      defaultValue: "All"
+    }
+  ]
   return (
     <div className="slide-up cls-dashboard-container">
       {/* Header */}
@@ -508,63 +565,22 @@ const Dashboard: React.FC = () => {
       <Card className="cls-filter-section">
         <Row gutter={[16, 16]} align="middle">
           <Col>
-            <div className="cls-filter-item">
-              <Text className="cls-filter-label">Time Period:</Text>
-              <Select
-                value={timePeriod}
-                onChange={setTimePeriod}
-                style={{ width: 150 }}
-                placeholder="Select"
-              >
-                <Option value="fy-2016-2017">FY 2016-2017</Option>
-                <Option value="fy-2017-2018">FY 2017-2018</Option>
-                <Option value="fy-2018-2019">FY 2018-2019</Option>
-                <Option value="fy-2019-2020">FY 2019-2020</Option>
-                <Option value="fy-2020-2021">FY 2020-2021</Option>
-              </Select>
-            </div>
-          </Col>
-          <Col>
-            <div className="cls-filter-item">
-              <Text className="cls-filter-label">Month:</Text>
-              <Select
-                value={month}
-                onChange={setMonth}
-                style={{ width: 120 }}
-                placeholder="Select"
-              >
-                <Option value="apr">Apr</Option>
-                <Option value="may">May</Option>
-                <Option value="jun">Jun</Option>
-                <Option value="jul">Jul</Option>
-                <Option value="aug">Aug</Option>
-                <Option value="sep">Sep</Option>
-                <Option value="oct">Oct</Option>
-                <Option value="nov">Nov</Option>
-                <Option value="dec">Dec</Option>
-                <Option value="jan">Jan</Option>
-                <Option value="feb">Feb</Option>
-                <Option value="mar">Mar</Option>
-              </Select>
-            </div>
-          </Col>
-          <Col>
-            <div className="cls-filter-item">
-              <Text className="cls-filter-label">Travel Vendors:</Text>
-              <Select
-                value={travelVendor}
-                onChange={setTravelVendor}
-                style={{ width: 150 }}
-                placeholder="Select"
-              >
-                <Option value="atyourprice">AtYourPrice</Option>
-                <Option value="sotc">SOTC</Option>
-                <Option value="fcm">FCM</Option>
-                <Option value="makemytrip">Make My Trip</Option>
-                <Option value="cleartrip">ClearTrip</Option>
-                <Option value="goibibo">Goibibo</Option>
-              </Select>
-            </div>
+          <div style={{display:"flex"}}>
+            <Filter
+              fields={
+                filterFields
+                  .filter(f => f.key === "Time period" || f.key === "Month" || f.key === "vendorName")
+                  .map(field => ({
+                    ...field,
+                    type: "select" as const, // Explicit type
+                  }))
+              }
+              pathname="/dashboard"
+              showButtons={true} // separate prop for buttons
+              onChange={(value) => console.log("Selected:", value)}
+            />
+
+          </div>
           </Col>
           <Col flex="auto" style={{ display: "flex", justifyContent: "end" }}>
             <Button type="primary" className="cls-apply-button">
@@ -693,7 +709,7 @@ const Dashboard: React.FC = () => {
                       )}
                     </div>
                   </div>
-                ) : (
+                  ) : (
                   // Old Card Design (like reference image)
                   <div className="cls-old-overview-card">
                     {/* Header */}
@@ -887,17 +903,22 @@ const Dashboard: React.FC = () => {
                   <div
                     style={{ display: "flex", alignItems: "center", gap: 8 }}
                   >
-                    <Text style={{ fontSize: "12px" }}>Type:</Text>
-                    <Select
-                      value={invoiceType}
-                      onChange={setInvoiceType}
-                      size="small"
-                      style={{ width: 140 }}
-                    >
-                      <Option value="invoices-count">Invoices Count</Option>
-                      <Option value="amount">Amount</Option>
-                    </Select>
-                  </div>
+                   <Filter
+                    fields={[
+                      {
+                        ...filterFields.find(f => f.key === "Type")!,
+                        type: "select" as "select", // Explicitly cast type
+                        showButtons: true,
+                        label: ""
+                      }
+                    ]}
+                    pathname="/dashboard"
+                   onChange={(value) => {
+                    setInvoiceType(value.Airline); // ✅ same as before but with Filter
+                  }}
+                  />
+                  </div>  
+                  
                 </div>
               </div>
             }
@@ -969,19 +990,20 @@ const Dashboard: React.FC = () => {
             title={translate("airlineWiseClaimable")}
             extra={
               <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                <Text style={{ fontSize: "12px" }}>Airline:</Text>
-                <Select
-                  value={airlineFilter}
-                  onChange={setAirlineFilter}
-                  size="small"
-                  style={{ width: 100 }}
-                >
-                  <Option value="all">All</Option>
-                  <Option value="sg">SG</Option>
-                  <Option value="ai">AI</Option>
-                  <Option value="6e">6E</Option>
-                  <Option value="uk">UK</Option>
-                </Select>
+                <Filter
+                    fields={[
+                      {
+                        ...filterFields.find(f => f.key === "Airline")!,
+                        type: "select" as "select", // Explicitly cast type
+                        showButtons: true,
+                        label: ""
+                      }
+                    ]}
+                    pathname="/dashboard"
+                    onChange={(value) => {
+                      setInvoiceType(value.Airline); // triggers the same useEffect as before
+                    }}
+                  />
               </div>
             }
             style={{
@@ -993,6 +1015,7 @@ const Dashboard: React.FC = () => {
           >
             <Table
               columns={airlineColumns}
+              className="cls-price"
               dataSource={
                 airlineFilter === "all"
                   ? airlineData
@@ -1014,29 +1037,21 @@ const Dashboard: React.FC = () => {
             title={translate("airlinesPendingFiles")}
             extra={
               <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                <Text>Type:</Text>
-                <Select
-                  value={pendingFilesType}
-                  onChange={setPendingFilesType}
-                  size="small"
-                  style={{ width: 120 }}
-                >
-                  <Option value="invoices-count">Invoices Count</Option>
-                  <Option value="amount">Amount</Option>
-                </Select>
-                <Text>Airlines:</Text>
-                <Select
-                  value={pendingFilesAirline}
-                  onChange={setPendingFilesAirline}
-                  size="small"
-                  style={{ width: 80 }}
-                >
-                  <Option value="all">All</Option>
-                  <Option value="sg">SG</Option>
-                  <Option value="ai">AI</Option>
-                  <Option value="6e">6E</Option>
-                  <Option value="uk">UK</Option>
-                </Select>
+                <Filter
+                    fields={
+                      filterFields
+                        .filter(f => f.key === "Type" || f.key === "Airline")
+                        .map(field => ({
+                          ...field,
+                          type: "select" as const, // Explicit type
+                          label: "",               // Hide label
+                        }))
+                    }
+                    pathname="/dashboard"
+                    showButtons={true} // separate prop for buttons
+                    onChange={(value) => console.log("Selected:", value)}
+                  />
+
               </div>
             }
             style={{

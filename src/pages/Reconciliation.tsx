@@ -1,35 +1,100 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+// import { useDispatch } from "react-redux";
 import { Card,Table,Button,Select,DatePicker,Input,Tag,Radio,Checkbox} from "antd";
 import {SearchOutlined,DownloadOutlined,FilterOutlined} from "@ant-design/icons";
-import dayjs from "dayjs";
-// import { RootState } from "../store/store";
-import { setFilters, clearFilters } from "../store/slices/reconciliationSlice";
+// import { setFilters } from "../store/slices/reconciliationSlice";
 import { useTheme } from "../contexts/ThemeContext";
 import "../styles/Reconciliation.scss";
 import { downloadCSV, downloadXLS } from '../Utils/commonFunctions'
+import  Filter  from '../components/Filters/Filters'
 
-const { RangePicker } = DatePicker;
-const { Option } = Select;
 
 const Reconciliation: React.FC = () => {
-  const dispatch = useDispatch();
+  // const { RangePicker } = DatePicker;
+  // const { Option } = Select;
+  
   // const { records, filters, loading, pagination } = useSelector(
   //   (state: RootState) => state.reconciliation,
   // );
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  // const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const { translate } = useTheme();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const [goToPageValue, setGoToPageValue] = useState("");
   const [searchText, setSearchText] = useState("");
-  const [dateRange, setDateRange] = useState<
-    [dayjs.Dayjs | null, dayjs.Dayjs | null]
-  >([null, null]);
-  const [travelVendor, setTravelVendor] = useState<string>("all");
-  const [status, setStatus] = useState<string>("all");
+  // const [travelVendor, setTravelVendor] = useState<string>("all");
+  // const [status, setStatus] = useState<string>("all");
   const [filterDropdownVisible, setFilterDropdownVisible] = useState(false);
   const filterDropdownRef = useRef<HTMLDivElement>(null);
+
+// Define a type for filter field
+type FilterField = {
+  key: string;
+  type: string;
+  label: string;
+  options?: { label: string; value: string }[];
+  defaultValue?: string;
+  placeholder?: string;
+};
+
+const filterFields: FilterField[] = [
+  {
+    key: "airline",
+    type: "select",
+    label: "Airline",
+    options: [
+      { label: "All", value: "all" },
+      { label: "IndiGo", value: "indigo" },
+      { label: "Air India", value: "air-india" }
+    ],
+    defaultValue: "all"
+  },
+  {
+    key: "Status",
+    type: "select",
+    label: "Status",
+     options: [
+      { label: "All", value: "All" },
+      { label: "Matched", value: "Matched" },
+      { label: "Pending file", value: "Pending file" },
+      { label: "Invoice missing", value: "Invoice missing" },
+      { label: "Additional in GSTR-2A", value: "Additional in GSTR-2A" },
+      { label: "Invoice received", value: "Invoice received" }
+    ],
+    placeholder: "Enter vendor name",
+    defaultValue: "All"
+  },
+    {
+    key: "Type",
+    type: "select",
+    label: "Type",
+     options: [
+      { label: "All", value: "All" },
+      { label: "Tax invoice", value: "Tax invoice" },
+      { label: "credit note", value: "credit note" },
+    ],
+    placeholder: "Enter vendor name",
+    defaultValue: "All"
+  },
+  {
+    key: "travelDate",
+    type: "dateRange",
+    label: "Travel Date"
+  },
+  {
+    key: "vendorName",
+    type: "select",
+    label: "Vendor Name",
+     options: [
+       { label: "MakemyTrip", value: "MakemyTrip" },
+        { label: "Cleartrip", value: "Cleartrip" },
+        { label: "AtYourPrice", value: "AtYourPrice" },
+        { label: "Goibibo", value: "Goibibo" }
+    ],
+    placeholder: "Enter vendor name",
+    defaultValue: "MakemyTrip"
+  }
+];
 
   // Click outside to close dropdown
   useEffect(() => {
@@ -62,24 +127,8 @@ const Reconciliation: React.FC = () => {
     status: { disabled: false },
   };
 
-  const handleFilterChange = (key: string, value: any) => {
-    dispatch(setFilters({ [key]: value }));
-  };
-
-  const handleClearFilters = () => {
-    dispatch(clearFilters());
-  };
-
-  const handlePageChange = (page: number, size?: number) => {
-    setCurrentPage(page);
-    if (size && size !== pageSize) {
-      setPageSize(size);
-    }
-  };
-
-  const handlePageSizeChange = (current: number, size: number) => {
-    setCurrentPage(1);
-    setPageSize(size);
+  const handleFilterChange = (values: Record<string, any>) => {
+    // dispatch(setFilters(values));
   };
 
   const handleGoToPage = () => {
@@ -90,18 +139,6 @@ const Reconciliation: React.FC = () => {
       setGoToPageValue("");
     }
   };
-
-  const statusOptions = [
-    { label: "All" },
-    { label: "New" },
-    { label: "Matched" },
-    { label: "Pending to file" },
-    { label: "Invoice missing" },
-    { label: "Additional in GSTR-2A" },
-    { label: "Invoice received" },
-    { label: "Pending" },
-  ];
-
   // Status counts for display below form
   const statusCounts = {
     new: 10,
@@ -398,39 +435,15 @@ const Reconciliation: React.FC = () => {
     );
   });
 
-  const handleReset = () => {
-    setDateRange([null, null]);
-    setTravelVendor("all");
-    setStatus("all");
-    setSearchText("");
-  };
-
   // Calculate pagination
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
   const paginatedData = filteredData.slice(startIndex, endIndex);
   const totalPages = Math.ceil(filteredData.length / pageSize);
 
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: (newSelectedRowKeys: React.Key[]) => {
-      setSelectedRowKeys(newSelectedRowKeys);
-    },
-  };
-
-  const handleFilterClick = () => {
-    setFilterDropdownVisible(!filterDropdownVisible);
-  };
-
   return (
     <div className="slide-up cls-reconciliation-container">
       {/* Breadcrumb */}
-      {/* <div style={{ marginBottom: 16, fontSize: '14px', color: '#666' }}>
-        <span>Home</span>
-        <span style={{ margin: '0 8px' }}>»</span>
-        <span>Reconciliation history</span>
-      </div> */}
-
       {/* Page Title */}
       <h2 className="cls-reconciliation-title">
         {translate("reconciliationHistory")}
@@ -445,105 +458,10 @@ const Reconciliation: React.FC = () => {
       </div>
 
       {/* Filters */}
-      <div className="cls-filters-section">
-        <div>
-          <label
-            style={{ display: "block", marginBottom: 4, fontSize: "14px" }}
-          >
-            {translate("airline")}
-          </label>
-          <Select
-            placeholder={translate("all")}
-            style={{ width: 120 }}
-            defaultValue="all"
-          >
-            <Option value="all">{translate("all")}</Option>
-            <Option value="indigo">IndiGo</Option>
-            <Option value="airindia">Air India</Option>
-          </Select>
-        </div>
-
-        <div>
-          <label
-            style={{ display: "block", marginBottom: 4, fontSize: "14px" }}
-          >
-            {translate("status")}
-          </label>
-          <Select placeholder="All" style={{ width: 200 }} defaultValue="all">
-            {statusOptions.map((status, index) => (
-              <Option
-                key={index}
-                value={status.label.toLowerCase().replace(/\s+/g, "-")}
-              >
-                {status.label}
-              </Option>
-            ))}
-          </Select>
-        </div>
-
-        <div>
-          <label
-            style={{ display: "block", marginBottom: 4, fontSize: "14px" }}
-          >
-            {translate("type")}
-          </label>
-          <Select
-            placeholder={translate("all")}
-            style={{ width: 120 }}
-            defaultValue="all"
-          >
-            <Option value="all">{translate("all")}</Option>
-            <Option value="tax-invoice">{translate("taxInvoice")}</Option>
-            <Option value="credit-note">{translate("creditNote")}</Option>
-          </Select>
-        </div>
-
-        <div>
-          <label
-            style={{ display: "block", marginBottom: 4, fontSize: "14px" }}
-          >
-            {translate("startEndDate")}
-          </label>
-          <RangePicker
-            value={dateRange}
-            onChange={(dates) => setDateRange(dates || [null, null])}
-            placeholder={[translate("startDate"), translate("endDate")]}
-            style={{ width: 220 }}
-          />
-        </div>
-
-        <div>
-          <label
-            style={{ display: "block", marginBottom: 4, fontSize: "14px" }}
-          >
-            {translate("travelVendor")}
-          </label>
-          <Select
-            placeholder={translate("all")}
-            style={{ width: 120 }}
-            defaultValue="all"
-          >
-            <Option value="all">{translate("all")}</Option>
-          </Select>
-        </div>
-
-        <Button type="primary" style={{ backgroundColor: "#4f46e5" }}>
-          {translate("submit")}
-        </Button>
-        <Button
-          onClick={handleClearFilters}
-          style={{
-            border: "unset",
-            background: "unset",
-            color: "#734cce",
-            textDecoration: "underline",
-            padding: "0px",
-            boxShadow: "unset",
-          }}
-        >
-          {translate("resetAll")}
-        </Button>
-      </div>
+      <Filter  
+        fields={filterFields}
+        pathname="/reconciliation"
+        onChange={handleFilterChange}/>
 
       {/* Status Count Display */}
       <div className="cls-status-counts">

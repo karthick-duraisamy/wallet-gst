@@ -6,11 +6,9 @@ import dayjs from "dayjs"
 import { useTheme } from "../contexts/ThemeContext";
 import "../styles/CumulativeInvoice.scss";
 import { downloadCSV, downloadXLS } from '../Utils/commonFunctions'
-
+import Filter from "../components/Filters/Filters"; 
 const { Title } = Typography;
 const { TextArea } = Input;
-const { Option } = Select;
-const { RangePicker } = DatePicker;
 
 const CumulativeInvoice: React.FC = () => {
   const [activeTab, setActiveTab] = useState("upload-pnr");
@@ -20,9 +18,6 @@ const CumulativeInvoice: React.FC = () => {
   const [goToPageValue, setGoToPageValue] = useState("");
   const [searchText, setSearchText] = useState("");
   const { translate } = useTheme();
-  const [dateRange, setDateRange] = useState<
-      [dayjs.Dayjs | null, dayjs.Dayjs | null]
-    >([null, null]);
 
   // Form states
   const [isInvoiceExpanded, setIsInvoiceExpanded] = useState(false);
@@ -116,6 +111,75 @@ const CumulativeInvoice: React.FC = () => {
   };
   const [postInvoiceFilter, { data }] = usePostInvoiceFilterMutation();
   const [totalRecords, setTotalRecords] = useState(0);
+
+  // Define a type for filter field
+type FilterField = {
+  key: string;
+  type: string;
+  label: string;
+  options?: { label: string; value: string }[];
+  defaultValue?: string;
+  placeholder?: string;
+};
+
+const filterFields: FilterField[] = [
+  {
+    key: "airline",
+    type: "select",
+    label: "Airline",
+    options: [
+      { label: "All", value: "all" },
+      { label: "IndiGo", value: "indigo" },
+      { label: "Air India", value: "air-india" }
+    ],
+    defaultValue: "all"
+  },
+  {
+    key: "Type",
+    type: "select",
+    label: "Type",
+     options: [
+      { label: "All", value: "All" },
+      { label: "Tax invoice", value: "Tax invoice" },
+      { label: "credit note", value: "credit note" },
+    ],
+    placeholder: "Enter vendor name",
+    defaultValue: "All"
+  },
+  {
+    key: "TravelMode",
+    type: "select",
+    label: "Travel mode",
+      options: [
+        { label: "All", value: "All" },
+        { label: "Flight", value: "Flight" },
+        { label: "train", value: "Train" },
+      ],
+    placeholder: "Enter travel mode",
+    defaultValue: "All"
+  },
+  {
+    key: "PlaceOfSupply",
+    type: "select",
+    label: "Place of supply",
+     options: [
+      { label: "All states", value: "All states" },
+      { label: "Delhi", value: "Delhi" },
+      { label: "Mumbai", value: "Cleartrip" },
+    ],
+    placeholder: "Enter vendor name",
+    defaultValue: "MakemyTrip"
+  },
+  {
+    key: "travelDate",
+    type: "dateRange",
+    label: "Travel Date"
+  },
+];
+const handleFilterChange=()=>{
+  console.log('hiw');
+  
+}
 
   useEffect(() => {
     postInvoiceFilter({ page: currentPage, page_size: pageSize});
@@ -338,25 +402,19 @@ const filteredColumns = allColumns.filter(
                   )}
                 </div>
 
-                <Select
-                  value={invoiceType}
-                  onChange={setInvoiceType}
-                  style={{ width: 120 }}
-                  size="large"
-                >
-                  <Option value="all">{translate("all")}</Option>
-                  <Option value="tax-invoice">{translate("taxInvoice")}</Option>
-                  <Option value="credit-note">{translate("creditNote")}</Option>
-                  <Option value="debit-note">{translate("debitNote")}</Option>
-                </Select>
-              </div>
-              <div className="cls-button">
-                <Button type="primary" onClick={handleSubmit} size="large">
-                  {translate("submit")}
-                </Button>
-                <Button  size="large">
-                  {translate("resetAll")}
-                </Button>
+                <Filter
+                    fields={[
+                      {
+                        ...filterFields.find(f => f.key === "Type")!,
+                        type: "select" as "select", // Explicitly cast type
+                        label: "", // or undefined if your Filter component checks for it
+                        showButtons: true
+
+                      }
+                    ]}
+                    pathname="/cumulative"
+                    onChange={(value) => console.log("Selected:", value)}
+                  />
               </div>
             </div>
           </div>
@@ -564,25 +622,18 @@ const filteredColumns = allColumns.filter(
                     </div>
                   )}
                 </div>
-                <Select
-                  value={invoiceType}
-                  onChange={setInvoiceType}
-                  style={{ width: 120 }}
-                  size="large"
-                >
-                  <Option value="all">All</Option>
-                  <Option value="tax-invoice">Tax Invoice</Option>
-                  <Option value="credit-note">Credit Note</Option>
-                  <Option value="debit-note">Debit Note</Option>
-                </Select>
-              </div>
-              <div style={{ display: "flex", gap: 15 }}>
-                <Button type="primary" onClick={handleSubmit} size="large">
-                  Submit
-                </Button>
-                <Button size="large">
-                  Reset all
-                </Button>
+                <Filter
+                    fields={[
+                      {
+                        ...filterFields.find(f => f.key === "Type")!,
+                        type: "select" as "select", // Explicitly cast type
+                        label: "",
+                        showButtons : true
+
+                      }
+                    ]}
+                    pathname="/cumulative"
+                  />
               </div>
             </div>
           </div>
@@ -619,25 +670,19 @@ const filteredColumns = allColumns.filter(
                     size="large"
                   />
                 </div>
-                <Select
-                  value={invoiceType}
-                  onChange={setInvoiceType}
-                  style={{ width: 120 }}
-                  size="large"
-                >
-                  <Option value="all">All</Option>
-                  <Option value="tax-invoice">Tax Invoice</Option>
-                  <Option value="credit-note">Credit Note</Option>
-                  <Option value="debit-note">Debit Note</Option>
-                </Select>
-              </div>
-              <div className="cls-button">
-                <Button type="primary" onClick={handleSubmit} size="large">
-                  Submit
-                </Button>
-                <Button  size="large">
-                  Reset all
-                </Button>
+                <Filter
+                    fields={[
+                      {
+                        ...filterFields.find(f => f.key === "Type")!,
+                        type: "select" as "select", // Explicitly cast type
+                        label: "", // or undefined if your Filter component checks for it
+                        showButtons : true
+                      }
+                    ]}
+                    pathname="/cumulative"
+                    onChange={(value) => console.log("Selected:", value)}
+
+                  />
               </div>
             </div>
           </div>
@@ -654,135 +699,11 @@ const filteredColumns = allColumns.filter(
               marginBottom: 24,
             }}
           >
-            <div
-              style={{
-                display: "flex",
-                gap: 16,
-                alignItems: "center",
-                marginBottom: 16,
-                flexWrap: "wrap",
-                justifyContent: "space-between",
-              }}
-            >
-              <div className="cls-sprt">
-                <div>
-                  <span
-                    style={{
-                      fontSize: "12px",
-                      color: "#666",
-                      display: "block",
-                      marginBottom: 4,
-                    }}
-                  >
-                    Airlines
-                  </span>
-                  <Select
-                    defaultValue="all"
-                    style={{ width: 120 }}
-                    size="large"
-                  >
-                    <Option value="all">All</Option>
-                    <Option value="spicejet">SpiceJet</Option>
-                    <Option value="indigo">IndiGo</Option>
-                  </Select>
-                </div>
-
-                <div>
-                  <span
-                    style={{
-                      fontSize: "12px",
-                      color: "#666",
-                      display: "block",
-                      marginBottom: 4,
-                    }}
-                  >
-                    Type
-                  </span>
-                  <Select
-                    value={invoiceType}
-                    onChange={setInvoiceType}
-                    style={{ width: 120 }}
-                    size="large"
-                  >
-                    <Option value="all">All</Option>
-                    <Option value="tax-invoice">Tax Invoice</Option>
-                    <Option value="credit-note">Credit Note</Option>
-                  </Select>
-                </div>
-
-                <div>
-                  <span
-                    style={{
-                      fontSize: "12px",
-                      color: "#666",
-                      display: "block",
-                      marginBottom: 4,
-                    }}
-                  >
-                    Travel mode
-                  </span>
-                  <Select
-                    defaultValue="all"
-                    style={{ width: 120 }}
-                    size="large"
-                  >
-                    <Option value="all">All</Option>
-                    <Option value="flight">Flight</Option>
-                    <Option value="train">Train</Option>
-                  </Select>
-                </div>
-
-                <div>
-                  <span
-                    style={{
-                      fontSize: "12px",
-                      color: "#666",
-                      display: "block",
-                      marginBottom: 4,
-                    }}
-                  >
-                    Place of supply
-                  </span>
-                  <Select
-                    defaultValue="all-states"
-                    style={{ width: 120 }}
-                    size="large"
-                  >
-                    <Option value="all-states">All states</Option>
-                    <Option value="delhi">Delhi</Option>
-                    <Option value="mumbai">Mumbai</Option>
-                  </Select>
-                </div>
-
-                <div>
-                   <div>
-          <label
-            style={{ display: "block", marginBottom: 4, fontSize: "14px" }}
-          >
-            {translate("startEndDate")}
-          </label>
-          <RangePicker
-            value={dateRange}
-            onChange={(dates) => setDateRange(dates || [null, null])}
-            placeholder={[translate("startDate"), translate("endDate")]}
-            style={{ width: 220 }}
-          />
-                    </div>
-                   </div>
-               </div>
-
-              <div className="cls-button">
-                <Button type="primary" onClick={handleSubmit} size="large">
-                  Submit
-                </Button>
-                {/* </div> */}
-
-                {/* <div style={{ alignSelf: 'flex-end' }}> */}
-                <Button  size="large">
-                  Reset all
-                </Button>
-              </div>
-            </div>
+         
+          <Filter fields={filterFields}
+                  pathname="/cumulative"
+                  showButtons = {true}
+                  onChange={handleFilterChange}/>
           </div>
         );
 

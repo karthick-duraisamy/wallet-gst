@@ -116,9 +116,8 @@
 }
 
 .cls-new-card-header {
-  padding: 16px 16px 12px;
+  padding: 12px 16px 10px;
   background: #f8f9fa;
-  border-bottom: 1px solid #e9ecef;
 }
 
 .cls-new-card-title {
@@ -141,7 +140,7 @@
 }
 
 .cls-new-card-item {
-  border-radius: 15px;
+  border-radius: 10px;
   padding: 6px 12px;
   display: flex;
   align-items: center;
@@ -177,7 +176,7 @@
 }
 
 .cls-new-item-value {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   color: #212529;
   margin: 0;
@@ -733,9 +732,24 @@
 }
 
 .cls-old-section-value {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 700;
-  line-height: 1;
+  line-height: 1.6;
   color: white;
   margin: 0;
+}
+.cls-price{
+  table{
+    tbody{
+      tr{
+        td:nth-of-type(4){
+          span{
+            width: 100%;
+            display: inline-block;
+            text-align: right;
+          }
+        }
+      }
+    }
+  }
 }
