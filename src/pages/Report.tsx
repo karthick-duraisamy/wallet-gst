@@ -34,6 +34,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeContext";
 import reportData from "../data/reportData.json";
+import '../styles/Report.scss'
 
 const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
