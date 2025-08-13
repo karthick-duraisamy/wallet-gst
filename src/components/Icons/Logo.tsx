@@ -6,7 +6,7 @@ const Logo = ()=>{
             <rect width="151" height="37"/>
             </clipPath>
         </defs>
-        <g id="Artboard_3" data-name="Artboard – 3" clip-path="url(#clip-Artboard_3)">
+        <g id="Artboard_3" data-name="Artboard – 3" clipPath="url(#clip-Artboard_3)">
             <rect width="151" height="37" fill="#fff"/>
             <path id="Subtraction_122" data-name="Subtraction 122" d="M-10351.666-9095.759a.522.522,0,0,1-.521-.523.522.522,0,0,1,.521-.522,14.978,14.978,0,0,0,10.662-4.415,15.305,15.305,0,0,0,1.568-1.838c.2.255.421.529.681.837a16.524,16.524,0,0,1-1.51,1.74A16.026,16.026,0,0,1-10351.666-9095.759Zm0-5.013a11.119,11.119,0,0,1-11.105-11.107,11.119,11.119,0,0,1,11.105-11.107,11.085,11.085,0,0,1,9.315,5.063,13.161,13.161,0,0,0-.466,1.255,10.067,10.067,0,0,0-8.85-5.273,10.072,10.072,0,0,0-10.06,10.063,10.072,10.072,0,0,0,10.06,10.062,10,10,0,0,0,5.646-1.736,10.082,10.082,0,0,0,3.648-4.465c.164.41.354.833.563,1.255a11.2,11.2,0,0,1-4.018,4.33A11.078,11.078,0,0,1-10351.666-9100.771Zm-12.812-19.5a.525.525,0,0,1-.336-.119.526.526,0,0,1-.182-.477l.557-3.9a.524.524,0,0,1,.517-.448.5.5,0,0,1,.076.006.519.519,0,0,1,.345.2.514.514,0,0,1,.1.386l-.286,2a15.98,15.98,0,0,1,5.422-3.979,16.015,16.015,0,0,1,6.6-1.4,16.021,16.021,0,0,1,11.4,4.721c.3.3.58.6.829.894-.229.255-.46.525-.686.806-.28-.331-.577-.654-.883-.96a14.978,14.978,0,0,0-10.662-4.417,14.976,14.976,0,0,0-6.22,1.335,14.956,14.956,0,0,0-5.094,3.779l1.681-.56a.523.523,0,0,1,.168-.028.516.516,0,0,1,.49.358.526.526,0,0,1-.328.661l-3.345,1.113A.525.525,0,0,1-10364.478-9120.271Z" transform="translate(10369.785 9130.76)" fill="#ed9f15" stroke="#ed9f15" stroke-width="1.3"/>
             <g id="Group_46873" data-name="Group 46873" transform="translate(2 11.673)" opacity="0.346">
@@ -61,9 +61,14 @@ const Logo = ()=>{
                 </g>
             </g>
             </g>
-            <path id="Path_53948" data-name="Path 53948" d="M206.13,103.869a.6.6,0,0,0,.6.6h4.972a2.5,2.5,0,0,1-2.423,1.894h-2.339a.692.692,0,0,0-.5,1.173l4.051,4.2a.6.6,0,1,0,.868-.837l-3.213-3.334h1.132a3.707,3.707,0,0,0,3.652-3.1h.781a.6.6,0,1,0,0-1.205h-.781a3.692,3.692,0,0,0-.921-1.894h1.7a.6.6,0,0,0,0-1.205h-6.983a.6.6,0,0,0,0,1.205h2.55a2.5,2.5,0,0,1,2.423,1.894h-4.972A.6.6,0,0,0,206.13,103.869Z" transform="translate(-191.817 -87.264)" fill="#1700ba"/>
-            <text id="GST_" data-name="GST " transform="translate(59 28)" fill="#1700ba" font-size="24" font-family="LEMONMILK-Regular, LEMON MILK" letter-spacing="0.02em"><tspan x="-29.032" y="0">GST</tspan><tspan y="0" font-family="Comfortaa-Bold, Comfortaa" font-weight="700"> </tspan></text>
-            <text id="Claim" transform="translate(117 27)" fill="#1700ba" font-size="24" font-family="Comfortaa" letter-spacing="0.02em"><tspan x="-33.069" y="0">Claim</tspan></text>
+            <path id="Path_53948" data-name="Path 53948" d="M12217.979,9234.153v5.657h-5.656Z" transform="translate(-13707.203 -6723.921) rotate(-11)" fill="#1700ba"/>
+            <text id="GST_" data-name="GST " transform="translate(59 28)" fill="#1700ba" fontSize="24" fontFamily="LEMONMILK-Regular, LEMON MILK" letterSpacing="0.02em">
+                <tspan x="-29.032" y="0">GST</tspan>
+                <tspan y="0" fontFamily="Comfortaa-Bold, Comfortaa" fontWeight="700"> </tspan>
+            </text>
+            <text id="Claim" transform="translate(117 27)" fill="#1700ba" fontSize="24" fontFamily="Comfortaa" letterSpacing="0.02em">
+                <tspan x="-33.069" y="0">Claim</tspan>
+            </text>
             <path id="Path_53952" data-name="Path 53952" d="M12217.979,9234.153v5.657h-5.656Z" transform="translate(-13707.203 -6723.921) rotate(-11)" fill="#1700ba"/>
         </g>
         </svg>

@@ -747,6 +747,33 @@
   color: #999;
   cursor: pointer;
 }
+// File Count Status
+.cls-file-count-status {
+  font-weight: 500;
+  margin-top: 4px;
+  
+  &.cls-normal {
+    color: #52c41a;
+  }
+  
+  &.cls-limit-reached {
+    color: #ff4d4f;
+  }
+}
+
+// Upload Progress Text
+.cls-upload-spinner-text {
+  font-size: 12px;
+  color: #666;
+  margin-left: 8px;
+}
+
+.cls-upload-success-text {
+  font-size: 12px;
+  color: #52c41a;
+  margin-left: 8px;
+}
+
 :where(.css-dev-only-do-not-override-1y53vaa).ant-upload-wrapper .ant-upload-drag {
   border: unset;
   background: unset;

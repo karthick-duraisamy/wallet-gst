@@ -299,52 +299,33 @@ const Report: React.FC = () => {
         <Row gutter={[12, 12]}>
           {fields.map((field) => (
             <Col span={8} key={field.key}>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  padding: "4px 0",
-                  cursor: "pointer",
-                }}
-                onClick={() =>
-                  handleFieldSelection(
-                    categoryKey,
-                    field.key,
-                    !selectedFields[categoryKey].includes(field.key),
-                  )
-                }
-              >
-                <Checkbox
-                  checked={selectedFields[categoryKey].includes(field.key)}
-                  onChange={(e) =>
+                <div
+                  className="cls-field-item"
+                  onClick={() =>
                     handleFieldSelection(
                       categoryKey,
                       field.key,
-                      e.target.checked,
+                      !selectedFields[categoryKey].includes(field.key),
                     )
                   }
-                  style={{
-                    transform: "scale(1.2)",
-                  }}
-                />
-                <Text
-                  style={{
-                    color: selectedFields[categoryKey].includes(field.key)
-                      ? "#1a1a1a"
-                      : isDarkMode
-                        ? "#fff"
-                        : "#1a1a1a",
-                    fontSize: "14px",
-                    fontWeight: selectedFields[categoryKey].includes(field.key)
-                      ? "500"
-                      : "400",
-                    cursor: "pointer",
-                  }}
                 >
-                  {field.label}
-                </Text>
-              </div>
+                  <Checkbox
+                    checked={selectedFields[categoryKey].includes(field.key)}
+                    onChange={(e) =>
+                      handleFieldSelection(
+                        categoryKey,
+                        field.key,
+                        e.target.checked,
+                      )
+                    }
+                    className="cls-field-checkbox"
+                  />
+                  <Text
+                    className={`cls-field-label ${selectedFields[categoryKey].includes(field.key) ? "cls-selected" : ""} ${isDarkMode ? "cls-dark" : ""}`}
+                  >
+                    {field.label}
+                  </Text>
+                </div>
             </Col>
           ))}
         </Row>
@@ -390,7 +371,7 @@ const Report: React.FC = () => {
     switch (currentStep) {
       case 0:
         return (
-          <div style={{ padding: "24px" }}>
+          <div className="cls-step-content">
             {reportData.reportFields[
               reportType as keyof typeof reportData.reportFields
             ] && (
@@ -453,7 +434,7 @@ const Report: React.FC = () => {
         );
 
         return (
-          <div style={{ padding: "24px" }}>
+          <div className="cls-step-content">
             <div style={{ marginBottom: "24px" }}>
               <div
                 style={{
@@ -589,7 +570,7 @@ const Report: React.FC = () => {
         ];
 
         return (
-          <div style={{ padding: "24px" }}>
+          <div className="cls-step-content">
             {/* Selected Fields Section */}
             {hasSelectedFields && (
               <div style={{ marginBottom: "32px" }}>

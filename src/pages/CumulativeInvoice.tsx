@@ -399,7 +399,6 @@ const CumulativeInvoice: React.FC = () => {
                     </div>
                   )}
                 </div>
-
                 <Filter
                   fields={[
                     {
@@ -412,7 +411,7 @@ const CumulativeInvoice: React.FC = () => {
                   onChange={handleFilterChange}
                 />
               </div>
-              <div style={{ display: "flex", gap: 15 }}>
+              <div className="cls-submit-buttons">
                 <Button onClick={handleSubmit} className="cls-submitBtn">
                   Submit
                 </Button>
@@ -426,40 +425,13 @@ const CumulativeInvoice: React.FC = () => {
 
       case "upload-invoice":
         return (
-          <div
-            style={{
-              backgroundColor: "#f8f9fa",
-              border: "1px solid #e9ecef",
-              borderRadius: 6,
-              padding: 16,
-              marginBottom: 24,
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                gap: 16,
-                alignItems: "flex-start",
-                justifyContent: "space-between",
-                marginBottom: 16,
-              }}
-            >
+          <div className="cls-tab-content-wrapper">
+            <div className="cls-tab-content-layout">
               <div className="cls-sprt">
                 <div>
                   <Button
                     onClick={handleInvoiceToggle}
-                    style={{
-                      width: "100%",
-                      height: 40,
-                      textAlign: "left",
-                      border: "none",
-                      background: "#f5f5f5",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      boxShadow: "none",
-                      borderRadius: 6,
-                    }}
+                    className="cls-upload-button"
                   >
                     <span style={{ color: "#4f46e5", fontWeight: 500 }}>
                       {translate("uploadMultipleInvoice")}
@@ -478,83 +450,25 @@ const CumulativeInvoice: React.FC = () => {
                   </Button>
 
                   {/* Count display below button */}
-                  <div
-                    style={{
-                      fontSize: "14px",
-                      color: "#8B949E",
-                      marginTop: 8,
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 6,
-                    }}
-                  >
+                  <div className="cls-count-display">
                     <span>60 Ticket No Submitted</span>
-                    <span
-                      style={{
-                        width: 18,
-                        height: 18,
-                        borderRadius: "50%",
-                        background: "#8B949E",
-                        color: "white",
-                        fontSize: "12px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        cursor: "pointer",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      i
-                    </span>
+                    <span className="cls-info-icon">i</span>
                   </div>
 
                   {/* Expanding content below */}
                   {isInvoiceExpanded && (
-                    <div
-                      style={{
-                        marginTop: 20,
-                        background: "white",
-                        border: "1px solid #e1e5e9",
-                        borderRadius: 8,
-                        padding: 20,
-                        boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-                        position: "absolute",
-                        width: "300px",
-                        zIndex: 1001,
-                      }}
-                    >
+                    <div className="cls-dropdown-content">
                       {/* Close button */}
                       <Button
                         type="text"
                         onClick={() => setIsInvoiceExpanded(false)}
-                        style={{
-                          position: "absolute",
-                          top: 12,
-                          right: 12,
-                          color: "#ff4d4f",
-                          fontSize: "18px",
-                          width: 24,
-                          height: 24,
-                          padding: 0,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          border: "none",
-                          background: "transparent",
-                        }}
+                        className="cls-close-button"
                       >
                         ×
                       </Button>
 
-                      <div style={{ marginBottom: 20, marginTop: 8 }}>
-                        <div
-                          style={{
-                            fontSize: "16px",
-                            fontWeight: 500,
-                            marginBottom: 12,
-                            color: "#24292f",
-                          }}
-                        >
+                      <div className="cls-textarea-section">
+                        <div className="cls-textarea-label">
                           Enter Invoice No
                         </div>
                         <TextArea
@@ -562,63 +476,24 @@ const CumulativeInvoice: React.FC = () => {
                           onChange={(e) => setInvoiceText(e.target.value)}
                           placeholder=""
                           rows={6}
-                          style={{
-                            resize: "none",
-                            borderRadius: 6,
-                            border: "1px solid #d0d7de",
-                            fontSize: "14px",
-                          }}
+                          className="cls-textarea-input"
                         />
                       </div>
 
-                      <div style={{ marginBottom: 20 }}>
-                        <div
-                          style={{
-                            fontSize: "14px",
-                            color: "#656d76",
-                            padding: "12px 16px",
-                            background: "#f6f8fa",
-                            borderRadius: 6,
-                            border: "1px solid #d0d7de",
-                          }}
-                        >
-                          <span style={{ fontWeight: 600, color: "#24292f" }}>
-                            Example :{" "}
-                          </span>
+                      <div className="cls-example-section">
+                        <div className="cls-example-box">
+                          <span className="cls-example-label">Example : </span>
                           123456,123456
                         </div>
                       </div>
 
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "flex-end",
-                          gap: 12,
-                        }}
-                      >
-                        <Button
-                          onClick={() => setIsInvoiceExpanded(false)}
-                          style={{
-                            borderRadius: 6,
-                            height: 36,
-                            paddingLeft: 16,
-                            paddingRight: 16,
-                          }}
-                        >
+                      <div className="cls-action-buttons">
+                        <Button onClick={() => setIsInvoiceExpanded(false)}>
                           Cancel
                         </Button>
                         <Button
                           type="primary"
                           onClick={handleInvoiceSubmit}
-                          style={{
-                            backgroundColor: "#4f46e5",
-                            borderColor: "#4f46e5",
-                            borderRadius: 6,
-                            height: 36,
-                            paddingLeft: 16,
-                            paddingRight: 16,
-                            fontWeight: 500,
-                          }}
                         >
                           Submit
                         </Button>
@@ -638,7 +513,7 @@ const CumulativeInvoice: React.FC = () => {
                   onChange={handleFilterChange}
                 />
               </div>
-              <div style={{ display: "flex", gap: 15 }}>
+              <div className="cls-submit-buttons">
                 <Button onClick={handleSubmit} className="cls-submitBtn">
                   Submit
                 </Button>
@@ -652,32 +527,14 @@ const CumulativeInvoice: React.FC = () => {
 
       case "pnr-ticket":
         return (
-          <div
-            style={{
-              backgroundColor: "#f8f9fa",
-              border: "1px solid #e9ecef",
-              borderRadius: 6,
-              padding: 16,
-              marginBottom: 24,
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                gap: 16,
-                alignItems: "center",
-                marginBottom: 16,
-                justifyContent: "space-between",
-              }}
-            >
+          <div className="cls-tab-content-wrapper">
+            <div className="cls-tab-content-layout">
               <div className="cls-sprt">
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <span style={{ fontSize: "12px", color: "#666" }}>
-                    PNR / Ticket no
-                  </span>
+                <div className="cls-pnr-input-section">
+                  <span className="cls-pnr-label">PNR / Ticket no</span>
                   <Input
                     placeholder="Enter PNR / Ticket no"
-                    style={{ width: 200 }}
+                    className="cls-pnr-input"
                     size="large"
                   />
                 </div>
@@ -693,7 +550,7 @@ const CumulativeInvoice: React.FC = () => {
                   onChange={handleFilterChange}
                 />
               </div>
-              <div style={{ display: "flex", gap: 15 }}>
+              <div className="cls-submit-buttons">
                 <Button onClick={handleSubmit} className="cls-submitBtn">
                   Submit
                 </Button>
@@ -707,16 +564,7 @@ const CumulativeInvoice: React.FC = () => {
 
       case "tax-invoice-range":
         return (
-          <div
-            style={{
-              backgroundColor: "#f8f9fa",
-              border: "1px solid #e9ecef",
-              borderRadius: 6,
-              padding: 16,
-              marginBottom: 24,
-            }}
-          >
-
+          <div className="cls-tab-content-wrapper">
             <Filter
               fields={filterFields}
               pathname="/cumulative"
@@ -819,19 +667,7 @@ const CumulativeInvoice: React.FC = () => {
                       <Button
                         type="text"
                         onClick={() => setFilterDropdownVisible(false)}
-                        style={{
-                          position: "absolute",
-                          top: "15px",
-                          right: "10px",
-                          color: "red",
-                          fontSize: "22px",
-                          padding: 0,
-                          width: "20px",
-                          height: "20px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
+                        className="cls-close-filter-button"
                       >
                         ×
                       </Button>
@@ -879,19 +715,10 @@ const CumulativeInvoice: React.FC = () => {
           </div>
 
           {/* Custom Pagination Footer */}
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginTop: 16,
-              paddingTop: 16,
-              borderTop: "1px solid #f0f0f0",
-            }}
-          >
+          <div className="cls-pagination-footer">
             {/* Left side - Displaying info with page size selector */}
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <span style={{ fontSize: "14px" }}>Displaying</span>
+            <div className="cls-pagination-info">
+              <span className="cls-displaying-text">Displaying</span>
 
               <Select
                 value={pageSize}
@@ -899,7 +726,7 @@ const CumulativeInvoice: React.FC = () => {
                   setPageSize(value);
                   setCurrentPage(1); // Reset to page 1 when size changes
                 }}
-                style={{ width: 60 }}
+                className="cls-page-size-select"
                 size="small"
                 options={[
                   { value: 6, label: "6" },
@@ -910,27 +737,19 @@ const CumulativeInvoice: React.FC = () => {
                 ]}
               />
 
-              <span style={{ fontSize: "14px" }}>
+              <span className="cls-total-records-text">
                 Out of {totalRecords}
               </span>
             </div>
 
 
             {/* Center - Page navigation */}
-            <div className="page" style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <div className="cls-pagination-navigation">
               <Button
                 icon="<"
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage(currentPage - 1)}
-                style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: "50%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  border: "1px solid #d9d9d9",
-                }}
+                className="cls-pagination-prev-button"
               />
 
               {/* Page numbers */}
@@ -952,18 +771,7 @@ const CumulativeInvoice: React.FC = () => {
                     <Button
                       key={i}
                       onClick={() => setCurrentPage(i)}
-                      style={{
-                        width: 32,
-                        height: 32,
-                        borderRadius: "50%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        backgroundColor:
-                          i === currentPage ? "#4f46e5" : "white",
-                        borderColor: i === currentPage ? "#4f46e5" : "#d9d9d9",
-                        color: i === currentPage ? "white" : "#000",
-                      }}
+                      className={`cls-page-number-button ${i === currentPage ? 'cls-active' : ''}`}
                     >
                       {i}
                     </Button>,
@@ -974,7 +782,7 @@ const CumulativeInvoice: React.FC = () => {
                 if (end < totalPages) {
                   if (end < totalPages - 1) {
                     pages.push(
-                      <span key="ellipsis" style={{ margin: "0 8px" }}>
+                      <span key="ellipsis" className="cls-ellipsis">
                         ...
                       </span>,
                     );
@@ -983,19 +791,7 @@ const CumulativeInvoice: React.FC = () => {
                     <Button
                       key={totalPages}
                       onClick={() => setCurrentPage(totalPages)}
-                      style={{
-                        width: 32,
-                        height: 32,
-                        borderRadius: "50%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        backgroundColor:
-                          totalPages === currentPage ? "#4f46e5" : "white",
-                        borderColor:
-                          totalPages === currentPage ? "#4f46e5" : "#d9d9d9",
-                        color: totalPages === currentPage ? "white" : "#000",
-                      }}
+                      className={`cls-page-number-button ${totalPages === currentPage ? 'cls-active' : ''}`}
                     >
                       {totalPages}
                     </Button>,
@@ -1009,23 +805,14 @@ const CumulativeInvoice: React.FC = () => {
                 icon=">"
                 disabled={currentPage === totalPages}
                 onClick={() => setCurrentPage(currentPage + 1)}
-                style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: "50%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  border: "1px solid #d9d9d9",
-                }}
+                className="cls-pagination-next-button"
               />
             </div>
 
             {/* Right side - Go to page */}
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <span style={{ fontSize: "14px" }}>Go to Page</span>
+            <div className="cls-go-to-page">
+              <span className="cls-go-to-page-text">Go to Page</span>
               <Input
-                style={{ width: 60 }}
                 value={goToPageValue}
                 onChange={(e) => {
                   const value = e.target.value;
@@ -1041,14 +828,15 @@ const CumulativeInvoice: React.FC = () => {
                   }
                 }}
                 onPressEnter={handleGoToPage}
+                className="cls-go-to-page-input"
                 placeholder={`1-${totalPages}`}
                 size="small"
               />
 
               <Button
                 type="primary"
-                style={{ backgroundColor: "#4f46e5", borderRadius: "16px" }}
                 onClick={handleGoToPage}
+                className="cls-go-button"
                 size="small"
               >
                 Go

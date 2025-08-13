@@ -431,10 +431,11 @@ const Dashboard: React.FC = () => {
       key: "airline",
       render: (text: string, record: any) => (
         <div className="cls-airline-Logo">
-          <img className="cls-logos"
+          <img
             src={record.airline}
             alt={record.airlineCode}
             title={record.airlineCode}
+            className="cls-airline-logo-img"
           />
           <Text strong>{record.airlineCode}</Text>
         </div>
@@ -446,8 +447,8 @@ const Dashboard: React.FC = () => {
       key: "code",
       render: (text: string, record: any) => (
         <div>
-          <div className="cls-text">{text}</div>
-          <div className="cls-record">{record.bookings}</div>
+          <div className="cls-booking-count">{text}</div>
+          <div className="cls-booking-text">{record.bookings}</div>
         </div>
       ),
     },
@@ -457,8 +458,8 @@ const Dashboard: React.FC = () => {
       key: "cancellations",
       render: (text: string) => (
         <div>
-          <div className="cls-text">{text}</div>
-          <div className="cls-record">1356 tickets</div>
+          <div className="cls-cancellation-count">{text}</div>
+          <div className="cls-cancellation-text">1356 tickets</div>
         </div>
       ),
     },
@@ -467,7 +468,7 @@ const Dashboard: React.FC = () => {
       dataIndex: "amount",
       key: "amount",
       render: (text: string) => (
-        <Text className="cls-claim">
+        <Text className="cls-amount-text">
           {text}
         </Text>
       ),
@@ -613,7 +614,7 @@ const Dashboard: React.FC = () => {
               />
             </div>
           </Col>
-          <Col flex="auto" className="cls-applyBtn">
+          <Col flex="auto" className="cls-apply-button-container">
             <Button type="primary" className="cls-apply-button">
               Apply →
             </Button>
@@ -792,18 +793,15 @@ const Dashboard: React.FC = () => {
         <Col xs={24} lg={12}>
           <Card
             title={
-              <div className="cls-chart">
+              <div className="cls-invoice-status-header">
                 <span>{translate("invoiceStatus")}</span>
-                <div className="cls-toggleBtns">
-                  <div className="cls-toggleBtn">
+                <div className="cls-invoice-status-controls">
+                  <div className="cls-tab-switcher">
                     <Button
                       size="small"
                       type={invoiceTab === "all" ? "primary" : "text"}
                       onClick={() => setInvoiceTab("all")}
-                      style={{
-                        background: invoiceTab === "all" ? "#4c1d95" : "transparent",
-                        color: invoiceTab === "all" ? "white" : "#666",
-                      }}
+                      className={`cls-tab-button ${invoiceTab === "all" ? "cls-tab-active" : ""}`}
                     >
                       All
                     </Button>
@@ -811,17 +809,12 @@ const Dashboard: React.FC = () => {
                       size="small"
                       type={invoiceTab === "airlines" ? "primary" : "text"}
                       onClick={() => setInvoiceTab("airlines")}
-                      className=""
-                      style={{
-                        background:
-                          invoiceTab === "airlines" ? "#4c1d95" : "transparent",
-                        color: invoiceTab === "airlines" ? "white" : "#666",
-                      }}
+                      className={`cls-tab-button ${invoiceTab === "airlines" ? "cls-tab-active" : ""}`}
                     >
                       Airlines
                     </Button>
                   </div>
-                  <div>
+                  <div className="cls-filter-container">
                     <Filter
                       fields={[
                         {
@@ -900,7 +893,7 @@ const Dashboard: React.FC = () => {
           <Card
             title={translate("airlineWiseClaimable")}
             extra={
-              <div className="cls-airlineClaim">
+              <div className="cls-airline-filter-container">
                 <Filter
                   fields={[
                     {
@@ -939,7 +932,7 @@ const Dashboard: React.FC = () => {
           <Card
             title={translate("airlinesPendingFiles")}
             extra={
-              <div className="cls-airlineClaim"> 
+              <div className="cls-pending-files-filter-container">
                 <Filter
                   fields={
                     filterFields

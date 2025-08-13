@@ -810,64 +810,119 @@
 @media (min-width: 1921px) {
   .cls-dashboard-container {
     padding: 40px;
-    padding-top: 0;
     max-width: 2400px;
     margin: 0 auto;
   }
 
-  .cls-overall-summary {
-    margin-bottom: 48px;
-
-    .cls-summary-title {
-      font-size: $FONT-24;
-      margin-bottom: 32px;
-    }
+  .cls-dashboard-title {
+    font-size: 32px;
+    margin-bottom: 40px;
   }
 
-  .cls-new-card,
+  .cls-filter-section {
+    padding: 24px 32px;
+  }
+
+  .cls-overview-grid {
+    gap: 24px;
+  }
+
   .cls-old-overview-card {
-    min-height: 240px;
+    min-height: 140px;
   }
 
-  .cls-new-card-content {
-    padding: 24px;
-    min-height: 180px;
+  .cls-new-card {
+    min-height: 140px;
+  }
+}
+
+// Invoice Status Header Styles
+.cls-invoice-status-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.cls-invoice-status-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.cls-tab-switcher {
+  display: flex;
+  background: #f0f0f0;
+  border-radius: 6px;
+  padding: 4px;
+  gap: 2px;
+}
+
+.cls-tab-button {
+  border-radius: 4px;
+  border: none;
+  min-width: 50px;
+
+  &.cls-tab-active {
+    background: #4c1d95;
+    color: white;
   }
 
-  .cls-new-item-value {
-    font-size: $FONT-20;
+  &:not(.cls-tab-active) {
+    background: transparent;
+    color: #666;
+  }
+}
+
+.cls-filter-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cls-apply-button-container {
+  display: flex;
+  justify-content: end;
+}
+
+// Airline Logo Styles
+.cls-airline-logo-img {
+  width: 26px;
+  height: 26px;
+  margin-right: 8px;
+  border-radius: 6px;
+}
+
+// Booking and Cancellation Styles
+.cls-booking-count,
+.cls-cancellation-count {
+  font-weight: 600;
+}
+
+.cls-booking-text,
+.cls-cancellation-text {
+  font-size: 12px;
+  color: #666;
+}
+
+// Filter Container Styles
+.cls-airline-filter-container,
+.cls-pending-files-filter-container {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+// Amount Text Styles
+.cls-amount-text {
+  font-weight: 600;
+
+  &.cls-negative {
+    color: #ff4d4f;
   }
 
-  .cls-old-section-value {
-    font-size: 28px;
-  }
-
-  .cls-chart-title {
-    font-size: $FONT-20;
-  }
-
-  .cls-invoice-status-card,
-  .cls-airline-card {
-    height: 480px;
-  }
-
-  .cls-pending-files-card {
-    height: 360px;
-  }
-
-  .cls-new-item-icon {
-    width: 24px;
-    height: 24px;
-
-    .anticon {
-      font-size: 14px;
-    }
-  }
-
-  .cls-old-section-icon {
-    .anticon {
-      font-size: 20px;
-    }
+  &.cls-positive {
+    color: #52c41a;
   }
 }
 .cls-logos{

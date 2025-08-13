@@ -1,4 +1,3 @@
-
 @import './common.scss';
 
 
@@ -384,4 +383,109 @@
       text-align: center;
     }
   }
+}
+
+// 1921px+ (Projector/Ultra Wide)
+@media (min-width: 1921px) {
+  .cls-reconciliation-container {
+    padding: 40px;
+    max-width: 2400px;
+    margin: 0 auto;
+  }
+
+  .cls-reconciliation-title {
+    font-size: 32px;
+    margin-bottom: 40px;
+  }
+
+  .cls-type-selection {
+    margin-bottom: 32px;
+  }
+
+  .cls-status-counts {
+    margin-bottom: 32px;
+  }
+}
+
+// Tax Claimable Amount Styles
+.cls-tax-claimable-amount {
+  color: #52c41a;
+  font-weight: 600;
+}
+
+// Pagination Styles
+.cls-pagination-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.cls-pagination-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cls-pagination-text {
+  font-size: 14px;
+}
+
+.cls-page-size-select {
+  width: 60px;
+}
+
+.cls-pagination-center {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cls-pagination-nav-button {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #d9d9d9;
+}
+
+.cls-pagination-number-button {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border-color: #d9d9d9;
+  color: #000;
+
+  &.cls-active {
+    background-color: #4f46e5;
+    border-color: #4f46e5;
+    color: white;
+  }
+}
+
+.cls-pagination-ellipsis {
+  margin: 0 8px;
+}
+
+.cls-go-to-page-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cls-go-to-page-input {
+  width: 60px;
+}
+
+.cls-go-to-page-button {
+  background-color: #4f46e5;
+  border-radius: 16px;
 }

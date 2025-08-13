@@ -250,11 +250,7 @@ const Upload: React.FC = () => {
                   </div>
                   <div>Upload up to 3 files. Each max file size 5MB</div>
                   {files.length > 0 && (
-                    <div style={{ 
-                      color: files.length >= 3 ? '#ff4d4f' : '#52c41a',
-                      fontWeight: 500,
-                      marginTop: '4px'
-                    }}>
+                    <div className={`cls-file-count-status ${files.length >= 3 ? "cls-limit-reached" : "cls-normal"}`}>
                       {files.length}/3 files uploaded
                       {files.length >= 3 && ' - Limit reached'}
                     </div>
@@ -311,7 +307,7 @@ const Upload: React.FC = () => {
                       <div className="cls-progress-section">
                         <div className="cls-upload-spinner">
                           <div className="cls-spinner"></div>
-                          <Text style={{ fontSize: 12, color: "#666", marginLeft: 8 }}>
+                          <Text className="cls-upload-spinner-text">
                             Uploading...
                           </Text>
                         </div>
@@ -327,7 +323,7 @@ const Upload: React.FC = () => {
                     {file.status === "success" && (
                       <div className="cls-success-indicator">
                         <div className="cls-success-tick">✓</div>
-                        <Text style={{ fontSize: 12, color: "#52c41a", marginLeft: 8 }}>
+                        <Text className="cls-upload-success-text">
                           Upload completed
                         </Text>
                       </div>
