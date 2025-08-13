@@ -430,12 +430,12 @@ const Dashboard: React.FC = () => {
       dataIndex: "airline",
       key: "airline",
       render: (text: string, record: any) => (
-        <div className="cls-airline-Logo">
+        <div className="cls-airline-logo">
           <img
             src={record.airline}
             alt={record.airlineCode}
             title={record.airlineCode}
-            style={{ width: 26, height: 26, marginRight: 8, borderRadius: 6, }}
+            className="cls-airline-img"
           />
           <Text strong>{record.airlineCode}</Text>
         </div>
@@ -446,9 +446,9 @@ const Dashboard: React.FC = () => {
       dataIndex: "code",
       key: "code",
       render: (text: string, record: any) => (
-        <div>
-          <div style={{ fontWeight: 600 }}>{text}</div>
-          <div style={{ fontSize: 12, color: "#666" }}>{record.bookings}</div>
+        <div className="cls-table-cell">
+          <div className="cls-cell-value">{text}</div>
+          <div className="cls-cell-subtitle">{record.bookings}</div>
         </div>
       ),
     },
@@ -457,9 +457,9 @@ const Dashboard: React.FC = () => {
       dataIndex: "cancellations",
       key: "cancellations",
       render: (text: string) => (
-        <div>
-          <div style={{ fontWeight: 600 }}>{text}</div>
-          <div style={{ fontSize: 12, color: "#666" }}>1356 tickets</div>
+        <div className="cls-table-cell">
+          <div className="cls-cell-value">{text}</div>
+          <div className="cls-cell-subtitle">1356 tickets</div>
         </div>
       ),
     },
@@ -468,12 +468,7 @@ const Dashboard: React.FC = () => {
       dataIndex: "amount",
       key: "amount",
       render: (text: string) => (
-        <Text
-          style={{
-            fontWeight: 600,
-            color: text.includes("-") ? "#ff4d4f" : "#52c41a",
-          }}
-        >
+        <Text className={`cls-amount ${text.includes("-") ? "cls-negative" : "cls-positive"}`}>
           {text}
         </Text>
       ),
@@ -520,6 +515,63 @@ const Dashboard: React.FC = () => {
     defaultValue?: string;
     placeholder?: string;
   };
+  // Function to get icons for card items
+  const getCardIcon = (label: string) => {
+    const iconStyle = { fontSize: '16px' };
+    
+    switch (label.toLowerCase()) {
+      case 'bookings':
+        return (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM19 19H5V8H19V19ZM7 10V12H17V10H7Z"/>
+          </svg>
+        );
+      case 'cancellations':
+        return (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z"/>
+          </svg>
+        );
+      case 'available':
+        return (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z"/>
+          </svg>
+        );
+      case 'gst filed':
+      case 'gst - filed':
+        return (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M14 2H6C4.9 2 4.01 2.9 4.01 4L4 20C4 21.1 4.89 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2ZM18 20H6V4H13V9H18V20Z"/>
+          </svg>
+        );
+      case 'pending file':
+        return (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12S6.48 22 12 22S22 17.52 22 12S17.52 2 12 2ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z"/>
+          </svg>
+        );
+      case 'airlines':
+        return (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M21 16V14L13 9V3.5C13 2.67 12.33 2 11.5 2S10 2.67 10 3.5V9L2 14V16L10 13.5V19L8 20.5V22L11.5 21L15 22V20.5L13 19V13.5L21 16Z"/>
+          </svg>
+        );
+      case 'all':
+        return (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 13H5V18H10V20H3V13ZM3 6H21V8H3V6ZM21 13V20H19V18H14V16H19V13H21ZM15 9H17V11H22V13H17V15H15V13H10V11H15V9Z"/>
+          </svg>
+        );
+      default:
+        return (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2L2 7L12 12L22 7L12 2ZM2 17L12 22L22 17L12 12L2 17Z"/>
+          </svg>
+        );
+    }
+  };
+
   const filterFields: FilterField[] = [
     {
       key: "Time period",
@@ -671,24 +723,20 @@ const Dashboard: React.FC = () => {
                       {visibleSections.map((section, sectionIndex) => (
                         <div
                           key={sectionIndex}
-                          className="cls-new-card-item"
-                          style={{
-                            backgroundColor: `rgba(
-                                ${parseInt(section.backgroundColor.slice(1, 3), 16)},
-                                ${parseInt(section.backgroundColor.slice(3, 5), 16)},
-                                ${parseInt(section.backgroundColor.slice(5, 7), 16)},
-                                0.08
-                              )`, // Light, soft background for all variants
-                            color: section.backgroundColor, // Keep text color from original
-                          }}
+                          className={`cls-new-card-item cls-${item.class.replace('cls-', '')}`}
                         >
                           <div className="cls-new-item-content">
-                            <Text className="cls-new-item-label">
-                              {section.label}
-                            </Text>
-                            <Text className="cls-new-item-value">
-                              {section.value}
-                            </Text>
+                            <div className="cls-item-icon">
+                              {getCardIcon(section.label)}
+                            </div>
+                            <div className="cls-item-text">
+                              <Text className="cls-new-item-label">
+                                {section.label}
+                              </Text>
+                              <Text className="cls-new-item-value">
+                                {section.value}
+                              </Text>
+                            </div>
                           </div>
                         </div>
                       ))}
@@ -798,36 +846,15 @@ const Dashboard: React.FC = () => {
         <Col xs={24} lg={12}>
           <Card
             title={
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
+              <div className="cls-chart-header">
                 <span>{translate("invoiceStatus")}</span>
-                <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      background: "#f0f0f0",
-                      borderRadius: "6px",
-                      padding: "4px",
-                      gap: "2px",
-                    }}
-                  >
+                <div className="cls-chart-controls">
+                  <div className="cls-tab-toggle">
                     <Button
                       size="small"
                       type={invoiceTab === "all" ? "primary" : "text"}
                       onClick={() => setInvoiceTab("all")}
-                      style={{
-                        borderRadius: "4px",
-                        border: "none",
-                        background:
-                          invoiceTab === "all" ? "#4c1d95" : "transparent",
-                        color: invoiceTab === "all" ? "white" : "#666",
-                        minWidth: "50px",
-                      }}
+                      className={`cls-tab-btn ${invoiceTab === "all" ? "cls-active" : ""}`}
                     >
                       All
                     </Button>
@@ -835,21 +862,12 @@ const Dashboard: React.FC = () => {
                       size="small"
                       type={invoiceTab === "airlines" ? "primary" : "text"}
                       onClick={() => setInvoiceTab("airlines")}
-                      style={{
-                        borderRadius: "4px",
-                        border: "none",
-                        background:
-                          invoiceTab === "airlines" ? "#4c1d95" : "transparent",
-                        color: invoiceTab === "airlines" ? "white" : "#666",
-                        minWidth: "60px",
-                      }}
+                      className={`cls-tab-btn ${invoiceTab === "airlines" ? "cls-active" : ""}`}
                     >
                       Airlines
                     </Button>
                   </div>
-                  <div
-                    style={{ display: "flex", alignItems: "center", gap: 8 }}
-                  >
+                  <div className="cls-filter-controls">
                     <Filter
                       fields={[
                         {
@@ -862,7 +880,6 @@ const Dashboard: React.FC = () => {
                       onChange={handleFilterChange}
                     />
                   </div>
-
                 </div>
               </div>
             }
@@ -928,7 +945,7 @@ const Dashboard: React.FC = () => {
           <Card
             title={translate("airlineWiseClaimable")}
             extra={
-              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+              <div className="cls-airline-filter">
                 <Filter
                   fields={[
                     {
@@ -967,7 +984,7 @@ const Dashboard: React.FC = () => {
           <Card
             title={translate("airlinesPendingFiles")}
             extra={
-              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+              <div className="cls-pending-files-filter">
                 <Filter
                   fields={
                     filterFields
@@ -981,7 +998,6 @@ const Dashboard: React.FC = () => {
                   pathname="/dashboard"
                   onChange={handlePendingFilesFilterChange}
                 />
-
               </div>
             }
             className="cls-invoice-status-card"
