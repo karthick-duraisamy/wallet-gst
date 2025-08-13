@@ -340,10 +340,7 @@ const CumulativeInvoice: React.FC = () => {
                   </Button>
 
                   {/* Count display below button */}
-                  <div
-                    className="cls-count-display"
-                    style={{ marginTop: "8px" }}
-                  >
+                  <div className="cls-count-display">
                     <span>60 Ticket No Submitted</span>
                     <span className="cls-info-icon">i</span>
                   </div>

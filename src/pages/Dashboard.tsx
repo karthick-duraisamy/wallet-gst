@@ -431,11 +431,10 @@ const Dashboard: React.FC = () => {
       key: "airline",
       render: (text: string, record: any) => (
         <div className="cls-airline-Logo">
-          <img
+          <img className="cls-logos"
             src={record.airline}
             alt={record.airlineCode}
             title={record.airlineCode}
-            style={{ width: 26, height: 26, marginRight: 8, borderRadius: 6, }}
           />
           <Text strong>{record.airlineCode}</Text>
         </div>
@@ -447,8 +446,8 @@ const Dashboard: React.FC = () => {
       key: "code",
       render: (text: string, record: any) => (
         <div>
-          <div style={{ fontWeight: 600 }}>{text}</div>
-          <div style={{ fontSize: 12, color: "#666" }}>{record.bookings}</div>
+          <div className="cls-text">{text}</div>
+          <div className="cls-record">{record.bookings}</div>
         </div>
       ),
     },
@@ -458,8 +457,8 @@ const Dashboard: React.FC = () => {
       key: "cancellations",
       render: (text: string) => (
         <div>
-          <div style={{ fontWeight: 600 }}>{text}</div>
-          <div style={{ fontSize: 12, color: "#666" }}>1356 tickets</div>
+          <div className="cls-text">{text}</div>
+          <div className="cls-record">1356 tickets</div>
         </div>
       ),
     },
@@ -468,12 +467,7 @@ const Dashboard: React.FC = () => {
       dataIndex: "amount",
       key: "amount",
       render: (text: string) => (
-        <Text
-          style={{
-            fontWeight: 600,
-            color: text.includes("-") ? "#ff4d4f" : "#52c41a",
-          }}
-        >
+        <Text className="cls-claim">
           {text}
         </Text>
       ),
@@ -619,7 +613,7 @@ const Dashboard: React.FC = () => {
               />
             </div>
           </Col>
-          <Col flex="auto" style={{ display: "flex", justifyContent: "end" }}>
+          <Col flex="auto" className="cls-applyBtn">
             <Button type="primary" className="cls-apply-button">
               Apply →
             </Button>
@@ -798,35 +792,17 @@ const Dashboard: React.FC = () => {
         <Col xs={24} lg={12}>
           <Card
             title={
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
+              <div className="cls-chart">
                 <span>{translate("invoiceStatus")}</span>
-                <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      background: "#f0f0f0",
-                      borderRadius: "6px",
-                      padding: "4px",
-                      gap: "2px",
-                    }}
-                  >
+                <div className="cls-toggleBtns">
+                  <div className="cls-toggleBtn">
                     <Button
                       size="small"
                       type={invoiceTab === "all" ? "primary" : "text"}
                       onClick={() => setInvoiceTab("all")}
                       style={{
-                        borderRadius: "4px",
-                        border: "none",
-                        background:
-                          invoiceTab === "all" ? "#4c1d95" : "transparent",
+                        background: invoiceTab === "all" ? "#4c1d95" : "transparent",
                         color: invoiceTab === "all" ? "white" : "#666",
-                        minWidth: "50px",
                       }}
                     >
                       All
@@ -835,21 +811,17 @@ const Dashboard: React.FC = () => {
                       size="small"
                       type={invoiceTab === "airlines" ? "primary" : "text"}
                       onClick={() => setInvoiceTab("airlines")}
+                      className=""
                       style={{
-                        borderRadius: "4px",
-                        border: "none",
                         background:
                           invoiceTab === "airlines" ? "#4c1d95" : "transparent",
                         color: invoiceTab === "airlines" ? "white" : "#666",
-                        minWidth: "60px",
                       }}
                     >
                       Airlines
                     </Button>
                   </div>
-                  <div
-                    style={{ display: "flex", alignItems: "center", gap: 8 }}
-                  >
+                  <div>
                     <Filter
                       fields={[
                         {
@@ -928,7 +900,7 @@ const Dashboard: React.FC = () => {
           <Card
             title={translate("airlineWiseClaimable")}
             extra={
-              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+              <div className="cls-airlineClaim">
                 <Filter
                   fields={[
                     {
@@ -967,7 +939,7 @@ const Dashboard: React.FC = () => {
           <Card
             title={translate("airlinesPendingFiles")}
             extra={
-              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+              <div className="cls-airlineClaim"> 
                 <Filter
                   fields={
                     filterFields
