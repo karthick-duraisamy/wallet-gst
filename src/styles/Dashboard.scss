@@ -1,4 +1,3 @@
-
 @import './common.scss';
 
 .cls-dashboard-container {
@@ -8,6 +7,7 @@
 
   // Modern chart styles
   .recharts-wrapper {
+
     .recharts-cartesian-grid-horizontal line,
     .recharts-cartesian-grid-vertical line {
       stroke-opacity: 0.3;
@@ -86,9 +86,9 @@
       }
     }
   }
-  
+
   .cls-filter-con {
-    display: flex; 
+    display: flex;
     width: 100%;
   }
 }
@@ -127,7 +127,7 @@
 .cls-travel-history {
   background: #edf5ff;
   border: 1px solid #cbe2ff;
-  
+
   .cls-new-card-item {
     background: #fafafa;
   }
@@ -194,14 +194,37 @@
   }
 
   // Dynamic background colors based on data-color attribute
-  &[data-color="#6366F1"] { background: rgba(99, 102, 241, 0.08); }
-  &[data-color="#4F46E5"] { background: rgba(79, 70, 229, 0.08); }
-  &[data-color="#06B6D4"] { background: rgba(6, 182, 212, 0.08); }
-  &[data-color="#0891B2"] { background: rgba(8, 145, 178, 0.08); }
-  &[data-color="#8B5CF6"] { background: rgba(139, 92, 246, 0.08); }
-  &[data-color="#7C3AED"] { background: rgba(124, 58, 237, 0.08); }
-  &[data-color="#F59E0B"] { background: rgba(245, 158, 11, 0.08); }
-  &[data-color="#D97706"] { background: rgba(217, 119, 6, 0.08); }
+  &[data-color="#6366F1"] {
+    background: rgba(99, 102, 241, 0.08);
+  }
+
+  &[data-color="#4F46E5"] {
+    background: rgba(79, 70, 229, 0.08);
+  }
+
+  &[data-color="#06B6D4"] {
+    background: rgba(6, 182, 212, 0.08);
+  }
+
+  &[data-color="#0891B2"] {
+    background: rgba(8, 145, 178, 0.08);
+  }
+
+  &[data-color="#8B5CF6"] {
+    background: rgba(139, 92, 246, 0.08);
+  }
+
+  &[data-color="#7C3AED"] {
+    background: rgba(124, 58, 237, 0.08);
+  }
+
+  &[data-color="#F59E0B"] {
+    background: rgba(245, 158, 11, 0.08);
+  }
+
+  &[data-color="#D97706"] {
+    background: rgba(217, 119, 6, 0.08);
+  }
 }
 
 .cls-new-item-content {
@@ -225,7 +248,7 @@
   justify-content: center;
   border-radius: 4px;
   background: rgba(0, 0, 0, 0.05);
-  
+
   .anticon {
     font-size: 12px;
     color: #666;
@@ -342,14 +365,37 @@
   }
 
   // Dynamic background colors for old design
-  &[data-color="#6366F1"] { background-color: #6366F1; }
-  &[data-color="#4F46E5"] { background-color: #4F46E5; }
-  &[data-color="#06B6D4"] { background-color: #06B6D4; }
-  &[data-color="#0891B2"] { background-color: #0891B2; }
-  &[data-color="#8B5CF6"] { background-color: #8B5CF6; }
-  &[data-color="#7C3AED"] { background-color: #7C3AED; }
-  &[data-color="#F59E0B"] { background-color: #F59E0B; }
-  &[data-color="#D97706"] { background-color: #D97706; }
+  &[data-color="#6366F1"] {
+    background-color: #6366F1;
+  }
+
+  &[data-color="#4F46E5"] {
+    background-color: #4F46E5;
+  }
+
+  &[data-color="#06B6D4"] {
+    background-color: #06B6D4;
+  }
+
+  &[data-color="#0891B2"] {
+    background-color: #0891B2;
+  }
+
+  &[data-color="#8B5CF6"] {
+    background-color: #8B5CF6;
+  }
+
+  &[data-color="#7C3AED"] {
+    background-color: #7C3AED;
+  }
+
+  &[data-color="#F59E0B"] {
+    background-color: #F59E0B;
+  }
+
+  &[data-color="#D97706"] {
+    background-color: #D97706;
+  }
 }
 
 .cls-old-section-content {
@@ -362,7 +408,7 @@
 
 .cls-old-section-icon {
   margin-bottom: 4px;
-  
+
   .anticon {
     font-size: 16px;
     color: white;
@@ -426,12 +472,12 @@
   border-radius: 4px !important;
   border: none !important;
   min-width: 50px;
-  
+
   &:not(.active) {
     background: transparent !important;
     color: #666 !important;
   }
-  
+
   &.active {
     background: #4c1d95 !important;
     color: white !important;
@@ -480,7 +526,7 @@
 // Table styles
 .cls-airline-Logo {
   display: flex;
-  align-items: center; 
+  align-items: center;
   gap: 8px;
 }
 
@@ -491,12 +537,16 @@
   border-radius: 6px;
 }
 
-.cls-booking-column, .cls-cancellation-column {
-  .cls-booking-main, .cls-cancellation-main {
+.cls-booking-column,
+.cls-cancellation-column {
+
+  .cls-booking-main,
+  .cls-cancellation-main {
     font-weight: 600;
   }
-  
-  .cls-booking-sub, .cls-cancellation-sub {
+
+  .cls-booking-sub,
+  .cls-cancellation-sub {
     font-size: 12px;
     color: #666;
   }
@@ -504,11 +554,11 @@
 
 .cls-claimable-amount {
   font-weight: 600;
-  
+
   &.cls-negative {
     color: #ff4d4f;
   }
-  
+
   &.cls-positive {
     color: #52c41a;
   }
@@ -542,91 +592,91 @@
     padding: 12px;
     padding-top: 0;
   }
-  
+
   .cls-overall-summary {
     margin-bottom: 24px;
-    
+
     .cls-summary-title {
       font-size: $FONT-16;
       margin-bottom: 16px;
     }
   }
-  
+
   .cls-overview-grid {
     .ant-col {
       margin-bottom: 16px;
     }
   }
-  
+
   .cls-new-card,
   .cls-old-overview-card {
     min-height: 160px;
   }
-  
+
   .cls-new-card-content {
     padding: 12px;
     min-height: 120px;
   }
-  
+
   .cls-new-item-label,
   .cls-old-section-label {
     font-size: 11px;
   }
-  
+
   .cls-new-item-value {
     font-size: $FONT-14;
   }
-  
+
   .cls-old-section-value {
     font-size: $FONT-18;
   }
-  
+
   .cls-filter-section {
     .cls-filter-con {
       flex-direction: column;
       gap: 12px;
     }
-    
+
     .cls-apply-button-col {
       justify-content: center;
     }
   }
-  
+
   .cls-invoice-status-header {
     flex-direction: column;
     gap: 12px;
     align-items: flex-start;
   }
-  
+
   .cls-invoice-status-controls {
     flex-direction: column;
     gap: 12px;
     width: 100%;
   }
-  
+
   .cls-chart-title {
     font-size: $FONT-14;
   }
-  
+
   .cls-invoice-status-card,
   .cls-airline-card {
     height: 320px;
   }
-  
+
   .cls-pending-files-card {
     height: 280px;
   }
-  
+
   .cls-airline-image {
     width: 20px;
     height: 20px;
   }
-  
+
   .cls-booking-main,
   .cls-cancellation-main {
     font-size: $FONT-12;
   }
-  
+
   .cls-booking-sub,
   .cls-cancellation-sub {
     font-size: 10px;
@@ -639,40 +689,40 @@
     padding: 16px;
     padding-top: 0;
   }
-  
+
   .cls-new-card,
   .cls-old-overview-card {
     min-height: 180px;
   }
-  
+
   .cls-new-card-content {
     padding: 14px;
     min-height: 130px;
   }
-  
+
   .cls-filter-section {
     .cls-filter-con {
       flex-wrap: wrap;
       gap: 8px;
     }
   }
-  
+
   .cls-invoice-status-header {
     flex-direction: row;
     flex-wrap: wrap;
     gap: 12px;
   }
-  
+
   .cls-invoice-status-controls {
     flex-wrap: wrap;
     gap: 8px;
   }
-  
+
   .cls-invoice-status-card,
   .cls-airline-card {
     height: 350px;
   }
-  
+
   .cls-pending-files-card {
     height: 290px;
   }
@@ -684,7 +734,7 @@
     padding: 20px;
     padding-top: 0;
   }
-  
+
   .cls-overview-grid {
     .ant-col {
       flex: 0 0 50%;
@@ -692,12 +742,12 @@
       margin-bottom: 16px;
     }
   }
-  
+
   .cls-new-card,
   .cls-old-overview-card {
     min-height: 190px;
   }
-  
+
   .cls-invoice-status-card,
   .cls-airline-card {
     height: 380px;
@@ -720,12 +770,7 @@
     padding: 28px;
     padding-top: 0;
   }
-  
-  .cls-new-card,
-  .cls-old-overview-card {
-    min-height: 210px;
-  }
-  
+
   .cls-new-card-content {
     min-height: 150px;
   }
@@ -737,25 +782,25 @@
     padding: 32px;
     padding-top: 0;
   }
-  
+
   .cls-new-card,
   .cls-old-overview-card {
     min-height: 220px;
   }
-  
+
   .cls-new-card-content {
     min-height: 160px;
   }
-  
+
   .cls-chart-title {
     font-size: $FONT-18;
   }
-  
+
   .cls-invoice-status-card,
   .cls-airline-card {
     height: 420px;
   }
-  
+
   .cls-pending-files-card {
     height: 320px;
   }
@@ -769,56 +814,56 @@
     max-width: 2400px;
     margin: 0 auto;
   }
-  
+
   .cls-overall-summary {
     margin-bottom: 48px;
-    
+
     .cls-summary-title {
       font-size: $FONT-24;
       margin-bottom: 32px;
     }
   }
-  
+
   .cls-new-card,
   .cls-old-overview-card {
     min-height: 240px;
   }
-  
+
   .cls-new-card-content {
     padding: 24px;
     min-height: 180px;
   }
-  
+
   .cls-new-item-value {
     font-size: $FONT-20;
   }
-  
+
   .cls-old-section-value {
     font-size: 28px;
   }
-  
+
   .cls-chart-title {
     font-size: $FONT-20;
   }
-  
+
   .cls-invoice-status-card,
   .cls-airline-card {
     height: 480px;
   }
-  
+
   .cls-pending-files-card {
     height: 360px;
   }
-  
+
   .cls-new-item-icon {
     width: 24px;
     height: 24px;
-    
+
     .anticon {
       font-size: 14px;
     }
   }
-  
+
   .cls-old-section-icon {
     .anticon {
       font-size: 20px;
