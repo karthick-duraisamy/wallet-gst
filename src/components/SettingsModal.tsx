@@ -53,43 +53,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
             {translate('theme')}
           </Title>
 
-          {/* Dashboard Card Design Toggle */}
-            <div style={{ marginBottom: '24px' }}>
-              <Text style={{ fontSize: '14px', fontWeight: 500, marginBottom: '12px' }}>Dashboard Card Design</Text>
-              <div style={{ display: 'flex', gap: '12px' }}>
-                <Button 
-                  type={(() => {
-                    const saved = localStorage.getItem('dashboardCardDesign');
-                    return (saved === null || saved !== 'new') ? 'primary' : 'default';
-                  })()}
-                  onClick={() => {
-                    localStorage.setItem('dashboardCardDesign', 'old');
-                    // Trigger a storage event manually for same-tab updates
-                    window.dispatchEvent(new StorageEvent('storage', {
-                      key: 'dashboardCardDesign',
-                      newValue: 'old'
-                    }));
-                  }}
-                  style={{ flex: 1 }}
-                >
-                  Old Design
-                </Button>
-                <Button 
-                  type={localStorage.getItem('dashboardCardDesign') === 'new' ? 'primary' : 'default'}
-                  onClick={() => {
-                    localStorage.setItem('dashboardCardDesign', 'new');
-                    // Trigger a storage event manually for same-tab updates
-                    window.dispatchEvent(new StorageEvent('storage', {
-                      key: 'dashboardCardDesign',
-                      newValue: 'new'
-                    }));
-                  }}
-                  style={{ flex: 1 }}
-                >
-                  New Design
-                </Button>
-              </div>
-            </div>
+          
 
           {/* Theme Toggle Cards */}
           <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>

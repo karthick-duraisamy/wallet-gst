@@ -6,7 +6,6 @@
 
   // Modern chart styles
   .recharts-wrapper {
-
     .recharts-cartesian-grid-horizontal line,
     .recharts-cartesian-grid-vertical line {
       stroke-opacity: 0.3;
@@ -61,6 +60,11 @@
     }
   }
 
+  .cls-apply-button-col {
+    display: flex;
+    justify-content: flex-end;
+  }
+
   .cls-apply-button {
     background-color: $PRIMARYCOLOR;
     border-color: $PRIMARYCOLOR;
@@ -80,9 +84,10 @@
       }
     }
   }
-  .cls-filter-con{
+  
+  .cls-filter-con {
     display: flex; 
-    width: 100% 
+    width: 100%;
   }
 }
 
@@ -101,17 +106,6 @@
   align-items: stretch;
 }
 
-.cls-overview-card {
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  background: $WHITE;
-  display: flex;
-  flex-direction: column;
-  height: 140px;
-  border: 1px solid #f0f0f0;
-}
-
 // New card styles to match reference image exactly
 .cls-new-card {
   background: white;
@@ -127,29 +121,33 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
   }
 }
-.cls-travel-history{
+
+.cls-travel-history {
   background: #edf5ff;
   border: 1px solid #cbe2ff;
-  .cls-new-card-item{
+  
+  .cls-new-card-item {
     background: #fafafa;
   }
 }
-.cls-airline-invoice{
+
+.cls-airline-invoice {
   background: #eefbf4;
   border: 1px solid #d4fae7;
 }
-.cls-invoices{
+
+.cls-invoices {
   background: #f4eaff;
   border: 1px solid #e8d4fd;
 }
-.cls-netClaim{
+
+.cls-netClaim {
   background: #fffdf5;
   border: 1px solid #fff7da;
 }
 
 .cls-new-card-header {
   padding: 12px 16px 10px;
-  // background: #f8f9fa;
 }
 
 .cls-new-card-title {
@@ -164,7 +162,7 @@
 
 .cls-new-card-content {
   padding: 16px;
-  padding-top:0px;
+  padding-top: 0px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -192,6 +190,16 @@
     transform: none;
     box-shadow: none;
   }
+
+  // Dynamic background colors based on data-color attribute
+  &[data-color="#6366F1"] { background: rgba(99, 102, 241, 0.08); }
+  &[data-color="#4F46E5"] { background: rgba(79, 70, 229, 0.08); }
+  &[data-color="#06B6D4"] { background: rgba(6, 182, 212, 0.08); }
+  &[data-color="#0891B2"] { background: rgba(8, 145, 178, 0.08); }
+  &[data-color="#8B5CF6"] { background: rgba(139, 92, 246, 0.08); }
+  &[data-color="#7C3AED"] { background: rgba(124, 58, 237, 0.08); }
+  &[data-color="#F59E0B"] { background: rgba(245, 158, 11, 0.08); }
+  &[data-color="#D97706"] { background: rgba(217, 119, 6, 0.08); }
 }
 
 .cls-new-item-content {
@@ -199,6 +207,27 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
+}
+
+.cls-new-item-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cls-new-item-icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.05);
+  
+  .anticon {
+    font-size: 12px;
+    color: #666;
+  }
 }
 
 .cls-new-item-label {
@@ -256,441 +285,6 @@
   }
 }
 
-.cls-card-header {
-  background: white;
-  padding: 12px 16px;
-  border-bottom: 1px solid #f0f0f0;
-  flex: 0 0 auto;
-}
-
-.cls-card-title {
-  font-size: $FONT-14;
-  font-weight: 600;
-  color: $TEXT-COLOR;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.cls-info-icon {
-  font-size: $FONT-12;
-  color: #999;
-}
-
-.cls-card-sections {
-  display: flex;
-  flex: 1;
-  height: 80px;
-}
-
-.cls-carousel-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  position: relative;
-  overflow: hidden;
-}
-
-.cls-sections-display {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.cls-carousel-section {
-  flex: 1;
-  height: 100%;
-  border-radius: 0 0 8px 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  transform: translateX(0);
-}
-
-.cls-carousel-arrow {
-  position: absolute;
-  top: 8px;
-  background: rgba(255, 255, 255, 0.95);
-  border: none;
-  border-radius: 50%;
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 10;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  color: #64748b;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-
-  &:hover {
-    background: white;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    color: $PRIMARYCOLOR;
-    transform: scale(1.1);
-  }
-
-  &:active {
-    transform: scale(0.95);
-  }
-
-  &.cls-carousel-arrow-left {
-    left: 8px;
-  }
-
-  &.cls-carousel-arrow-right {
-    right: 8px;
-  }
-
-  svg {
-    transition: transform 0.2s ease;
-  }
-
-  &:hover svg {
-    transform: translateX(1px);
-  }
-}
-
-.cls-card-section {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 12px;
-  position: relative;
-  border-radius: 0 0 8px 8px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-  &:first-child {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 8px;
-  }
-
-  &:last-child {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 8px;
-  }
-}
-
-.cls-section-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 4px;
-}
-
-.cls-section-label {
-  font-size: $FONT-12;
-  font-weight: 500;
-  line-height: 14px;
-  text-align: center;
-  opacity: 0.9;
-}
-
-.cls-section-value {
-  font-size: $FONT-20;
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-.cls-section-divider {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 1px;
-  height: 60%;
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.cls-light-variant .cls-section-divider {
-  background: rgba(0, 0, 0, 0.1);
-}
-
-.cls-chart-section {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  margin-bottom: 32px;
-
-  .cls-chart-card {
-    border-radius: 12px;
-    border: none;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    height: 400px;
-
-    .cls-chart-filters {
-      display: flex;
-      gap: 16px;
-      margin-bottom: 16px;
-
-      .ant-btn {
-        &.ant-btn-primary {
-          font-size: $FONT-12;
-        }
-      }
-
-      .ant-select {
-        &.ant-select-sm {
-          font-size: $FONT-12;
-        }
-      }
-    }
-
-    .cls-chart-extra {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-
-      .anticon {
-        cursor: pointer;
-      }
-    }
-  }
-
-  .cls-airline-table {
-    .ant-table {
-      font-size: $FONT-12;
-    }
-  }
-}
-
-.cls-full-width-chart {
-  grid-column: 1 / -1;
-
-  .cls-full-chart-card {
-    border-radius: 12px;
-    border: none;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    height: 300px;
-
-    .cls-full-chart-extra {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-
-      .ant-select-sm {
-        font-size: $FONT-12;
-      }
-    }
-  }
-}
-
-.cls-airline-color-indicator {
-  width: 16px;
-  height: 16px;
-  border-radius: 2px;
-}
-
-.cls-airline-code {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  .ant-typography {
-    font-weight: 600;
-  }
-}
-
-.cls-booking-info {
-  .cls-booking-code {
-    font-weight: 600;
-  }
-
-  .cls-booking-tickets {
-    font-size: $FONT-12;
-    color: $GREY;
-  }
-}
-
-.cls-cancellation-info {
-  .cls-cancellation-count {
-    font-weight: 600;
-  }
-
-  .cls-cancellation-tickets {
-    font-size: $FONT-12;
-    color: $GREY;
-  }
-}
-
-.cls-claimable-amount {
-  font-weight: 600;
-
-  &.cls-negative {
-    color: #ff4d4f;
-  }
-
-  &.cls-positive {
-    color: $SUCCESS-COLOR;
-  }
-}
-
-.cls-summary-section {
-  .cls-summary-cards {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 24px;
-    position: relative;
-    overflow: hidden;
-
-    .cls-card-container {
-      flex: 1;
-      min-width: 0;
-      background: white;
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      border: 1px solid #f0f0f0;
-      position: relative;
-      transition: all 0.3s ease;
-
-      &:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-      }
-
-      &:first-child {
-        background: linear-gradient(135deg, #e8f4fd 0%, #f0f9ff 100%);
-        border: 1px solid #e1f5fe;
-      }
-
-      &:nth-child(2) {
-        background: linear-gradient(135deg, #f0f9ff 0%, #e8f5e8 100%);
-        border: 1px solid #e8f5e8;
-      }
-
-      &:nth-child(3) {
-        background: linear-gradient(135deg, #fdf4ff 0%, #f3e8ff 100%);
-        border: 1px solid #f3e8ff;
-      }
-
-      &:nth-child(4) {
-        background: linear-gradient(135deg, #fff8e1 0%, #fffbf0 100%);
-        border: 1px solid #fff8e1;
-      }
-
-      .cls-card-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 20px;
-
-        .cls-card-title {
-          font-size: 15px;
-          font-weight: 600;
-          color: #374151;
-          letter-spacing: 0.3px;
-        }
-
-        .cls-card-icon {
-          color: #6366f1;
-          font-size: 22px;
-        }
-      }
-
-      .cls-card-content {
-        .cls-card-items {
-          display: flex;
-          flex-direction: column;
-          gap: 16px;
-
-          .cls-card-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 16px;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(10px);
-            transition: all 0.2s ease;
-
-            &:hover {
-              background: rgba(255, 255, 255, 0.9);
-              transform: translateX(4px);
-            }
-
-            .cls-item-info {
-              display: flex;
-              align-items: center;
-              gap: 12px;
-
-              .cls-item-icon {
-                width: 12px;
-                height: 12px;
-                border-radius: 50%;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-
-                &.bookings {
-                  background: linear-gradient(135deg, #10b981, #059669);
-                }
-
-                &.cancellations {
-                  background: linear-gradient(135deg, #ef4444, #dc2626);
-                }
-
-                &.available {
-                  background: linear-gradient(135deg, #3b82f6, #2563eb);
-                }
-
-                &.filed {
-                  background: linear-gradient(135deg, #10b981, #059669);
-                }
-
-                &.pending {
-                  background: linear-gradient(135deg, #f59e0b, #d97706);
-                }
-
-                &.airlines {
-                  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-                }
-
-                &.all {
-                  background: linear-gradient(135deg, #06b6d4, #0891b2);
-                }
-              }
-
-              .cls-item-label {
-                font-size: $FONT-14;
-                color: #374151;
-                font-weight: 500;
-              }
-            }
-
-            .cls-item-value {
-              font-size: $FONT-18;
-              font-weight: 700;
-              color: #1f2937;
-              background: linear-gradient(135deg, #6366f1, #8b5cf6);
-              -webkit-background-clip: text;
-              -webkit-text-fill-color: transparent;
-              background-clip: text;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
-@media (max-width: 768px) {
-  .cls-chart-section {
-    grid-template-columns: 1fr;
-  }
-
-  .cls-overview-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
 // Old card design (reference image style)
 .cls-old-overview-card {
   border-radius: 8px;
@@ -744,6 +338,16 @@
     width: 1px;
     background: rgba(255, 255, 255, 0.3);
   }
+
+  // Dynamic background colors for old design
+  &[data-color="#6366F1"] { background-color: #6366F1; }
+  &[data-color="#4F46E5"] { background-color: #4F46E5; }
+  &[data-color="#06B6D4"] { background-color: #06B6D4; }
+  &[data-color="#0891B2"] { background-color: #0891B2; }
+  &[data-color="#8B5CF6"] { background-color: #8B5CF6; }
+  &[data-color="#7C3AED"] { background-color: #7C3AED; }
+  &[data-color="#F59E0B"] { background-color: #F59E0B; }
+  &[data-color="#D97706"] { background-color: #D97706; }
 }
 
 .cls-old-section-content {
@@ -752,6 +356,16 @@
   align-items: center;
   text-align: center;
   gap: 4px;
+}
+
+.cls-old-section-icon {
+  margin-bottom: 4px;
+  
+  .anticon {
+    font-size: 16px;
+    color: white;
+    opacity: 0.9;
+  }
 }
 
 .cls-old-section-label {
@@ -772,6 +386,132 @@
   margin: 0;
 }
 
+// Chart and table styles
+.cls-invoice-status-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cls-chart-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: $FONT-16;
+  font-weight: 600;
+}
+
+.cls-chart-icon {
+  color: #666;
+  font-size: $FONT-14;
+}
+
+.cls-invoice-status-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.cls-invoice-tab-group {
+  display: flex;
+  background: #f0f0f0;
+  border-radius: 6px;
+  padding: 4px;
+  gap: 2px;
+}
+
+.cls-tab-button {
+  border-radius: 4px !important;
+  border: none !important;
+  min-width: 50px;
+  
+  &:not(.active) {
+    background: transparent !important;
+    color: #666 !important;
+  }
+  
+  &.active {
+    background: #4c1d95 !important;
+    color: white !important;
+  }
+}
+
+.cls-invoice-filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cls-invoice-status-card {
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  height: 400px;
+}
+
+.cls-airline-filter {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.cls-airline-card {
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  height: 400px;
+}
+
+.cls-pending-files-filter {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.cls-pending-files-card {
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  height: 300px;
+}
+
+// Table styles
+.cls-airline-Logo {
+  display: flex;
+  align-items: center; 
+  gap: 8px;
+}
+
+.cls-airline-image {
+  width: 26px;
+  height: 26px;
+  margin-right: 8px;
+  border-radius: 6px;
+}
+
+.cls-booking-column, .cls-cancellation-column {
+  .cls-booking-main, .cls-cancellation-main {
+    font-weight: 600;
+  }
+  
+  .cls-booking-sub, .cls-cancellation-sub {
+    font-size: 12px;
+    color: #666;
+  }
+}
+
+.cls-claimable-amount {
+  font-weight: 600;
+  
+  &.cls-negative {
+    color: #ff4d4f;
+  }
+  
+  &.cls-positive {
+    color: #52c41a;
+  }
+}
+
 .cls-price {
   table {
     tbody {
@@ -787,8 +527,299 @@
     }
   }
 }
-.cls-airline-Logo{
-  display: flex;
-  align-items: center; 
-  gap: 8;
+
+.cls-info-icon {
+  font-size: $FONT-12;
+  color: #999;
+}
+
+// Responsive Design
+// 320px - 480px (Mobile Portrait)
+@media (max-width: 480px) {
+  .cls-dashboard-container {
+    padding: 12px;
+    padding-top: 0;
+  }
+  
+  .cls-overall-summary {
+    margin-bottom: 24px;
+    
+    .cls-summary-title {
+      font-size: $FONT-16;
+      margin-bottom: 16px;
+    }
+  }
+  
+  .cls-overview-grid {
+    .ant-col {
+      margin-bottom: 16px;
+    }
+  }
+  
+  .cls-new-card,
+  .cls-old-overview-card {
+    min-height: 160px;
+  }
+  
+  .cls-new-card-content {
+    padding: 12px;
+    min-height: 120px;
+  }
+  
+  .cls-new-item-label,
+  .cls-old-section-label {
+    font-size: 11px;
+  }
+  
+  .cls-new-item-value {
+    font-size: $FONT-14;
+  }
+  
+  .cls-old-section-value {
+    font-size: $FONT-18;
+  }
+  
+  .cls-filter-section {
+    .cls-filter-con {
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .cls-apply-button-col {
+      justify-content: center;
+    }
+  }
+  
+  .cls-invoice-status-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  
+  .cls-invoice-status-controls {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+  
+  .cls-chart-title {
+    font-size: $FONT-14;
+  }
+  
+  .cls-invoice-status-card,
+  .cls-airline-card {
+    height: 320px;
+  }
+  
+  .cls-pending-files-card {
+    height: 280px;
+  }
+  
+  .cls-airline-image {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .cls-booking-main,
+  .cls-cancellation-main {
+    font-size: $FONT-12;
+  }
+  
+  .cls-booking-sub,
+  .cls-cancellation-sub {
+    font-size: 10px;
+  }
+}
+
+// 481px - 567px (Mobile Landscape)
+@media (min-width: 481px) and (max-width: 567px) {
+  .cls-dashboard-container {
+    padding: 16px;
+    padding-top: 0;
+  }
+  
+  .cls-new-card,
+  .cls-old-overview-card {
+    min-height: 180px;
+  }
+  
+  .cls-new-card-content {
+    padding: 14px;
+    min-height: 130px;
+  }
+  
+  .cls-filter-section {
+    .cls-filter-con {
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+  }
+  
+  .cls-invoice-status-header {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  
+  .cls-invoice-status-controls {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .cls-invoice-status-card,
+  .cls-airline-card {
+    height: 350px;
+  }
+  
+  .cls-pending-files-card {
+    height: 290px;
+  }
+}
+
+// 568px - 768px (Tablet Portrait)
+@media (min-width: 568px) and (max-width: 768px) {
+  .cls-dashboard-container {
+    padding: 20px;
+    padding-top: 0;
+  }
+  
+  .cls-overview-grid {
+    .ant-col {
+      flex: 0 0 50%;
+      max-width: 50%;
+      margin-bottom: 16px;
+    }
+  }
+  
+  .cls-new-card,
+  .cls-old-overview-card {
+    min-height: 190px;
+  }
+  
+  .cls-invoice-status-card,
+  .cls-airline-card {
+    height: 380px;
+  }
+}
+
+// 769px - 1024px (Tablet Landscape)
+@media (min-width: 769px) and (max-width: 1024px) {
+  .cls-overview-grid {
+    .ant-col {
+      flex: 0 0 25%;
+      max-width: 25%;
+    }
+  }
+}
+
+// 1025px - 1440px (Desktop)
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .cls-dashboard-container {
+    padding: 28px;
+    padding-top: 0;
+  }
+  
+  .cls-new-card,
+  .cls-old-overview-card {
+    min-height: 210px;
+  }
+  
+  .cls-new-card-content {
+    min-height: 150px;
+  }
+}
+
+// 1441px - 1920px (Large Desktop)
+@media (min-width: 1441px) and (max-width: 1920px) {
+  .cls-dashboard-container {
+    padding: 32px;
+    padding-top: 0;
+  }
+  
+  .cls-new-card,
+  .cls-old-overview-card {
+    min-height: 220px;
+  }
+  
+  .cls-new-card-content {
+    min-height: 160px;
+  }
+  
+  .cls-chart-title {
+    font-size: $FONT-18;
+  }
+  
+  .cls-invoice-status-card,
+  .cls-airline-card {
+    height: 420px;
+  }
+  
+  .cls-pending-files-card {
+    height: 320px;
+  }
+}
+
+// 1921px+ (Projector/Ultra Wide)
+@media (min-width: 1921px) {
+  .cls-dashboard-container {
+    padding: 40px;
+    padding-top: 0;
+    max-width: 2400px;
+    margin: 0 auto;
+  }
+  
+  .cls-overall-summary {
+    margin-bottom: 48px;
+    
+    .cls-summary-title {
+      font-size: $FONT-24;
+      margin-bottom: 32px;
+    }
+  }
+  
+  .cls-new-card,
+  .cls-old-overview-card {
+    min-height: 240px;
+  }
+  
+  .cls-new-card-content {
+    padding: 24px;
+    min-height: 180px;
+  }
+  
+  .cls-new-item-value {
+    font-size: $FONT-20;
+  }
+  
+  .cls-old-section-value {
+    font-size: 28px;
+  }
+  
+  .cls-chart-title {
+    font-size: $FONT-20;
+  }
+  
+  .cls-invoice-status-card,
+  .cls-airline-card {
+    height: 480px;
+  }
+  
+  .cls-pending-files-card {
+    height: 360px;
+  }
+  
+  .cls-new-item-icon {
+    width: 24px;
+    height: 24px;
+    
+    .anticon {
+      font-size: 14px;
+    }
+  }
+  
+  .cls-old-section-icon {
+    .anticon {
+      font-size: 20px;
+    }
+  }
 }

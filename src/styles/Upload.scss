@@ -455,10 +455,80 @@
 }
 
 // Responsive Design
-@media (max-width: 768px) {
+// 320px - 480px (Mobile Portrait)
+@media (max-width: 480px) {
+  .cls-upload-container {
+    padding: 12px;
+    padding-top: 0;
+  }
+  
+  .cls-page-title {
+    font-size: $FONT-18;
+    margin-bottom: 16px;
+  }
+  
+  .cls-upload-layout {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .cls-upload-area {
+    width: 100% !important;
+    min-height: 140px;
+    padding-top: 8px;
+  }
+  
+  .cls-upload-main-text {
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+  
+  .cls-upload-or-text {
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+  
+  .cls-select-file-btn {
+    font-size: 12px;
+  }
+  
+  .cls-sample-file-btn {
+    font-size: 11px;
+    padding: 10px;
+    height: 40px;
+  }
+  
+  .cls-files-display {
+    width: 100% !important;
+    min-height: 200px;
+  }
+  
+  .cls-file-name {
+    width: 80px;
+    font-size: 12px;
+  }
+  
+  .cls-file-size {
+    font-size: 11px;
+  }
+  
+  .cls-tab-content {
+    margin: 15px 10px;
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+}
+
+// 481px - 567px (Mobile Landscape)
+@media (min-width: 481px) and (max-width: 567px) {
   .cls-upload-container {
     padding: 16px;
     padding-top: 0;
+  }
+  
+  .cls-page-title {
+    font-size: $FONT-20;
+    margin-bottom: 20px;
   }
   
   .cls-upload-layout {
@@ -468,11 +538,8 @@
   
   .cls-upload-area {
     width: 100% !important;
-    min-height: 180px;
-  }
-  
-  .cls-files-display {
-    width: 100% !important;
+    min-height: 160px;
+    padding-top: 10px;
   }
   
   .cls-upload-main-text {
@@ -480,32 +547,183 @@
   }
   
   .cls-sample-file-btn {
-    font-size: $FONT-12;
+    font-size: 12px;
     padding: 12px;
+    height: 42px;
+  }
+  
+  .cls-files-display {
+    width: 100% !important;
+    min-height: 220px;
+  }
+  
+  .cls-file-name {
+    width: 100px;
   }
 }
 
-@media (max-width: 480px) {
+// 568px - 768px (Tablet Portrait)
+@media (min-width: 568px) and (max-width: 768px) {
   .cls-upload-container {
-    padding: 12px;
+    padding: 20px;
     padding-top: 0;
   }
   
   .cls-page-title {
-    font-size: $FONT-20;
+    font-size: $FONT-22;
+    margin-bottom: 24px;
+  }
+  
+  .cls-upload-layout {
+    flex-direction: row;
+    gap: 20px;
   }
   
   .cls-upload-area {
-    min-height: 160px;
-    padding-top: 10px;
+    width: 400px;
+    min-height: 200px;
   }
   
-  .cls-upload-main-text {
-    font-size: 13px;
+  .cls-files-display {
+    width: 240px;
+    min-height: 200px;
   }
   
   .cls-file-name {
-    width: 80px;
+    width: 120px;
+  }
+}
+
+// 769px - 1024px (Tablet Landscape)
+@media (min-width: 769px) and (max-width: 1024px) {
+  .cls-upload-container {
+    padding: 24px;
+    padding-top: 0;
+  }
+  
+  .cls-upload-layout {
+    gap: 24px;
+  }
+  
+  .cls-upload-area {
+    width: 500px;
+    min-height: 220px;
+  }
+  
+  .cls-files-display {
+    width: 260px;
+    min-height: 220px;
+  }
+}
+
+// 1025px - 1440px (Desktop)
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .cls-upload-container {
+    padding: 28px;
+    padding-top: 0;
+  }
+  
+  .cls-upload-area {
+    width: 580px;
+    min-height: 240px;
+  }
+  
+  .cls-files-display {
+    width: 280px;
+    min-height: 240px;
+  }
+}
+
+// 1441px - 1920px (Large Desktop)
+@media (min-width: 1441px) and (max-width: 1920px) {
+  .cls-upload-container {
+    padding: 32px;
+    padding-top: 0;
+  }
+  
+  .cls-page-title {
+    font-size: 28px;
+    margin-bottom: 32px;
+  }
+  
+  .cls-upload-area {
+    width: 640px;
+    min-height: 260px;
+  }
+  
+  .cls-files-display {
+    width: 300px;
+    min-height: 260px;
+  }
+  
+  .cls-upload-main-text {
+    font-size: $FONT-18;
+  }
+  
+  .cls-sample-file-btn {
+    height: 50px;
+    padding: 18px;
+  }
+}
+
+// 1921px+ (Projector/Ultra Wide)
+@media (min-width: 1921px) {
+  .cls-upload-container {
+    padding: 40px;
+    padding-top: 0;
+    max-width: 2400px;
+    margin: 0 auto;
+  }
+  
+  .cls-page-title {
+    font-size: 32px;
+    margin-bottom: 40px;
+  }
+  
+  .cls-upload-layout {
+    gap: 32px;
+  }
+  
+  .cls-upload-area {
+    width: 720px;
+    min-height: 280px;
+    padding-top: 20px;
+  }
+  
+  .cls-upload-main-text {
+    font-size: $FONT-20;
+    margin-bottom: 12px;
+  }
+  
+  .cls-upload-or-text {
+    font-size: $FONT-16;
+    margin-bottom: 16px;
+  }
+  
+  .cls-select-file-btn {
+    font-size: $FONT-16;
+  }
+  
+  .cls-sample-file-btn {
+    height: 55px;
+    padding: 20px;
+    font-size: $FONT-16;
+  }
+  
+  .cls-files-display {
+    width: 320px;
+    min-height: 280px;
+  }
+  
+  .cls-file-name {
+    width: 140px;
+    font-size: $FONT-14;
+  }
+  
+  .cls-tab-content {
+    margin: 30px 20px;
+    padding: 12px 18px;
+    font-size: $FONT-16;
   }
 }
 

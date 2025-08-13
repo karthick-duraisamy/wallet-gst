@@ -377,7 +377,6 @@ const Dashboard: React.FC = () => {
   };
 
   const invoiceStatusData = getInvoiceStatusData();
-
   // Calculate visible items for carousel (max 3)
   const getVisibleItems = (sections: any[]) => Math.min(3, sections.length);
 
@@ -637,7 +636,7 @@ const Dashboard: React.FC = () => {
 
           {overviewData.map((item, index) => {
             console.log(item);
-            
+
             const currentIndex =
               carouselStates[item.carouselKey as keyof typeof carouselStates] ||
               0;
@@ -867,12 +866,7 @@ const Dashboard: React.FC = () => {
                 </div>
               </div>
             }
-            style={{
-              borderRadius: 12,
-              border: "none",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-              height: 400,
-            }}
+            className="cls-invoice-status-card"
           >
             <ResponsiveContainer width="100%" height={280}>
               <BarChart data={invoiceStatusData} barCategoryGap="20%">
@@ -948,12 +942,7 @@ const Dashboard: React.FC = () => {
                 />
               </div>
             }
-            style={{
-              borderRadius: 12,
-              border: "none",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-              height: 400,
-            }}
+            className="cls-invoice-status-card"
           >
             <Table
               columns={airlineColumns}
@@ -995,12 +984,7 @@ const Dashboard: React.FC = () => {
 
               </div>
             }
-            style={{
-              borderRadius: 12,
-              border: "none",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-              height: 300,
-            }}
+            className="cls-invoice-status-card"
           >
             <ResponsiveContainer width="100%" height={200}>
               <BarChart data={pendingFilesData}>
