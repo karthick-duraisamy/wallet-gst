@@ -127,16 +127,35 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
   }
 }
+.cls-travel-history{
+  background: #edf5ff;
+  border: 1px solid #cbe2ff;
+  .cls-new-card-item{
+    background: #fafafa;
+  }
+}
+.cls-airline-invoice{
+  background: #eefbf4;
+  border: 1px solid #d4fae7;
+}
+.cls-invoices{
+  background: #f4eaff;
+  border: 1px solid #e8d4fd;
+}
+.cls-netClaim{
+  background: #fffdf5;
+  border: 1px solid #fff7da;
+}
 
 .cls-new-card-header {
   padding: 12px 16px 10px;
-  background: #f8f9fa;
+  // background: #f8f9fa;
 }
 
 .cls-new-card-title {
   font-size: $FONT-14;
   font-weight: 600;
-  color: #6c757d;
+  color: #000;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -145,6 +164,7 @@
 
 .cls-new-card-content {
   padding: 16px;
+  padding-top:0px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -153,8 +173,8 @@
 }
 
 .cls-new-card-item {
-  border-radius: 10px;
-  padding: 6px 12px;
+  border-radius: 12px;
+  padding: 8px 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;

@@ -114,6 +114,7 @@ const Dashboard: React.FC = () => {
         { label: "Bookings", value: 1000, backgroundColor: "#6366F1" },
         { label: "Cancellations", value: 2000, backgroundColor: "#4F46E5" },
       ],
+      class: "cls-travel-history"
     },
     {
       title: "Airline Invoices",
@@ -129,6 +130,7 @@ const Dashboard: React.FC = () => {
           variant: "light",
         },
       ],
+      class: "cls-airline-invoice"
     },
     {
       title: "All Invoices",
@@ -144,6 +146,7 @@ const Dashboard: React.FC = () => {
           variant: "light",
         },
       ],
+      class: "cls-invoices"
     },
     {
       title: "Net Claimable Amount(INR)",
@@ -153,6 +156,7 @@ const Dashboard: React.FC = () => {
         { label: "Airlines", value: 90000, backgroundColor: "#F59E0B" },
         { label: "All", value: 3000, backgroundColor: "#D97706" },
       ],
+      class: "cls-netClaim"
     },
   ];
 
@@ -630,7 +634,10 @@ const Dashboard: React.FC = () => {
           {translate("overallSummary")}
         </Title>
         <Row gutter={[16, 16]} className="cls-overview-grid">
+
           {overviewData.map((item, index) => {
+            console.log(item);
+            
             const currentIndex =
               carouselStates[item.carouselKey as keyof typeof carouselStates] ||
               0;
@@ -648,7 +655,7 @@ const Dashboard: React.FC = () => {
               <Col xs={24} sm={12} lg={6} key={index}>
                 {useNewCards ? (
                   // New Card Design
-                  <div className="cls-new-card">
+                  <div className={`cls-new-card ${item.class}`}>
                     {/* Header */}
                     <div className="cls-new-card-header">
                       <Text className="cls-new-card-title">
