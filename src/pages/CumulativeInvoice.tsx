@@ -1,22 +1,30 @@
 import React, { useState, useEffect } from "react";
-import { Card, Radio, Tabs, Input, Button, Select, Typography, Table, Checkbox, DatePicker } from "antd";
-import { SearchOutlined, DownloadOutlined, CalendarOutlined, FilterOutlined, EditOutlined } from "@ant-design/icons";
-import { usePostInvoiceFilterMutation } from '../services/variables/variables'
-import dayjs from "dayjs"
+import { Card, Radio, Tabs, Input, Button, Select, Typography, Table, Checkbox } from "antd";
+import { SearchOutlined, DownloadOutlined, FilterOutlined } from "@ant-design/icons";
+import { useCumulativeFilterMutation } from '../services/variables/variables'
 import { useTheme } from "../contexts/ThemeContext";
 import "../styles/CumulativeInvoice.scss";
 import { downloadCSV, downloadXLS } from '../Utils/commonFunctions'
 import Filter from "../components/Filters/Filters";
+import {TableSkeleton, PaginationSkeleton} from '../components/SkeletonLoader/skeletonLoader';
+import dayjs from 'dayjs';
+
+
 const { Title } = Typography;
 const { TextArea } = Input;
 
+
 const CumulativeInvoice: React.FC = () => {
   const [activeTab, setActiveTab] = useState("upload-pnr");
-  const [invoiceType, setInvoiceType] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(6);
   const [goToPageValue, setGoToPageValue] = useState("");
   const [searchText, setSearchText] = useState("");
+  const [dateRangeCond, setDateRangeCond] = useState(false);
+  const [dateRange, setDateRange] = useState<[string, string] | null>(null);
+  const [startDate, setStartDate] = useState<string | null>(null);
+  const [endDate, setEndDate] = useState<string | null>(null)
+
   const { translate } = useTheme();
 
   // Form states
@@ -27,9 +35,7 @@ const CumulativeInvoice: React.FC = () => {
   const [pnrTicketText, setPnrTicketText] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  const handleSubmit = () => {
-    console.log("Submit clicked");
-  };
+  
   const handleInvoiceToggle = () => {
     setIsInvoiceExpanded(!isInvoiceExpanded);
   };
@@ -44,7 +50,7 @@ const CumulativeInvoice: React.FC = () => {
 
   const handlePnrDropdownSubmit = () => {
     // Process the pnrTicketText data here
-    console.log("PNR/Ticket data:", pnrTicketText);
+    // console.log("PNR/Ticket data:", pnrTicketText);
     setIsPnrDropdownOpen(false);
   };
 
@@ -109,7 +115,72 @@ const CumulativeInvoice: React.FC = () => {
     travelVendor: translate("travelVendor"),
     action: "Action",
   };
-  const [postInvoiceFilter, { data }] = usePostInvoiceFilterMutation();
+  const [cummulativeService, { data, isLoading}] = useCumulativeFilterMutation();
+  // console.log(data?.response?.data?.results,'cumulative data');
+  const info = data?.response?.data?.results;
+  const header = info?.list_header.list_header;
+  const allColumns = (header ?? []).map((h: any) => ({
+    title: h.headerName,
+    dataIndex: h.template,
+    key: h.template,
+    render: (text: string) => text || "-",
+  }));
+  // console.log(header,'header');
+  const listBody = info?.list_body ?? [];
+  // console.log(listBody,'listBody');
+  const category: "agency" | "airline" = "agency";
+  const filteredData = listBody.filter((item:any) =>
+    Object.values(item).some((val) =>
+      String(val).toLowerCase().includes(searchText.toLowerCase())
+  )
+  );
+
+  // console.log(filteredData,'filteredData');
+  const sortedData = [...filteredData].sort((a, b) => {
+    if (!a?.invoice_date) return 1;   // put a at the end
+    if (!b?.invoice_date) return -1;  // put b at the end
+    // console.log(a, b);
+    return a.invoice_date.localeCompare(b.invoice_date);
+    
+  });
+  // console.log(sortedData,'sortedData');
+
+const handleDownload = async (
+format: "csv" | "xls",
+start: string,
+end: string
+) => {
+  const response = await cummulativeService({
+    page:currentPage,
+    page_size:pageSize,
+    category,
+    start:start??undefined,
+    end:end??undefined,
+  }).unwrap();
+
+  if (format === "csv") {
+    downloadCSV(response, "invoices.csv");
+  } else if (format === "xls") {
+    downloadXLS(response, "doc.xls");
+  }
+};
+  // passing param and display date range
+  const downloadFile = () => {
+    setDateRangeCond(true);
+    // handleDownload(format, start, end);
+  };
+
+  // filter submit btn func
+  const handleSubmit = () => {
+     cummulativeService({ 
+      page: currentPage,
+      page_size: pageSize,
+      category,   // or "airline"
+      pnrno: pnrTicketText || undefined,
+      // Type: "All",pnrno: pnrTicketTe
+    });
+  };
+  
   const [totalRecords, setTotalRecords] = useState(0);
 
   // Define a type for filter field
@@ -176,145 +247,57 @@ const CumulativeInvoice: React.FC = () => {
       label: "Travel Date"
     },
   ];
-  const handleFilterChange = (values: Record<string, any>) => {
-    console.log('Filter values changed:', values);
-    // Handle specific filter changes here
-    // You can update state based on the values received
+  const handleDateRange = (values: any) => {
+    console.log(values, 'value');
+    const range = Object.values(values)[0]; // take the first entry
+    if (Array.isArray(range) && range.length === 2) {
+      const [start, end] = range;
+      setDateRange([
+        dayjs(start).format("YYYY-MM-DD"),
+        dayjs(end).format("YYYY-MM-DD"),
+      ]);
+      console.log(start.format("YYYY-MM-DD"),end);
+    }
+  };
+  const handleFilterChange = ()=>{
+    
   };
 
   useEffect(() => {
-    postInvoiceFilter({ page: currentPage, page_size: pageSize });
+    cummulativeService({ page: currentPage, page_size: pageSize, category: "agency"});
   }, [currentPage, pageSize]);
 
   useEffect(() => {
-    if (data?.records) {
-      setTotalRecords(data.count);
+    if (info) {
+      setTotalRecords(data?.response?.data?.count);
     }
   }, [data]);
-  useEffect(() => {
-    if (data?.category && data.category.length > 0 && !selectedCategory) {
-      setSelectedCategory(data.category[0].name.toLowerCase());
+    useEffect(() => {
+    // set default only once when category data arrives
+    if (!selectedCategory && info?.category && info?.category?.length > 0) {
+      setSelectedCategory(info?.category[0].name.toLowerCase());
     }
-  }, [data?.category, selectedCategory]);
+  }, [info?.category, selectedCategory]);
 
-  // Define all columns directly
-  // const allColumns = [
-  // {
-  //   title: translate("Airline name"),
-  //   dataIndex: "airline_name", // match your backend field
-  //   key: "airline_name",
-  //   render: (text: string) => text || "-", // default fallback
-  //   ...(fixedColumnsConfig.AirlineName && { fixed: "left" as const }),
-  // },
-  // {
-  //   title: translate("pnrTicketNumber"),
-  //   dataIndex: "pnr",
-  //   key: "pnr",
-  //   render: (text: string) => text || "-",
-  //   ...(fixedColumnsConfig.pnrTicketNo && { fixed: "left" as const }),
-  // },
-  // {
-  //   title: translate("invoiceNumber"),
-  //   dataIndex: "invoice_number",
-  //   key: "invoice_number",
-  //   render: (text: string) => text || "-",
-  //   ...(fixedColumnsConfig.invoiceNo && { fixed: "left" as const }),
-  // },
-  // {
-  //   title: translate("invoiceDate"),
-  //   dataIndex: "invoice_date",
-  //   key: "invoice_date",
-  //   render: (text: string) => text || "-",
-  //   ...(fixedColumnsConfig.invoiceDate && { fixed: "left" as const }),
-  // },
-  // {
-  //   title: translate("type"),
-  //   dataIndex: "invoice_type",
-  //   key: "invoice_type",
-  //   render: (text: string) => text || "-",
-  //   ...(fixedColumnsConfig.type && { fixed: "left" as const }),
-  // },
-  // {
-  //   title: translate("travelVendor"),
-  //   dataIndex: "vendor_name",
-  //   key: "vendor_name",
-  //   render: (text: string) => text || "-",
-  //   ...(fixedColumnsConfig.travelVendor && { fixed: "left" as const }),
-  // },
-  // {
-  //   title: "Action",
-  //   dataIndex: "action",
-  //   key: "action",
-  //   width: 80,
-  //   fixed: "right" as const,
-  //   align: "center" as const,
-  //   render: () => <EditOutlined/>,
-  // },
-  // ];
-  const allColumns = [
-    {
-      title: 'Airline Name',
-      dataIndex: 'airline_name',
-      key: 'AirlineName',
-      render: (text: string) => text,
-    },
-    {
-      title: 'PNR/Ticket No',
-      dataIndex: 'pnr',
-      key: 'pnrTicketNo',
-    },
-    {
-      title: 'Invoice Number',
-      dataIndex: 'invoice_number',
-      key: 'invoiceNo',
-    },
-    {
-      title: 'Invoice Date',
-      dataIndex: 'invoice_date',
-      key: 'invoiceDate',
-    },
-    {
-      title: 'Type',
-      dataIndex: 'transaction_type',
-      key: 'type',
-    },
-    {
-      title: 'Travel Vendor',
-      dataIndex: 'vendor_name',
-      key: 'travelVendor',
-    },
-    {
-      title: 'Action',
-      key: 'action',
-      width: 80,
-      fixed: "right" as const,
-      align: "center" as const,
-      render: (_, record) => (
-        <EditOutlined />
-      ),
-    },
-  ];
-  const filteredColumns = allColumns.filter(
-    (col) => visibleColumns[col.key as keyof typeof visibleColumns]
-  );
-
-  // Calculate pagination for table data
-  const paginatedTableData = data?.records;
-  const category = data?.category;
-  console.log(category, 'category');
-  // Removed invalid category assignment
-
+  useEffect(() => {
+    if (selectedCategory) {
+      cummulativeService({
+        page: currentPage,
+        page_size: pageSize,
+        category,
+      });
+    }
+  }, [selectedCategory]);
 
   const totalPages = Math.ceil(totalRecords / pageSize);
-  console.log(totalPages);
 
   const handleGoToPage = () => {
     const page = Number(goToPageValue);
     const totalPages = Math.ceil(totalRecords / pageSize);
     if (!isNaN(page) && page >= 1 && page <= totalPages) {
       setCurrentPage(page);
+      setGoToPageValue("");
     }
-    setGoToPageValue("");
   };
 
   const renderTabContent = () => {
@@ -399,6 +382,7 @@ const CumulativeInvoice: React.FC = () => {
                     </div>
                   )}
                 </div>
+
                 <Filter
                   fields={[
                     {
@@ -411,7 +395,7 @@ const CumulativeInvoice: React.FC = () => {
                   onChange={handleFilterChange}
                 />
               </div>
-              <div className="cls-submit-buttons">
+              <div style={{ display: "flex", gap: 15 }} className="cls-btnItems">
                 <Button onClick={handleSubmit} className="cls-submitBtn">
                   Submit
                 </Button>
@@ -425,13 +409,40 @@ const CumulativeInvoice: React.FC = () => {
 
       case "upload-invoice":
         return (
-          <div className="cls-tab-content-wrapper">
-            <div className="cls-tab-content-layout">
+          <div
+            style={{
+              backgroundColor: "#f8f9fa",
+              border: "1px solid #e9ecef",
+              borderRadius: 6,
+              padding: 16,
+              marginBottom: 24,
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                gap: 16,
+                alignItems: "flex-start",
+                justifyContent: "space-between",
+                marginBottom: 16,
+              }}
+            >
               <div className="cls-sprt">
                 <div>
                   <Button
                     onClick={handleInvoiceToggle}
-                    className="cls-upload-button"
+                    style={{
+                      width: "100%",
+                      height: 40,
+                      textAlign: "left",
+                      border: "none",
+                      background: "#f5f5f5",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      boxShadow: "none",
+                      borderRadius: 6,
+                    }}
                   >
                     <span style={{ color: "#4f46e5", fontWeight: 500 }}>
                       {translate("uploadMultipleInvoice")}
@@ -450,25 +461,83 @@ const CumulativeInvoice: React.FC = () => {
                   </Button>
 
                   {/* Count display below button */}
-                  <div className="cls-count-display">
+                  <div
+                    style={{
+                      fontSize: "14px",
+                      color: "#8B949E",
+                      marginTop: 8,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 6,
+                    }}
+                  >
                     <span>60 Ticket No Submitted</span>
-                    <span className="cls-info-icon">i</span>
+                    <span
+                      style={{
+                        width: 18,
+                        height: 18,
+                        borderRadius: "50%",
+                        background: "#8B949E",
+                        color: "white",
+                        fontSize: "12px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        cursor: "pointer",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      i
+                    </span>
                   </div>
 
                   {/* Expanding content below */}
                   {isInvoiceExpanded && (
-                    <div className="cls-dropdown-content">
+                    <div
+                      style={{
+                        marginTop: 20,
+                        background: "white",
+                        border: "1px solid #e1e5e9",
+                        borderRadius: 8,
+                        padding: 20,
+                        boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+                        position: "absolute",
+                        width: "300px",
+                        zIndex: 1001,
+                      }}
+                    >
                       {/* Close button */}
                       <Button
                         type="text"
                         onClick={() => setIsInvoiceExpanded(false)}
-                        className="cls-close-button"
+                        style={{
+                          position: "absolute",
+                          top: 12,
+                          right: 12,
+                          color: "#ff4d4f",
+                          fontSize: "18px",
+                          width: 24,
+                          height: 24,
+                          padding: 0,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          border: "none",
+                          background: "transparent",
+                        }}
                       >
                         ×
                       </Button>
 
-                      <div className="cls-textarea-section">
-                        <div className="cls-textarea-label">
+                      <div style={{ marginBottom: 20, marginTop: 8 }}>
+                        <div
+                          style={{
+                            fontSize: "16px",
+                            fontWeight: 500,
+                            marginBottom: 12,
+                            color: "#24292f",
+                          }}
+                        >
                           Enter Invoice No
                         </div>
                         <TextArea
@@ -476,24 +545,63 @@ const CumulativeInvoice: React.FC = () => {
                           onChange={(e) => setInvoiceText(e.target.value)}
                           placeholder=""
                           rows={6}
-                          className="cls-textarea-input"
+                          style={{
+                            resize: "none",
+                            borderRadius: 6,
+                            border: "1px solid #d0d7de",
+                            fontSize: "14px",
+                          }}
                         />
                       </div>
 
-                      <div className="cls-example-section">
-                        <div className="cls-example-box">
-                          <span className="cls-example-label">Example : </span>
+                      <div style={{ marginBottom: 20 }}>
+                        <div
+                          style={{
+                            fontSize: "14px",
+                            color: "#656d76",
+                            padding: "12px 16px",
+                            background: "#f6f8fa",
+                            borderRadius: 6,
+                            border: "1px solid #d0d7de",
+                          }}
+                        >
+                          <span style={{ fontWeight: 600, color: "#24292f" }}>
+                            Example :{" "}
+                          </span>
                           123456,123456
                         </div>
                       </div>
 
-                      <div className="cls-action-buttons">
-                        <Button onClick={() => setIsInvoiceExpanded(false)}>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          gap: 12,
+                        }}
+                      >
+                        <Button
+                          onClick={() => setIsInvoiceExpanded(false)}
+                          style={{
+                            borderRadius: 6,
+                            height: 36,
+                            paddingLeft: 16,
+                            paddingRight: 16,
+                          }}
+                        >
                           Cancel
                         </Button>
                         <Button
                           type="primary"
                           onClick={handleInvoiceSubmit}
+                          style={{
+                            backgroundColor: "#4f46e5",
+                            borderColor: "#4f46e5",
+                            borderRadius: 6,
+                            height: 36,
+                            paddingLeft: 16,
+                            paddingRight: 16,
+                            fontWeight: 500,
+                          }}
                         >
                           Submit
                         </Button>
@@ -513,7 +621,7 @@ const CumulativeInvoice: React.FC = () => {
                   onChange={handleFilterChange}
                 />
               </div>
-              <div className="cls-submit-buttons">
+              <div style={{ display: "flex", gap: 15 }} className="cls-btnItems">
                 <Button onClick={handleSubmit} className="cls-submitBtn">
                   Submit
                 </Button>
@@ -527,14 +635,32 @@ const CumulativeInvoice: React.FC = () => {
 
       case "pnr-ticket":
         return (
-          <div className="cls-tab-content-wrapper">
-            <div className="cls-tab-content-layout">
+          <div
+            style={{
+              backgroundColor: "#f8f9fa",
+              border: "1px solid #e9ecef",
+              borderRadius: 6,
+              padding: 16,
+              marginBottom: 24,
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                gap: 16,
+                alignItems: "center",
+                marginBottom: 16,
+                justifyContent: "space-between",
+              }}
+            >
               <div className="cls-sprt">
-                <div className="cls-pnr-input-section">
-                  <span className="cls-pnr-label">PNR / Ticket no</span>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <span style={{ fontSize: "12px", color: "#666" }}>
+                    PNR / Ticket no
+                  </span>
                   <Input
                     placeholder="Enter PNR / Ticket no"
-                    className="cls-pnr-input"
+                    style={{ width: 200 }}
                     size="large"
                   />
                 </div>
@@ -550,7 +676,7 @@ const CumulativeInvoice: React.FC = () => {
                   onChange={handleFilterChange}
                 />
               </div>
-              <div className="cls-submit-buttons">
+              <div style={{ display: "flex", gap: 15 }} className="cls-btnItems">
                 <Button onClick={handleSubmit} className="cls-submitBtn">
                   Submit
                 </Button>
@@ -564,7 +690,17 @@ const CumulativeInvoice: React.FC = () => {
 
       case "tax-invoice-range":
         return (
-          <div className="cls-tab-content-wrapper">
+          <div
+            style={{
+              backgroundColor: "#f8f9fa",
+              border: "1px solid #e9ecef",
+              borderRadius: 6,
+              padding: 16,
+              marginBottom: 24,
+            }}
+              className="cls-invoiceRange"
+          >
+
             <Filter
               fields={filterFields}
               pathname="/cumulative"
@@ -579,7 +715,6 @@ const CumulativeInvoice: React.FC = () => {
     }
   };
 
-
   return (
     <div className="slide-up cls-cumulative-container">
       {/* Breadcrumb
@@ -593,20 +728,15 @@ const CumulativeInvoice: React.FC = () => {
       </Title>
 
       {/* Entity Type Selection */}
-      <div className="cls-entity-type-section">
-        {data?.category && (
+        <div className="cls-entity-type-section">
           <Radio.Group
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
           >
-            {data.category.map((item) => (
-              <Radio key={item.name} value={item.name.toLowerCase()}>
-                {translate(item.name.toLowerCase())}
-              </Radio>
-            ))}
+            <Radio value="agency">{translate("agency")}</Radio>
+            <Radio value="airline">{translate("airline")}</Radio>
           </Radio.Group>
-        )}
-      </div>
+        </div>
 
       {/* Tabs */}
       <div className="cls-tabs-section">
@@ -650,16 +780,44 @@ const CumulativeInvoice: React.FC = () => {
                 />
                 <Button
                   icon={<DownloadOutlined />}
-                  className="cls-export-button cls-xls" onClick={() => downloadXLS()}
+                  className="cls-export-button cls-xls" onClick={() => downloadFile()}
                 >
                   XLS
                 </Button>
                 <Button
                   icon={<DownloadOutlined />}
-                  className="cls-export-button cls-csv" onClick={() => downloadCSV()}
+                  className="cls-export-button cls-csv"  onClick={() => downloadFile()}
                 >
                   CSV
                 </Button>
+                {dateRangeCond && (
+                <>
+                  <Filter
+                  fields={[
+                    {
+                      ...filterFields.find(f => f.key === "dateRange")!,
+                      type: "dateRange", // Explicitly cast type
+                      label: ""
+                    }
+                  ]}
+                  pathname="/cumulative"
+                  onChange={handleDateRange} /> 
+                  <button
+                      className="cls-download"
+                       onClick={() => {
+                          if (startDate && endDate) {
+                            handleDownload("csv", startDate, endDate);
+                          } else {
+                            alert("Please select both start and end dates");
+                          }
+                        }}
+                    >
+                      File <DownloadOutlined />
+                  </button>
+                  
+                </>
+                )}
+
                 {filterDropdownVisible && (
                   <div className="cls-filter-dropdown" ref={filterDropdownRef}>
                     <div className="cls-filter-header">
@@ -667,7 +825,19 @@ const CumulativeInvoice: React.FC = () => {
                       <Button
                         type="text"
                         onClick={() => setFilterDropdownVisible(false)}
-                        className="cls-close-filter-button"
+                        style={{
+                          position: "absolute",
+                          top: "15px",
+                          right: "10px",
+                          color: "red",
+                          fontSize: "22px",
+                          padding: 0,
+                          width: "20px",
+                          height: "20px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
                       >
                         ×
                       </Button>
@@ -701,9 +871,10 @@ const CumulativeInvoice: React.FC = () => {
                 )}
               </div>
             </div>
+            {isLoading ? <TableSkeleton/> : 
             <Table
-              columns={filteredColumns}
-              dataSource={paginatedTableData}
+              columns={allColumns}
+              dataSource={sortedData}
               pagination={false}
               size="middle"
               bordered={false}
@@ -711,14 +882,25 @@ const CumulativeInvoice: React.FC = () => {
               scroll={{ x: 1200 }}
               tableLayout="fixed"
               rowKey="invoice_number"
-            />
+            /> }
           </div>
 
           {/* Custom Pagination Footer */}
-          <div className="cls-pagination-footer">
+          {isLoading ? <PaginationSkeleton/> : 
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginTop: 16,
+              paddingTop: 16,
+              borderTop: "1px solid #f0f0f0",
+            }}
+            className="cls-pagination-footer"
+          >
             {/* Left side - Displaying info with page size selector */}
-            <div className="cls-pagination-info">
-              <span className="cls-displaying-text">Displaying</span>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 8 }} >
+              <span style={{ fontSize: "14px" }}>Displaying</span>
 
               <Select
                 value={pageSize}
@@ -726,7 +908,7 @@ const CumulativeInvoice: React.FC = () => {
                   setPageSize(value);
                   setCurrentPage(1); // Reset to page 1 when size changes
                 }}
-                className="cls-page-size-select"
+                style={{ width: 60 }}
                 size="small"
                 options={[
                   { value: 6, label: "6" },
@@ -737,19 +919,27 @@ const CumulativeInvoice: React.FC = () => {
                 ]}
               />
 
-              <span className="cls-total-records-text">
+              <span style={{ fontSize: "14px" }}>
                 Out of {totalRecords}
               </span>
             </div>
 
 
             {/* Center - Page navigation */}
-            <div className="cls-pagination-navigation">
+            <div className="page" style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <Button
                 icon="<"
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage(currentPage - 1)}
-                className="cls-pagination-prev-button"
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: "50%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  border: "1px solid #d9d9d9",
+                }}
               />
 
               {/* Page numbers */}
@@ -771,7 +961,18 @@ const CumulativeInvoice: React.FC = () => {
                     <Button
                       key={i}
                       onClick={() => setCurrentPage(i)}
-                      className={`cls-page-number-button ${i === currentPage ? 'cls-active' : ''}`}
+                      style={{
+                        width: 32,
+                        height: 32,
+                        borderRadius: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        backgroundColor:
+                          i === currentPage ? "#4f46e5" : "white",
+                        borderColor: i === currentPage ? "#4f46e5" : "#d9d9d9",
+                        color: i === currentPage ? "white" : "#000",
+                      }}
                     >
                       {i}
                     </Button>,
@@ -782,7 +983,7 @@ const CumulativeInvoice: React.FC = () => {
                 if (end < totalPages) {
                   if (end < totalPages - 1) {
                     pages.push(
-                      <span key="ellipsis" className="cls-ellipsis">
+                      <span key="ellipsis" style={{ margin: "0 8px" }}>
                         ...
                       </span>,
                     );
@@ -791,7 +992,19 @@ const CumulativeInvoice: React.FC = () => {
                     <Button
                       key={totalPages}
                       onClick={() => setCurrentPage(totalPages)}
-                      className={`cls-page-number-button ${totalPages === currentPage ? 'cls-active' : ''}`}
+                      style={{
+                        width: 32,
+                        height: 32,
+                        borderRadius: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        backgroundColor:
+                          totalPages === currentPage ? "#4f46e5" : "white",
+                        borderColor:
+                          totalPages === currentPage ? "#4f46e5" : "#d9d9d9",
+                        color: totalPages === currentPage ? "white" : "#000",
+                      }}
                     >
                       {totalPages}
                     </Button>,
@@ -805,14 +1018,23 @@ const CumulativeInvoice: React.FC = () => {
                 icon=">"
                 disabled={currentPage === totalPages}
                 onClick={() => setCurrentPage(currentPage + 1)}
-                className="cls-pagination-next-button"
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: "50%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  border: "1px solid #d9d9d9",
+                }}
               />
             </div>
 
             {/* Right side - Go to page */}
-            <div className="cls-go-to-page">
-              <span className="cls-go-to-page-text">Go to Page</span>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ fontSize: "14px" }}>Go to Page</span>
               <Input
+                style={{ width: 60 }}
                 value={goToPageValue}
                 onChange={(e) => {
                   const value = e.target.value;
@@ -828,23 +1050,28 @@ const CumulativeInvoice: React.FC = () => {
                   }
                 }}
                 onPressEnter={handleGoToPage}
-                className="cls-go-to-page-input"
                 placeholder={`1-${totalPages}`}
                 size="small"
               />
 
               <Button
                 type="primary"
+                style={{ backgroundColor: "#4f46e5", borderRadius: "16px" }}
                 onClick={handleGoToPage}
-                className="cls-go-button"
                 size="small"
               >
                 Go
               </Button>
             </div>
-          </div>
+          </div> }
         </Card>
       </div>
+         {/* <button
+            onClick={downloadCSV}
+            className="px-4 py-2 bg-blue-600 text-white rounded"
+          >
+            Download CSV
+          </button> */}
     </div>
   );
 };

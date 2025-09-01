@@ -98,9 +98,9 @@ const MainLayout: React.FC = () => {
 
   const getCurrentKey = () => {
     // Handle report-related paths
-    if (location.pathname.startsWith('/report') || 
-        location.pathname === '/saved-reports' || 
-        location.pathname === '/queued-reports') {
+    if (location.pathname.startsWith('/report') ||
+      location.pathname === '/saved-reports' ||
+      location.pathname === '/queued-reports') {
       return '/report';
     }
     return location.pathname;
@@ -139,9 +139,7 @@ const MainLayout: React.FC = () => {
               className="header-left"
               style={{ display: "flex", alignItems: "center", gap: "24px" }}
             >
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "12px" }}
-              >
+              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                 <Logo />
                 {/* <img src="/src/assets/gst-logo.svg" alt="GST Claim" /> */}
               </div>
@@ -409,7 +407,7 @@ const MainLayout: React.FC = () => {
         /* Side Vertical Menu Layout */
         <>
           <Sider
-            width={200}
+            width={180}
             className="side-menu"
             style={{
               background: isDarkMode ? "#262626" : "#5A4FCF",
@@ -495,8 +493,8 @@ const MainLayout: React.FC = () => {
                         ? translate("reconciliation")
                         : location.pathname === "/cumulative-invoice"
                           ? translate("cumulative")
-                          : location.pathname.startsWith("/report") || 
-                            location.pathname === "/saved-reports" || 
+                          : location.pathname.startsWith("/report") ||
+                            location.pathname === "/saved-reports" ||
                             location.pathname === "/queued-reports"
                             ? "Report"
                             : translate("dashboard")}
@@ -612,7 +610,7 @@ const MainLayout: React.FC = () => {
                 }}
                 onClick={() => setSettingsModalOpen(true)}
               >
-              <div className="cls-contrast"/>
+                <div className="cls-contrast" />
               </Button>
 
               {/* <Button 

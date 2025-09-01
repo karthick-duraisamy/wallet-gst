@@ -38,12 +38,8 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, onClose }) => {
   return (
     <Modal
       title={
-        <div style={{ 
-          fontSize: '18px', 
-          fontWeight: '600', 
+        <div className='cls-profile-modal' style={{ 
           color: isDarkMode ? '#ffffff' : '#333',
-          borderLeft: '4px solid #4f46e5',
-          paddingLeft: '12px'
         }}>
           Profile details
         </div>
@@ -67,12 +63,12 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, onClose }) => {
         form={form}
         layout="vertical"
         initialValues={initialValues}
-        style={{ marginTop: '20px' }}
+        className='cls-profileForm'
       >
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              label={<span style={{ color: isDarkMode ? '#ffffff' : '#333', fontWeight: '500' }}>Employee code</span>}
+              label={<span className='cls-label-name' style={{ color: isDarkMode ? '#ffffff' : '#333'}}>Employee code</span>}
               name="employeeCode"
             >
               <Input 

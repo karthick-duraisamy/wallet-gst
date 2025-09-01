@@ -1,7 +1,7 @@
 
 
 .cls-dashboard-container {
-  padding: 24px;
+  // padding: 24px;
   background-color: var(--bg-color);
   min-height: calc(100vh - 80px);
 
@@ -39,7 +39,8 @@
 
   .cls-dashboard-title {
     margin: 0;
-    color: $PRIMARYCOLOR;
+    color: $SECONDARYCOLOR;
+    font-family: var(--font-bold), sans-serif;
   }
 }
 
@@ -47,7 +48,7 @@
   margin-bottom: 24px;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border: 1px solid #f0f0f0;
+  border: 1px solid $LIGHTWHITE;
 
   .cls-filter-item {
     display: flex;
@@ -68,6 +69,7 @@
   }
 
   .cls-apply-button {
+    font-family: var(--font-regular);
     background-color: $PRIMARYCOLOR;
     border-color: $PRIMARYCOLOR;
     border-radius: 20px;
@@ -90,6 +92,9 @@
   .cls-filter-con {
     display: flex;
     width: 100%;
+    label{
+      font-family: var(--font-semibold);
+    }
   }
 }
 
@@ -97,6 +102,7 @@
   margin-bottom: 32px;
 
   .cls-summary-title {
+    font-family: var(--font-semibold);
     margin-bottom: 20px;
     color: $TEXT-COLOR;
     font-size: $FONT-18;
@@ -110,7 +116,7 @@
 
 // New card styles to match reference image exactly
 .cls-new-card {
-  background: white;
+  background: $WHITE;
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   border: 1px solid #e5e5e5;
@@ -143,8 +149,8 @@
 }
 
 .cls-netClaim {
-  background: #fffdf5;
-  border: 1px solid #fff7da;
+  background: $WHITE;
+  border: 1px solid $WHITE;
 }
 
 
@@ -155,7 +161,7 @@
 .cls-new-card-title {
   font-size: $FONT-14;
   font-weight: 600;
-  color: #000;
+  color: $BLACK;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -179,7 +185,7 @@
   align-items: center;
   justify-content: space-between;
   transition: all 0.2s ease;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid $LIGHTWHITE;
   background: transparent;
   box-shadow: none;
 
@@ -194,37 +200,37 @@
   }
 
   // Dynamic background colors based on data-color attribute
-  &[data-color="#6366F1"] {
-    background: rgba(99, 102, 241, 0.08);
-  }
+  // &[data-color="#6366F1"] {
+  //   background: rgba(99, 102, 241, 0.08);
+  // }
 
-  &[data-color="#4F46E5"] {
-    background: rgba(79, 70, 229, 0.08);
-  }
+  // &[data-color="$PRIMARYCOLOR"] {
+  //   background: rgba(79, 70, 229, 0.08);
+  // }
 
-  &[data-color="#06B6D4"] {
-    background: rgba(6, 182, 212, 0.08);
-  }
+  // &[data-color="#06B6D4"] {
+  //   background: rgba(6, 182, 212, 0.08);
+  // }
 
-  &[data-color="#0891B2"] {
-    background: rgba(8, 145, 178, 0.08);
-  }
+  // &[data-color="#0891B2"] {
+  //   background: rgba(8, 145, 178, 0.08);
+  // }
 
-  &[data-color="#8B5CF6"] {
-    background: rgba(139, 92, 246, 0.08);
-  }
+  // &[data-color="#8B5CF6"] {
+  //   background: rgba(139, 92, 246, 0.08);
+  // }
 
-  &[data-color="#7C3AED"] {
-    background: rgba(124, 58, 237, 0.08);
-  }
+  // &[data-color="#7C3AED"] {
+  //   background: rgba(124, 58, 237, 0.08);
+  // }
 
-  &[data-color="#F59E0B"] {
-    background: rgba(245, 158, 11, 0.08);
-  }
+  // &[data-color="#F59E0B"] {
+  //   background: rgba(245, 158, 11, 0.08);
+  // }
 
-  &[data-color="#D97706"] {
-    background: rgba(217, 119, 6, 0.08);
-  }
+  // &[data-color="#D97706"] {
+  //   background: rgba(217, 119, 6, 0.08);
+  // }
 }
 
 .cls-new-item-content {
@@ -250,8 +256,8 @@
   background: rgba(0, 0, 0, 0.05);
 
   .anticon {
-    font-size: 12px;
-    color: #666;
+    font-size: $FONT-12;
+    color: $DARKGREY;
   }
 }
 
@@ -294,7 +300,7 @@
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 
   &:hover {
-    background: white;
+    background: $WHITE;
     color: #495057;
     border-color: #ced4da;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -315,17 +321,17 @@
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  background: white;
+  background: $WHITE;
   display: flex;
   flex-direction: column;
   height: 140px;
-  border: 1px solid #f0f0f0;
+  border: 1px solid $LIGHTWHITE;
 }
 
 .cls-old-card-header {
-  background: white;
+  background: $WHITE;
   padding: 12px 16px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid $LIGHTWHITE;
   flex: 0 0 auto;
 }
 
@@ -365,37 +371,37 @@
   }
 
   // Dynamic background colors for old design
-  &[data-color="#6366F1"] {
-    background-color: #6366F1;
-  }
+  // &[data-color="#6366F1"] {
+  //   background-color: #6366F1;
+  // }
 
-  &[data-color="#4F46E5"] {
-    background-color: #4F46E5;
-  }
+  // &[data-color="$PRIMARYCOLOR"] {
+  //   background-color: $PRIMARYCOLOR;
+  // }
 
-  &[data-color="#06B6D4"] {
-    background-color: #06B6D4;
-  }
+  // &[data-color="#06B6D4"] {
+  //   background-color: #06B6D4;
+  // }
 
-  &[data-color="#0891B2"] {
-    background-color: #0891B2;
-  }
+  // &[data-color="#0891B2"] {
+  //   background-color: #0891B2;
+  // }
 
-  &[data-color="#8B5CF6"] {
-    background-color: #8B5CF6;
-  }
+  // &[data-color="#8B5CF6"] {
+  //   background-color: #8B5CF6;
+  // }
 
-  &[data-color="#7C3AED"] {
-    background-color: #7C3AED;
-  }
+  // &[data-color="#7C3AED"] {
+  //   background-color: #7C3AED;
+  // }
 
-  &[data-color="#F59E0B"] {
-    background-color: #F59E0B;
-  }
+  // &[data-color="#F59E0B"] {
+  //   background-color: #F59E0B;
+  // }
 
-  &[data-color="#D97706"] {
-    background-color: #D97706;
-  }
+  // &[data-color="#D97706"] {
+  //   background-color: #D97706;
+  // }
 }
 
 .cls-old-section-content {
@@ -410,8 +416,8 @@
   margin-bottom: 4px;
 
   .anticon {
-    font-size: 16px;
-    color: white;
+    font-size: $FONT-16;
+    color: $WHITE;
     opacity: 0.9;
   }
 }
@@ -421,16 +427,16 @@
   font-weight: 500;
   line-height: 13px;
   text-align: center;
-  color: white;
+  color: $WHITE;
   opacity: 0.9;
   margin: 0;
 }
 
 .cls-old-section-value {
-  font-size: 22px;
+  font-size: $FONT-22;
   font-weight: 700;
   line-height: 1.6;
-  color: white;
+  color: $WHITE;
   margin: 0;
 }
 
@@ -439,6 +445,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  span{
+    font-family: var(--font-regular);
+  }
 }
 
 .cls-chart-title {
@@ -450,7 +459,7 @@
 }
 
 .cls-chart-icon {
-  color: #666;
+  color: $DARKGREY;
   font-size: $FONT-14;
 }
 
@@ -462,7 +471,7 @@
 
 .cls-invoice-tab-group {
   display: flex;
-  background: #f0f0f0;
+  background: $LIGHTWHITE;
   border-radius: 6px;
   padding: 4px;
   gap: 2px;
@@ -473,14 +482,9 @@
   border: none !important;
   min-width: 50px;
 
-  &:not(.active) {
-    background: transparent !important;
-    color: #666 !important;
-  }
-
   &.active {
-    background: #4c1d95 !important;
-    color: white !important;
+    background: $SECONDARYCOLOR !important;
+    color: $WHITE !important;
   }
 }
 
@@ -494,7 +498,12 @@
   border-radius: 12px;
   border: none;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  height: 400px;
+  .ant-card-head-title{
+    font-family: var(--font-semibold);
+  }
+  span{
+    font-family: var(--font-regular);
+  }
 }
 
 .cls-airline-filter {
@@ -547,8 +556,8 @@
 
   .cls-booking-sub,
   .cls-cancellation-sub {
-    font-size: 12px;
-    color: #666;
+    font-size: $FONT-12;
+    color: $DARKGREY;
   }
 }
 
@@ -556,18 +565,26 @@
   font-weight: 600;
 
   &.cls-negative {
-    color: #ff4d4f;
+    color: $ERROR-COLOR;
   }
 
   &.cls-positive {
-    color: #52c41a;
+    color: $SUCCESS-COLOR;
   }
 }
 
 .cls-price {
+  font-family: var(--font-regular);
   table {
-    tbody {
+    tbody, thead {
       tr {
+        td,th{
+          font-family: var(--font-regular);
+          font-size: $FONT-13;
+          span,div{
+            font-family: var(--font-regular);
+          }
+        }
         td:nth-of-type(4) {
           span {
             width: 100%;
@@ -582,7 +599,7 @@
 
 .cls-info-icon {
   font-size: $FONT-12;
-  color: #999;
+  color: $GREY;
 }
 
 // Responsive Design
@@ -767,7 +784,7 @@
 // 1025px - 1440px (Desktop)
 @media (min-width: 1025px) and (max-width: 1440px) {
   .cls-dashboard-container {
-    padding: 28px;
+    // padding: 28px;
     padding-top: 0;
   }
 
@@ -852,7 +869,7 @@
 
 .cls-tab-switcher {
   display: flex;
-  background: #f0f0f0;
+  background: $LIGHTWHITE;
   border-radius: 6px;
   padding: 4px;
   gap: 2px;
@@ -864,13 +881,8 @@
   min-width: 50px;
 
   &.cls-tab-active {
-    background: #4c1d95;
-    color: white;
-  }
-
-  &:not(.cls-tab-active) {
-    background: transparent;
-    color: #666;
+    background: $SECONDARYCOLOR;
+    color: $WHITE;
   }
 }
 
@@ -901,8 +913,8 @@
 
 .cls-booking-text,
 .cls-cancellation-text {
-  font-size: 12px;
-  color: #666;
+  font-size: $FONT-12;
+  color: $DARKGREY;
 }
 
 // Filter Container Styles
@@ -918,11 +930,11 @@
   font-weight: 600;
 
   &.cls-negative {
-    color: #ff4d4f;
+    color: $ERROR-COLOR;
   }
 
   &.cls-positive {
-    color: #52c41a;
+    color: $SUCCESS-COLOR;
   }
 }
 .cls-logos{
@@ -936,10 +948,10 @@
 }
 .cls-record{
   font-size: 12;
-  color: #666;
+  color: $DARKGREY;
 }
 .cls-claim{
-  color: #52c41a;
+  color: $SUCCESS-COLOR;
 }
 .cls-applyBtn{
   display: flex;
@@ -955,7 +967,7 @@
     gap: 16px;
     .cls-toggleBtn{
       display: flex;
-      background: #f0f0f0;
+      background: $LIGHTWHITE;
       border-radius: 6px;
       padding: 4px;
       gap: 2px;

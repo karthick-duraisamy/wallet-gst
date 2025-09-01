@@ -9,18 +9,22 @@
 }
 
 .cls-reconciliation-container {
-  padding: 24px;
+  // padding: 24px;
   background: $BACKGROUND-COLOR;
   min-height: 100vh;
 
   .cls-customFilter {
     width: 100%;
     margin-bottom: 24px;
+    label{
+      font-family: var(--font-semibold);
+    }
   }
 }
 
 .cls-reconciliation-title {
-  font-size: 24px;
+  font-family: var(--font-semibold);
+  font-size: $FONT-24;
   font-weight: 600;
   color: $SECONDARYCOLOR;
   margin-bottom: 24px;
@@ -28,9 +32,11 @@
 
 .cls-type-selection {
   margin-bottom: 24px;
-
   .ant-radio-wrapper {
     font-weight: 500;
+    span{
+      font-family: var(--font-regular);
+    }
   }
 }
 
@@ -72,7 +78,7 @@
     }
 
     .cls-submit-button {
-      background-color: #4f46e5;
+      background-color: $PRIMARYCOLOR;
     }
   }
 }
@@ -95,7 +101,7 @@
   margin-bottom: 16px;
 
   .cls-export-btn {
-    color: white;
+    color: $WHITE;
     border: none;
     display: flex;
     align-items: center;
@@ -128,12 +134,14 @@
       font-size: $FONT-14 !important;
       border-bottom: 2px solid #e2e8f0 !important;
       padding: 12px 16px !important;
-      white-space: nowrap !important;
+      $WHITE-space: nowrap !important;
+      font-family: var(--font-semibold);
     }
 
     .ant-table-tbody>tr>td {
       padding: 12px 16px !important;
       border-bottom: 1px solid #f1f5f9 !important;
+      font-family: var(--font-regular);
     }
 
     .ant-table-tbody>tr:hover>td {
@@ -166,7 +174,7 @@
     position: absolute;
     top: 100%;
     right: 0;
-    background: white;
+    background: $WHITE;
     border: 1px solid $BORDER-COLOR;
     border-radius: 6px;
     padding: 16px;
@@ -191,7 +199,8 @@
   align-items: center;
   margin-top: 16px;
   padding-top: 16px;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid $LIGHTWHITE;
+  font-family: var(--font-regular);
 }
 
 .cls-pagination-info {
@@ -232,15 +241,15 @@
     justify-content: center;
 
     &.cls-active {
-      background-color: #4f46e5;
-      border-color: #4f46e5;
-      color: white;
+      background-color: $PRIMARYCOLOR;
+      border-color: $PRIMARYCOLOR;
+      color: $WHITE;
     }
 
     &.cls-inactive {
-      background-color: white;
+      background-color: $WHITE;
       border-color: $BORDER-COLOR;
-      color: #000;
+      color: $BLACK;
     }
   }
 
@@ -263,7 +272,7 @@
   }
 
   .cls-goto-button {
-    background-color: #4f46e5;
+    background-color: $PRIMARYCOLOR;
     border-radius: 16px;
   }
 }
@@ -274,6 +283,9 @@
   padding: 0 16px 8px 0;
   position: relative;
   z-index: 10;
+  button{
+    font-family: var(--font-regular);
+  }
 }
 
 .cls-external-filter-icon {
@@ -294,7 +306,7 @@
   position: absolute;
   top: 100%;
   right: 0;
-  background: white;
+  background: $WHITE;
   border: 1px solid #e1e5e9;
   border-radius: 8px;
   padding: 0;
@@ -306,7 +318,7 @@
   .cls-filter-header {
     position: relative;
     padding: 16px 16px 12px 16px;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid $LIGHTWHITE;
     background: #fafafa;
     border-radius: 8px 8px 0 0;
   }
@@ -336,19 +348,19 @@
       color: #24292f;
 
       &:hover {
-        color: #4f46e5;
+        color: $PRIMARYCOLOR;
       }
     }
 
     .ant-checkbox {
       &:hover .ant-checkbox-inner {
-        border-color: #4f46e5;
+        border-color: $PRIMARYCOLOR;
       }
     }
 
     .ant-checkbox-checked .ant-checkbox-inner {
-      background-color: #4f46e5;
-      border-color: #4f46e5;
+      background-color: $PRIMARYCOLOR;
+      border-color: $PRIMARYCOLOR;
     }
   }
 }
@@ -357,7 +369,7 @@
   display: flex;
   gap: 0px;
   padding: 16px 0;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid $LIGHTWHITE;
   margin-bottom: 16px;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -374,13 +386,15 @@
     .cls-status-label {
       font-size: 13px;
       color: $GREY;
+      font-family: var(--font-regular);
     }
 
     .cls-status-value {
       font-size: $FONT-14;
       font-weight: 600;
-      color: #4c1d95;
+      color: $SECONDARYCOLOR;
       text-align: center;
+      font-family: var(--font-semibold);
     }
   }
 }
@@ -409,7 +423,7 @@
 
 // Tax Claimable Amount Styles
 .cls-tax-claimable-amount {
-  color: #52c41a;
+  color: $SUCCESS-COLOR;
   font-weight: 600;
 }
 
@@ -420,7 +434,7 @@
   align-items: center;
   margin-top: 16px;
   padding-top: 16px;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid $LIGHTWHITE;
 }
 
 .cls-pagination-info {
@@ -430,7 +444,7 @@
 }
 
 .cls-pagination-text {
-  font-size: 14px;
+  font-size: $FONT-14;
 }
 
 .cls-page-size-select {
@@ -450,7 +464,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #d9d9d9;
+  border: 1px solid $BORDER-COLOR;
 }
 
 .cls-pagination-number-button {
@@ -460,14 +474,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: white;
-  border-color: #d9d9d9;
-  color: #000;
+  background-color: $WHITE;
+  border-color: $BORDER-COLOR;
+  color: $BLACK;
 
   &.cls-active {
-    background-color: #4f46e5;
-    border-color: #4f46e5;
-    color: white;
+    background-color: $PRIMARYCOLOR;
+    border-color: $PRIMARYCOLOR;
+    color: $WHITE;
   }
 }
 
@@ -486,6 +500,6 @@
 }
 
 .cls-go-to-page-button {
-  background-color: #4f46e5;
+  background-color: $PRIMARYCOLOR;
   border-radius: 16px;
 }

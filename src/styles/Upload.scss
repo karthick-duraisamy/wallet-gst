@@ -1,17 +1,26 @@
 
 
 .cls-upload-container {
-  padding: 24px;
+  // padding: 24px;
   background: $BACKGROUND-COLOR;
   min-height: 100vh;
   padding-top: 0px;
+  .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn{
+    font-weight: normal;
+  }
+  .cls-tabs{
+    span{
+      font-family: var(--font-regular);
+    }
+  }
 }
 
 .cls-page-title {
-  font-size: 24px;
+  font-size: $FONT-24;
   font-weight: 600;
   color: $SECONDARYCOLOR;
   margin-bottom: 24px;
+  font-family: var(--font-semibold);
 }
 
 .cls-success-alert {
@@ -25,6 +34,9 @@
 
   .ant-radio-wrapper {
     font-weight: 500;
+    span{
+      font-family: var(--font-regular);
+    }
   }
 }
 
@@ -43,7 +55,7 @@
   .ant-tabs-nav {
     margin: 0;
     background: #fafafa;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid $LIGHTWHITE;
   }
 }
 
@@ -56,6 +68,7 @@
   background: #dddd001c;
   border-radius: 8px;
   border: 1px solid #dddd001c;
+  font-family: var(--font-regular);
 
   .anticon {
     color: #93930c;
@@ -79,6 +92,7 @@
   margin-bottom: 24px;
   font-size: $FONT-14;
   color: $GREY;
+  font-family: var(--font-regular);
 
   div:first-child {
     margin-bottom: 4px;
@@ -106,14 +120,14 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 
   &.cls-drag-over {
-    border-color: #4f46e5;
+    border-color: $PRIMARYCOLOR;
     background: #f8f9ff;
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(79, 70, 229, 0.15);
   }
 
   &:hover:not(.ant-upload-disabled) {
-    border-color: #4f46e5;
+    border-color: $PRIMARYCOLOR;
     box-shadow: 0 4px 16px rgba(79, 70, 229, 0.1);
   }
 
@@ -124,16 +138,16 @@
     cursor: not-allowed;
 
     .cls-upload-main-text {
-      color: #999;
+      color: $GREY;
     }
 
     .cls-select-file-btn {
-      color: #999;
+      color: $GREY;
       cursor: not-allowed;
     }
 
     .cls-upload-icon {
-      background: #ccc;
+      background: $GREY;
     }
   }
 }
@@ -151,7 +165,7 @@
 .cls-upload-icon-border {
   /* Remove the circle */
   /* border-radius: 50%; */
-  /* border: 1.5px dashed #ccc; */
+  /* border: 1.5px dashed $GREY; */
   /* height: 120px; */
   /* width: 120px; */
   position: relative;
@@ -232,12 +246,13 @@
 }
 
 .cls-sample-file-btn {
+  font-family: var(--font-regular);
   position: absolute;
   bottom: 0;
   right: 0;
   background: $SUCCESS-COLOR;
   border-color: $SUCCESS-COLOR;
-  color: white;
+  color: $WHITE;
   border-radius: 20px 0px 0px 0px;
   font-weight: 500;
   font-size: $FONT-14;
@@ -268,7 +283,7 @@
 
 .cls-file-item {
   margin-bottom: 12px;
-  background: white;
+  background: $WHITE;
   border-radius: 8px;
   padding: 12px;
   border: 1px solid #e9ecef;
@@ -299,7 +314,7 @@
   justify-content: center;
 
   .anticon {
-    color: white;
+    color: $WHITE;
     font-size: $FONT-12;
   }
 }
@@ -314,7 +329,7 @@
   color: $TEXT-COLOR;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  $WHITE-space: nowrap;
   width: 110px;
 }
 
@@ -330,7 +345,7 @@
 }
 
 .cls-remove-file {
-  color: red;
+  color: $ERROR-COLOR;
   cursor: pointer;
   font-size: $FONT-12;
 }
@@ -371,7 +386,7 @@
     width: 16px;
     height: 16px;
     background-color: $SUCCESS-COLOR;
-    color: white;
+    color: $WHITE;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -413,9 +428,9 @@
 //   border-radius: 12px;
 //   padding: 20px;
 //   min-height: 240px;
-//   background: white;
+//   background: $WHITE;
 //   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-//   border: 1px solid #f0f0f0;
+//   border: 1px solid $LIGHTWHITE;
 // }
 
 .cls-submit-section {
@@ -427,11 +442,13 @@
   height: 40px;
   border-radius: 6px;
   font-weight: 500;
-  background-color: #4f46e5;
-  border-color: #4f46e5;
+  background-color: $PRIMARYCOLOR;
+  border-color: $PRIMARYCOLOR;
+  font-family: var(--font-regular);
 }
 
 .cls-info {
+  font-family: var(--font-regular);
   background: #18caff26;
   padding: 10px 12px;
   border-radius: 8px;
@@ -483,15 +500,16 @@
   .cls-upload-main-text {
     font-size: 13px;
     margin-bottom: 6px;
+    font-family: var(--font-regular);
   }
   
   .cls-upload-or-text {
-    font-size: 12px;
+    font-size: $FONT-12;
     margin-bottom: 8px;
   }
   
   .cls-select-file-btn {
-    font-size: 12px;
+    font-size: $FONT-12;
   }
   
   .cls-sample-file-btn {
@@ -507,7 +525,7 @@
   
   .cls-file-name {
     width: 80px;
-    font-size: 12px;
+    font-size: $FONT-12;
   }
   
   .cls-file-size {
@@ -517,7 +535,7 @@
   .cls-tab-content {
     margin: 15px 10px;
     padding: 6px 10px;
-    font-size: 12px;
+    font-size: $FONT-12;
   }
 }
 
@@ -549,7 +567,7 @@
   }
   
   .cls-sample-file-btn {
-    font-size: 12px;
+    font-size: $FONT-12;
     padding: 12px;
     height: 42px;
   }
@@ -621,7 +639,7 @@
 // 1025px - 1440px (Desktop)
 @media (min-width: 1025px) and (max-width: 1440px) {
   .cls-upload-container {
-    padding: 28px;
+    // padding: 28px;
     padding-top: 0;
   }
   
@@ -744,7 +762,7 @@
   /* Style your filter icon here */
   /* Example styles: */
   font-size: $FONT-20;
-  color: #999;
+  color: $GREY;
   cursor: pointer;
 }
 // File Count Status
@@ -753,24 +771,24 @@
   margin-top: 4px;
   
   &.cls-normal {
-    color: #52c41a;
+    color: $SUCCESS-COLOR;
   }
   
   &.cls-limit-reached {
-    color: #ff4d4f;
+    color: $ERROR-COLOR;
   }
 }
 
 // Upload Progress Text
 .cls-upload-spinner-text {
-  font-size: 12px;
-  color: #666;
+  font-size: $FONT-12;
+  color: $DARKGREY;
   margin-left: 8px;
 }
 
 .cls-upload-success-text {
-  font-size: 12px;
-  color: #52c41a;
+  font-size: $FONT-12;
+  color: $SUCCESS-COLOR;
   margin-left: 8px;
 }
 

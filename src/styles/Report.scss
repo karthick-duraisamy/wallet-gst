@@ -3,7 +3,7 @@
 
 // Report Container
 .cls-report-container {
-  background: #f5f5f5;
+  background: $BACKGROUND-COLOR;
   min-height: calc(100vh - 128px);
   
   &.cls-dark {
@@ -27,10 +27,17 @@
 
 .cls-report-title {
   margin: 0;
-  color: #722ed1;
-  font-size: 24px;
+  color: $SECONDARYCOLOR;
+  font-size: $FONT-24;
+  font-family: var(--font-semibold);
 }
-
+.cls-report-sideBar{
+  .ant-card-body{
+    div{
+      font-family: var(--font-regular);
+    }
+  }
+}
 // Report Layout
 .cls-report-layout {
   display: flex;
@@ -46,7 +53,7 @@
 }
 
 .cls-report-types-card {
-  background: #fff;
+  background: $WHITE;
   padding: 8px;
   
   &.cls-dark {
@@ -58,21 +65,21 @@
   padding: 12px 16px;
   margin-bottom: 4px;
   background: transparent;
-  color: #1a1a1a;
+  color: $TEXT-COLOR;
   border-radius: 6px;
   cursor: pointer;
   font-weight: 400;
-  font-size: 14px;
+  font-size: $FONT-14;
   transition: all 0.2s ease;
   
   &.cls-active {
-    background: #5A4FCF;
-    color: #fff;
+    background: $SECONDARYCOLOR;
+    color: $WHITE;
     font-weight: 500;
   }
   
   &.cls-dark:not(.cls-active) {
-    color: #fff;
+    color: $WHITE;
   }
 }
 
@@ -83,7 +90,7 @@
 
 // Steps Card
 .cls-steps-card {
-  background: #fff;
+  background: $WHITE;
   margin-bottom: 24px;
   
   &.cls-dark {
@@ -110,20 +117,20 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #f0f0f0;
-  color: #999;
+  background: $LIGHTWHITE;
+  color: $GREY;
   margin-right: 12px;
-  font-size: 14px;
+  font-size: $FONT-14;
   font-weight: 600;
   
   &.cls-active {
-    background: #5A4FCF;
-    color: #fff;
+    background: $SECONDARYCOLOR;
+    color: $WHITE;
   }
 }
 
 .cls-step-title {
-  color: #1a1a1a;
+  color: $TEXT-COLOR;
   font-weight: 400;
   margin-right: 32px;
   
@@ -132,7 +139,7 @@
   }
   
   &.cls-dark {
-    color: #fff;
+    color: $WHITE;
   }
   
   &:last-of-type {
@@ -143,11 +150,11 @@
 .cls-step-connector {
   width: 40px;
   height: 2px;
-  background: #f0f0f0;
+  background: $LIGHTWHITE;
   margin: 0 24px;
   
   &.cls-active {
-    background: #5A4FCF;
+    background: $SECONDARYCOLOR;
   }
 }
 
@@ -170,11 +177,16 @@
 }
 
 .cls-category-title {
-  color: #1a1a1a;
-  font-size: 16px;
+  color: $TEXT-COLOR;
+  font-size: $FONT-16;
   
   &.cls-dark {
-    color: #fff;
+    color: $WHITE;
+  }
+}
+.cls-SelectedChecks{
+  span{
+    font-family: var(--font-regular);
   }
 }
 
@@ -190,8 +202,8 @@
 }
 
 .cls-select-all-text {
-  color: #5A4FCF;
-  font-size: 14px;
+  color: $SECONDARYCOLOR;
+  font-size: $FONT-14;
   cursor: pointer;
 }
 
@@ -209,18 +221,19 @@
 }
 
 .cls-field-label {
-  color: #1a1a1a;
-  font-size: 14px;
+  color: $TEXT-COLOR;
+  font-size: $FONT-14;
   font-weight: 400;
   cursor: pointer;
+  font-family: var(--font-regular);
   
   &.cls-selected {
-    color: #1a1a1a;
+    color: $TEXT-COLOR;
     font-weight: 500;
   }
   
   &.cls-dark:not(.cls-selected) {
-    color: #fff;
+    color: $WHITE;
   }
 }
 
@@ -230,6 +243,11 @@
   justify-content: end;
   gap: 15px;
   align-items: center;
+  button{
+    span{
+      font-family: var(--font-regular);
+    }
+  }
 }
 
 // Conditions Section
@@ -253,7 +271,11 @@
   gap: 15px;
   align-items: center;
 }
-
+.cls-report-titles{
+  div,span{
+    font-family: var(--font-regular);
+  }
+}
 // Responsive Design
 @media (max-width: 768px) {
   .cls-report-layout {
@@ -285,4 +307,211 @@
   .cls-step-connector {
     display: none;
   }
+}
+.cls-report-sec{
+  margin-bottom: 24px;
+  .cls-report-sub{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding: 0;
+    span{
+      font-family: var(--font-regular);
+    }
+    .cls-checkBox{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      .cls-check{
+        transform: scale(1.2);
+      }
+      .cls-repoText{
+        color: $SECONDARYCOLOR;
+        font-size: $FONT-14;
+        cursor: pointer;
+      }
+    }
+  }
+}
+.condition-section {
+  margin-bottom: 24px;
+}
+
+.condition-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 0;
+  span{
+    font-family: var(--font-semibold);
+  }
+}
+
+.select-all-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  span{
+    font-family: var(--font-regular);
+  }
+}
+
+.select-all-text {
+  color: $SECONDARYCOLOR;
+  font-size: $FONT-14;
+  cursor: pointer;
+}
+
+.condition-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  span{
+    font-family: var(--font-regular);
+  }
+}
+/* Report Wrapper */
+.cls-report {
+  min-height: 100vh;
+  padding: 16px;
+}
+
+.cls-report-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.cls-header-left {
+  display: flex;
+  align-items: center;
+}
+
+.cls-header-title {
+  margin: 0;
+}
+
+/* Body Layout */
+.cls-report-body {
+  display: flex;
+  gap: 16px;
+}
+
+/* Sidebar */
+.cls-sidebar {
+  width: 200px;
+}
+
+.cls-sidebar-card {
+  padding: 0;
+}
+
+.cls-sidebar-item {
+  padding: 10px 16px;
+  cursor: pointer;
+  border-bottom: 1px solid $LIGHTWHITE;
+  transition: background 0.2s;
+
+  &:hover {
+    background: $BACKGROUND-COLOR;
+  }
+
+  &.active {
+    background: $SECONDARYCOLOR;
+    color: $WHITE;
+  }
+}
+
+/* Main Content */
+.cls-main {
+  flex: 1;
+}
+
+.cls-steps-card {
+  padding: 16px;
+}
+
+.cls-steps {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.cls-step {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.cls-step-number {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.cls-step-title {
+  margin-left: 8px;
+}
+
+.cls-step-line {
+  flex: 1;
+  height: 2px;
+  margin: 0 8px;
+}
+
+/* Actions */
+.cls-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.cls-btn-download {
+  background-color: $INFO-COLOR;
+  border-color: $INFO-COLOR;
+  color: $WHITE;
+
+  &:hover {
+    background-color: #40a9ff;
+    border-color: #40a9ff;
+  }
+}
+
+.cls-btn-save {
+  background-color: $SUCCESS-COLOR;
+  border-color: $SUCCESS-COLOR;
+  color: $WHITE;
+
+  &:hover {
+    background-color: $SUCCESS-COLOR;
+    border-color: $SUCCESS-COLOR;
+  }
+}
+
+.cls-btn-continue {
+  background-color: $SECONDARYCOLOR;
+  border-color: $SECONDARYCOLOR;
+  color: $WHITE;
+
+  &:hover {
+    background-color: $SECONDARYCOLOR;
+    border-color: $SECONDARYCOLOR;
+  }
+}
+
+/* Form elements in modal */
+.ant-modal .ant-form-item {
+  margin-bottom: 16px;
 }

@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store/store';
 import { loginSuccess } from '../store/slices/authSlice';
+import { Spin } from 'antd';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -30,7 +31,23 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   }, [isAuthenticated, dispatch]);
 
   if (isLoading) {
-    return <div>Loading...</div>; // You can replace this with a proper loading component
+    return (
+      <div
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          zIndex: 9999,
+        }}
+      >
+        <Spin size="large" tip="Loading..." />
+      </div>
+    );
   }
 
   if (!isAuthenticated) {

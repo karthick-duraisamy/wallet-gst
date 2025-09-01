@@ -17,6 +17,7 @@ import CumulativeInvoice from './pages/CumulativeInvoice';
 import Report from './pages/Report'; // Import the Report component
 import SavedReports from './pages/SavedReports'; // Import SavedReports component
 import QueuedReports from './pages/QueuedReports'; // Import QueuedReports component
+import './assets/fonts.scss'
 import './App.css';
 
 const App: React.FC = () => {

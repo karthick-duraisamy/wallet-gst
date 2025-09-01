@@ -1,295 +1,1858 @@
-
 {
   "reportFields": {
-    "DSR": {
+    "Net claimable": {
       "itineraryDetails": [
-        { "key": "booking_reference_id", "label": "Booking reference Id", "checked": true },
-        { "key": "sba_id", "label": "SBA Id", "checked": true },
-        { "key": "agency_name", "label": "Agency name", "checked": true },
-        { "key": "invoice_number", "label": "Invoice number", "checked": false },
-        { "key": "invoice_date", "label": "Invoice date", "checked": false },
-        { "key": "invoice_time", "label": "Invoice time", "checked": false },
-        { "key": "sector", "label": "Sector", "checked": false },
-        { "key": "origin", "label": "Origin", "checked": false },
-        { "key": "origin_country", "label": "Origin Country", "checked": false },
-        { "key": "destination", "label": "Destination", "checked": false },
-        { "key": "destination_country", "label": "Destination Country", "checked": false },
-        { "key": "payment_mode", "label": "Payment Mode", "checked": false },
-        { "key": "payment_gateway", "label": "Payment Gateway", "checked": false },
-        { "key": "payment_reference_id", "label": "Payment Reference Id", "checked": false },
-        { "key": "payment_reference_remarks", "label": "Payment Reference Remarks", "checked": false },
-        { "key": "payment_date", "label": "Payment Date", "checked": true },
-        { "key": "trip_type", "label": "Trip Type", "checked": true },
-        { "key": "fare_category", "label": "Fare Category", "checked": false },
-        { "key": "number_of_segments", "label": "Number of segments", "checked": false },
-        { "key": "travel_type", "label": "Travel Type", "checked": false },
-        { "key": "gds_pnr", "label": "GDS PNR", "checked": false },
-        { "key": "galileo_pnr", "label": "Galileo PNR", "checked": false },
-        { "key": "split_pnr", "label": "Split PNR", "checked": false },
-        { "key": "pnr_number", "label": "PNR Number", "checked": false },
-        { "key": "ticketing_pcc", "label": "Ticketing PCC", "checked": false },
-        { "key": "tour_code", "label": "Tour Code", "checked": false },
-        { "key": "search_pcc", "label": "Search PCC", "checked": false },
-        { "key": "coupon_code", "label": "Coupon Code", "checked": false },
-        { "key": "promo_code", "label": "Promo Code", "checked": false },
-        { "key": "tour_counts", "label": "Tour Counts", "checked": false },
-        { "key": "departure_time", "label": "Departure Time", "checked": true },
-        { "key": "arrival_date", "label": "Arrival Date", "checked": false },
-        { "key": "departure_date", "label": "Departure Date", "checked": true },
-        { "key": "imported", "label": "Imported", "checked": false },
-        { "key": "import_mode", "label": "Import Mode", "checked": false },
-        { "key": "booking_status", "label": "Booking Status", "checked": false },
-        { "key": "seat_blocking", "label": "Seat Blocking", "checked": false },
-        { "key": "ticket_requested_date", "label": "Ticket Requested Date", "checked": false },
-        { "key": "ticket_requested_time", "label": "Ticket Requested Time", "checked": false },
-        { "key": "cancellation_status", "label": "Cancellation Status", "checked": false },
-        { "key": "cancel_requested_date", "label": "Cancel Requested Date", "checked": false },
-        { "key": "cancel_requested_time", "label": "Cancel Requested Time", "checked": false },
-        { "key": "escalated_by", "label": "Escalated By", "checked": false },
-        { "key": "hotel_deals", "label": "Hotel Deals", "checked": false }
+        {
+          "key": "booking_reference_id",
+          "label": "Booking reference Id",
+          "checked": true
+        },
+        {
+          "key": "sba_id",
+          "label": "SBA Id",
+          "checked": true
+        },
+        {
+          "key": "agency_name",
+          "label": "Agency name",
+          "checked": true
+        },
+        {
+          "key": "invoice_number",
+          "label": "Invoice number",
+          "checked": false
+        },
+        {
+          "key": "invoice_date",
+          "label": "Invoice date",
+          "checked": false
+        },
+        {
+          "key": "invoice_time",
+          "label": "Invoice time",
+          "checked": false
+        },
+        {
+          "key": "sector",
+          "label": "Sector",
+          "checked": false
+        },
+        {
+          "key": "origin",
+          "label": "Origin",
+          "checked": false
+        },
+        {
+          "key": "origin_country",
+          "label": "Origin Country",
+          "checked": false
+        },
+        {
+          "key": "destination",
+          "label": "Destination",
+          "checked": false
+        },
+        {
+          "key": "destination_country",
+          "label": "Destination Country",
+          "checked": false
+        },
+        {
+          "key": "payment_mode",
+          "label": "Payment Mode",
+          "checked": false
+        },
+        {
+          "key": "payment_gateway",
+          "label": "Payment Gateway",
+          "checked": false
+        },
+        {
+          "key": "payment_reference_id",
+          "label": "Payment Reference Id",
+          "checked": false
+        },
+        {
+          "key": "payment_reference_remarks",
+          "label": "Payment Reference Remarks",
+          "checked": false
+        },
+        {
+          "key": "payment_date",
+          "label": "Payment Date",
+          "checked": true
+        },
+        {
+          "key": "trip_type",
+          "label": "Trip Type",
+          "checked": true
+        },
+        {
+          "key": "fare_category",
+          "label": "Fare Category",
+          "checked": false
+        },
+        {
+          "key": "number_of_segments",
+          "label": "Number of segments",
+          "checked": false
+        },
+        {
+          "key": "travel_type",
+          "label": "Travel Type",
+          "checked": false
+        },
+        {
+          "key": "gds_pnr",
+          "label": "GDS PNR",
+          "checked": false
+        },
+        {
+          "key": "galileo_pnr",
+          "label": "Galileo PNR",
+          "checked": false
+        },
+        {
+          "key": "split_pnr",
+          "label": "Split PNR",
+          "checked": false
+        },
+        {
+          "key": "pnr_number",
+          "label": "PNR Number",
+          "checked": false
+        },
+        {
+          "key": "ticketing_pcc",
+          "label": "Ticketing PCC",
+          "checked": false
+        },
+        {
+          "key": "tour_code",
+          "label": "Tour Code",
+          "checked": false
+        },
+        {
+          "key": "search_pcc",
+          "label": "Search PCC",
+          "checked": false
+        },
+        {
+          "key": "coupon_code",
+          "label": "Coupon Code",
+          "checked": false
+        },
+        {
+          "key": "promo_code",
+          "label": "Promo Code",
+          "checked": false
+        },
+        {
+          "key": "tour_counts",
+          "label": "Tour Counts",
+          "checked": false
+        },
+        {
+          "key": "departure_time",
+          "label": "Departure Time",
+          "checked": true
+        },
+        {
+          "key": "arrival_date",
+          "label": "Arrival Date",
+          "checked": false
+        },
+        {
+          "key": "departure_date",
+          "label": "Departure Date",
+          "checked": true
+        },
+        {
+          "key": "imported",
+          "label": "Imported",
+          "checked": false
+        },
+        {
+          "key": "import_mode",
+          "label": "Import Mode",
+          "checked": false
+        },
+        {
+          "key": "booking_status",
+          "label": "Booking Status",
+          "checked": false
+        },
+        {
+          "key": "seat_blocking",
+          "label": "Seat Blocking",
+          "checked": false
+        },
+        {
+          "key": "ticket_requested_date",
+          "label": "Ticket Requested Date",
+          "checked": false
+        },
+        {
+          "key": "ticket_requested_time",
+          "label": "Ticket Requested Time",
+          "checked": false
+        },
+        {
+          "key": "cancellation_status",
+          "label": "Cancellation Status",
+          "checked": false
+        },
+        {
+          "key": "cancel_requested_date",
+          "label": "Cancel Requested Date",
+          "checked": false
+        },
+        {
+          "key": "cancel_requested_time",
+          "label": "Cancel Requested Time",
+          "checked": false
+        },
+        {
+          "key": "escalated_by",
+          "label": "Escalated By",
+          "checked": false
+        },
+        {
+          "key": "hotel_deals",
+          "label": "Hotel Deals",
+          "checked": false
+        }
       ],
       "passengerDetails": [
-        { "key": "passenger_name", "label": "Passenger Name", "checked": true },
-        { "key": "pax_type", "label": "Pax Type", "checked": false },
-        { "key": "ticket_number", "label": "Ticket Number", "checked": false },
-        { "key": "passenger_dob", "label": "Passenger DOB", "checked": false },
-        { "key": "passenger_mob_no", "label": "Passenger Mob No", "checked": false },
-        { "key": "contact_email_id", "label": "Contact Email Id", "checked": false },
-        { "key": "passenger_status", "label": "Passenger Status", "checked": false }
+        {
+          "key": "passenger_name",
+          "label": "Passenger Name",
+          "checked": true
+        },
+        {
+          "key": "pax_type",
+          "label": "Pax Type",
+          "checked": false
+        },
+        {
+          "key": "ticket_number",
+          "label": "Ticket Number",
+          "checked": false
+        },
+        {
+          "key": "passenger_dob",
+          "label": "Passenger DOB",
+          "checked": false
+        },
+        {
+          "key": "passenger_mob_no",
+          "label": "Passenger Mob No",
+          "checked": false
+        },
+        {
+          "key": "contact_email_id",
+          "label": "Contact Email Id",
+          "checked": false
+        },
+        {
+          "key": "passenger_status",
+          "label": "Passenger Status",
+          "checked": false
+        }
       ],
       "fareDetails": [
-        { "key": "currency_type", "label": "Currency Type", "checked": false },
-        { "key": "base_fare", "label": "Base Fare", "checked": false },
-        { "key": "total_tax", "label": "Total Tax", "checked": false },
-        { "key": "meal_fare", "label": "Meal Fare", "checked": false },
-        { "key": "seat_fare", "label": "Seat Fare", "checked": false },
-        { "key": "baggage_fare", "label": "Baggage Fare", "checked": false },
-        { "key": "gst", "label": "GST", "checked": false },
-        { "key": "cancellation_charge", "label": "Cancellation Charge", "checked": false },
-        { "key": "convenience_fee", "label": "Convenience Fee", "checked": false },
-        { "key": "convenience_fee_gst", "label": "Convenience Fee GST", "checked": false },
-        { "key": "coupon_discount", "label": "Coupon Discount", "checked": false },
-        { "key": "pnr_amount", "label": "PNR Amount", "checked": false },
-        { "key": "price_difference", "label": "Price Difference", "checked": false },
-        { "key": "gross_amount", "label": "Gross Amount", "checked": false }
+        {
+          "key": "currency_type",
+          "label": "Currency Type",
+          "checked": false
+        },
+        {
+          "key": "base_fare",
+          "label": "Base Fare",
+          "checked": false
+        },
+        {
+          "key": "total_tax",
+          "label": "Total Tax",
+          "checked": false
+        },
+        {
+          "key": "meal_fare",
+          "label": "Meal Fare",
+          "checked": false
+        },
+        {
+          "key": "seat_fare",
+          "label": "Seat Fare",
+          "checked": false
+        },
+        {
+          "key": "baggage_fare",
+          "label": "Baggage Fare",
+          "checked": false
+        },
+        {
+          "key": "gst",
+          "label": "GST",
+          "checked": false
+        },
+        {
+          "key": "cancellation_charge",
+          "label": "Cancellation Charge",
+          "checked": false
+        },
+        {
+          "key": "convenience_fee",
+          "label": "Convenience Fee",
+          "checked": false
+        },
+        {
+          "key": "convenience_fee_gst",
+          "label": "Convenience Fee GST",
+          "checked": false
+        },
+        {
+          "key": "coupon_discount",
+          "label": "Coupon Discount",
+          "checked": false
+        },
+        {
+          "key": "pnr_amount",
+          "label": "PNR Amount",
+          "checked": false
+        },
+        {
+          "key": "price_difference",
+          "label": "Price Difference",
+          "checked": false
+        },
+        {
+          "key": "gross_amount",
+          "label": "Gross Amount",
+          "checked": false
+        }
       ],
       "commissionDetails": [
-        { "key": "commission_name", "label": "Commission Name", "checked": false },
-        { "key": "management_fee", "label": "Management Fee", "checked": false },
-        { "key": "management_fee_tax", "label": "Management Fee Tax", "checked": false },
-        { "key": "import_fee", "label": "Import Fee", "checked": false },
-        { "key": "import_fee_tax", "label": "Import Fee Tax", "checked": false },
-        { "key": "other_fee", "label": "Other Fee", "checked": false },
-        { "key": "iq_tax", "label": "IQ Tax", "checked": false },
-        { "key": "commission_amount", "label": "Commission Amount", "checked": false },
-        { "key": "iq_commission", "label": "IQ Commission", "checked": false },
-        { "key": "segment_money", "label": "Segment Money", "checked": false },
-        { "key": "tds_amount", "label": "TDS Amount", "checked": false },
-        { "key": "admin_markup_fee", "label": "Admin Markup Fee", "checked": false },
-        { "key": "agency_markup_fee", "label": "Agency Markup Fee", "checked": false },
-        { "key": "cancellation_management_fee", "label": "Cancellation Management Fee", "checked": false },
-        { "key": "cancellation_management_fee_tax", "label": "Cancellation Management Fee Tax", "checked": false }
+        {
+          "key": "commission_name",
+          "label": "Commission Name",
+          "checked": false
+        },
+        {
+          "key": "management_fee",
+          "label": "Management Fee",
+          "checked": false
+        },
+        {
+          "key": "management_fee_tax",
+          "label": "Management Fee Tax",
+          "checked": false
+        },
+        {
+          "key": "import_fee",
+          "label": "Import Fee",
+          "checked": false
+        },
+        {
+          "key": "import_fee_tax",
+          "label": "Import Fee Tax",
+          "checked": false
+        },
+        {
+          "key": "other_fee",
+          "label": "Other Fee",
+          "checked": false
+        },
+        {
+          "key": "iq_tax",
+          "label": "IQ Tax",
+          "checked": false
+        },
+        {
+          "key": "commission_amount",
+          "label": "Commission Amount",
+          "checked": false
+        },
+        {
+          "key": "iq_commission",
+          "label": "IQ Commission",
+          "checked": false
+        },
+        {
+          "key": "segment_money",
+          "label": "Segment Money",
+          "checked": false
+        },
+        {
+          "key": "tds_amount",
+          "label": "TDS Amount",
+          "checked": false
+        },
+        {
+          "key": "admin_markup_fee",
+          "label": "Admin Markup Fee",
+          "checked": false
+        },
+        {
+          "key": "agency_markup_fee",
+          "label": "Agency Markup Fee",
+          "checked": false
+        },
+        {
+          "key": "cancellation_management_fee",
+          "label": "Cancellation Management Fee",
+          "checked": false
+        },
+        {
+          "key": "cancellation_management_fee_tax",
+          "label": "Cancellation Management Fee Tax",
+          "checked": false
+        }
       ],
       "airlineDetails": [
-        { "key": "airline_code", "label": "Airline Code", "checked": false },
-        { "key": "fare_basis_code", "label": "Fare Basis Code", "checked": false },
-        { "key": "airline_name", "label": "Airline Name", "checked": false },
-        { "key": "flight_number", "label": "Flight Number", "checked": false },
-        { "key": "class_type", "label": "Class Type", "checked": false },
-        { "key": "fare_type", "label": "Fare Type", "checked": false },
-        { "key": "product", "label": "Product", "checked": false },
-        { "key": "ibo", "label": "IBO", "checked": false },
-        { "key": "ibo_settlement", "label": "IBO Settlement", "checked": false },
-        { "key": "service_provider_name", "label": "Service Provider Name", "checked": false },
-        { "key": "provider_trip_id", "label": "Provider trip id", "checked": false },
-        { "key": "tripjack_ref_id", "label": "Tripjack ref id", "checked": false }
+        {
+          "key": "airline_code",
+          "label": "Airline Code",
+          "checked": false
+        },
+        {
+          "key": "fare_basis_code",
+          "label": "Fare Basis Code",
+          "checked": false
+        },
+        {
+          "key": "airline_name",
+          "label": "Airline Name",
+          "checked": false
+        },
+        {
+          "key": "flight_number",
+          "label": "Flight Number",
+          "checked": false
+        },
+        {
+          "key": "class_type",
+          "label": "Class Type",
+          "checked": false
+        },
+        {
+          "key": "fare_type",
+          "label": "Fare Type",
+          "checked": false
+        },
+        {
+          "key": "product",
+          "label": "Product",
+          "checked": false
+        },
+        {
+          "key": "ibo",
+          "label": "IBO",
+          "checked": false
+        },
+        {
+          "key": "ibo_settlement",
+          "label": "IBO Settlement",
+          "checked": false
+        },
+        {
+          "key": "service_provider_name",
+          "label": "Service Provider Name",
+          "checked": false
+        },
+        {
+          "key": "provider_trip_id",
+          "label": "Provider trip id",
+          "checked": false
+        },
+        {
+          "key": "tripjack_ref_id",
+          "label": "Tripjack ref id",
+          "checked": false
+        }
       ],
       "agencyDetails": [
-        { "key": "agent_name", "label": "Agent Name", "checked": false },
-        { "key": "bill_to", "label": "Bill To", "checked": false },
-        { "key": "account_code", "label": "Account Code", "checked": false },
-        { "key": "agency_id", "label": "Agency Id", "checked": false },
-        { "key": "passthru_profile", "label": "Passthru Profile", "checked": false },
-        { "key": "user_type", "label": "User Type", "checked": false },
-        { "key": "agency_url", "label": "Agency URL", "checked": false },
-        { "key": "booked_by", "label": "Booked By", "checked": false },
-        { "key": "cancelled_by", "label": "Cancelled By", "checked": false },
-        { "key": "gst_number", "label": "GST Number", "checked": false },
-        { "key": "gst_email_id", "label": "GST Email Id", "checked": false },
-        { "key": "gst_mobile_no", "label": "GST Mobile No", "checked": false },
-        { "key": "state", "label": "State", "checked": false },
-        { "key": "country", "label": "Country", "checked": false }
+        {
+          "key": "agent_name",
+          "label": "Agent Name",
+          "checked": false
+        },
+        {
+          "key": "bill_to",
+          "label": "Bill To",
+          "checked": false
+        },
+        {
+          "key": "account_code",
+          "label": "Account Code",
+          "checked": false
+        },
+        {
+          "key": "agency_id",
+          "label": "Agency Id",
+          "checked": false
+        },
+        {
+          "key": "passthru_profile",
+          "label": "Passthru Profile",
+          "checked": false
+        },
+        {
+          "key": "user_type",
+          "label": "User Type",
+          "checked": false
+        },
+        {
+          "key": "agency_url",
+          "label": "Agency URL",
+          "checked": false
+        },
+        {
+          "key": "booked_by",
+          "label": "Booked By",
+          "checked": false
+        },
+        {
+          "key": "cancelled_by",
+          "label": "Cancelled By",
+          "checked": false
+        },
+        {
+          "key": "gst_number",
+          "label": "GST Number",
+          "checked": false
+        },
+        {
+          "key": "gst_email_id",
+          "label": "GST Email Id",
+          "checked": false
+        },
+        {
+          "key": "gst_mobile_no",
+          "label": "GST Mobile No",
+          "checked": false
+        },
+        {
+          "key": "state",
+          "label": "State",
+          "checked": false
+        },
+        {
+          "key": "country",
+          "label": "Country",
+          "checked": false
+        }
       ]
     },
-    "Ledger": {
+    "Tax invoices Pending to file": {
       "itineraryDetails": [
-        { "key": "transaction_id", "label": "Transaction ID", "checked": true },
-        { "key": "booking_reference_id", "label": "Booking reference Id", "checked": true },
-        { "key": "account_code", "label": "Account Code", "checked": true },
-        { "key": "transaction_date", "label": "Transaction Date", "checked": false },
-        { "key": "transaction_type", "label": "Transaction Type", "checked": false },
-        { "key": "description", "label": "Description", "checked": false },
-        { "key": "debit_amount", "label": "Debit Amount", "checked": false },
-        { "key": "credit_amount", "label": "Credit Amount", "checked": false },
-        { "key": "balance", "label": "Balance", "checked": false },
-        { "key": "invoice_number", "label": "Invoice Number", "checked": false },
-        { "key": "payment_mode", "label": "Payment Mode", "checked": false },
-        { "key": "payment_reference", "label": "Payment Reference", "checked": false }
+        {
+          "key": "transaction_id",
+          "label": "Transaction ID",
+          "checked": true
+        },
+        {
+          "key": "booking_reference_id",
+          "label": "Booking reference Id",
+          "checked": true
+        },
+        {
+          "key": "account_code",
+          "label": "Account Code",
+          "checked": true
+        },
+        {
+          "key": "transaction_date",
+          "label": "Transaction Date",
+          "checked": false
+        },
+        {
+          "key": "transaction_type",
+          "label": "Transaction Type",
+          "checked": false
+        },
+        {
+          "key": "description",
+          "label": "Description",
+          "checked": false
+        },
+        {
+          "key": "debit_amount",
+          "label": "Debit Amount",
+          "checked": false
+        },
+        {
+          "key": "credit_amount",
+          "label": "Credit Amount",
+          "checked": false
+        },
+        {
+          "key": "balance",
+          "label": "Balance",
+          "checked": false
+        },
+        {
+          "key": "invoice_number",
+          "label": "Invoice Number",
+          "checked": false
+        },
+        {
+          "key": "payment_mode",
+          "label": "Payment Mode",
+          "checked": false
+        },
+        {
+          "key": "payment_reference",
+          "label": "Payment Reference",
+          "checked": false
+        }
       ],
       "passengerDetails": [
-        { "key": "passenger_name", "label": "Passenger Name", "checked": true },
-        { "key": "pax_type", "label": "Pax Type", "checked": false },
-        { "key": "ticket_number", "label": "Ticket Number", "checked": false }
+        {
+          "key": "passenger_name",
+          "label": "Passenger Name",
+          "checked": true
+        },
+        {
+          "key": "pax_type",
+          "label": "Pax Type",
+          "checked": false
+        },
+        {
+          "key": "ticket_number",
+          "label": "Ticket Number",
+          "checked": false
+        }
       ],
       "fareDetails": [
-        { "key": "transaction_amount", "label": "Transaction Amount", "checked": false },
-        { "key": "tax_amount", "label": "Tax Amount", "checked": false },
-        { "key": "net_amount", "label": "Net Amount", "checked": false },
-        { "key": "outstanding_amount", "label": "Outstanding Amount", "checked": false }
+        {
+          "key": "transaction_amount",
+          "label": "Transaction Amount",
+          "checked": false
+        },
+        {
+          "key": "tax_amount",
+          "label": "Tax Amount",
+          "checked": false
+        },
+        {
+          "key": "net_amount",
+          "label": "Net Amount",
+          "checked": false
+        },
+        {
+          "key": "outstanding_amount",
+          "label": "Outstanding Amount",
+          "checked": false
+        }
       ],
       "commissionDetails": [
-        { "key": "commission_amount", "label": "Commission Amount", "checked": false },
-        { "key": "tds_amount", "label": "TDS Amount", "checked": false }
+        {
+          "key": "commission_amount",
+          "label": "Commission Amount",
+          "checked": false
+        },
+        {
+          "key": "tds_amount",
+          "label": "TDS Amount",
+          "checked": false
+        }
       ],
       "airlineDetails": [
-        { "key": "airline_code", "label": "Airline Code", "checked": false },
-        { "key": "airline_name", "label": "Airline Name", "checked": false }
+        {
+          "key": "airline_code",
+          "label": "Airline Code",
+          "checked": false
+        },
+        {
+          "key": "airline_name",
+          "label": "Airline Name",
+          "checked": false
+        }
       ],
       "agencyDetails": [
-        { "key": "agency_name", "label": "Agency Name", "checked": false },
-        { "key": "agency_code", "label": "Agency Code", "checked": false },
-        { "key": "account_type", "label": "Account Type", "checked": false }
+        {
+          "key": "agency_name",
+          "label": "Agency Name",
+          "checked": false
+        },
+        {
+          "key": "agency_code",
+          "label": "Agency Code",
+          "checked": false
+        },
+        {
+          "key": "account_type",
+          "label": "Account Type",
+          "checked": false
+        }
       ]
     },
-    "Commission": {
+    "Invoice missing": {
       "itineraryDetails": [
-        { "key": "booking_reference_id", "label": "Booking reference Id", "checked": true },
-        { "key": "commission_date", "label": "Commission Date", "checked": true },
-        { "key": "settlement_date", "label": "Settlement Date", "checked": true },
-        { "key": "sector", "label": "Sector", "checked": false },
-        { "key": "origin", "label": "Origin", "checked": false },
-        { "key": "destination", "label": "Destination", "checked": false },
-        { "key": "departure_date", "label": "Departure Date", "checked": false },
-        { "key": "trip_type", "label": "Trip Type", "checked": false }
+        {
+          "key": "booking_reference_id",
+          "label": "Booking reference Id",
+          "checked": true
+        },
+        {
+          "key": "commission_date",
+          "label": "Commission Date",
+          "checked": true
+        },
+        {
+          "key": "settlement_date",
+          "label": "Settlement Date",
+          "checked": true
+        },
+        {
+          "key": "sector",
+          "label": "Sector",
+          "checked": false
+        },
+        {
+          "key": "origin",
+          "label": "Origin",
+          "checked": false
+        },
+        {
+          "key": "destination",
+          "label": "Destination",
+          "checked": false
+        },
+        {
+          "key": "departure_date",
+          "label": "Departure Date",
+          "checked": false
+        },
+        {
+          "key": "trip_type",
+          "label": "Trip Type",
+          "checked": false
+        }
       ],
       "passengerDetails": [
-        { "key": "passenger_name", "label": "Passenger Name", "checked": true },
-        { "key": "ticket_number", "label": "Ticket Number", "checked": false },
-        { "key": "pax_type", "label": "Pax Type", "checked": false }
+        {
+          "key": "passenger_name",
+          "label": "Passenger Name",
+          "checked": true
+        },
+        {
+          "key": "ticket_number",
+          "label": "Ticket Number",
+          "checked": false
+        },
+        {
+          "key": "pax_type",
+          "label": "Pax Type",
+          "checked": false
+        }
       ],
       "fareDetails": [
-        { "key": "base_fare", "label": "Base Fare", "checked": false },
-        { "key": "total_fare", "label": "Total Fare", "checked": false },
-        { "key": "commission_percentage", "label": "Commission Percentage", "checked": false },
-        { "key": "commission_amount", "label": "Commission Amount", "checked": false }
+        {
+          "key": "base_fare",
+          "label": "Base Fare",
+          "checked": false
+        },
+        {
+          "key": "total_fare",
+          "label": "Total Fare",
+          "checked": false
+        },
+        {
+          "key": "commission_percentage",
+          "label": "Commission Percentage",
+          "checked": false
+        },
+        {
+          "key": "commission_amount",
+          "label": "Commission Amount",
+          "checked": false
+        }
       ],
       "commissionDetails": [
-        { "key": "commission_type", "label": "Commission Type", "checked": false },
-        { "key": "base_commission", "label": "Base Commission", "checked": false },
-        { "key": "incentive_commission", "label": "Incentive Commission", "checked": false },
-        { "key": "override_commission", "label": "Override Commission", "checked": false },
-        { "key": "total_commission", "label": "Total Commission", "checked": false },
-        { "key": "tds_amount", "label": "TDS Amount", "checked": false },
-        { "key": "net_commission", "label": "Net Commission", "checked": false },
-        { "key": "commission_status", "label": "Commission Status", "checked": false }
+        {
+          "key": "commission_type",
+          "label": "Commission Type",
+          "checked": false
+        },
+        {
+          "key": "base_commission",
+          "label": "Base Commission",
+          "checked": false
+        },
+        {
+          "key": "incentive_commission",
+          "label": "Incentive Commission",
+          "checked": false
+        },
+        {
+          "key": "override_commission",
+          "label": "Override Commission",
+          "checked": false
+        },
+        {
+          "key": "total_commission",
+          "label": "Total Commission",
+          "checked": false
+        },
+        {
+          "key": "tds_amount",
+          "label": "TDS Amount",
+          "checked": false
+        },
+        {
+          "key": "net_commission",
+          "label": "Net Commission",
+          "checked": false
+        },
+        {
+          "key": "commission_status",
+          "label": "Commission Status",
+          "checked": false
+        }
       ],
       "airlineDetails": [
-        { "key": "airline_code", "label": "Airline Code", "checked": false },
-        { "key": "airline_name", "label": "Airline Name", "checked": false },
-        { "key": "fare_basis_code", "label": "Fare Basis Code", "checked": false }
+        {
+          "key": "airline_code",
+          "label": "Airline Code",
+          "checked": false
+        },
+        {
+          "key": "airline_name",
+          "label": "Airline Name",
+          "checked": false
+        },
+        {
+          "key": "fare_basis_code",
+          "label": "Fare Basis Code",
+          "checked": false
+        }
       ],
       "agencyDetails": [
-        { "key": "agency_name", "label": "Agency Name", "checked": false },
-        { "key": "agency_code", "label": "Agency Code", "checked": false },
-        { "key": "agent_name", "label": "Agent Name", "checked": false }
+        {
+          "key": "agency_name",
+          "label": "Agency Name",
+          "checked": false
+        },
+        {
+          "key": "agency_code",
+          "label": "Agency Code",
+          "checked": false
+        },
+        {
+          "key": "agent_name",
+          "label": "Agent Name",
+          "checked": false
+        }
       ]
     },
-    "Top-up": {
+    "Additional invoices in GSTR-2A": {
       "itineraryDetails": [
-        { "key": "topup_id", "label": "Top-up ID", "checked": true },
-        { "key": "topup_date", "label": "Top-up Date", "checked": true },
-        { "key": "topup_type", "label": "Top-up Type", "checked": true },
-        { "key": "reference_number", "label": "Reference Number", "checked": false },
-        { "key": "transaction_mode", "label": "Transaction Mode", "checked": false },
-        { "key": "payment_gateway", "label": "Payment Gateway", "checked": false },
-        { "key": "status", "label": "Status", "checked": false }
+        {
+          "key": "topup_id",
+          "label": "Top-up ID",
+          "checked": true
+        },
+        {
+          "key": "topup_date",
+          "label": "Top-up Date",
+          "checked": true
+        },
+        {
+          "key": "topup_type",
+          "label": "Top-up Type",
+          "checked": true
+        },
+        {
+          "key": "reference_number",
+          "label": "Reference Number",
+          "checked": false
+        },
+        {
+          "key": "transaction_mode",
+          "label": "Transaction Mode",
+          "checked": false
+        },
+        {
+          "key": "payment_gateway",
+          "label": "Payment Gateway",
+          "checked": false
+        },
+        {
+          "key": "status",
+          "label": "Status",
+          "checked": false
+        }
       ],
       "passengerDetails": [
-        { "key": "customer_name", "label": "Customer Name", "checked": true },
-        { "key": "customer_mobile", "label": "Customer Mobile", "checked": false },
-        { "key": "customer_email", "label": "Customer Email", "checked": false }
+        {
+          "key": "customer_name",
+          "label": "Customer Name",
+          "checked": true
+        },
+        {
+          "key": "customer_mobile",
+          "label": "Customer Mobile",
+          "checked": false
+        },
+        {
+          "key": "customer_email",
+          "label": "Customer Email",
+          "checked": false
+        }
       ],
       "fareDetails": [
-        { "key": "topup_amount", "label": "Top-up Amount", "checked": false },
-        { "key": "service_charge", "label": "Service Charge", "checked": false },
-        { "key": "gst_amount", "label": "GST Amount", "checked": false },
-        { "key": "total_amount", "label": "Total Amount", "checked": false },
-        { "key": "wallet_balance", "label": "Wallet Balance", "checked": false }
+        {
+          "key": "topup_amount",
+          "label": "Top-up Amount",
+          "checked": false
+        },
+        {
+          "key": "service_charge",
+          "label": "Service Charge",
+          "checked": false
+        },
+        {
+          "key": "gst_amount",
+          "label": "GST Amount",
+          "checked": false
+        },
+        {
+          "key": "total_amount",
+          "label": "Total Amount",
+          "checked": false
+        },
+        {
+          "key": "wallet_balance",
+          "label": "Wallet Balance",
+          "checked": false
+        }
       ],
       "commissionDetails": [
-        { "key": "processing_fee", "label": "Processing Fee", "checked": false },
-        { "key": "convenience_fee", "label": "Convenience Fee", "checked": false }
+        {
+          "key": "processing_fee",
+          "label": "Processing Fee",
+          "checked": false
+        },
+        {
+          "key": "convenience_fee",
+          "label": "Convenience Fee",
+          "checked": false
+        }
       ],
       "airlineDetails": [
-        { "key": "na", "label": "Not Applicable", "checked": false }
+        {
+          "key": "na",
+          "label": "Not Applicable",
+          "checked": false
+        }
       ],
       "agencyDetails": [
-        { "key": "agency_name", "label": "Agency Name", "checked": false },
-        { "key": "agency_code", "label": "Agency Code", "checked": false },
-        { "key": "wallet_id", "label": "Wallet ID", "checked": false }
+        {
+          "key": "agency_name",
+          "label": "Agency Name",
+          "checked": false
+        },
+        {
+          "key": "agency_code",
+          "label": "Agency Code",
+          "checked": false
+        },
+        {
+          "key": "wallet_id",
+          "label": "Wallet ID",
+          "checked": false
+        }
       ]
     },
-    "Sales": {
+    "Booking data not reconciled": {
       "itineraryDetails": [
-        { "key": "sale_id", "label": "Sale ID", "checked": true },
-        { "key": "sale_date", "label": "Sale Date", "checked": true },
-        { "key": "booking_reference_id", "label": "Booking reference Id", "checked": true },
-        { "key": "sector", "label": "Sector", "checked": false },
-        { "key": "origin", "label": "Origin", "checked": false },
-        { "key": "destination", "label": "Destination", "checked": false },
-        { "key": "departure_date", "label": "Departure Date", "checked": false },
-        { "key": "return_date", "label": "Return Date", "checked": false },
-        { "key": "trip_type", "label": "Trip Type", "checked": false },
-        { "key": "booking_status", "label": "Booking Status", "checked": false }
+        {
+          "key": "sale_id",
+          "label": "Sale ID",
+          "checked": true
+        },
+        {
+          "key": "sale_date",
+          "label": "Sale Date",
+          "checked": true
+        },
+        {
+          "key": "booking_reference_id",
+          "label": "Booking reference Id",
+          "checked": true
+        },
+        {
+          "key": "sector",
+          "label": "Sector",
+          "checked": false
+        },
+        {
+          "key": "origin",
+          "label": "Origin",
+          "checked": false
+        },
+        {
+          "key": "destination",
+          "label": "Destination",
+          "checked": false
+        },
+        {
+          "key": "departure_date",
+          "label": "Departure Date",
+          "checked": false
+        },
+        {
+          "key": "return_date",
+          "label": "Return Date",
+          "checked": false
+        },
+        {
+          "key": "trip_type",
+          "label": "Trip Type",
+          "checked": false
+        },
+        {
+          "key": "booking_status",
+          "label": "Booking Status",
+          "checked": false
+        }
       ],
       "passengerDetails": [
-        { "key": "passenger_count", "label": "Passenger Count", "checked": true },
-        { "key": "adult_count", "label": "Adult Count", "checked": false },
-        { "key": "child_count", "label": "Child Count", "checked": false },
-        { "key": "infant_count", "label": "Infant Count", "checked": false }
+        {
+          "key": "passenger_count",
+          "label": "Passenger Count",
+          "checked": true
+        },
+        {
+          "key": "adult_count",
+          "label": "Adult Count",
+          "checked": false
+        },
+        {
+          "key": "child_count",
+          "label": "Child Count",
+          "checked": false
+        },
+        {
+          "key": "infant_count",
+          "label": "Infant Count",
+          "checked": false
+        }
       ],
       "fareDetails": [
-        { "key": "gross_sales", "label": "Gross Sales", "checked": false },
-        { "key": "net_sales", "label": "Net Sales", "checked": false },
-        { "key": "total_tax", "label": "Total Tax", "checked": false },
-        { "key": "base_fare", "label": "Base Fare", "checked": false },
-        { "key": "markup_amount", "label": "Markup Amount", "checked": false },
-        { "key": "discount_amount", "label": "Discount Amount", "checked": false },
-        { "key": "cancellation_charges", "label": "Cancellation Charges", "checked": false }
+        {
+          "key": "gross_sales",
+          "label": "Gross Sales",
+          "checked": false
+        },
+        {
+          "key": "net_sales",
+          "label": "Net Sales",
+          "checked": false
+        },
+        {
+          "key": "total_tax",
+          "label": "Total Tax",
+          "checked": false
+        },
+        {
+          "key": "base_fare",
+          "label": "Base Fare",
+          "checked": false
+        },
+        {
+          "key": "markup_amount",
+          "label": "Markup Amount",
+          "checked": false
+        },
+        {
+          "key": "discount_amount",
+          "label": "Discount Amount",
+          "checked": false
+        },
+        {
+          "key": "cancellation_charges",
+          "label": "Cancellation Charges",
+          "checked": false
+        }
       ],
       "commissionDetails": [
-        { "key": "commission_earned", "label": "Commission Earned", "checked": false },
-        { "key": "incentive_earned", "label": "Incentive Earned", "checked": false },
-        { "key": "total_earnings", "label": "Total Earnings", "checked": false }
+        {
+          "key": "commission_earned",
+          "label": "Commission Earned",
+          "checked": false
+        },
+        {
+          "key": "incentive_earned",
+          "label": "Incentive Earned",
+          "checked": false
+        },
+        {
+          "key": "total_earnings",
+          "label": "Total Earnings",
+          "checked": false
+        }
       ],
       "airlineDetails": [
-        { "key": "airline_code", "label": "Airline Code", "checked": false },
-        { "key": "airline_name", "label": "Airline Name", "checked": false },
-        { "key": "flight_number", "label": "Flight Number", "checked": false },
-        { "key": "class_type", "label": "Class Type", "checked": false }
+        {
+          "key": "airline_code",
+          "label": "Airline Code",
+          "checked": false
+        },
+        {
+          "key": "airline_name",
+          "label": "Airline Name",
+          "checked": false
+        },
+        {
+          "key": "flight_number",
+          "label": "Flight Number",
+          "checked": false
+        },
+        {
+          "key": "class_type",
+          "label": "Class Type",
+          "checked": false
+        }
       ],
       "agencyDetails": [
-        { "key": "agency_name", "label": "Agency Name", "checked": false },
-        { "key": "agency_code", "label": "Agency Code", "checked": false },
-        { "key": "sales_person", "label": "Sales Person", "checked": false },
-        { "key": "channel", "label": "Channel", "checked": false }
+        {
+          "key": "agency_name",
+          "label": "Agency Name",
+          "checked": false
+        },
+        {
+          "key": "agency_code",
+          "label": "Agency Code",
+          "checked": false
+        },
+        {
+          "key": "sales_person",
+          "label": "Sales Person",
+          "checked": false
+        },
+        {
+          "key": "channel",
+          "label": "Channel",
+          "checked": false
+        }
+      ]
+    },
+    "Tax invoice recieved report": {
+      "itineraryDetails": [
+        {
+          "key": "sale_id",
+          "label": "Sale ID",
+          "checked": true
+        },
+        {
+          "key": "sale_date",
+          "label": "Sale Date",
+          "checked": true
+        },
+        {
+          "key": "booking_reference_id",
+          "label": "Booking reference Id",
+          "checked": true
+        },
+        {
+          "key": "origin",
+          "label": "Origin",
+          "checked": false
+        },
+        {
+          "key": "sector",
+          "label": "Sector",
+          "checked": false
+        },
+        {
+          "key": "departure_date",
+          "label": "Departure Date",
+          "checked": false
+        },
+        {
+          "key": "return_date",
+          "label": "Return Date",
+          "checked": false
+        },
+        {
+          "key": "trip_type",
+          "label": "Trip Type",
+          "checked": false
+        },
+        {
+          "key": "destination",
+          "label": "Destination",
+          "checked": false
+        },
+        {
+          "key": "booking_status",
+          "label": "Booking Status",
+          "checked": false
+        }
+      ],
+      "passengerDetails": [
+        {
+          "key": "passenger_count",
+          "label": "Passenger Count",
+          "checked": true
+        },
+        {
+          "key": "infant_count",
+          "label": "Infant Count",
+          "checked": false
+        },
+        {
+          "key": "adult_count",
+          "label": "Adult Count",
+          "checked": false
+        },
+        {
+          "key": "child_count",
+          "label": "Child Count",
+          "checked": false
+        }
+      ],
+      "fareDetails": [
+        {
+          "key": "gross_sales",
+          "label": "Gross Sales",
+          "checked": false
+        },
+        {
+          "key": "base_fare",
+          "label": "Base Fare",
+          "checked": false
+        },
+        {
+          "key": "net_sales",
+          "label": "Net Sales",
+          "checked": false
+        },
+        {
+          "key": "markup_amount",
+          "label": "Markup Amount",
+          "checked": false
+        },
+        {
+          "key": "discount_amount",
+          "label": "Discount Amount",
+          "checked": false
+        },
+        {
+          "key": "total_tax",
+          "label": "Total Tax",
+          "checked": false
+        },
+        {
+          "key": "cancellation_charges",
+          "label": "Cancellation Charges",
+          "checked": false
+        }
+      ],
+      "commissionDetails": [
+        {
+          "key": "commission_earned",
+          "label": "Commission Earned",
+          "checked": false
+        },
+        {
+          "key": "incentive_earned",
+          "label": "Incentive Earned",
+          "checked": false
+        },
+        {
+          "key": "total_earnings",
+          "label": "Total Earnings",
+          "checked": false
+        }
+      ],
+      "airlineDetails": [
+        {
+          "key": "airline_code",
+          "label": "Airline Code",
+          "checked": false
+        },
+        {
+          "key": "airline_name",
+          "label": "Airline Name",
+          "checked": false
+        },
+        {
+          "key": "flight_number",
+          "label": "Flight Number",
+          "checked": false
+        },
+        {
+          "key": "class_type",
+          "label": "Class Type",
+          "checked": false
+        }
+      ],
+      "agencyDetails": [
+        {
+          "key": "agency_name",
+          "label": "Agency Name",
+          "checked": false
+        },
+        {
+          "key": "agency_code",
+          "label": "Agency Code",
+          "checked": false
+        },
+        {
+          "key": "sales_person",
+          "label": "Sales Person",
+          "checked": false
+        },
+        {
+          "key": "channel",
+          "label": "Channel",
+          "checked": false
+        }
+      ]
+    },
+    "MIS for corporate": {
+      "itineraryDetails": [
+        {
+          "key": "sale_id",
+          "label": "Sale ID",
+          "checked": true
+        },
+        {
+          "key": "sale_date",
+          "label": "Sale Date",
+          "checked": true
+        },
+        {
+          "key": "booking_reference_id",
+          "label": "Booking reference Id",
+          "checked": true
+        },
+        {
+          "key": "sector",
+          "label": "Sector",
+          "checked": false
+        },
+        {
+          "key": "origin",
+          "label": "Origin",
+          "checked": false
+        },
+        {
+          "key": "destination",
+          "label": "Destination",
+          "checked": false
+        },
+        {
+          "key": "departure_date",
+          "label": "Departure Date",
+          "checked": false
+        },
+        {
+          "key": "return_date",
+          "label": "Return Date",
+          "checked": false
+        },
+        {
+          "key": "trip_type",
+          "label": "Trip Type",
+          "checked": false
+        },
+        {
+          "key": "booking_status",
+          "label": "Booking Status",
+          "checked": false
+        }
+      ],
+      "passengerDetails": [
+        {
+          "key": "passenger_count",
+          "label": "Passenger Count",
+          "checked": true
+        },
+        {
+          "key": "adult_count",
+          "label": "Adult Count",
+          "checked": false
+        },
+        {
+          "key": "child_count",
+          "label": "Child Count",
+          "checked": false
+        },
+        {
+          "key": "infant_count",
+          "label": "Infant Count",
+          "checked": false
+        }
+      ],
+      "fareDetails": [
+        {
+          "key": "gross_sales",
+          "label": "Gross Sales",
+          "checked": false
+        },
+        {
+          "key": "net_sales",
+          "label": "Net Sales",
+          "checked": false
+        },
+        {
+          "key": "total_tax",
+          "label": "Total Tax",
+          "checked": false
+        },
+        {
+          "key": "base_fare",
+          "label": "Base Fare",
+          "checked": false
+        },
+        {
+          "key": "markup_amount",
+          "label": "Markup Amount",
+          "checked": false
+        },
+        {
+          "key": "discount_amount",
+          "label": "Discount Amount",
+          "checked": false
+        },
+        {
+          "key": "cancellation_charges",
+          "label": "Cancellation Charges",
+          "checked": false
+        }
+      ],
+      "commissionDetails": [
+        {
+          "key": "commission_earned",
+          "label": "Commission Earned",
+          "checked": false
+        },
+        {
+          "key": "incentive_earned",
+          "label": "Incentive Earned",
+          "checked": false
+        },
+        {
+          "key": "total_earnings",
+          "label": "Total Earnings",
+          "checked": false
+        }
+      ],
+      "airlineDetails": [
+        {
+          "key": "airline_code",
+          "label": "Airline Code",
+          "checked": false
+        },
+        {
+          "key": "airline_name",
+          "label": "Airline Name",
+          "checked": false
+        },
+        {
+          "key": "flight_number",
+          "label": "Flight Number",
+          "checked": false
+        },
+        {
+          "key": "class_type",
+          "label": "Class Type",
+          "checked": false
+        }
+      ],
+      "agencyDetails": [
+        {
+          "key": "agency_name",
+          "label": "Agency Name",
+          "checked": false
+        },
+        {
+          "key": "agency_code",
+          "label": "Agency Code",
+          "checked": false
+        },
+        {
+          "key": "sales_person",
+          "label": "Sales Person",
+          "checked": false
+        },
+        {
+          "key": "channel",
+          "label": "Channel",
+          "checked": false
+        }
+      ]
+    },
+    "Airline contact details": {
+      "itineraryDetails": [
+        {
+          "key": "sale_id",
+          "label": "Sale ID",
+          "checked": true
+        },
+        {
+          "key": "booking_reference_id",
+          "label": "Booking reference Id",
+          "checked": true
+        },
+        {
+          "key": "sale_date",
+          "label": "Sale Date",
+          "checked": true
+        },
+        {
+          "key": "origin",
+          "label": "Origin",
+          "checked": false
+        },
+        {
+          "key": "sector",
+          "label": "Sector",
+          "checked": false
+        },
+        {
+          "key": "trip_type",
+          "label": "Trip Type",
+          "checked": false
+        },
+        {
+          "key": "destination",
+          "label": "Destination",
+          "checked": false
+        },
+        {
+          "key": "departure_date",
+          "label": "Departure Date",
+          "checked": false
+        },
+        {
+          "key": "return_date",
+          "label": "Return Date",
+          "checked": false
+        },
+        {
+          "key": "booking_status",
+          "label": "Booking Status",
+          "checked": false
+        }
+      ],
+      "passengerDetails": [
+        {
+          "key": "passenger_count",
+          "label": "Passenger Count",
+          "checked": true
+        },
+        {
+          "key": "child_count",
+          "label": "Child Count",
+          "checked": false
+        },
+        {
+          "key": "adult_count",
+          "label": "Adult Count",
+          "checked": false
+        },
+        {
+          "key": "infant_count",
+          "label": "Infant Count",
+          "checked": false
+        }
+      ],
+      "fareDetails": [
+        {
+          "key": "gross_sales",
+          "label": "Gross Sales",
+          "checked": false
+        },
+        {
+          "key": "total_tax",
+          "label": "Total Tax",
+          "checked": false
+        },
+        {
+          "key": "markup_amount",
+          "label": "Markup Amount",
+          "checked": false
+        },
+        {
+          "key": "net_sales",
+          "label": "Net Sales",
+          "checked": false
+        },
+        {
+          "key": "discount_amount",
+          "label": "Discount Amount",
+          "checked": false
+        },
+        {
+          "key": "base_fare",
+          "label": "Base Fare",
+          "checked": false
+        },
+        {
+          "key": "cancellation_charges",
+          "label": "Cancellation Charges",
+          "checked": false
+        }
+      ],
+      "commissionDetails": [
+        {
+          "key": "incentive_earned",
+          "label": "Incentive Earned",
+          "checked": false
+        },
+        {
+          "key": "commission_earned",
+          "label": "Commission Earned",
+          "checked": false
+        },
+        {
+          "key": "total_earnings",
+          "label": "Total Earnings",
+          "checked": false
+        }
+      ],
+      "airlineDetails": [
+        {
+          "key": "flight_number",
+          "label": "Flight Number",
+          "checked": false
+        },
+        {
+          "key": "airline_code",
+          "label": "Airline Code",
+          "checked": false
+        },
+        {
+          "key": "airline_name",
+          "label": "Airline Name",
+          "checked": false
+        },
+        {
+          "key": "class_type",
+          "label": "Class Type",
+          "checked": false
+        }
+      ],
+      "agencyDetails": [
+        {
+          "key": "sales_person",
+          "label": "Sales Person",
+          "checked": false
+        },
+        {
+          "key": "agency_code",
+          "label": "Agency Code",
+          "checked": false
+        },
+        {
+          "key": "agency_name",
+          "label": "Agency Name",
+          "checked": false
+        },
+        {
+          "key": "channel",
+          "label": "Channel",
+          "checked": false
+        }
+      ]
+    },
+    "Offline airline invoices": {
+      "itineraryDetails": [
+        {
+          "key": "booking_status",
+          "label": "Booking Status",
+          "checked": false
+        },
+        {
+          "key": "booking_reference_id",
+          "label": "Booking reference Id",
+          "checked": true
+        },
+        {
+          "key": "sector",
+          "label": "Sector",
+          "checked": false
+        },
+        {
+          "key": "sale_id",
+          "label": "Sale ID",
+          "checked": true
+        },
+        {
+          "key": "origin",
+          "label": "Origin",
+          "checked": false
+        },
+        {
+          "key": "sale_date",
+          "label": "Sale Date",
+          "checked": true
+        },
+        {
+          "key": "destination",
+          "label": "Destination",
+          "checked": false
+        },
+        {
+          "key": "departure_date",
+          "label": "Departure Date",
+          "checked": false
+        },
+        {
+          "key": "return_date",
+          "label": "Return Date",
+          "checked": false
+        },
+        {
+          "key": "trip_type",
+          "label": "Trip Type",
+          "checked": false
+        }
+      ],
+      "passengerDetails": [
+        {
+          "key": "adult_count",
+          "label": "Adult Count",
+          "checked": false
+        },
+        {
+          "key": "passenger_count",
+          "label": "Passenger Count",
+          "checked": true
+        },
+        {
+          "key": "child_count",
+          "label": "Child Count",
+          "checked": false
+        },
+        {
+          "key": "infant_count",
+          "label": "Infant Count",
+          "checked": false
+        }
+      ],
+      "fareDetails": [
+        {
+          "key": "gross_sales",
+          "label": "Gross Sales",
+          "checked": false
+        },
+        {
+          "key": "total_tax",
+          "label": "Total Tax",
+          "checked": false
+        },
+        {
+          "key": "net_sales",
+          "label": "Net Sales",
+          "checked": false
+        },
+        {
+          "key": "markup_amount",
+          "label": "Markup Amount",
+          "checked": false
+        },
+        {
+          "key": "base_fare",
+          "label": "Base Fare",
+          "checked": false
+        },
+        {
+          "key": "discount_amount",
+          "label": "Discount Amount",
+          "checked": false
+        },
+        {
+          "key": "cancellation_charges",
+          "label": "Cancellation Charges",
+          "checked": false
+        }
+      ],
+      "commissionDetails": [
+        {
+          "key": "incentive_earned",
+          "label": "Incentive Earned",
+          "checked": false
+        },
+        {
+          "key": "commission_earned",
+          "label": "Commission Earned",
+          "checked": false
+        },
+        {
+          "key": "total_earnings",
+          "label": "Total Earnings",
+          "checked": false
+        }
+      ],
+      "airlineDetails": [
+        {
+          "key": "airline_name",
+          "label": "Airline Name",
+          "checked": false
+        },
+        {
+          "key": "flight_number",
+          "label": "Flight Number",
+          "checked": false
+        },
+        {
+          "key": "airline_code",
+          "label": "Airline Code",
+          "checked": false
+        },
+        {
+          "key": "class_type",
+          "label": "Class Type",
+          "checked": false
+        }
+      ],
+      "agencyDetails": [
+        {
+          "key": "agency_code",
+          "label": "Agency Code",
+          "checked": false
+        },
+        {
+          "key": "sales_person",
+          "label": "Sales Person",
+          "checked": false
+        },
+        {
+          "key": "agency_name",
+          "label": "Agency Name",
+          "checked": false
+        },
+        {
+          "key": "channel",
+          "label": "Channel",
+          "checked": false
+        }
       ]
     }
   },
   "conditionDetails": [
-    { "key": "date_range", "label": "Invoiced Date Range", "checked": true },
-    { "key": "departure_date_range", "label": "Departure Date Range", "checked": false },
-    { "key": "agency", "label": "Agency", "checked": false }
+    {
+      "key": "departure_date_range",
+      "label": "Departure Date Range",
+      "checked": false
+    },
+    {
+      "key": "date_range",
+      "label": "Invoiced Date Range",
+      "checked": true
+    },
+    {
+      "key": "agency",
+      "label": "Agency",
+      "checked": false
+    }
   ],
   "savedReports": []
 }

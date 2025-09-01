@@ -29,9 +29,16 @@ import {
 } from "../store/slices/uploadSlice";
 import { useTheme } from "../contexts/ThemeContext";
 import "../styles/Upload.scss";
+import {useUploadFilterMutation} from '../services/variables/variables';
 
 const { Dragger } = AntUpload;
 const { Text } = Typography;
+
+type FileIdentifier = {
+  name: string;
+  size?: number; // optional because UploadFile may not have it
+  lastModified?: number;
+};
 
 const Upload: React.FC = () => {
   const dispatch = useDispatch();
@@ -51,12 +58,52 @@ const Upload: React.FC = () => {
     [key: string]: number;
   }>({});
 
+  const onChange = (info: any) => {
+  const { fileList } = info;
+
+  const files = fileList
+    .map((f: any) => f.originFileObj)
+    .filter((f: File | undefined): f is File => !!f);
+
+  // Deduplicate
+  const uniqueFiles = files.filter(
+    (file:any, index:number, self:any) =>
+      index ===
+      self.findIndex(
+        (f:any) =>
+          f.name === file.name &&
+          f.size === file.size &&
+          f.lastModified === file.lastModified
+      )
+  );
+
+  // Remove files from removedFiles if re-added
+  setRemovedFiles((prev) =>
+    prev.filter(
+      (rf) =>
+        !uniqueFiles.some(
+          (f:any) =>
+            f.name === rf.name &&
+            f.size === rf.size &&
+            f.lastModified === rf.lastModified
+        )
+    )
+  );
+
+  setSelectedFile(uniqueFiles);
+
+  console.log("Current selected files:", uniqueFiles);
+};
+
+
   const uploadProps = {
     name: "file",
+    onChange : onChange,
     multiple: true,
     accept: ".csv,.xls,.xlsx",
     showUploadList: false,
     disabled: files.length >= 3,
+    
     beforeUpload: (file: File) => {
       // Check file limit first
       if (files.length >= 3) {
@@ -110,6 +157,7 @@ const Upload: React.FC = () => {
 
       return false;
     },
+
     onDragEnter: (e: any) => {
       e.preventDefault();
       setDragOver(true);
@@ -127,10 +175,106 @@ const Upload: React.FC = () => {
       setDragOver(false);
     },
   };
+  const [uploadFile] = useUploadFilterMutation();
+  const [selectedFile, setSelectedFile] = useState<File[] | null>([]);
+  const [removedFiles, setRemovedFiles] = useState<FileIdentifier[]>([]);
+  
+const handleRemoveFile = (file: UploadFile) => {
+  const originFile = file.originFileObj as File | undefined;
 
-  const handleRemoveFile = (file: UploadFile) => {
-    dispatch(removeFile({ tabKey: activeTab, fileId: file.id }));
-  };
+  if (originFile) {
+    setSelectedFile((prev) =>
+      prev
+        ? prev.filter(
+            (f) =>
+              !(
+                f.name === originFile.name &&
+                f.size === originFile.size &&
+                f.lastModified === originFile.lastModified
+              )
+          )
+        : []
+    );
+
+    // Add to removedFiles if not already there
+    setRemovedFiles((prev) =>
+      prev.some(
+        (f) =>
+          f.name === originFile.name &&
+          f.size === originFile.size &&
+          f.lastModified === originFile.lastModified
+      )
+        ? prev
+        : [...prev, { name: originFile.name, size: originFile.size, lastModified: originFile.lastModified }]
+    );
+  } else {
+    // Fallback for server-side file (no originFileObj)
+    setSelectedFile((prev) =>
+      prev ? prev.filter((f) => f.name !== file.name) : []
+    );
+
+    setRemovedFiles((prev) =>
+      prev.some((f) => f.name === file.name)
+        ? prev
+        : [...prev, { name: file.name }]
+    );
+  }
+
+  dispatch(removeFile({ tabKey: activeTab, fileId: file.id }));
+};
+
+
+const handleSubmit = async () => {
+  if (!selectedFile || selectedFile.length === 0) {
+    message.error("No files selected");
+    return;
+  }
+
+  const formData = new FormData();
+
+  // ✅ Compare by name+size+lastModified instead of reference
+  const filesToUpload = selectedFile.filter(
+    (file) =>
+      !removedFiles.some(
+        (rf) =>
+          rf.name === file.name &&
+          rf.size === file.size &&
+          rf.lastModified === file.lastModified
+      )
+  );
+
+  console.log(filesToUpload, "filesToUpload");
+
+  if (filesToUpload.length === 0) {
+    message.error("No files to upload (all selected files were removed)");
+    return;
+  }
+
+  filesToUpload.forEach((file: File) => {
+    formData.append("file", file);
+    console.log(file, "fileeeeeee");
+  });
+
+  try {
+    await uploadFile(formData).unwrap();
+    // Optional: clear removedFiles that aren't relevant anymore
+    setRemovedFiles((prev) =>
+      prev.filter(
+        (rf) =>
+          !filesToUpload.some(
+            (f) =>
+              f.name === rf.name &&
+              f.size === rf.size &&
+              f.lastModified === rf.lastModified
+          )
+      )
+    );
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+
 
   const formatFileSize = (bytes: number) => {
     if (bytes === 0) return "0 Bytes";
@@ -140,15 +284,12 @@ const Upload: React.FC = () => {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(0)) + " " + sizes[i];
   };
 
-  const handleSubmit = () => {
-    message.success("Files submitted successfully!");
-  };
 
   const tabItems = [
     {
       key: "non-ayp",
       label: (
-        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }} className="cls-tabs">
           <span>Non-AYP Bookings</span>
         </div>
       ),
@@ -163,7 +304,7 @@ const Upload: React.FC = () => {
     {
       key: "gstr-2a",
       label: (
-        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }} className="cls-tabs">
           <span>GSTR-2A</span>
         </div>
       ),

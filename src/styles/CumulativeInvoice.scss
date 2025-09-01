@@ -1,16 +1,25 @@
 .cls-cumulative-container {
-  padding: 0px 24px;
+  // padding: 0px 24px;
   background: $BACKGROUND-COLOR;
   min-height: 100vh;
 
   h3 {
     color: $SECONDARYCOLOR;
   }
+  .cls-download{
+    background: #5b319c;
+    padding: 2px 10px;
+    color: white;
+    border-radius: 6px;
+    display: flex;
+    gap: 2px;
+  }
 }
 
 .cls-cumulative-title {
   margin: 0 0 24px 0;
   color: $SECONDARYCOLOR;
+  font-family: var(--font-semibold);
 }
 
 .cls-entity-type-section {
@@ -18,11 +27,19 @@
 
   .ant-radio-wrapper {
     font-weight: 500;
+    span{
+      font-family: var(--font-regular);
+    }
   }
 }
 
 .cls-tabs-section {
   margin-bottom: 24px;
+  .ant-tabs-nav-wrap{
+    .ant-tabs-tab{
+      font-family: var(--font-semibold);
+    }
+  }
 }
 
 .cls-tab-content-area {
@@ -40,6 +57,15 @@
   margin-bottom: 16px;
   justify-content: space-between;
 }
+.cls-btnItems{
+  width: 250px;
+  justify-content: end;
+}
+.cls-invoiceRange{
+  .cls-btnItems{
+    width: 200px;
+  }
+}
 
 .cls-sprt {
   display: flex;
@@ -47,9 +73,22 @@
   align-items: center;
   gap: 16px;
   width: 100%;
+  div{
+      span{
+        font-family: var(--font-regular);
+    }
+  }
 
-  .cls-customFilter {
-    flex: 1;
+}
+.cls-customFilter {
+  flex: 1;
+  label{
+    font-family: var(--font-semibold);
+  }
+  div{
+    span{
+      font-family: var(--font-regular);
+    }
   }
 }
 
@@ -69,17 +108,18 @@
   justify-content: space-between;
   box-shadow: none;
   border-radius: 6px;
-
-
+  span{
+    font-family: var(--font-regular);
+  }
   span:first-child {
-    color: #4f46e5;
+    color: $PRIMARYCOLOR;
     font-weight: 500;
     font-size: $FONT-14;
   }
 
   span:last-child {
     transition: transform 0.3s ease;
-    color: #4f46e5;
+    color: $PRIMARYCOLOR;
     font-size: $FONT-14;
 
     &.cls-expanded {
@@ -99,12 +139,15 @@
   align-items: center;
   gap: 6px;
   margin-top:8px;
+  span{
+    font-family: var(--font-regular);
+  }
   .cls-info-icon {
     width: 18px;
     height: 18px;
     border-radius: 50%;
     background: #8B949E;
-    color: white;
+    color: $WHITE;
     font-size: $FONT-12;
     display: flex;
     align-items: center;
@@ -116,7 +159,7 @@
 
 .cls-dropdown-content {
   margin-top: 16px;
-  background: white;
+  background: $WHITE;
   border: 1px solid #e1e5e9;
   border-radius: 8px;
   padding: 24px;
@@ -129,7 +172,7 @@
     position: absolute;
     top: 16px;
     right: 16px;
-    color: red;
+    color: $ERROR-COLOR;
     font-size: $FONT-20;
     width: 28px;
     height: 28px;
@@ -151,12 +194,13 @@
   .cls-radio-section {
     margin-bottom: 24px;
     margin-top: 8px;
-
     .ant-radio-group {
       display: flex;
       gap: 24px;
+      span{
+        font-family: var(--font-regular);
+      }
     }
-
     .ant-radio-wrapper {
       font-size: $FONT-14;
       font-weight: 500;
@@ -171,6 +215,7 @@
       font-weight: 600;
       margin-bottom: 12px;
       color: #24292f;
+      font-family: var(--font-semibold);
     }
 
     .ant-input {
@@ -183,7 +228,7 @@
       font-family: 'Inter', sans-serif;
 
       &:focus {
-        border-color: #4f46e5;
+        border-color: $PRIMARYCOLOR;
         box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
       }
     }
@@ -193,12 +238,13 @@
     margin-bottom: 24px;
 
     .cls-example-box {
-      font-size: 13px;
+      font-size: $FONT-13;
       color: #656d76;
       padding: 12px 16px;
       background: #f8f9fa;
       border-radius: 6px;
       border: 1px solid #e9ecef;
+      font-family: var(--font-regular);
 
       .cls-example-label {
         font-weight: 600;
@@ -217,10 +263,11 @@
       height: 36px;
       padding: 0 20px;
       font-weight: 500;
+      font-family: var(--font-regular);
 
       &.ant-btn-primary {
-        background-color: #4f46e5;
-        border-color: #4f46e5;
+        background-color: $PRIMARYCOLOR;
+        border-color: $PRIMARYCOLOR;
       }
     }
   }
@@ -286,7 +333,7 @@
   align-items: center;
   margin-top: 16px;
   padding-top: 16px;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid $LIGHTWHITE;
 }
 
 .cls-pagination-info {
@@ -311,14 +358,14 @@
     border: 1px solid $BORDER-COLOR;
 
     &.cls-active {
-      background-color: #4f46e5;
-      border-color: #4f46e5;
-      color: white;
+      background-color: $PRIMARYCOLOR;
+      border-color: $PRIMARYCOLOR;
+      color: $WHITE;
     }
 
     &.cls-inactive {
-      background-color: white;
-      color: #000;
+      background-color: $WHITE;
+      color: $BLACK;
     }
   }
 
@@ -338,7 +385,7 @@
   }
 
   .cls-goto-button {
-    background-color: #4f46e5;
+    background-color: $PRIMARYCOLOR;
     border-radius: 16px;
   }
 }
@@ -347,7 +394,7 @@
   position: absolute;
   top: 100%;
   right: 0;
-  background: white;
+  background: $WHITE;
   border: 1px solid #e1e5e9;
   border-radius: 8px;
   padding: 0;
@@ -359,7 +406,7 @@
   .cls-filter-header {
     position: relative;
     padding: 16px 16px 12px 16px;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid $LIGHTWHITE;
     background: #fafafa;
     border-radius: 8px 8px 0 0;
   }
@@ -385,23 +432,23 @@
     }
 
     .ant-checkbox-wrapper {
-      font-size: 13px;
+      font-size: $FONT-13;
       color: #24292f;
 
       &:hover {
-        color: #4f46e5;
+        color: $PRIMARYCOLOR;
       }
     }
 
     .ant-checkbox {
       &:hover .ant-checkbox-inner {
-        border-color: #4f46e5;
+        border-color: $PRIMARYCOLOR;
       }
     }
 
     .ant-checkbox-checked .ant-checkbox-inner {
-      background-color: #4f46e5;
-      border-color: #4f46e5;
+      background-color: $PRIMARYCOLOR;
+      border-color: $PRIMARYCOLOR;
     }
   }
 }
@@ -438,7 +485,7 @@
 .cls-submitBtn {
   padding: 6px 16px;
   background-color: rgb(79, 70, 229);
-  color: white;
+  color: $WHITE;
   border: none;
   border-radius: 6px;
   font-size: $FONT-14;
@@ -509,7 +556,7 @@
   height: 40px;
   text-align: left;
   border: none;
-  background: #f5f5f5;
+  background: $BACKGROUND-COLOR;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -518,12 +565,12 @@
 }
 
 .cls-invoice-toggle-text {
-  color: #4f46e5;
+  color: $PRIMARYCOLOR;
   font-weight: 500;
 }
 
 .cls-invoice-toggle-arrow {
-  color: #4f46e5;
+  color: $PRIMARYCOLOR;
   transition: transform 0.3s ease;
   transform: rotate(180deg);
 
@@ -533,7 +580,7 @@
 }
 
 .cls-invoice-count-display {
-  font-size: 14px;
+  font-size: $FONT-14;
   color: #8B949E;
   margin-top: 8px;
   display: flex;
@@ -546,8 +593,8 @@
   height: 18px;
   border-radius: 50%;
   background: #8B949E;
-  color: white;
-  font-size: 12px;
+  color: $WHITE;
+  font-size: $FONT-12;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -557,7 +604,7 @@
 
 .cls-invoice-expanded-content {
   margin-top: 20px;
-  background: white;
+  background: $WHITE;
   border: 1px solid #e1e5e9;
   border-radius: 8px;
   padding: 20px;
@@ -571,8 +618,8 @@
   position: absolute;
   top: 12px;
   right: 12px;
-  color: #ff4d4f;
-  font-size: 18px;
+  color: $ERROR-COLOR;
+  font-size: $FONT-18;
   width: 24px;
   height: 24px;
   padding: 0;
@@ -589,7 +636,7 @@
 }
 
 .cls-invoice-textarea-label {
-  font-size: 16px;
+  font-size: $FONT-16;
   font-weight: 500;
   margin-bottom: 12px;
   color: #24292f;
@@ -599,7 +646,7 @@
   resize: none;
   border-radius: 6px;
   border: 1px solid #d0d7de;
-  font-size: 14px;
+  font-size: $FONT-14;
 }
 
 .cls-invoice-example-section {
@@ -607,7 +654,7 @@
 }
 
 .cls-invoice-example-box {
-  font-size: 14px;
+  font-size: $FONT-14;
   color: #656d76;
   padding: 12px 16px;
   background: #f6f8fa;
@@ -634,8 +681,8 @@
 }
 
 .cls-invoice-submit-button {
-  background-color: #4f46e5;
-  border-color: #4f46e5;
+  background-color: $PRIMARYCOLOR;
+  border-color: $PRIMARYCOLOR;
   border-radius: 6px;
   height: 36px;
   padding-left: 16px;
@@ -651,8 +698,8 @@
 }
 
 .cls-pnr-label {
-  font-size: 12px;
-  color: #666;
+  font-size: $FONT-12;
+  color: $DARKGREY;
 }
 
 .cls-pnr-input {
@@ -666,7 +713,7 @@
   align-items: center;
   margin-top: 16px;
   padding-top: 16px;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid $LIGHTWHITE;
 }
 
 .cls-pagination-info {
@@ -676,7 +723,7 @@
 }
 
 .cls-pagination-text {
-  font-size: 14px;
+  font-size: $FONT-14;
 }
 
 .cls-page-size-select {
@@ -696,7 +743,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #d9d9d9;
+  border: 1px solid $BORDER-COLOR;
 }
 
 .cls-pagination-number-button {
@@ -706,14 +753,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: white;
-  border-color: #d9d9d9;
-  color: #000;
+  background-color: $WHITE;
+  border-color: $BORDER-COLOR;
+  color: $BLACK;
 
   &.cls-active {
-    background-color: #4f46e5;
-    border-color: #4f46e5;
-    color: white;
+    background-color: $PRIMARYCOLOR;
+    border-color: $PRIMARYCOLOR;
+    color: $WHITE;
   }
 }
 
@@ -732,6 +779,6 @@
 }
 
 .cls-go-to-page-button {
-  background-color: #4f46e5;
+  background-color: $PRIMARYCOLOR;
   border-radius: 16px;
 }

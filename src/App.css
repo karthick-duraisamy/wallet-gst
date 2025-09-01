@@ -6,7 +6,7 @@
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: var(--font-regular);
   line-height: 1.5;
   color: #333;
   background-color: #f5f7fa;
@@ -509,6 +509,15 @@ body {
   background: #f0f8ff !important;
 }
 
+.header-left,
+.header-right {
+
+  div,
+  button {
+    font-family: var(--font-regular);
+  }
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .auth-card {
@@ -633,7 +642,7 @@ body {
       flex-wrap: wrap;
       gap: 16px !important;
     }
-    
+
     .cls-card-container {
       min-width: calc(50% - 8px) !important;
     }
@@ -643,57 +652,57 @@ body {
     .main-layout .main-header {
       padding: 0 16px !important;
     }
-    
+
     .header-right {
       gap: 8px !important;
     }
-    
+
     .cls-summary-cards {
       flex-direction: column;
       gap: 12px !important;
     }
-    
+
     .cls-card-container {
       min-width: 100% !important;
       padding: 16px !important;
     }
-    
+
     .cls-card-items {
       gap: 12px !important;
     }
-    
+
     .cls-card-item {
       padding: 8px 12px !important;
     }
-    
+
     .cls-item-value {
       font-size: 16px !important;
     }
-    
+
     /* Upload page mobile responsive */
     .cls-upload-layout {
       flex-direction: column !important;
       gap: 16px !important;
     }
-    
+
     .cls-upload-area {
       width: 100% !important;
       min-height: 200px !important;
     }
-    
+
     .cls-files-display {
       width: 100% !important;
     }
-    
+
     /* Table responsive */
     .ant-table-wrapper {
       overflow-x: auto;
     }
-    
+
     .ant-table {
       min-width: 800px;
     }
-    
+
     /* Modal responsive */
     .ant-modal {
       margin: 16px !important;
@@ -705,23 +714,23 @@ body {
     .cls-card-container {
       padding: 12px !important;
     }
-    
+
     .cls-card-title {
       font-size: 13px !important;
     }
-    
+
     .cls-item-label {
       font-size: 12px !important;
     }
-    
+
     .cls-item-value {
       font-size: 14px !important;
     }
-    
+
     .header-left {
       gap: 8px !important;
     }
-    
+
     .logo-text {
       display: none;
     }
@@ -732,19 +741,19 @@ body {
     .cls-summary-cards {
       gap: 32px !important;
     }
-    
+
     .cls-card-container {
       padding: 32px !important;
     }
-    
+
     .cls-card-title {
       font-size: 18px !important;
     }
-    
+
     .cls-item-label {
       font-size: 16px !important;
     }
-    
+
     .cls-item-value {
       font-size: 22px !important;
     }
@@ -2337,12 +2346,15 @@ tr.ant-table-measure-row td {
 ::-webkit-scrollbar-thumb:window-inactive {
   background: rgba(255, 255, 255, 0.3);
 }
-.cls-table-head{
+
+.cls-table-head {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
 }
-.cls-export-button, .cls-export-btn {
+
+.cls-export-button,
+.cls-export-btn {
   color: white;
   display: flex;
   align-items: center;
@@ -2350,32 +2362,36 @@ tr.ant-table-measure-row td {
 
   &.cls-xls {
     background-color: #1d4ed8;
-    &:hover{
+
+    &:hover {
       border: 1px solid #1d4ed8 !important;
     }
   }
 
   &.cls-csv {
     background-color: #059669;
-     &:hover{
+
+    &:hover {
       border: 1px solid #059669 !important;
     }
   }
 }
-.cls-langBox{
-    width: 20px;
-    height: 14px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 15px;
-    line-height: 1;
-    background: #5a4fcf45;
-    padding: 15px 15px;
-    border-radius: 100%;
+
+.cls-langBox {
+  width: 20px;
+  height: 14px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  line-height: 1;
+  background: #5a4fcf45;
+  padding: 15px 15px;
+  border-radius: 100%;
 }
-.cls-contrast{
+
+.cls-contrast {
   width: 20px;
   height: 20px;
   border-radius: 50%;
@@ -2383,9 +2399,14 @@ tr.ant-table-measure-row td {
   border: 2px solid #333;
   transition: all 0.3s ease;
 }
-.cls-btnItems{
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    align-items: end;
+
+.cls-btnItems {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: end;
+
+  button {
+    font-family: var(--font-regular);
+  }
 }

@@ -21,13 +21,13 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
             <span className='cls-contrast'></span>
             <span>{translate('themeSettings')}</span>
           </div>
-          <CloseOutlined 
-            onClick={onClose} 
-            style={{ 
-              cursor: 'pointer', 
+          <CloseOutlined
+            onClick={onClose}
+            style={{
+              cursor: 'pointer',
               fontSize: '16px',
               color: isDarkMode ? '#a6a6a6' : '#666'
-            }} 
+            }}
           />
         </div>
       }
@@ -36,14 +36,16 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
       onClose={onClose}
       open={open}
       width={400}
-      headerStyle={{
-        background: isDarkMode ? '#1f1f1f' : '#ffffff',
-        borderBottom: isDarkMode ? '1px solid #424242' : '1px solid #f0f0f0',
-        color: isDarkMode ? '#ffffff' : '#000000'
-      }}
-      bodyStyle={{
-        background: isDarkMode ? '#1f1f1f' : '#ffffff',
-        color: isDarkMode ? '#ffffff' : '#000000'
+      styles={{
+        header: {
+          background: isDarkMode ? '#1f1f1f' : '#ffffff',
+          borderBottom: isDarkMode ? '1px solid #424242' : '1px solid #f0f0f0',
+          color: isDarkMode ? '#ffffff' : '#000000',
+        },
+        body: {
+          background: isDarkMode ? '#1f1f1f' : '#ffffff',
+          color: isDarkMode ? '#ffffff' : '#000000',
+        },
       }}
     >
       <Space direction="vertical" size="large" style={{ width: '100%' }}>
@@ -53,11 +55,11 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
             {translate('theme')}
           </Title>
 
-          
+
 
           {/* Theme Toggle Cards */}
           <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
-            <div 
+            <div
               onClick={() => !isDarkMode || toggleTheme()}
               style={{
                 flex: 1,
@@ -88,9 +90,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
                 </div>
               )}
               <div style={{ marginBottom: '12px' }}>
-                <div style={{ 
-                  width: '60px', 
-                  height: '40px', 
+                <div style={{
+                  width: '60px',
+                  height: '40px',
                   background: 'linear-gradient(135deg, #f0f2f5 0%, #ffffff 100%)',
                   borderRadius: '6px',
                   margin: '0 auto',
@@ -108,7 +110,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
               </div>
             </div>
 
-            <div 
+            <div
               onClick={() => isDarkMode || toggleTheme()}
               style={{
                 flex: 1,
@@ -139,9 +141,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
                 </div>
               )}
               <div style={{ marginBottom: '12px' }}>
-                <div style={{ 
-                  width: '60px', 
-                  height: '40px', 
+                <div style={{
+                  width: '60px',
+                  height: '40px',
                   background: 'linear-gradient(135deg, #262626 0%, #1f1f1f 100%)',
                   borderRadius: '6px',
                   margin: '0 auto',
@@ -208,7 +210,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
 
           <div style={{ display: 'flex', gap: '12px' }}>
             {/* Side Vertical Layout */}
-            <div 
+            <div
               onClick={() => setMenuLayout('vertical')}
               style={{
                 flex: 1,
@@ -240,9 +242,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
               )}
               {/* Vertical menu visualization */}
               <div style={{ marginBottom: '12px' }}>
-                <div style={{ 
-                  width: '60px', 
-                  height: '40px', 
+                <div style={{
+                  width: '60px',
+                  height: '40px',
                   background: isDarkMode ? '#1f1f1f' : '#ffffff',
                   borderRadius: '6px',
                   margin: '0 auto',
@@ -250,16 +252,16 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
                   display: 'flex',
                   padding: '4px'
                 }}>
-                  <div style={{ 
-                    width: '12px', 
-                    height: '100%', 
+                  <div style={{
+                    width: '12px',
+                    height: '100%',
                     background: isDarkMode ? '#424242' : '#e9ecef',
                     borderRadius: '2px',
                     marginRight: '2px'
                   }}></div>
-                  <div style={{ 
-                    flex: 1, 
-                    height: '100%', 
+                  <div style={{
+                    flex: 1,
+                    height: '100%',
                     background: isDarkMode ? '#333333' : '#f8f8f8',
                     borderRadius: '2px',
                     display: 'flex',
@@ -276,7 +278,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
             </div>
 
             {/* Top Horizontal Layout */}
-            <div 
+            <div
               onClick={() => setMenuLayout('horizontal')}
               style={{
                 flex: 1,
@@ -308,9 +310,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
               )}
               {/* Horizontal menu visualization */}
               <div style={{ marginBottom: '12px' }}>
-                <div style={{ 
-                  width: '60px', 
-                  height: '40px', 
+                <div style={{
+                  width: '60px',
+                  height: '40px',
                   background: isDarkMode ? '#1f1f1f' : '#ffffff',
                   borderRadius: '6px',
                   margin: '0 auto',
@@ -319,9 +321,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
                   flexDirection: 'column',
                   padding: '4px'
                 }}>
-                  <div style={{ 
-                    width: '100%', 
-                    height: '8px', 
+                  <div style={{
+                    width: '100%',
+                    height: '8px',
                     background: isDarkMode ? '#424242' : '#e9ecef',
                     borderRadius: '2px',
                     marginBottom: '2px',
@@ -333,9 +335,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
                     <div style={{ flex: 1, background: isDarkMode ? '#666' : '#ccc', borderRadius: '1px' }}></div>
                     <div style={{ flex: 1, background: isDarkMode ? '#666' : '#ccc', borderRadius: '1px' }}></div>
                   </div>
-                  <div style={{ 
-                    flex: 1, 
-                    width: '100%', 
+                  <div style={{
+                    flex: 1,
+                    width: '100%',
                     background: isDarkMode ? '#333333' : '#f8f8f8',
                     borderRadius: '2px'
                   }}></div>

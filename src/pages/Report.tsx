@@ -44,7 +44,7 @@ const Report: React.FC = () => {
   const { isDarkMode } = useTheme();
   const [currentStep, setCurrentStep] = useState(0);
   const [reportType, setReportType] = useState(() => {
-    return localStorage.getItem('selectedReportType') || "DSR";
+    return localStorage.getItem('selectedReportType') || "Net claimable";
   });
 
   // Save report type to localStorage when it changes
@@ -72,7 +72,7 @@ const Report: React.FC = () => {
   const [dateRangeRadioValue, setDateRangeRadioValue] = useState("invoiced");
   const [form] = Form.useForm();
 
-  const reportTypes = ["DSR", "Ledger", "Commission", "Top-up", "Sales"];
+  const reportTypes = ["Net claimable", "Tax invoices Pending to file", "Invoice missing ", "Additional invoices in GSTR-2A", "Booking data not reconciled", "Tax invoice recieved report", "MIS for corporate", "Airline contact details", "Offline airline invoices"];
 
   const handleFieldSelection = (
     category: string,
@@ -254,15 +254,8 @@ const Report: React.FC = () => {
     );
 
     return (
-      <div style={{ marginBottom: "24px" }}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: "16px",
-            padding: "0",
-          }}
+      <div className="cls-report-sec">
+        <div className="cls-report-sub"
         >
           <Text
             strong
@@ -270,28 +263,15 @@ const Report: React.FC = () => {
           >
             {categoryName}
           </Text>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              cursor: "pointer",
-            }}
+          <div className="cls-checkBox"
             onClick={() => handleSelectAllFields(categoryKey, fields)}
           >
             <Checkbox
               checked={allSelected}
+              className="cls-check"
               onChange={() => handleSelectAllFields(categoryKey, fields)}
-              style={{
-                transform: "scale(1.2)",
-              }}
             />
-            <Text
-              style={{
-                color: "#5A4FCF",
-                fontSize: "14px",
-                cursor: "pointer",
-              }}
+            <Text className="cls-repoText"
             >
               Select all
             </Text>
@@ -436,16 +416,8 @@ const Report: React.FC = () => {
 
         return (
           <div className="cls-step-content">
-            <div style={{ marginBottom: "24px" }}>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: "16px",
-                  padding: "0",
-                }}
-              >
+            <div className="condition-section">
+              <div className="condition-header">
                 <Text
                   strong
                   style={{
@@ -456,12 +428,7 @@ const Report: React.FC = () => {
                   Condition Details
                 </Text>
                 <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    cursor: "pointer",
-                  }}
+                  className="select-all-container"
                   onClick={() => {
                     availableConditions.forEach((condition) => {
                       handleConditionSelection(
@@ -482,13 +449,7 @@ const Report: React.FC = () => {
                       });
                     }}
                   />
-                  <Text
-                    style={{
-                      color: "#5A4FCF",
-                      fontSize: "14px",
-                      cursor: "pointer",
-                    }}
-                  >
+                  <Text className="select-all-text">
                     Select all
                   </Text>
                 </div>
@@ -497,14 +458,7 @@ const Report: React.FC = () => {
                 {availableConditions.map((condition) => (
                   <Col span={8} key={condition.key}>
                     <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "8px",
-                        padding: "8px 12px",
-                        borderRadius: "4px",
-                        cursor: "pointer",
-                      }}
+                      className="condition-item"
                       onClick={() =>
                         handleConditionSelection(
                           condition.key,
@@ -543,6 +497,7 @@ const Report: React.FC = () => {
             </div>
           </div>
         );
+
 
       case 2:
         const categoryNames = {
@@ -590,6 +545,7 @@ const Report: React.FC = () => {
                       fontSize: "18px",
                       display: "block",
                       marginBottom: "20px",
+                      fontFamily: 'var(--font-semibold)'
                     }}
                   >
                     Selected Fields
@@ -601,6 +557,7 @@ const Report: React.FC = () => {
                       gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
                       gap: "20px",
                     }}
+                    className="cls-SelectedChecks"
                   >
                     {Object.entries(selectedFields).map(([category, fields]) => {
                       if (fields.length === 0) return null;
@@ -687,6 +644,7 @@ const Report: React.FC = () => {
                       fontSize: "18px",
                       display: "block",
                       marginBottom: "20px",
+                      fontFamily: 'var(--font-semibold)'
                     }}
                   >
                     Condition Details
@@ -858,14 +816,16 @@ const Report: React.FC = () => {
                           fontSize: "14px",
                           display: "block",
                           marginBottom: "12px",
+                          fontFamily: 'var(--font-semibold)'
                         }}
+
                       >
                         Select Agency
                       </Text>
                       <Select
                         mode="multiple"
                         placeholder="Select agencies"
-                        style={{ width: "100%", maxWidth: "400px" }}
+                        style={{ width: "100%", maxWidth: "400px", fontFamily: 'var(--font-regular)'}}
                         options={agencyOptions}
                         filterOption={(input, option) =>
                           (option?.label ?? "")
@@ -907,7 +867,7 @@ const Report: React.FC = () => {
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
           <Title
             level={2}
-            style={{ margin: 0, color: "#722ed1", fontSize: "24px" }}
+            style={{ margin: 0, color: "#722ed1", fontSize: "24px" }} className="cls-report-title"
           >
             Create custom report
           </Title>
@@ -916,12 +876,14 @@ const Report: React.FC = () => {
           <Button
             icon={<FileTextOutlined />}
             onClick={() => navigate("/saved-reports")}
+            style={{fontFamily: 'var(--font-regular)'}}
           >
             Saved reports
           </Button>
           <Button
             icon={<UnorderedListOutlined />}
             onClick={() => navigate("/queued-reports")}
+            style={{fontFamily: 'var(--font-regular)'}}
           >
             Queued reports
           </Button>
@@ -937,6 +899,7 @@ const Report: React.FC = () => {
             top: "50px",
             height: "fit-content",
           }}
+          className="cls-report-sideBar"
         >
           <Card
             style={{
@@ -986,6 +949,7 @@ const Report: React.FC = () => {
                 justifyContent: "center",
                 marginBottom: "32px",
               }}
+              className="cls-report-titles"
             >
               {stepTitles.map((title, index) => (
                 <div
@@ -1041,14 +1005,7 @@ const Report: React.FC = () => {
 
             {/* Action Buttons */}
             <Divider />
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "end",
-                gap: "15px",
-                alignItems: "center",
-              }}
-            >
+            <div className="cls-action-buttons">
               <Button onClick={handleBack} disabled={currentStep === 0}>
                 Back
               </Button>

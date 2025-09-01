@@ -56,7 +56,7 @@ const Filter: React.FC<IProps> = ({ fields, pathname, onChange, showButtons = fa
         return (
           <Select
             value={values[field.key] || field.defaultValue}
-            style={{ width: 120 }}
+            style={{ width: 130 }}
             onChange={(val) => handleChange(field.key, val)}
           >
             {field.options?.map((opt) => (
@@ -89,7 +89,7 @@ const Filter: React.FC<IProps> = ({ fields, pathname, onChange, showButtons = fa
       case "dateRange":
         return (
           <RangePicker
-            style={{ width: 200 }}
+            style={{ width: 220 }}
             value={values[field.key]}
             onChange={(dates) => handleChange(field.key, dates)}
           />

@@ -1,0 +1,28 @@
+// A mixin to declare a font-face
+@mixin fontFace($name, $file) {
+  @font-face {
+    font-family: $name;
+    src: url('./fonts/Poppins_fonts/#{$file}.eot');
+    src: url('./fonts/Poppins_fonts/#{$file}.eot?#iefix') format('embedded-opentype'),
+    url('./fonts/Poppins_fonts/#{$file}.woff2') format('woff2'),
+    url('./fonts/Poppins_fonts/#{$file}.woff') format('woff'),
+    url('./fonts/Poppins_fonts/#{$file}.ttf') format('truetype'),
+    url('./fonts/Poppins_fonts/#{$file}.svg##{$file}') format('svg');
+    font-weight: normal;
+    font-style: normal;
+  }
+}
+
+// Use the mixin for each variant
+@include fontFace('Poppins_regular', 'poppins_regular');
+@include fontFace('Poppins_semibold', 'poppins_semibold');
+@include fontFace('Poppins_bold', 'poppins_bold');
+@include fontFace('Poppins_light', 'poppins_light');
+
+// Variables added 
+:root {
+  --font-regular: 'Poppins_regular';
+  --font-semibold: 'Poppins_semibold';
+  --font-bold: 'Poppins_bold';
+  --font-light: 'Poppins_light';
+}
