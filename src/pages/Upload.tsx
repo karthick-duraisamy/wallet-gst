@@ -289,7 +289,7 @@ const handleSubmit = async () => {
     {
       key: "non-ayp",
       label: (
-        <div style={{ display: "flex", alignItems: "center", gap: "8px" }} className="cls-tabs">
+        <div className="cls-tabs">
           <span>Non-AYP Bookings</span>
         </div>
       ),
@@ -304,7 +304,7 @@ const handleSubmit = async () => {
     {
       key: "gstr-2a",
       label: (
-        <div style={{ display: "flex", alignItems: "center", gap: "8px" }} className="cls-tabs">
+        <div className="cls-tabs">
           <span>GSTR-2A</span>
         </div>
       ),

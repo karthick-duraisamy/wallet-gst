@@ -1,0 +1,343 @@
+.cls-modal-layout {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .cls-modal {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .cls-close {
+        cursor: pointer;
+        font-size: $FONT-16;
+    }
+}
+
+.cls-theme-settings {
+    width: 100%;
+
+    .cls-headings {
+        margin: 0 0 16px 0;
+    }
+
+    .cls-toggleCard {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 24px;
+
+        .cls-cards {
+            border-radius: 8px;
+            cursor: pointer;
+            background: $WHITE;
+            text-align: center;
+            transition: all 0.2s;
+            position: relative;
+            flex: 1;
+            padding: 16px;
+        }
+
+        .cls-dark-cards {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: $SUCCESS-COLOR;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .cls-tick {
+                color: white;
+                font-size: 10px
+            }
+        }
+
+        .cls-themeSettings {
+            margin-bottom: 12px;
+
+            .cls-themes {
+                border-radius: 6px;
+                margin: 0 auto;
+                border: 1px solid #e8e8e8;
+                display: flex;
+                flex-direction: column;
+                padding: 4px;
+                width: 60px;
+                height: 40px;
+
+                .cls-themeCards {
+                    width: 100%;
+                    height: 8px;
+                    background: $INFO-COLOR;
+                    border-radius: 2px;
+                    margin-bottom: 2px;
+                }
+
+                .cls-cardLayouts {
+                    display: flex;
+                    gap: 2px;
+
+                    .cls-cards {
+                        width: 8px;
+                        height: 24px;
+                        background: $LIGHTWHITE;
+                        border-radius: 1px;
+                    }
+
+                    .cls-card-layouts {
+                        flex: 1;
+                        height: 24px;
+                        background: #f8f8f8;
+                        border-radius: 1px;
+                    }
+                }
+            }
+        }
+
+        .cls-toggledark {
+            flex: 1;
+            padding: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #1f1f1f;
+            text-align: center;
+            transition: all 0.2s;
+            position: relative;
+
+            .cls-darkmode-indicator {
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                width: 16px;
+                height: 16px;
+                border-radius: 50%;
+                background: $SUCCESS-COLOR;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                .cls-darkmode-check {
+                    color: $WHITE;
+                    font-size: 10px;
+                }
+
+            }
+
+            .cls-card-wrapper {
+                margin-bottom: 12px;
+
+                .cls-card-container {
+                    width: 60px;
+                    height: 40px;
+                    background: linear-gradient(135deg, #262626 0%, #1f1f1f 100%);
+                    border-radius: 6px;
+                    margin: 0 auto;
+                    border: 1px solid #424242;
+                    display: flex;
+                    flex-direction: column;
+                    padding: 4px;
+
+                    .cls-card-header {
+                        width: 100%;
+                        height: 8px;
+                        background: $INFO-COLOR;
+                        border-radius: 2px;
+                        margin-bottom: 2px;
+                    }
+
+                    .cls-card-body {
+                        display: flex;
+                        gap: 2px;
+
+                        .cls-card-sidebar {
+                            width: 8px;
+                            height: 24px;
+                            background: #424242;
+                            border-radius: 1px;
+                        }
+
+                        .cls-card-content {
+                            flex: 1;
+                            height: 24px;
+                            background: $TEXT-COLOR;
+                            border-radius: 1px;
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
+    .cls-menu-title {
+        margin: 0 0 16px 0;
+        color: $BLACK;
+
+        .dark-mode & {
+            color: $WHITE;
+        }
+    }
+
+    .cls-menu-options {
+        display: flex;
+        gap: 12px;
+    }
+
+    .cls-menu-card {
+        flex: 1;
+        padding: 16px;
+        border: 1px solid $BORDER-COLOR;
+        border-radius: 8px;
+        background: #f8f9fa;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        position: relative;
+
+        &.active {
+            border: 2px solid $SUCCESS-COLOR;
+        }
+
+        &.dark-mode {
+            border: 1px solid #424242;
+            background: #262626;
+        }
+    }
+
+    /* Check indicator */
+    .cls-check-indicator {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: $SUCCESS-COLOR;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .cls-checkmark {
+        color: $WHITE;
+        font-size: 10px;
+    }
+
+    /* Previews */
+    .cls-menu-preview {
+        margin-bottom: 12px;
+    }
+
+    /* Vertical Layout Preview */
+    .cls-preview-vertical {
+        width: 60px;
+        height: 40px;
+        margin: 0 auto;
+        border-radius: 6px;
+        border: 1px solid #e8e8e8;
+        background: $WHITE;
+        display: flex;
+        padding: 4px;
+
+        .dark-mode & {
+            background: #1f1f1f;
+            border: 1px solid #424242;
+        }
+    }
+
+    .cls-vertical-sidebar {
+        width: 12px;
+        height: 100%;
+        border-radius: 2px;
+        margin-right: 2px;
+        background: #e9ecef;
+
+        .dark-mode & {
+            background: #424242;
+        }
+    }
+
+    .cls-vertical-content {
+        flex: 1;
+        height: 100%;
+        border-radius: 2px;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        padding: 2px;
+        background: #f8f8f8;
+
+        .dark-mode & {
+            background: $TEXT-COLOR;
+        }
+
+        .cls-vertical-line {
+            height: 4px;
+            border-radius: 1px;
+            background: #e9ecef;
+
+            .dark-mode & {
+                background: #424242;
+            }
+        }
+    }
+
+    /* Horizontal Layout Preview */
+    .cls-preview-horizontal {
+        width: 60px;
+        height: 40px;
+        margin: 0 auto;
+        border-radius: 6px;
+        border: 1px solid #e8e8e8;
+        background: $WHITE;
+        display: flex;
+        flex-direction: column;
+        padding: 4px;
+
+        .dark-mode & {
+            background: #1f1f1f;
+            border: 1px solid #424242;
+        }
+    }
+
+    .cls-horizontal-header {
+        width: 100%;
+        height: 8px;
+        border-radius: 2px;
+        margin-bottom: 2px;
+        display: flex;
+        gap: 2px;
+        padding: 1px;
+        background: #e9ecef;
+
+        .dark-mode & {
+            background: #424242;
+        }
+
+        .cls-horizontal-item {
+            flex: 1;
+            border-radius: 1px;
+            background: #ccc;
+
+            .dark-mode & {
+                background: $GREY;
+            }
+        }
+    }
+
+    .cls-horizontal-content {
+        flex: 1;
+        width: 100%;
+        border-radius: 2px;
+        background: #f8f8f8;
+
+        .dark-mode & {
+            background: $TEXT-COLOR;
+        }
+    }
+
+}

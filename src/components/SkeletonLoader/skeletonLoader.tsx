@@ -7,28 +7,28 @@ const FilterSkeleton: React.FC = () => {
     <Row gutter={16} align="middle">
       {/* Status */}
       <Col span={4}>
-        <Skeleton.Input active size="default" style={{ width: "100%" }} />
+        <Skeleton.Input active size="default" className='cls-filter-fields'/>
       </Col>
 
       {/* Type */}
       <Col span={4}>
-        <Skeleton.Input active size="default" style={{ width: "100%" }} />
+        <Skeleton.Input active size="default" className='cls-filter-fields' />
       </Col>
 
       {/* Vendor type */}
       <Col span={4}>
-        <Skeleton.Input active size="default" style={{ width: "100%" }} />
+        <Skeleton.Input active size="default" className='cls-filter-fields'/>
       </Col>
 
       {/* Start / End date */}
       <Col span={5}>
-        <Skeleton.Input active size="default" style={{ width: "100%" }} />
+        <Skeleton.Input active size="default" className='cls-filter-fields' />
       </Col>
 
       {/* Buttons */}
-      <Col span={7} style={{ display: "flex", justifyContent: "flex-end", gap: "8px" }}>
-        <Skeleton.Button active size="default" style={{ width: "80px" }} />
-        <Skeleton.Button active size="default" style={{ width: "100px" }} />
+      <Col span={7} className='cls-filter-btns'>
+        <Skeleton.Button active size="default" className='cls-primaryBtn'/>
+        <Skeleton.Button active size="default" className='cls-secBtn'/>
       </Col>
     </Row>
   );
@@ -37,21 +37,21 @@ const FilterSkeleton: React.FC = () => {
 const TableSkeleton: React.FC = () => {
   // mimic same columns but replace data with skeletons
   const skeletonColumns = [
-    { title: <Skeleton.Input style={{ width: 100 }} active size="small" />, dataIndex: "col1" },
-    { title: <Skeleton.Input style={{ width: 100 }} active size="small" />, dataIndex: "col2" },
-    { title: <Skeleton.Input style={{ width: 100 }} active size="small" />, dataIndex: "col3" },
-    { title: <Skeleton.Input style={{ width: 120 }} active size="small" />, dataIndex: "col4" },
-    { title: <Skeleton.Input style={{ width: 80 }} active size="small" />, dataIndex: "col5" },
+    { title: <Skeleton.Input className="cls-skeleton-input" active size="small" />, dataIndex: "col1" },
+    { title: <Skeleton.Input className="cls-skeleton-input" active size="small" />, dataIndex: "col2" },
+    { title: <Skeleton.Input className="cls-skeleton-input" active size="small" />, dataIndex: "col3" },
+    { title: <Skeleton.Input className="cls-skeleton-inputL" active size="small" />, dataIndex: "col4" },
+    { title: <Skeleton.Input className="cls-skeleton-inputS" active size="small" />, dataIndex: "col5" },
   ];
 
   // fake rows with skeleton cells
   const skeletonData = Array.from({ length: 6 }).map((_, i) => ({
     key: i,
-    col1: <Skeleton.Input style={{ width: 80 }} active size="small" />,
-    col2: <Skeleton.Input style={{ width: 80 }} active size="small" />,
-    col3: <Skeleton.Input style={{ width: 80 }} active size="small" />,
-    col4: <Skeleton.Input style={{ width: 100 }} active size="small" />,
-    col5: <Skeleton.Input style={{ width: 60 }} active size="small" />,
+    col1: <Skeleton.Input className="cls-skeleton-inputS" active size="small" />,
+    col2: <Skeleton.Input className="cls-skeleton-inputS" active size="small" />,
+    col3: <Skeleton.Input className="cls-skeleton-inputS" active size="small" />,
+    col4: <Skeleton.Input className="cls-skeleton-input" active size="small" />,
+    col5: <Skeleton.Input className="cls-skeleton-inputES" active size="small" />,
   }));
 
   return (
@@ -69,7 +69,7 @@ const TableSkeleton: React.FC = () => {
 
 const PaginationSkeleton: React.FC = () => {
   return (
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0" }} className='cls-pagination-skeleton'>
+    <div className='cls-pagination-skeleton'>
       {/* Left side - Displaying info */}
       <Space>
         {Array.from({ length: 2 }).map((_, i) => (

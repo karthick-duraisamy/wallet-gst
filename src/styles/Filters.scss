@@ -1,0 +1,27 @@
+.cls-select-field{
+    width: 130px;
+}
+.cls-input-field, .cls-date-field{
+    width: 120px;
+}
+.cls-dateRange-field{
+    width: 220px;
+}
+.cls-customFilter{
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: end;
+    width: 100%;
+    .cls-filters-cond{
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        align-items: end;
+        .cls-label{
+            margin-bottom: 4;
+            font-size: $FONT-12;
+            font-weight: 500;
+        }
+    }
+}

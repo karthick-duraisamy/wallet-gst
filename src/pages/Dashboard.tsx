@@ -19,13 +19,11 @@ import { InfoCircleOutlined } from "@ant-design/icons";
 import { useTheme } from "../contexts/ThemeContext";
 import "../styles/Dashboard.scss";
 import Filter from '../components/Filters/Filters';
-// import PageLoader from '../components/loader/Loader'
 
 const { Title, Text } = Typography;
 // const { Option } = Select;
 
 const Dashboard: React.FC = () => {
-  // <PageLoader/>
   const [timePeriod, setTimePeriod] = useState("fy-2023-2024");
   const [month, setMonth] = useState("apr");
   const [travelVendor, setTravelVendor] = useState("makemytrip");

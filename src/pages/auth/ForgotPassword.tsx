@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Form, Input, Button, Alert } from 'antd';
 import { MailOutlined, CheckCircleOutlined, FileTextOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-
+import '../../styles/Login.scss';
 interface ForgotPasswordForm {
   email: string;
 }
@@ -81,7 +81,7 @@ const ForgotPassword: React.FC = () => {
         
         <div className="auth-right">
           <div className="auth-header">
-            <CheckCircleOutlined className="success-animation" style={{ fontSize: 64, color: '#52c41a', marginBottom: 24, display: 'block' }} />
+            <CheckCircleOutlined className="success-animation"/>
             <h1>Check Your Email</h1>
             <p>We've sent password reset instructions to your email address</p>
           </div>

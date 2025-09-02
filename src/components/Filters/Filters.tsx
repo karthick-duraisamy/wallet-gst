@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Select, DatePicker, Input } from "antd";
 // import dayjs from "dayjs";
-
+import '../../styles/Filters.scss'
 const { Option } = Select;
 const { RangePicker } = DatePicker;
+
 
 export interface IField {
   key: string;
@@ -56,7 +57,7 @@ const Filter: React.FC<IProps> = ({ fields, pathname, onChange, showButtons = fa
         return (
           <Select
             value={values[field.key] || field.defaultValue}
-            style={{ width: 130 }}
+            className="cls-select-field"
             onChange={(val) => handleChange(field.key, val)}
           >
             {field.options?.map((opt) => (
@@ -71,7 +72,7 @@ const Filter: React.FC<IProps> = ({ fields, pathname, onChange, showButtons = fa
         return (
           <Input
             placeholder={field.placeholder}
-            style={{ width: 120 }}
+            className="cls-input-field"
             value={values[field.key] || ''}
             onChange={(e) => handleChange(field.key, e.target.value)}
           />
@@ -80,7 +81,7 @@ const Filter: React.FC<IProps> = ({ fields, pathname, onChange, showButtons = fa
       case "date":
         return (
           <DatePicker
-            style={{ width: 120 }}
+            className="cls-date-field"
             value={values[field.key]}
             onChange={(date) => handleChange(field.key, date)}
           />
@@ -89,7 +90,7 @@ const Filter: React.FC<IProps> = ({ fields, pathname, onChange, showButtons = fa
       case "dateRange":
         return (
           <RangePicker
-            style={{ width: 220 }}
+            className="cls-dateRange-field"
             value={values[field.key]}
             onChange={(dates) => handleChange(field.key, dates)}
           />
@@ -108,17 +109,12 @@ const Filter: React.FC<IProps> = ({ fields, pathname, onChange, showButtons = fa
 
   return (
     <div className="cls-customFilter" style={{ 
-      display: "flex", 
-      gap: "1rem", 
-      flexWrap: "wrap", 
-      alignItems: "end", 
       justifyContent: showButtons ? 'space-between' : 'flex-start',
-      width: '100%'
     }}>
-      <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "end" }}>
+      <div className="cls-filters-cond" >
         {visibleFields.map((field) => (
           <div key={field.key} className={field.key} style={{ display: "flex", flexDirection: "column" }}>
-            {field.label && <label style={{ marginBottom: 4, fontSize: '12px', fontWeight: 500 }}>{field.label}</label>}
+            {field.label && <label className="cls-label">{field.label}</label>}
             {renderField(field)}
           </div>
         ))}

@@ -60,6 +60,8 @@
 .cls-btnItems{
   width: 250px;
   justify-content: end;
+  display: flex;
+  gap: 15;
 }
 .cls-invoiceRange{
   .cls-btnItems{
@@ -781,4 +783,412 @@
 .cls-go-to-page-button {
   background-color: $PRIMARYCOLOR;
   border-radius: 16px;
+}
+
+.cls-wrapper {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.cls-header {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.cls-toggle-btn {
+  width: 100%;
+  height: 40px;
+  text-align: left;
+  border: none;
+  background: $BACKGROUND-COLOR;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: none;
+  border-radius: 6px;
+
+  .cls-toggle-text {
+    color: $PRIMARYCOLOR;
+    font-weight: 500;
+  }
+
+  .cls-toggle-icon {
+    color: $PRIMARYCOLOR;
+    transition: transform 0.3s ease;
+
+    &.expanded {
+      transform: rotate(0deg);
+    }
+
+    &.collapsed {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.cls-count {
+  font-size: $FONT-14;
+  color: #8b949e;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  .cls-count-info {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #8b949e;
+    color: #fff;
+    font-size: $FONT-12;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: bold;
+  }
+}
+
+.cls-expand-box {
+  margin-top: 20px;
+  background: #fff;
+  border: 1px solid #e1e5e9;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  position: absolute;
+  width: 300px;
+  z-index: 1001;
+
+  .cls-close-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    color: $ERROR-COLOR;
+    font-size: $FONT-18;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+  }
+
+  .cls-expand-section {
+    margin-bottom: 20px;
+    margin-top: 8px;
+
+    .cls-expand-title {
+      font-size: $FONT-16;
+      font-weight: 500;
+      margin-bottom: 12px;
+      color: #24292f;
+    }
+
+    .cls-textarea {
+      resize: none;
+      border-radius: 6px;
+      border: 1px solid #d0d7de;
+      font-size: $FONT-14;
+    }
+
+    .cls-example-box {
+      font-size: $FONT-14;
+      color: #656d76;
+      padding: 12px 16px;
+      background: #f6f8fa;
+      border-radius: 6px;
+      border: 1px solid #d0d7de;
+      margin-bottom: 20px;
+
+      .cls-example-label {
+        font-weight: 600;
+        color: #24292f;
+      }
+    }
+  }
+
+  .cls-expand-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+
+    .cls-cancel-btn {
+      border-radius: 6px;
+      height: 36px;
+      padding: 0 16px;
+    }
+
+    .cls-submit-btn {
+      background-color: $PRIMARYCOLOR;
+      border-color: $PRIMARYCOLOR;
+      border-radius: 6px;
+      height: 36px;
+      padding: 0 16px;
+      font-weight: 500;
+    }
+  }
+}
+
+.cls-btnItems {
+  display: flex;
+  gap: 15px;
+}
+.cls-container {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 24px;
+
+  // Dark mode support
+  &.cls-dark {
+    background-color: #1f1f1f;
+    border-color: $TEXT-COLOR;
+  }
+}
+
+.cls-header {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.cls-sprt {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cls-inputGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cls-label {
+  font-size: $FONT-12;
+  color: $GREY;
+
+  .cls-dark & {
+    color: #aaa;
+  }
+}
+
+.cls-input {
+  width: 200px;
+}
+
+.cls-btnItems {
+  display: flex;
+  gap: 15px;
+}
+
+.cls-submitBtn {
+  background-color: $PRIMARYCOLOR;
+  border-color: $PRIMARYCOLOR;
+  color: #fff;
+
+  .cls-dark & {
+    background-color: #6366f1;
+    border-color: #6366f1;
+  }
+}
+
+.cls-resetBtn {
+  background-color: $BACKGROUND-COLOR;
+  border-color: $BORDER-COLOR;
+  color: $TEXT-COLOR;
+
+  .cls-dark & {
+    background-color: #2f2f2f;
+    border-color: #444;
+    color: #fff;
+  }
+}
+.cls-invoiceRange {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 24px;
+
+  // Dark mode / conditional style
+  &.cls-dark {
+    background-color: #1f1f1f;
+    border-color: $TEXT-COLOR;
+  }
+
+  // Highlighted mode (example of ternary-based style)
+  &.cls-highlight {
+    background-color: #fff7e6;
+    border-color: #ffa940;
+  }
+}
+.cls-filter-dropdown {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 250px;
+  background: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+
+  &.cls-dark {
+    background: #1f1f1f;
+    border-color: $TEXT-COLOR;
+    color: $LIGHTWHITE;
+  }
+}
+
+.cls-filter-header {
+  position: relative;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e9ecef;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .cls-filter-title {
+    font-size: $FONT-14;
+    color: #24292f;
+  }
+}
+
+.cls-filter-closeBtn {
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  color: red;
+  font-size: $FONT-22;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+
+  &:hover {
+    color: darkred;
+  }
+
+  // Conditional variants
+  &.cls-light {
+    color: red;
+  }
+
+  &.cls-dark {
+    color: #ff7875;
+  }
+}
+
+.cls-filter-content {
+  padding: 12px 16px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.cls-filter-option {
+  margin-bottom: 8px;
+  font-size: $FONT-14;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+.cls-pagination-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid $LIGHTWHITE;
+
+  .pagination-left,
+  .pagination-center,
+  .pagination-right {
+    display: flex;
+    align-items: center;
+  }
+
+  .pagination-left {
+    gap: 8px;
+
+    .pagination-text {
+      font-size: $FONT-14;
+    }
+
+    .pagination-select {
+      width: 60px;
+    }
+  }
+
+  .pagination-center {
+    gap: 8px;
+
+    .pagination-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid $BORDER-COLOR;
+      background-color: white;
+      color: $BLACK;
+
+      &.active {
+        background-color: $PRIMARYCOLOR;
+        border-color: $PRIMARYCOLOR;
+        color: white;
+      }
+
+      &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+    }
+
+    .pagination-ellipsis {
+      margin: 0 8px;
+    }
+  }
+
+  .pagination-right {
+    gap: 8px;
+
+    .pagination-text {
+      font-size: $FONT-14;
+    }
+
+    .pagination-input {
+      width: 60px;
+    }
+
+    .pagination-go-btn {
+      background-color: $PRIMARYCOLOR;
+      border-radius: 16px;
+      border: none;
+      color: white;
+
+      &:hover {
+        background-color: #4338ca;
+      }
+    }
+  }
 }

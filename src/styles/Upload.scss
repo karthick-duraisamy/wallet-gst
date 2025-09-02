@@ -9,6 +9,9 @@
     font-weight: normal;
   }
   .cls-tabs{
+    display: flex;
+    align-items: center;
+    gap: 8px;
     span{
       font-family: var(--font-regular);
     }
@@ -324,7 +327,7 @@
 }
 
 .cls-file-name {
-  font-size: 13px;
+  font-size: $FONT-13;
   font-weight: 500;
   color: $TEXT-COLOR;
   overflow: hidden;
@@ -498,7 +501,7 @@
   }
   
   .cls-upload-main-text {
-    font-size: 13px;
+    font-size: $FONT-13;
     margin-bottom: 6px;
     font-family: var(--font-regular);
   }

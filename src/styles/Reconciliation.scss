@@ -344,7 +344,7 @@
     }
 
     .ant-checkbox-wrapper {
-      font-size: 13px;
+      font-size: $FONT-13;
       color: #24292f;
 
       &:hover {
@@ -384,7 +384,7 @@
     gap:10px;
 
     .cls-status-label {
-      font-size: 13px;
+      font-size: $FONT-13;
       color: $GREY;
       font-family: var(--font-regular);
     }
@@ -502,4 +502,105 @@
 .cls-go-to-page-button {
   background-color: $PRIMARYCOLOR;
   border-radius: 16px;
+}
+
+ .cls-filter-close-btn {
+    position: absolute;
+    top: 14px;
+    right: 10px;
+    color: red;
+    font-size: $FONT-22;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    // Example of conditional style using ternary class
+    &.active {
+      color: darkred;
+    }
+  }
+
+  .cls-pagination-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid $LIGHTWHITE;
+
+  .pagination-left,
+  .pagination-center,
+  .pagination-right {
+    display: flex;
+    align-items: center;
+  }
+
+  .pagination-left {
+    gap: 8px;
+
+    .pagination-text {
+      font-size: $FONT-14;
+    }
+
+    .pagination-select {
+      width: 60px;
+    }
+  }
+
+  .pagination-center {
+    gap: 8px;
+
+    .pagination-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid $BORDER-COLOR;
+      background-color: white;
+      color: $BLACK;
+
+      &.active {
+        background-color: $PRIMARYCOLOR;
+        border-color: $PRIMARYCOLOR;
+        color: white;
+      }
+
+      &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+    }
+
+    .pagination-ellipsis {
+      margin: 0 8px;
+    }
+  }
+
+  .pagination-right {
+    gap: 8px;
+
+    .pagination-text {
+      font-size: $FONT-14;
+    }
+
+    .pagination-input {
+      width: 60px;
+    }
+
+    .pagination-go-btn {
+      background-color: $PRIMARYCOLOR;
+      border-radius: 16px;
+      border: none;
+      color: white;
+
+      &:hover {
+        background-color: #4338ca;
+      }
+    }
+  }
 }

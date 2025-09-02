@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Form, Input, Button, Alert, Row, Col } from 'antd';
 import * as AntdIcons from '@ant-design/icons';
+import '../../styles/Login.scss';
 
 interface ResetPasswordForm {
   currentPassword: string;
@@ -83,7 +84,7 @@ const ResetPassword: React.FC = () => {
         <Col span={24} md={12} lg={8}>
           <div className="auth-right">
             <div className="auth-header">
-              <AntdIcons.CheckCircleOutlined className="success-animation" style={{ fontSize: 64, color: '#52c41a', marginBottom: 24, display: 'block' }} />
+            <AntdIcons.CheckCircleOutlined className="success-animation" />
               <h1>Password Updated</h1>
               <p>Your password has been successfully updated. You will be redirected to the login page shortly.</p>
             </div>

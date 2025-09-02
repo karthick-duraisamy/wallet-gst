@@ -835,7 +835,7 @@ body {
 }
 
 /* Side Menu Styles */
-.side-menu {
+.cls-side-menu {
   background: #4C1D95 !important;
   border-right: none !important;
 }
@@ -904,7 +904,7 @@ body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.side-menu-content {
+.cls-side-menu-content {
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -997,9 +997,9 @@ body {
 
 .nav-label {
   color: rgba(255, 255, 255, 0.8);
-  font-size: 16px;
-  font-weight: 500;
+  font-size: 15px;
   transition: color 0.2s ease;
+  font-family: var(--font-semibold);
 }
 
 .nav-item-with-label:hover .nav-icon,
@@ -1052,7 +1052,7 @@ body {
 }
 
 /* Legacy menu styles for compatibility */
-.side-menu .ant-menu-item {
+.cls-side-menu .ant-menu-item {
   background: transparent !important;
   color: rgba(255, 255, 255, 0.7) !important;
   border: none !important;
@@ -1064,21 +1064,21 @@ body {
   justify-content: center !important;
 }
 
-.side-menu .ant-menu-item:hover {
+.cls-side-menu .ant-menu-item:hover {
   background: rgba(255, 255, 255, 0.1) !important;
   color: white !important;
 }
 
-.side-menu .ant-menu-item-selected {
+.cls-side-menu .ant-menu-item-selected {
   background: rgba(255, 255, 255, 0.2) !important;
   color: white !important;
 }
 
-.side-menu .ant-menu-item-selected::after {
+.cls-side-menu .ant-menu-item-selected::after {
   display: none !important;
 }
 
-.side-menu .ant-menu {
+.cls-side-menu .ant-menu {
   width: 100%;
 }
 
@@ -2409,4 +2409,12 @@ tr.ant-table-measure-row td {
   button {
     font-family: var(--font-regular);
   }
+}
+.cls-footer-section, .footer-text{
+  background: rgb(245, 245, 245);
+  text-align: center;
+  padding: 16px 24px;
+  border-top: 1px solid rgb(232, 232, 232);
+  font-size: 14px;
+  color: rgb(102, 102, 102);
 }

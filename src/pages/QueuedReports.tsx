@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   Card, 
   Button, 
@@ -7,28 +7,22 @@ import {
   Space,
   Typography,
   Tag,
-  Progress,
-  Popconfirm,
   message
 } from 'antd';
 import { 
   ArrowLeftOutlined,
   PlusOutlined,
-  PlayCircleOutlined,
-  PauseCircleOutlined,
-  DeleteOutlined,
   DownloadOutlined
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
+import '../styles/Report.scss';
 
 const { Title } = Typography;
-const { Search } = Input;
 
 const QueuedReports: React.FC = () => {
   const navigate = useNavigate();
   const { isDarkMode } = useTheme();
-  const [searchText, setSearchText] = useState('');
   const [reportType, setReportType] = useState(() => {
     return localStorage.getItem('selectedQueuedReportType') || "DSR";
   });
@@ -71,22 +65,6 @@ const QueuedReports: React.FC = () => {
       setQueuedReportsData(prev => [...prev, ...savedQueued]);
     }
   }, []);
-
-  const handlePause = (reportId: string) => {
-    message.success('Report paused');
-  };
-
-  const handleResume = (reportId: string) => {
-    message.success('Report resumed');
-  };
-
-  const handleDownload = (reportId: string) => {
-    message.success('Report downloaded successfully');
-  };
-
-  const handleCancel = (reportId: string) => {
-    message.success('Report cancelled');
-  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -153,73 +131,39 @@ const QueuedReports: React.FC = () => {
   ];
 
   return (
-    <div style={{ 
-      background: isDarkMode ? '#141414' : '#f5f5f5',
-      minHeight: 'calc(100vh - 128px)' 
-    }}>
+    <div className={`cls-queued-reports-page ${isDarkMode ? "cls-dark" : ""}`}>
       {/* Header */}
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center',
-        marginBottom: '24px'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <Button 
-            icon={<ArrowLeftOutlined />} 
+      <div className="cls-queued-reports-header">
+        <div className="cls-header-left">
+          <Button
+            icon={<ArrowLeftOutlined />}
             onClick={() => navigate('/report')}
-            style={{ border: 'none', background: 'transparent', fontSize: '16px' }}
+            className="cls-back-btn"
           />
-          <Title level={2} style={{ margin: 0, color: '#5A4FCF' }}>
+          <Title level={2} className="cls-page-title">
             Queued Reports
           </Title>
         </div>
-        <Button 
+        <Button
           type="primary"
           icon={<PlusOutlined />}
           onClick={() => navigate('/report')}
-          style={{ background: '#5A4FCF', borderColor: '#5A4FCF' }}
+          className="cls-create-report-btn"
         >
           Create New Report
         </Button>
       </div>
 
-      <div style={{ display: 'flex', gap: '24px' }}>
+      <div className="cls-queued-reports-content">
         {/* Left Sidebar - Report Types */}
-        <div
-          style={{
-            width: "295px",
-            position: "sticky",
-            top: "50px",
-            height: "fit-content",
-          }}
-        >
-          <Card
-            style={{
-              background: isDarkMode ? "#1f1f1f" : "#fff",
-              padding: "8px",
-            }}
-          >
-            {reportTypes.map((type, index) => (
+        <div className="cls-report-sidebar">
+          <Card className={`cls-report-types-card ${isDarkMode ? "cls-dark" : ""}`}>
+            {reportTypes.map((type) => (
               <div
                 key={type}
-                style={{
-                  padding: "12px 16px",
-                  marginBottom: "4px",
-                  background: reportType === type ? "#5A4FCF" : "transparent",
-                  color:
-                    reportType === type
-                      ? "#fff"
-                      : isDarkMode
-                        ? "#fff"
-                        : "#1a1a1a",
-                  borderRadius: "6px",
-                  cursor: "pointer",
-                  fontWeight: reportType === type ? "500" : "400",
-                  fontSize: "14px",
-                  transition: "all 0.2s ease",
-                  textAlign: "center",
-                }}
+                className={`cls-report-type-item ${
+                  reportType === type ? "cls-selected" : ""
+                } ${isDarkMode ? "cls-dark" : ""}`}
                 onClick={() => handleReportTypeChange(type)}
               >
                 {type}
@@ -229,9 +173,8 @@ const QueuedReports: React.FC = () => {
         </div>
 
         {/* Main Content */}
-        <div style={{ flex: 1 }}>
-          {/* Reports Table */}
-          <Card style={{ background: isDarkMode ? '#1f1f1f' : '#fff' }}>
+        <div className="cls-report-main">
+          <Card className={`cls-reports-table-card ${isDarkMode ? "cls-dark" : ""}`}>
             <Table
               columns={columns}
               dataSource={queuedReportsData}
@@ -239,8 +182,7 @@ const QueuedReports: React.FC = () => {
                 pageSize: 10,
                 showSizeChanger: true,
                 showQuickJumper: true,
-                showTotal: (total, range) => 
-                  `${range[0]}-${range[1]} of ${total} items`,
+                showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
               }}
               scroll={{ x: 800 }}
             />

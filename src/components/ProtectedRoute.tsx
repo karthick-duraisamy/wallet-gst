@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store/store';
 import { loginSuccess } from '../store/slices/authSlice';
 import { Spin } from 'antd';
+import '../styles/ProtectedRoute.scss'
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -32,18 +33,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
   if (isLoading) {
     return (
-      <div
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          zIndex: 9999,
-        }}
+      <div className='cls-spin-loader'
       >
         <Spin size="large" tip="Loading..." />
       </div>

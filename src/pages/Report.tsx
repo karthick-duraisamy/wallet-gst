@@ -255,62 +255,57 @@ const Report: React.FC = () => {
 
     return (
       <div className="cls-report-sec">
-        <div className="cls-report-sub"
-        >
+        <div className="cls-report-sub">
           <Text
             strong
-            style={{ color: isDarkMode ? "#fff" : "#1a1a1a", fontSize: "16px" }}
+            className={`cls-category-title ${isDarkMode ? "cls-dark" : "cls-light"}`}
           >
             {categoryName}
           </Text>
-          <div className="cls-checkBox"
-            onClick={() => handleSelectAllFields(categoryKey, fields)}
-          >
+
+          <div className="cls-checkBox" onClick={() => handleSelectAllFields(categoryKey, fields)}>
             <Checkbox
               checked={allSelected}
               className="cls-check"
               onChange={() => handleSelectAllFields(categoryKey, fields)}
             />
-            <Text className="cls-repoText"
-            >
-              Select all
-            </Text>
+            <Text className="cls-repoText">Select all</Text>
           </div>
         </div>
+
         <Row gutter={[12, 12]}>
           {fields.map((field) => (
             <Col span={8} key={field.key}>
-                <div
-                  className="cls-field-item"
-                  onClick={() =>
-                    handleFieldSelection(
-                      categoryKey,
-                      field.key,
-                      !selectedFields[categoryKey].includes(field.key),
-                    )
+              <div
+                className="cls-field-item"
+                onClick={() =>
+                  handleFieldSelection(
+                    categoryKey,
+                    field.key,
+                    !selectedFields[categoryKey].includes(field.key)
+                  )
+                }
+              >
+                <Checkbox
+                  checked={selectedFields[categoryKey].includes(field.key)}
+                  onChange={(e) =>
+                    handleFieldSelection(categoryKey, field.key, e.target.checked)
                   }
+                  className="cls-field-checkbox"
+                />
+                <Text
+                  className={`cls-field-label 
+                    ${selectedFields[categoryKey].includes(field.key) ? "cls-selected" : ""} 
+                    ${isDarkMode ? "cls-dark" : ""}`}
                 >
-                  <Checkbox
-                    checked={selectedFields[categoryKey].includes(field.key)}
-                    onChange={(e) =>
-                      handleFieldSelection(
-                        categoryKey,
-                        field.key,
-                        e.target.checked,
-                      )
-                    }
-                    className="cls-field-checkbox"
-                  />
-                  <Text
-                    className={`cls-field-label ${selectedFields[categoryKey].includes(field.key) ? "cls-selected" : ""} ${isDarkMode ? "cls-dark" : ""}`}
-                  >
-                    {field.label}
-                  </Text>
-                </div>
+                  {field.label}
+                </Text>
+              </div>
             </Col>
           ))}
         </Row>
       </div>
+
     );
   };
 
@@ -420,21 +415,16 @@ const Report: React.FC = () => {
               <div className="condition-header">
                 <Text
                   strong
-                  style={{
-                    color: isDarkMode ? "#fff" : "#1a1a1a",
-                    fontSize: "16px",
-                  }}
+                  className={`condition-title ${isDarkMode ? "cls-dark" : "cls-light"}`}
                 >
                   Condition Details
                 </Text>
+
                 <div
                   className="select-all-container"
                   onClick={() => {
                     availableConditions.forEach((condition) => {
-                      handleConditionSelection(
-                        condition.key,
-                        !allConditionsSelected,
-                      );
+                      handleConditionSelection(condition.key, !allConditionsSelected);
                     });
                   }}
                 >
@@ -442,18 +432,14 @@ const Report: React.FC = () => {
                     checked={allConditionsSelected}
                     onChange={() => {
                       availableConditions.forEach((condition) => {
-                        handleConditionSelection(
-                          condition.key,
-                          !allConditionsSelected,
-                        );
+                        handleConditionSelection(condition.key, !allConditionsSelected);
                       });
                     }}
                   />
-                  <Text className="select-all-text">
-                    Select all
-                  </Text>
+                  <Text className="select-all-text">Select all</Text>
                 </div>
               </div>
+
               <Row gutter={[16, 16]}>
                 {availableConditions.map((condition) => (
                   <Col span={8} key={condition.key}>
@@ -462,31 +448,20 @@ const Report: React.FC = () => {
                       onClick={() =>
                         handleConditionSelection(
                           condition.key,
-                          !selectedConditions.includes(condition.key),
+                          !selectedConditions.includes(condition.key)
                         )
                       }
                     >
                       <Checkbox
                         checked={selectedConditions.includes(condition.key)}
                         onChange={(e) =>
-                          handleConditionSelection(
-                            condition.key,
-                            e.target.checked,
-                          )
+                          handleConditionSelection(condition.key, e.target.checked)
                         }
                       />
                       <Text
-                        style={{
-                          color: selectedConditions.includes(condition.key)
-                            ? "#1a1a1a"
-                            : isDarkMode
-                              ? "#fff"
-                              : "#1a1a1a",
-                          fontSize: "14px",
-                          fontWeight: selectedConditions.includes(condition.key)
-                            ? "500"
-                            : "400",
-                        }}
+                        className={`condition-label 
+                          ${selectedConditions.includes(condition.key) ? "cls-selected" : ""} 
+                          ${isDarkMode ? "cls-dark" : ""}`}
                       >
                         {condition.label}
                       </Text>
@@ -529,90 +504,32 @@ const Report: React.FC = () => {
           <div className="cls-step-content">
             {/* Selected Fields Section */}
             {hasSelectedFields && (
-              <div style={{ marginBottom: "32px" }}>
-                <div
-                  style={{
-                    background: isDarkMode ? "#262626" : "#f8f9fa",
-                    border: `1px solid ${isDarkMode ? "#404040" : "#e9ecef"}`,
-                    borderRadius: "8px",
-                    padding: "20px",
-                  }}
-                >
-                  <Text
-                    strong
-                    style={{
-                      color: isDarkMode ? "#fff" : "#1a1a1a",
-                      fontSize: "18px",
-                      display: "block",
-                      marginBottom: "20px",
-                      fontFamily: 'var(--font-semibold)'
-                    }}
-                  >
-                    Selected Fields
-                  </Text>
+              <div className="section-wrapper">
+                <div className={`section-box ${isDarkMode ? "dark-mode" : "light-mode"}`}>
+                  <Text className="section-title">Selected Fields</Text>
 
-                  <div
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-                      gap: "20px",
-                    }}
-                    className="cls-SelectedChecks"
-                  >
+                  <div className="selected-fields-grid cls-SelectedChecks">
                     {Object.entries(selectedFields).map(([category, fields]) => {
                       if (fields.length === 0) return null;
 
                       const categoryData =
-                        reportData.reportFields[
-                          reportType as keyof typeof reportData.reportFields
-                        ];
+                        reportData.reportFields[reportType as keyof typeof reportData.reportFields];
                       const categoryFields =
                         categoryData?.[category as keyof typeof categoryData] || [];
 
                       return (
                         <div
                           key={category}
-                          style={{
-                            background: isDarkMode ? "#1a1a1a" : "#fff",
-                            border: `1px solid ${isDarkMode ? "#333" : "#e1e5e9"}`,
-                            borderRadius: "6px",
-                            padding: "16px",
-                          }}
+                          className={`category-box ${isDarkMode ? "dark-mode" : "light-mode"}`}
                         >
-                          <Text
-                            strong
-                            style={{
-                              color: "#5A4FCF",
-                              fontSize: "14px",
-                              display: "block",
-                              marginBottom: "12px",
-                            }}
-                          >
+                          <Text className="category-title">
                             {categoryNames[category as keyof typeof categoryNames]}
                           </Text>
-                          <div
-                            style={{
-                              display: "flex",
-                              flexWrap: "wrap",
-                              gap: "8px",
-                            }}
-                          >
+                          <div className="fields-wrapper">
                             {fields.map((fieldKey) => {
-                              const field = categoryFields.find(
-                                (f: any) => f.key === fieldKey,
-                              );
+                              const field = categoryFields.find((f: any) => f.key === fieldKey);
                               return field ? (
-                                <span
-                                  key={fieldKey}
-                                  style={{
-                                    background: "#f0f5ff",
-                                    color: "#5A4FCF",
-                                    padding: "4px 8px",
-                                    borderRadius: "4px",
-                                    fontSize: "12px",
-                                    fontWeight: "500",
-                                  }}
-                                >
+                                <span key={fieldKey} className="field-badge">
                                   {field.label}
                                 </span>
                               ) : null;
@@ -628,83 +545,38 @@ const Report: React.FC = () => {
 
             {/* Condition Details Section */}
             {(hasDateRange || hasAgency) && (
-              <div style={{ marginBottom: "32px" }}>
-                <div
-                  style={{
-                    background: isDarkMode ? "#262626" : "#f8f9fa",
-                    border: `1px solid ${isDarkMode ? "#404040" : "#e9ecef"}`,
-                    borderRadius: "8px",
-                    padding: "20px",
-                  }}
-                >
-                  <Text
-                    strong
-                    style={{
-                      color: isDarkMode ? "#fff" : "#1a1a1a",
-                      fontSize: "18px",
-                      display: "block",
-                      marginBottom: "20px",
-                      fontFamily: 'var(--font-semibold)'
-                    }}
-                  >
-                    Condition Details
-                  </Text>
+              <div className="section-wrapper">
+                <div className={`section-box ${isDarkMode ? "dark-mode" : "light-mode"}`}>
+                  <Text className="section-title">Condition Details</Text>
 
+                  {/* Date Range */}
                   {hasDateRange && (
-                    <div style={{ marginBottom: "24px" }}>
-                      <div
-                        style={{
-                          background: isDarkMode ? "#1a1a1a" : "#fff",
-                          border: `1px solid ${isDarkMode ? "#333" : "#e1e5e9"}`,
-                          borderRadius: "6px",
-                          padding: "16px",
-                          marginBottom: "16px",
-                        }}
-                      >
-                        <Text
-                          strong
-                          style={{
-                            color: "#5A4FCF",
-                            fontSize: "14px",
-                            display: "block",
-                            marginBottom: "12px",
-                          }}
-                        >
-                          Date Range Type
-                        </Text>
+                    <div className="condition-section">
+                      <div className={`condition-box ${isDarkMode ? "dark-mode" : "light-mode"}`}>
+                        <Text className="condition-title">Date Range Type</Text>
                         <Radio.Group
                           value={dateRangeRadioValue}
                           onChange={(e) => setDateRangeRadioValue(e.target.value)}
-                          style={{ width: "100%" }}
+                          className="radio-group"
                         >
                           <Row gutter={[16, 16]}>
                             <Col span={12}>
-                              <Radio value="invoiced" style={{ fontSize: "14px" }}>
+                              <Radio value="invoiced">
                                 <Text
-                                  style={{
-                                    color: isDarkMode ? "#fff" : "#1a1a1a",
-                                    fontSize: "14px",
-                                    fontWeight:
-                                      dateRangeRadioValue === "invoiced"
-                                        ? "500"
-                                        : "400",
-                                  }}
+                                  className={`radio-label ${
+                                    dateRangeRadioValue === "invoiced" ? "selected" : ""
+                                  } ${isDarkMode ? "dark-mode" : ""}`}
                                 >
                                   Invoiced date range
                                 </Text>
                               </Radio>
                             </Col>
                             <Col span={12}>
-                              <Radio value="departure" style={{ fontSize: "14px" }}>
+                              <Radio value="departure">
                                 <Text
-                                  style={{
-                                    color: isDarkMode ? "#fff" : "#1a1a1a",
-                                    fontSize: "14px",
-                                    fontWeight:
-                                      dateRangeRadioValue === "departure"
-                                        ? "500"
-                                        : "400",
-                                  }}
+                                  className={`radio-label ${
+                                    dateRangeRadioValue === "departure" ? "selected" : ""
+                                  } ${isDarkMode ? "dark-mode" : ""}`}
                                 >
                                   Departure date range
                                 </Text>
@@ -714,36 +586,15 @@ const Report: React.FC = () => {
                         </Radio.Group>
                       </div>
 
-                      <div
-                        style={{
-                          background: isDarkMode ? "#1a1a1a" : "#fff",
-                          border: `1px solid ${isDarkMode ? "#333" : "#e1e5e9"}`,
-                          borderRadius: "6px",
-                          padding: "16px",
-                        }}
-                      >
-                        <Text
-                          strong
-                          style={{
-                            color: "#5A4FCF",
-                            fontSize: "14px",
-                            display: "block",
-                            marginBottom: "12px",
-                          }}
-                        >
+                      <div className={`condition-box ${isDarkMode ? "dark-mode" : "light-mode"}`}>
+                        <Text className="condition-title">
                           Select{" "}
-                          {dateRangeRadioValue === "invoiced"
-                            ? "Invoiced"
-                            : "Departure"}{" "}
-                          Date Range
+                          {dateRangeRadioValue === "invoiced" ? "Invoiced" : "Departure"} Date Range
                         </Text>
-
-                        <div style={{ marginBottom: "16px", maxWidth: "300px" }}>
+                        <div className="select-wrapper">
                           <select
                             value={
-                              dateRangeRadioValue === "invoiced"
-                                ? invoicedDateRange
-                                : dateRangeType
+                              dateRangeRadioValue === "invoiced" ? invoicedDateRange : dateRangeType
                             }
                             onChange={(e) => {
                               if (dateRangeRadioValue === "invoiced") {
@@ -752,15 +603,7 @@ const Report: React.FC = () => {
                                 setDateRangeType(e.target.value);
                               }
                             }}
-                            style={{
-                              width: "100%",
-                              padding: "8px 12px",
-                              border: "1px solid #d9d9d9",
-                              borderRadius: "6px",
-                              background: isDarkMode ? "#1f1f1f" : "#fff",
-                              color: isDarkMode ? "#fff" : "#1a1a1a",
-                              fontSize: "14px",
-                            }}
+                            className={`select-input ${isDarkMode ? "dark-mode" : ""}`}
                           >
                             <option value="today">Today</option>
                             <option value="yesterday">Yesterday</option>
@@ -771,12 +614,10 @@ const Report: React.FC = () => {
                           </select>
                         </div>
 
-                        {/* Custom Date Range Picker - Appears when Custom is selected */}
-                        {((dateRangeRadioValue === "invoiced" &&
-                          invoicedDateRange === "custom") ||
-                          (dateRangeRadioValue === "departure" &&
-                            dateRangeType === "custom")) && (
-                          <div style={{ marginTop: "16px", maxWidth: "300px" }}>
+                        {/* Custom Date Range Picker */}
+                        {((dateRangeRadioValue === "invoiced" && invoicedDateRange === "custom") ||
+                          (dateRangeRadioValue === "departure" && dateRangeType === "custom")) && (
+                          <div className="range-picker-wrapper">
                             <RangePicker
                               value={
                                 dateRangeRadioValue === "invoiced"
@@ -790,7 +631,7 @@ const Report: React.FC = () => {
                                   setCustomDateRange(dates);
                                 }
                               }}
-                              style={{ width: "100%" }}
+                              className="custom-range-picker"
                               placeholder={["Start Date", "End Date"]}
                             />
                           </div>
@@ -799,38 +640,17 @@ const Report: React.FC = () => {
                     </div>
                   )}
 
-                  {/* Agency Selection */}
+                  {/* Agency */}
                   {hasAgency && (
-                    <div
-                      style={{
-                        background: isDarkMode ? "#1a1a1a" : "#fff",
-                        border: `1px solid ${isDarkMode ? "#333" : "#e1e5e9"}`,
-                        borderRadius: "6px",
-                        padding: "16px",
-                      }}
-                    >
-                      <Text
-                        strong
-                        style={{
-                          color: "#5A4FCF",
-                          fontSize: "14px",
-                          display: "block",
-                          marginBottom: "12px",
-                          fontFamily: 'var(--font-semibold)'
-                        }}
-
-                      >
-                        Select Agency
-                      </Text>
+                    <div className={`condition-box ${isDarkMode ? "dark-mode" : "light-mode"}`}>
+                      <Text className="condition-title">Select Agency</Text>
                       <Select
                         mode="multiple"
                         placeholder="Select agencies"
-                        style={{ width: "100%", maxWidth: "400px", fontFamily: 'var(--font-regular)'}}
+                        className="agency-select"
                         options={agencyOptions}
                         filterOption={(input, option) =>
-                          (option?.label ?? "")
-                            .toLowerCase()
-                            .includes(input.toLowerCase())
+                          (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
                         }
                         showSearch
                         allowClear
@@ -841,6 +661,7 @@ const Report: React.FC = () => {
               </div>
             )}
           </div>
+
         );
 
       default:
@@ -850,82 +671,47 @@ const Report: React.FC = () => {
 
   return (
     <div
+    className="cls-report-page"
       style={{
         background: isDarkMode ? "#141414" : "#f5f5f5",
-        minHeight: "calc(100vh - 128px)",
       }}
     >
       {/* Header */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "24px",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+      <div className="cls-reportHeading">
+        <div className="cls-head">
           <Title
-            level={2}
-            style={{ margin: 0, color: "#722ed1", fontSize: "24px" }} className="cls-report-title"
+            level={2} className="cls-report-title"
           >
             Create custom report
           </Title>
         </div>
-        <Space>
+        <Space className="cls-report-nav-buttons">
           <Button
             icon={<FileTextOutlined />}
             onClick={() => navigate("/saved-reports")}
-            style={{fontFamily: 'var(--font-regular)'}}
+            className="cls-nav-button"
           >
             Saved reports
           </Button>
           <Button
             icon={<UnorderedListOutlined />}
             onClick={() => navigate("/queued-reports")}
-            style={{fontFamily: 'var(--font-regular)'}}
+            className="cls-nav-button"
           >
             Queued reports
           </Button>
         </Space>
       </div>
-
-      <div style={{ display: "flex", gap: "24px" }}>
+      <div className="cls-report-container">
         {/* Left Sidebar - Report Types */}
-        <div
-          style={{
-            width: "200px",
-            position: "sticky",
-            top: "50px",
-            height: "fit-content",
-          }}
-          className="cls-report-sideBar"
-        >
-          <Card
-            style={{
-              background: isDarkMode ? "#1f1f1f" : "#fff",
-              padding: "8px",
-            }}
-          >
-            {reportTypes.map((type, index) => (
+        <div className="cls-report-sideBar">
+          <Card className={`cls-report-types-card ${isDarkMode ? "cls-dark" : ""}`}>
+            {reportTypes.map((type) => (
               <div
                 key={type}
-                style={{
-                  padding: "12px 16px",
-                  marginBottom: "4px",
-                  background: reportType === type ? "#5A4FCF" : "transparent",
-                  color:
-                    reportType === type
-                      ? "#fff"
-                      : isDarkMode
-                        ? "#fff"
-                        : "#1a1a1a",
-                  borderRadius: "6px",
-                  cursor: "pointer",
-                  fontWeight: reportType === type ? "500" : "400",
-                  fontSize: "14px",
-                  transition: "all 0.2s ease",
-                }}
+                className={`cls-report-type-item ${
+                  reportType === type ? "cls-selected" : ""
+                } ${isDarkMode ? "cls-dark" : ""}`}
                 onClick={() => handleReportTypeChange(type)}
               >
                 {type}
@@ -935,66 +721,31 @@ const Report: React.FC = () => {
         </div>
 
         {/* Main Content */}
-        <div style={{ flex: 1 }}>
+        <div className="cls-report-main">
           {/* Steps */}
-          <Card
-            style={{
-              background: isDarkMode ? "#1f1f1f" : "#fff",
-              marginBottom: "24px",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                marginBottom: "32px",
-              }}
-              className="cls-report-titles"
-            >
+          <Card className={`cls-steps-card ${isDarkMode ? "cls-dark" : ""}`}>
+            <div className="cls-report-titles">
               {stepTitles.map((title, index) => (
-                <div
-                  key={index}
-                  style={{ display: "flex", alignItems: "center" }}
-                >
+                <div key={index} className="cls-step-item">
                   <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      width: "32px",
-                      height: "32px",
-                      borderRadius: "50%",
-                      background: index <= currentStep ? "#5A4FCF" : "#f0f0f0",
-                      color: index <= currentStep ? "#fff" : "#999",
-                      marginRight: "12px",
-                      fontSize: "14px",
-                      fontWeight: "600",
-                    }}
+                    className={`cls-step-circle ${
+                      index <= currentStep ? "cls-active" : ""
+                    }`}
                   >
                     {index + 1}
                   </div>
                   <Text
-                    style={{
-                      color:
-                        index === currentStep
-                          ? "#1a1a1a"
-                          : isDarkMode
-                            ? "#fff"
-                            : "#1a1a1a",
-                      fontWeight: index === currentStep ? "500" : "400",
-                      marginRight: index < stepTitles.length - 1 ? "32px" : "0",
-                    }}
+                    className={`cls-step-title ${
+                      index === currentStep ? "cls-current" : ""
+                    } ${isDarkMode ? "cls-dark" : ""}`}
                   >
                     {title}
                   </Text>
                   {index < stepTitles.length - 1 && (
                     <div
-                      style={{
-                        width: "40px",
-                        height: "2px",
-                        background: index < currentStep ? "#5A4FCF" : "#f0f0f0",
-                        margin: "0 24px",
-                      }}
+                      className={`cls-step-line ${
+                        index < currentStep ? "cls-active" : ""
+                      }`}
                     />
                   )}
                 </div>
@@ -1016,11 +767,7 @@ const Report: React.FC = () => {
                     <Button
                       icon={<DownloadOutlined />}
                       onClick={handleDownload}
-                      style={{
-                        background: "#52c41a",
-                        borderColor: "#52c41a",
-                        color: "#fff",
-                      }}
+                      className="cls-download-btn"
                     >
                       Download
                     </Button>
@@ -1028,7 +775,7 @@ const Report: React.FC = () => {
                       type="primary"
                       icon={<SaveOutlined />}
                       onClick={handleSaveReport}
-                      style={{ background: "#5A4FCF", borderColor: "#5A4FCF" }}
+                      className="cls-save-btn"
                     >
                       Save report
                     </Button>
@@ -1038,11 +785,9 @@ const Report: React.FC = () => {
                     type="primary"
                     onClick={handleContinue}
                     disabled={!canContinue()}
-                    style={{
-                      background: canContinue() ? "#5A4FCF" : "#d9d9d9",
-                      borderColor: canContinue() ? "#5A4FCF" : "#d9d9d9",
-                      cursor: canContinue() ? "pointer" : "not-allowed",
-                    }}
+                    className={`cls-continue-btn ${
+                      canContinue() ? "cls-active" : "cls-disabled"
+                    }`}
                   >
                     Continue
                   </Button>

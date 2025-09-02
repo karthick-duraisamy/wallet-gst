@@ -3,6 +3,7 @@ import React from 'react';
 import { Modal, Form, Input, Button, DatePicker, Select, Row, Col } from 'antd';
 import { useTheme } from '../contexts/ThemeContext';
 import dayjs from 'dayjs';
+import "../styles/profile.scss";
 
 const { Option } = Select;
 
@@ -208,34 +209,19 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, onClose }) => {
           />
         </Form.Item>
 
-        <div style={{ 
-          marginTop: '30px', 
-          display: 'flex', 
-          gap: '12px',
-          justifyContent: 'flex-start'
-        }}>
+        <div className='cls-buttonSection'>
           <Button 
             type="primary" 
             onClick={handleUpdate}
-            style={{
-              background: '#4f46e5',
-              borderColor: '#4f46e5',
-              fontWeight: '500',
-              height: '40px',
-              paddingLeft: '24px',
-              paddingRight: '24px'
-            }}
+            className='cls-primayBtn'
           >
             Update
           </Button>
           <Button 
             onClick={onClose}
+            className='cls-secBtn'
             style={{
-              background: 'transparent',
-              border: 'none',
               color: isDarkMode ? '#a6a6a6' : '#666',
-              fontWeight: '500',
-              textDecoration: 'underline'
             }}
           >
             cancel

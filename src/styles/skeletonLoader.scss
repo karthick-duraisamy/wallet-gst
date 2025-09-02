@@ -1,4 +1,8 @@
 .cls-pagination-skeleton{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
     .cls-page-skeleton{
         width: 2rem;
         height: 2rem;
@@ -8,4 +12,30 @@
         width: 80px;
         height: 20px;
     }
+}
+.cls-filter-fields{
+    width: 100%;
+}
+.cls-filter-btns{
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    span.cls-primaryBtn{
+        width: 80px !important;
+    }
+    span.cls-secBtn{
+        width: 100px !important;
+    }
+}
+.cls-skeleton-input{
+    width: 100px;
+}
+.cls-skeleton-inputL{
+    width: 120px;
+}
+.cls-skeleton-inputS{
+    width: 80px;
+}
+.cls-skeleton-inputES{
+    width: 60px;
 }

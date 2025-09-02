@@ -167,7 +167,8 @@ const filterFields: FilterField[] = [];
         pathname="/reconciliation"
         showButtons={true}
         onChange={handleFilterChange}
-        />)}
+        />)
+        }
 
       {/* Status Count Display */}
       <div className="cls-status-counts">
@@ -248,19 +249,7 @@ const filterFields: FilterField[] = [];
                   <Button
                     type="text"
                     onClick={() => setFilterDropdownVisible(false)}
-                    style={{
-                      position: "absolute",
-                      top: "14px",
-                      right: "10px",
-                      color: "red",
-                      fontSize: "22px",
-                      padding: 0,
-                      width: "20px",
-                      height: "20px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
+                    className="cls-filter-close-btn"
                   >
                     ×
                   </Button>
@@ -311,185 +300,129 @@ const filterFields: FilterField[] = [];
 
          
           {/* Custom Pagination Footer */}
-          {isLoading ? <PaginationSkeleton/> : 
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginTop: 16,
-                paddingTop: 16,
-                borderTop: "1px solid #f0f0f0",
-              }}
-              className="cls-pagination-footer"
-            >
-              {/* Left side - Displaying info with page size selector */}
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ fontSize: "14px" }}>Displaying</span>
+        {isLoading ? (
+          <PaginationSkeleton />
+        ) : (
+          <div className="cls-pagination-footer">
+            {/* Left side - Displaying info with page size selector */}
+            <div className="pagination-left">
+              <span className="pagination-text">Displaying</span>
 
-                <Select
-                  value={pageSize}
-                  onChange={(value) => {
-                    setPageSize(value);
-                    setCurrentPage(1); // Reset to page 1 when size changes
-                  }}
-                  style={{ width: 60 }}
-                  size="small"
-                  options={[
-                    { value: 6, label: "6" },
-                    { value: 12, label: "12" },
-                    { value: 30, label: "30" },
-                    { value: 60, label: "60" },
-                    { value: 100, label: "100" },
-                  ]}
-                />
+              <Select
+                value={pageSize}
+                onChange={(value) => {
+                  setPageSize(value);
+                  setCurrentPage(1); // Reset to page 1
+                }}
+                className="pagination-select"
+                size="small"
+                options={[
+                  { value: 6, label: "6" },
+                  { value: 12, label: "12" },
+                  { value: 30, label: "30" },
+                  { value: 60, label: "60" },
+                  { value: 100, label: "100" },
+                ]}
+              />
 
-                <span style={{ fontSize: "14px" }}>
-                  Out of {count}
-                </span>
-              </div>
+              <span className="pagination-text">Out of {count}</span>
+            </div>
 
+            {/* Center - Page navigation */}
+            <div className="pagination-center">
+              <Button
+                icon="<"
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage(currentPage - 1)}
+                className="pagination-btn"
+              />
 
-              {/* Center - Page navigation */}
-              <div className="page" style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <Button
-                  icon="<"
-                  disabled={currentPage === 1}
-                  onClick={() => setCurrentPage(currentPage - 1)}
-                  style={{
-                    width: 32,
-                    height: 32,
-                    borderRadius: "50%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    border: "1px solid #d9d9d9",
-                  }}
-                />
+              {/* Page numbers */}
+              {(() => {
+                const pages = [];
+                const maxVisible = 5;
+                let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+                let end = Math.min(totalPages, start + maxVisible - 1);
 
-                {/* Page numbers */}
-                {(() => {
-                  const pages = [];
-                  const maxVisible = 5;
-                  let start = Math.max(
-                    1,
-                    currentPage - Math.floor(maxVisible / 2),
+                if (end - start < maxVisible - 1) {
+                  start = Math.max(1, end - maxVisible + 1);
+                }
+
+                for (let i = start; i <= end; i++) {
+                  pages.push(
+                    <Button
+                      key={i}
+                      onClick={() => setCurrentPage(i)}
+                      className={`pagination-btn ${i === currentPage ? "active" : ""}`}
+                    >
+                      {i}
+                    </Button>
                   );
-                  let end = Math.min(totalPages, start + maxVisible - 1);
+                }
 
-                  if (end - start < maxVisible - 1) {
-                    start = Math.max(1, end - maxVisible + 1);
-                  }
-
-                  for (let i = start; i <= end; i++) {
+                // Ellipsis and last page
+                if (end < totalPages) {
+                  if (end < totalPages - 1) {
                     pages.push(
-                      <Button
-                        key={i}
-                        onClick={() => setCurrentPage(i)}
-                        style={{
-                          width: 32,
-                          height: 32,
-                          borderRadius: "50%",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          backgroundColor:
-                            i === currentPage ? "#4f46e5" : "white",
-                          borderColor: i === currentPage ? "#4f46e5" : "#d9d9d9",
-                          color: i === currentPage ? "white" : "#000",
-                        }}
-                      >
-                        {i}
-                      </Button>,
+                      <span key="ellipsis" className="pagination-ellipsis">
+                        ...
+                      </span>
                     );
                   }
+                  pages.push(
+                    <Button
+                      key={totalPages}
+                      onClick={() => setCurrentPage(totalPages)}
+                      className={`pagination-btn ${totalPages === currentPage ? "active" : ""}`}
+                    >
+                      {totalPages}
+                    </Button>
+                  );
+                }
 
-                  // Add ellipsis and last page if needed
-                  if (end < totalPages) {
-                    if (end < totalPages - 1) {
-                      pages.push(
-                        <span key="ellipsis" style={{ margin: "0 8px" }}>
-                          ...
-                        </span>,
-                      );
+                return pages;
+              })()}
+
+              <Button
+                icon=">"
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage(currentPage + 1)}
+                className="pagination-btn"
+              />
+            </div>
+
+            {/* Right side - Go to page */}
+            <div className="pagination-right">
+              <span className="pagination-text">Go to Page</span>
+              <Input
+                className="pagination-input"
+                value={goToPageValue}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^\d*$/.test(value)) {
+                    const numericValue = Number(value);
+                    if (numericValue <= totalPages) {
+                      setGoToPageValue(value);
+                    } else if (value === "") {
+                      setGoToPageValue("");
                     }
-                    pages.push(
-                      <Button
-                        key={totalPages}
-                        onClick={() => setCurrentPage(totalPages)}
-                        style={{
-                          width: 32,
-                          height: 32,
-                          borderRadius: "50%",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          backgroundColor:
-                            totalPages === currentPage ? "#4f46e5" : "white",
-                          borderColor:
-                            totalPages === currentPage ? "#4f46e5" : "#d9d9d9",
-                          color: totalPages === currentPage ? "white" : "#000",
-                        }}
-                      >
-                        {totalPages}
-                      </Button>,
-                    );
                   }
-
-                  return pages;
-                })()}
-
-                <Button
-                  icon=">"
-                  disabled={currentPage === totalPages}
-                  onClick={() => setCurrentPage(currentPage + 1)}
-                  style={{
-                    width: 32,
-                    height: 32,
-                    borderRadius: "50%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    border: "1px solid #d9d9d9",
-                  }}
-                />
-              </div>
-
-              {/* Right side - Go to page */}
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ fontSize: "14px" }}>Go to Page</span>
-                <Input
-                  style={{ width: 60 }}
-                  value={goToPageValue}
-                  onChange={(e) => {
-                    const value = e.target.value;
-
-                    // Allow only numbers
-                    if (/^\d*$/.test(value)) {
-                      const numericValue = Number(value);
-                      if (numericValue <= totalPages) {
-                        setGoToPageValue(value);
-                      } else if (value === "") {
-                        setGoToPageValue("");
-                      }
-                    }
-                  }}
-                  onPressEnter={handleGoToPage}
-                  placeholder={`1-${totalPages}`}
-                  size="small"
-                />
-
-                <Button
-                  type="primary"
-                  style={{ backgroundColor: "#4f46e5", borderRadius: "16px" }}
-                  onClick={handleGoToPage}
-                  size="small"
-                >
-                  Go
-                </Button>
-              </div>
-            </div> 
-          }
+                }}
+                onPressEnter={handleGoToPage}
+                placeholder={`1-${totalPages}`}
+                size="small"
+              />
+              <Button
+                type="primary"
+                className="pagination-go-btn"
+                onClick={handleGoToPage}
+                size="small"
+              >
+                Go
+              </Button>
+            </div>
+          </div>
+        )}
         </div>
       </Card>
     </div>

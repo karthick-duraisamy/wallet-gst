@@ -21,6 +21,7 @@ import ProfileModal from "../ProfileModal";
 import { Modal } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { Logo } from "../../components/Icons/Logo";
+import '../../styles/Menu.scss';
 
 const { Header, Content, Sider } = Layout;
 
@@ -107,7 +108,7 @@ const MainLayout: React.FC = () => {
   };
 
   return (
-    <Layout className="main-layout" style={{ minHeight: "100vh" }}>
+    <Layout className="main-layout">
       {/* Conditional Header based on menu layout */}
       {menuLayout === "horizontal" ? (
         /* Top Horizontal Menu Layout */
@@ -116,65 +117,30 @@ const MainLayout: React.FC = () => {
             className="main-header"
             style={{
               background: isDarkMode ? "#1f1f1f" : "white",
-              padding: "0 24px",
               boxShadow: isDarkMode
                 ? "0 2px 8px rgba(0, 0, 0, 0.3)"
                 : "0 2px 8px rgba(0, 0, 0, 0.06)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              position: "fixed",
-              top: 0,
-              left: 0,
-              right: 0,
-              zIndex: 200,
-              width: "100%",
-              height: "64px",
               borderBottom: isDarkMode
                 ? "1px solid #424242"
                 : "1px solid #f0f0f0",
             }}
           >
-            <div
-              className="header-left"
-              style={{ display: "flex", alignItems: "center", gap: "24px" }}
-            >
-              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <div className="cls-header-left">
+              <div className="cls-logo-section">
                 <Logo />
                 {/* <img src="/src/assets/gst-logo.svg" alt="GST Claim" /> */}
               </div>
             </div>
 
-            <div
-              className="header-right"
-              style={{ display: "flex", alignItems: "center", gap: "12px" }}
-            >
+            <div className="cls-header-right" >
               <Dropdown
                 menu={{
                   items: [
                     {
                       key: "en",
                       label: (
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "8px",
-                          }}
-                        >
-                          <div
-                            style={{
-                              width: "20px",
-                              height: "14px",
-                              borderRadius: "2px",
-                              overflow: "hidden",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              fontSize: "14px",
-                              lineHeight: "1",
-                            }}
-                          >
+                        <div className="cls-header-section" >
+                          <div className="cls-language">
                             🇺🇸
                           </div>
                           {translate("english")}
@@ -185,26 +151,8 @@ const MainLayout: React.FC = () => {
                     {
                       key: "hi",
                       label: (
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "8px",
-                          }}
-                        >
-                          <div
-                            style={{
-                              width: "20px",
-                              height: "14px",
-                              borderRadius: "2px",
-                              overflow: "hidden",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              fontSize: "14px",
-                              lineHeight: "1",
-                            }}
-                          >
+                        <div className="cls-header-section">
+                          <div className="cls-language">
                             🇮🇳
                           </div>
                           {translate("hindi")}
@@ -216,139 +164,81 @@ const MainLayout: React.FC = () => {
                 }}
                 placement="bottomRight"
               >
-                <Button
+                <Button className="cls-header-btns"
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    border: "none",
-                    background: "transparent",
                     color: isDarkMode ? "#ffffff" : "#1a1a1a",
-                    fontSize: "14px",
-                    fontWeight: "500",
-                    padding: "4px 8px",
                   }}
                 >
-                  <div
-                    style={{
-                      width: "20px",
-                      height: "14px",
-                      borderRadius: "2px",
-                      overflow: "hidden",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: "14px",
-                      lineHeight: "1",
-                    }}
-                  >
+                  <div className="cls-lang-drops">
                     {language === "en" ? "🇺🇸" : "🇮🇳"}
                   </div>
                   {language === "en"
                     ? translate("english")
                     : translate("hindi")}
-                  <span style={{ fontSize: "12px" }}>▼</span>
+                  <span className="cls-dropdwns">▼</span>
                 </Button>
               </Dropdown>
 
               <Button
                 type="text"
+                className="cls-profile-section"
                 style={{
                   color: isDarkMode ? "#a6a6a6" : "#666",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: "40px",
-                  height: "40px",
-                  border: "none",
-                  fontSize: "20px",
                 }}
                 onClick={() => setSettingsModalOpen(true)}
               >
                 <div
+                className="cls-profile"
                   style={{
-                    width: "20px",
-                    height: "20px",
-                    borderRadius: "50%",
                     background: isDarkMode
                       ? "linear-gradient(90deg, #666 50%, transparent 50%)"
                       : "linear-gradient(90deg, #333 50%, transparent 50%)",
                     border: isDarkMode ? "2px solid #666" : "2px solid #333",
-                    transition: "all 0.3s ease",
                   }}
                 />
               </Button>
 
-              <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
-                <Button
-                  type="text"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    padding: "4px 8px",
-                    height: "auto",
-                    border: "none",
-                  }}
-                >
-                  <Avatar size="small" style={{ backgroundColor: "#87d068" }}>
-                    S
-                  </Avatar>
-                  <div style={{ textAlign: "left" }}>
-                    <div
-                      style={{
-                        fontSize: "14px",
-                        color: isDarkMode ? "#ffffff" : "#1a1a1a",
-                        fontWeight: "500",
-                      }}
-                    >
-                      {translate("superadmin")}
+              <Dropdown menu={{ items: userMenuItems }} placement="bottomRight" className="cls-user-dropdown">
+                  <Button type="text" className="cls-user-dropdown-btn">
+                    <Avatar size="small" className="cls-user-avatar">
+                      S
+                    </Avatar>
+                    <div className="cls-user-info">
+                      <div
+                        className="cls-user-role"
+                        style={{ color: isDarkMode ? "#ffffff" : "#1a1a1a" }}
+                      >
+                        {translate("superadmin")}
+                      </div>
                     </div>
-                  </div>
-                  <span
-                    style={{
-                      fontSize: "12px",
-                      color: isDarkMode ? "#a6a6a6" : "#666",
-                    }}
-                  >
-                    ▼
-                  </span>
-                </Button>
-              </Dropdown>
+                    <span
+                      className="cls-dropdown-arrow"
+                      style={{ color: isDarkMode ? "#a6a6a6" : "#666" }}
+                    >
+                      ▼
+                    </span>
+                  </Button>
+                </Dropdown>
+
             </div>
           </Header>
 
           {/* Horizontal Navigation Menu Below Header */}
-          <div
+          <div className="cls-horizontal-menu"
             style={{
-              position: "fixed",
-              top: "64px",
-              left: 0,
-              right: 0,
-              zIndex: 199,
               background: isDarkMode ? "#262626" : "#4C1D95",
               borderBottom: isDarkMode
                 ? "1px solid #424242"
                 : "1px solid #FFFFFF",
-              height: "60px",
-              display: "flex",
-              alignItems: "center",
-              padding: "0 24px",
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "32px" }}>
+            <div className="cls-header">
               {sideMenuItems.map((item) => (
                 <div
                   key={item.key}
                   className={`nav-item-horizontal ${getCurrentKey() === item.key ? "active" : ""}`}
                   onClick={item.onClick}
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    cursor: "pointer",
-                    padding: "8px 16px",
-                    borderRadius: "8px",
                     backgroundColor:
                       getCurrentKey() === item.key
                         ? isDarkMode
@@ -364,8 +254,8 @@ const MainLayout: React.FC = () => {
                     transition: "all 0.2s ease",
                   }}
                 >
-                  <div style={{ fontSize: "20px" }}>{item.icon}</div>
-                  <span style={{ fontSize: "16px", fontWeight: "500" }}>
+                  <div className="cls-headerIcons">{item.icon}</div>
+                  <span className="cls-headerLabel" >
                     {item.label}
                   </span>
                 </div>
@@ -373,12 +263,10 @@ const MainLayout: React.FC = () => {
             </div>
           </div>
 
-          <Layout style={{ marginTop: 124 }}>
-            <Content
+          <Layout className="cls-layout">
+            <Content className="cls-content"
               style={{
-                padding: "24px",
                 background: isDarkMode ? "#141414" : "#f5f5f5",
-                minHeight: "calc(100vh - 188px)",
               }}
             >
               <div className="fade-in">
@@ -387,15 +275,10 @@ const MainLayout: React.FC = () => {
             </Content>
 
             {/* Footer */}
-            <div
+            <div className="cls-footer-section"
               style={{
                 background: isDarkMode ? "#141414" : "#f5f5f5",
-                textAlign: "center",
-                padding: "16px 24px",
-                borderTop: isDarkMode
-                  ? "1px solid #424242"
-                  : "1px solid #e8e8e8",
-                fontSize: "14px",
+                borderTop: isDarkMode ? "1px solid #424242" : "1px solid #e8e8e8",
                 color: isDarkMode ? "#a6a6a6" : "#666",
               }}
             >
@@ -407,23 +290,14 @@ const MainLayout: React.FC = () => {
         /* Side Vertical Menu Layout */
         <>
           <Sider
-            width={180}
-            className="side-menu"
+            className="cls-side-menu"
             style={{
               background: isDarkMode ? "#262626" : "#5A4FCF",
-              position: "fixed",
-              height: "calc(100vh - 64px)",
-              left: 0,
-              top: 64,
-              zIndex: 50,
-              overflow: "visible",
             }}
           >
             <div
-              className="side-menu-content"
-              style={{ height: "calc(100vh - 64px)" }}
-            >
-              <div className="menu-navigation" style={{ paddingTop: "24px" }}>
+              className="cls-side-menu-content">
+              <div className="menu-navigation">
                 {sideMenuItems.map((item) => (
                   <div
                     key={item.key}
@@ -443,46 +317,26 @@ const MainLayout: React.FC = () => {
             className="main-header"
             style={{
               background: isDarkMode ? "#1f1f1f" : "white",
-              padding: "0 24px",
               boxShadow: isDarkMode
                 ? "0 2px 8px rgba(0, 0, 0, 0.3)"
                 : "0 2px 8px rgba(0, 0, 0, 0.06)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              position: "fixed",
-              top: 0,
-              left: 0,
-              right: 0,
-              zIndex: 200,
-              width: "100%",
-              height: "64px",
               borderBottom: isDarkMode
                 ? "1px solid #424242"
                 : "1px solid #f0f0f0",
             }}
           >
-            <div
-              className="header-left"
-              style={{ display: "flex", alignItems: "center", gap: "24px" }}
-            >
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "12px" }}
-              >
+            <div className="cls-header-left">
+              <div className="cls-logo-section">
                 {/* <img src="/src/assets/gst-logo.svg" alt="GST Claim"/> */}
                 <Logo />
               </div>
 
-              <div
+              <div className="cls-breadcrumb"
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
                   color: isDarkMode ? "#a6a6a6" : "#8c8c8c",
-                  fontSize: "14px",
                 }}
               >
-                <span style={{ cursor: "pointer" }}>{translate("home")}</span>
+                <span className="cls-home">{translate("home")}</span>
                 <span>/</span>
                 <span style={{ color: isDarkMode ? "#ffffff" : "#1a1a1a" }}>
                   {location.pathname === "/dashboard"
@@ -502,36 +356,15 @@ const MainLayout: React.FC = () => {
               </div>
             </div>
 
-            <div
-              className="header-right"
-              style={{ display: "flex", alignItems: "center", gap: "12px" }}
-            >
+            <div className="cls-header-right" >
               <Dropdown
                 menu={{
                   items: [
                     {
                       key: "en",
                       label: (
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "8px",
-                          }}
-                        >
-                          <div
-                            style={{
-                              width: "20px",
-                              height: "14px",
-                              borderRadius: "2px",
-                              overflow: "hidden",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              fontSize: "14px",
-                              lineHeight: "1",
-                            }}
-                          >
+                        <div className="cls-header-section">
+                          <div className="cls-language">
                             🇺🇸
                           </div>
                           {translate("english")}
@@ -542,26 +375,8 @@ const MainLayout: React.FC = () => {
                     {
                       key: "hi",
                       label: (
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "8px",
-                          }}
-                        >
-                          <div
-                            style={{
-                              width: "20px",
-                              height: "14px",
-                              borderRadius: "2px",
-                              overflow: "hidden",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              fontSize: "14px",
-                              lineHeight: "1",
-                            }}
-                          >
+                        <div className="cls-header-section">
+                          <div className="cls-language" >
                             🇮🇳
                           </div>
                           {translate("hindi")}
@@ -573,26 +388,14 @@ const MainLayout: React.FC = () => {
                 }}
                 placement="bottomRight"
               >
-                <Button
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    border: "none",
-                    background: "transparent",
-                    color: isDarkMode ? "#ffffff" : "#1a1a1a",
-                    fontSize: "14px",
-                    fontWeight: "500",
-                    padding: "4px 8px",
-                  }}
-                >
+                <Button className="cls-header-btns">
                   <div className="cls-langBox">
                     {language === "en" ? "🇺🇸" : "🇮🇳"}
                   </div>
                   {language === "en"
                     ? translate("english")
                     : translate("hindi")}
-                  <span style={{ fontSize: "12px" }}>▼</span>
+                  <span className="cls-dropdwns">▼</span>
                 </Button>
               </Dropdown>
 
@@ -600,14 +403,8 @@ const MainLayout: React.FC = () => {
                 type="text"
                 style={{
                   color: isDarkMode ? "#a6a6a6" : "#666",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: "50px",
-                  height: "30px",
-                  border: "none",
-                  fontSize: "20px",
                 }}
+                className="cls-profile-section"
                 onClick={() => setSettingsModalOpen(true)}
               >
                 <div className="cls-contrast" />
@@ -631,33 +428,23 @@ const MainLayout: React.FC = () => {
 
               <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
                 <Button
-                  type="text"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    padding: "4px 8px",
-                    height: "auto",
-                    border: "none",
-                  }}
-                >
-                  <Avatar size="small" style={{ backgroundColor: "#87d068" }}>
+                  type="text" className="cls-user-dropdown-btn" >
+                  <Avatar size="small" className="cls-user-avatar" >
                     S
                   </Avatar>
-                  <div style={{ textAlign: "left" }}>
+                  <div className="cls-user-info">
                     <div
+                      className="cls-user-role"
                       style={{
-                        fontSize: "14px",
                         color: isDarkMode ? "#ffffff" : "#1a1a1a",
-                        fontWeight: "500",
                       }}
                     >
                       {translate("superadmin")}
                     </div>
                   </div>
                   <span
+                   className="cls-dropdown-arrow"
                     style={{
-                      fontSize: "12px",
                       color: isDarkMode ? "#a6a6a6" : "#666",
                     }}
                   >
@@ -668,12 +455,10 @@ const MainLayout: React.FC = () => {
             </div>
           </Header>
 
-          <Layout style={{ marginLeft: 200, marginTop: 64 }}>
-            <Content
+          <Layout className="cls-overall-main-page">
+            <Content className="cls-content"
               style={{
-                padding: "24px",
                 background: isDarkMode ? "#141414" : "#f5f5f5",
-                minHeight: "calc(100vh - 128px)",
               }}
             >
               <div className="fade-in">
@@ -682,15 +467,12 @@ const MainLayout: React.FC = () => {
             </Content>
 
             {/* Footer */}
-            <div
+            <div className="cls-footer-section"
               style={{
                 background: isDarkMode ? "#141414" : "#f5f5f5",
-                textAlign: "center",
-                padding: "16px 24px",
                 borderTop: isDarkMode
                   ? "1px solid #424242"
                   : "1px solid #e8e8e8",
-                fontSize: "14px",
                 color: isDarkMode ? "#a6a6a6" : "#666",
               }}
             >
