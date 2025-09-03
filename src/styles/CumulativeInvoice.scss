@@ -6,14 +6,14 @@
   h3 {
     color: $SECONDARYCOLOR;
   }
-  .cls-download{
-    background: #5b319c;
-    padding: 2px 10px;
-    color: white;
-    border-radius: 6px;
-    display: flex;
-    gap: 2px;
-  }
+}
+.cls-download{
+  background: #5b319c;
+  padding: 2px 10px;
+  color: white;
+  border-radius: 6px;
+  display: flex;
+  gap: 2px;
 }
 
 .cls-cumulative-title {
@@ -977,7 +977,7 @@
 }
 
 .cls-label {
-  font-size: $FONT-12;
+  font-size: $FONT-14;
   color: $GREY;
 
   .cls-dark & {

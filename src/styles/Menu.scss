@@ -29,28 +29,14 @@
                 align-items: center;
                 gap: 8px;
                 font-size: $FONT-14;
-                .cls-home{
+                .cls-home, .cls-pages{
                     cursor: pointer;
+                    font-family: var(--font-regular);
                 }
             }
         }
         .cls-header-right{
-            .cls-header-section{
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                .cls-language{
-                    width: 20px;
-                    height: 14px;
-                    border-radius: 2px;
-                    overflow: hidden;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: $FONT-14;
-                    line-height: 1;
-                }
-            }
+            
             .cls-header-btns{
                 display: flex;
                 align-items: center;
@@ -83,6 +69,7 @@
                 height: 40px;
                 border: none;
                 font-size: $FONT-20;
+                padding:0px;
                 .cls-profile{
                     width: 20px;
                     height: 20px;
@@ -182,5 +169,21 @@
             padding: 24px;
             min-height: calc(100vh - 128px);
         } 
+    }
+}
+ .cls-header-section{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    .cls-language{
+        width: 20px;
+        height: 14px;
+        border-radius: 2px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: $FONT-14;
+        line-height: 1;
     }
 }

@@ -6,7 +6,8 @@ import "../styles/Reconciliation.scss";
 import { downloadCSV } from '../Utils/commonFunctions'
 import  Filter  from '../components/Filters/Filters'
 import {useReconcilFilterMutation} from '../services/variables/variables'
-import {FilterSkeleton, TableSkeleton, PaginationSkeleton} from '../components/SkeletonLoader/skeletonLoader'
+import {FilterSkeleton, TableSkeleton, PaginationSkeleton} from '../components/SkeletonLoader/skeletonLoader';
+import FileDownload from "../components/FileDownload";
 
 
 const Reconciliation: React.FC = () => {
@@ -225,66 +226,7 @@ const filterFields: FilterField[] = [];
               }}
             />
           </div>
-          <div className="cls-table-header-actions">
-            <FilterOutlined
-              className="cls-external-filter-icon"
-              onClick={() => setFilterDropdownVisible(!filterDropdownVisible)}
-            />
-            <Button
-            icon={<DownloadOutlined />}
-            className="cls-export-btn cls-xls" onClick={() => downloadXLS()}
-          >
-            XLS
-          </Button>
-          <Button
-            icon={<DownloadOutlined />}
-            className="cls-export-btn cls-csv" onClick={() => downloadCSV()}
-          >
-            CSV
-          </Button>
-            {filterDropdownVisible && (
-              <div className="cls-filter-dropdown" ref={filterDropdownRef}>
-                <div className="cls-filter-header">
-                  <span className="cls-filter-title">Show/Hide Columns</span>
-                  <Button
-                    type="text"
-                    onClick={() => setFilterDropdownVisible(false)}
-                    className="cls-filter-close-btn"
-                  >
-                    ×
-                  </Button>
-                </div>
-                <div className="cls-filter-content">
-                  {Object.keys(visibleColumns).map((key) => (
-                    <div key={key} className="cls-filter-option">
-                      <Checkbox
-                        checked={
-                          visibleColumns[key as keyof typeof visibleColumns]
-                        }
-                        disabled={
-                          columnConfig[key as keyof typeof columnConfig]
-                            ?.disabled || false
-                        }
-                        onChange={(e) =>
-                          setVisibleColumns((prev) => ({
-                            ...prev,
-                            [key]: e.target.checked,
-                          }))
-                        }
-                      >
-                        {translate(
-                          key
-                            .replace(/([A-Z])/g, " $1")
-                            .toLowerCase()
-                            .trim(),
-                        )}
-                      </Checkbox>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
+          <FileDownload service={reconcilService} fileName="reconciliation" />
           </div>
           {isLoading ? <TableSkeleton/> : 
           <Table

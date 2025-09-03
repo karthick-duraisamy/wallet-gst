@@ -338,7 +338,7 @@ const MainLayout: React.FC = () => {
               >
                 <span className="cls-home">{translate("home")}</span>
                 <span>/</span>
-                <span style={{ color: isDarkMode ? "#ffffff" : "#1a1a1a" }}>
+                <span className="cls-pages" style={{ color: isDarkMode ? "#ffffff" : "#1a1a1a" }}>
                   {location.pathname === "/dashboard"
                     ? translate("dashboard")
                     : location.pathname === "/upload"

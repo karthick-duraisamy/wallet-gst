@@ -102,7 +102,7 @@ const Filter: React.FC<IProps> = ({ fields, pathname, onChange, showButtons = fa
   };
 
   // Optional: filter fields based on pathname
-  const visibleFields = fields.filter((f) => {
+  const visibleFields = fields.filter(() => {
     if (pathname.includes("reconciliation")) return true; // example
     return true;
   });

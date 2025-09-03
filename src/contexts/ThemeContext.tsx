@@ -151,7 +151,7 @@ const translations = {
     uploadInvoiceNo: "Upload Invoice no",
     pnrTicket: "PNR / Ticket no",
     showOnTaxInvoiceRange: "Show on Tax Invoice date range",
-    uploadMultiplePNR: "Upload multiple PNR / Ticket no",
+    // uploadMultiplePNR: "Upload multiple PNR / Ticket no",
     uploadMultipleInvoice: "Upload multiple Invoice no",
     enterPNRTicket: "Enter PNR / Ticket no",
     airlines: "Airlines",

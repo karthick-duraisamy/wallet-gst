@@ -1,31 +1,35 @@
 // services/invoice.ts
 import { CommonService } from '../service';
 
-export const InvoiceService = CommonService.enhanceEndpoints({}).injectEndpoints({
-  endpoints: (builder) => ({
-    cummulativeService: builder.mutation<
-  { records: any[]; count: number; category:any[] },
-  { page?: number, page_size?: number, category: "agency" | "airline"; pnrno?: string, Type?: string; start?: string, end?: string }
->({
-    query: ({ page, page_size, category, pnrno, Type, start, end }) => {
-      // build query params dynamically
-      const queryParams = new URLSearchParams();
 
-      if (page) queryParams.append("page", String(page));
-      if (page_size) queryParams.append("page_size", String(page_size));
-      if (start) queryParams.append("startDate", start);
-      if (end) queryParams.append("endDate", end);
+export const InvoiceService = CommonService.enhanceEndpoints({ addTagTypes: ['invoice'] }).injectEndpoints({
+  endpoints: (build) => ({
+    // Manual GET for cumulative invoices
+    cummulativeService: build.mutation<
+      { records: any[]; count: number; category: any[] }, // Response type
+      Record<string, any> // Accept any dynamic params
+    >({
+      query: (params) => {
+        const queryParams = new URLSearchParams();
 
-      return {
-        url: `cummulativeInvoice${category === "agency" ? "Agency" : "Airline"}/?${queryParams.toString()}`,
-        method: "POST",
-        body: {
-          pnrno,
-          Type
-        },
-      };
-    },
-  }),
+        // dynamically add all defined params
+        Object.entries(params).forEach(([key, value]) => {
+          if (value !== undefined && value !== null) {
+            queryParams.append(key, String(value));
+          }
+        });
+
+        // Optional: adjust endpoint based on category
+        const category = params.category === 'agency' ? 'Agency' : params.category === 'airline' ? 'Airline' : '';
+        const endpoint = category ? `cummulativeInvoice${category}/` : `cummulativeInvoice/`;
+
+        return {
+          url: `${endpoint}?${queryParams.toString()}`,
+          method: 'GET',
+        };
+      },
+      invalidatesTags: ['invoice'], // optional caching invalidation
+    }),
   }),
   overrideExisting: true,
 });
@@ -37,7 +41,7 @@ export const ReconcilService = CommonService.enhanceEndpoints({}).injectEndpoint
       { page: number, page_size: number }                  
     >({
       query: ({page, page_size}) => ({
-        url: `reconsilationHistoryAgency/?page=${page}&page_size=${page_size}`,
+        url: `reconcilationHistoryAgency/?page=${page}&page_size=${page_size}`,
         method: 'GET',
         // body:{
 
@@ -62,15 +66,9 @@ export const UploadService = CommonService.enhanceEndpoints({}).injectEndpoints(
 
 // Unified hook exports
 // Correct unified hook exports
-export const {
-  useCummulativeServiceMutation: useCumulativeFilterMutation,
-} = InvoiceService;
+export const { useCummulativeServiceMutation} = InvoiceService;
 
-export const {
-  useReconcilServiceMutation: useReconcilFilterMutation,
-} = ReconcilService;
+export const { useReconcilServiceMutation: useReconcilFilterMutation } = ReconcilService;
 
-export const {
-  useUploadFileMutation: useUploadFilterMutation,
-} = UploadService;
+export const { useUploadFileMutation: useUploadFilterMutation} = UploadService;
 
