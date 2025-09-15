@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row, Skeleton, Table, Button, Space, Card } from "antd";
+import { Col, Row, Skeleton, Table, Space } from "antd";
 import '../../styles/skeletonLoader.scss'
 
 const FilterSkeleton: React.FC = () => {
@@ -109,7 +109,62 @@ const PaginationSkeleton: React.FC = () => {
   );
 };
 
+const CumulativeTabsSkeleton: React.FC = () => {
+  return (
+    <div className="flex gap-6 p-4 border-b cls-heading-skeleton">
+      {[...Array(4)].map((_, i) => (
+        <div
+          key={i}
+          className="bg-gray-200 rounded animate-pulse"
+        />
+      ))}
+    </div>
+  );
+};
+
+const CumulativeFilterskeleton: React.FC = () => {
+  return(
+    <div className="flex gap-10 cls-cumulative-Filters">
+      <div className="flex gap-10 cls-cumulative-Filter">
+        <div className="flex flex-col space-y-3 w-64">
+          {/* Dropdown skeleton */}
+          <div className="h-10 w-full bg-gray-200 rounded-lg animate-pulse" />
+  
+          {/* Optional second filter */}
+          <div className="h-6 w-full bg-gray-200 rounded-lg animate-pulse" />
+        </div>
+       <div className="h-10 w-40 bg-gray-200 rounded-lg animate-pulse" />
+      </div>
+    </div>
+  );
+};
+
+const StatusCountSkeleton: React.FC = () => {
+  return(
+    <Row gutter={16} align="middle" className='cls-statusCount'>
+      {/* Status */}
+      <Col span={4}>
+        <Skeleton.Input active size="default" className='cls-filter-fields'/>
+      </Col>
+
+      {/* Type */}
+      <Col span={4}>
+        <Skeleton.Input active size="default" className='cls-filter-fields' />
+      </Col>
+
+      {/* Vendor type */}
+      <Col span={4}>
+        <Skeleton.Input active size="default" className='cls-filter-fields'/>
+      </Col>
+
+      {/* Start / End date */}
+      <Col span={5}>
+        <Skeleton.Input active size="default" className='cls-filter-fields' />
+      </Col>
+    </Row>
+  );
+};
 
 export {
-  FilterSkeleton, TableSkeleton, PaginationSkeleton
+  FilterSkeleton, TableSkeleton, PaginationSkeleton, CumulativeTabsSkeleton, CumulativeFilterskeleton, StatusCountSkeleton
 } 

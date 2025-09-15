@@ -39,3 +39,19 @@
 .cls-skeleton-inputES{
     width: 60px;
 }
+.cls-heading-skeleton{
+    .rounded{
+        width: 240px;
+        height: 40px;
+    }
+}
+.cls-cumulative-Filters{
+    justify-content: space-between;
+    align-items: center;
+    .cls-cumulative-Filter{
+        align-items: center;
+    }
+}
+.cls-statusCount{
+    margin-block: 15px;
+}

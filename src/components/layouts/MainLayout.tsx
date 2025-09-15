@@ -275,13 +275,7 @@ const MainLayout: React.FC = () => {
             </Content>
 
             {/* Footer */}
-            <div className="cls-footer-section"
-              style={{
-                background: isDarkMode ? "#141414" : "#f5f5f5",
-                borderTop: isDarkMode ? "1px solid #424242" : "1px solid #e8e8e8",
-                color: isDarkMode ? "#a6a6a6" : "#666",
-              }}
-            >
+            <div className="cls-footer-section">
               {translate("poweredBy")}
             </div>
           </Layout>
@@ -467,15 +461,7 @@ const MainLayout: React.FC = () => {
             </Content>
 
             {/* Footer */}
-            <div className="cls-footer-section"
-              style={{
-                background: isDarkMode ? "#141414" : "#f5f5f5",
-                borderTop: isDarkMode
-                  ? "1px solid #424242"
-                  : "1px solid #e8e8e8",
-                color: isDarkMode ? "#a6a6a6" : "#666",
-              }}
-            >
+            <div className="cls-footer-section">
               {translate("poweredBy")}
             </div>
           </Layout>

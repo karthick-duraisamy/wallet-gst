@@ -1,55 +1,78 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Card,Table,Button,Select,Input,Radio,Checkbox} from "antd";
-import {SearchOutlined,DownloadOutlined,FilterOutlined} from "@ant-design/icons";
+import { Card,Table,Button,Select,Input,Radio} from "antd";
+import {SearchOutlined} from "@ant-design/icons";
 import { useTheme } from "../contexts/ThemeContext";
 import "../styles/Reconciliation.scss";
-import { downloadCSV } from '../Utils/commonFunctions'
 import  Filter  from '../components/Filters/Filters'
 import {useReconcilFilterMutation} from '../services/variables/variables'
-import {FilterSkeleton, TableSkeleton, PaginationSkeleton} from '../components/SkeletonLoader/skeletonLoader';
+import {FilterSkeleton, TableSkeleton, PaginationSkeleton, StatusCountSkeleton} from '../components/SkeletonLoader/skeletonLoader';
 import FileDownload from "../components/FileDownload";
-
+import StatusCount from "../components/StatusCount/StatusCount";
+import dayjs from "dayjs";
 
 const Reconciliation: React.FC = () => {
   const [reconcilService, {data, isLoading}] = useReconcilFilterMutation(); //Calling reconcilation service
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(6);
-    
-  useEffect(()=>{
-    reconcilService({page: currentPage, page_size: pageSize}); //Trigering the service
-    
-  },[currentPage, pageSize, reconcilService]);
-  useEffect(()=>{
-    console.log(data); //After triggering the service log the API data
-  })
-  const headers = (data as any)?.response?.data?.results?.list_header?.list_header || []; 
-  const listBody = data?.response?.data?.results?.list_body || [];
-  const keys = listBody.length > 0 ? Object.keys(listBody[0]) : [];
-  const matchedHeaders = headers.filter((h: any) => keys.includes(h.template));
-  const count = data?.response?.data?.count;
-  const menuFilters = data?.response?.data?.results?.filter;
-
+  const [selectedCategory, setSelectedCategory] = useState<"agency" | "airline">("agency");
+  const [statusId, setStatusId] = useState<number | null>(null);
+  const [typeId, setTypeId] = useState<number | null>(null);
+  const [travelvendorId, setTravelVendorId] = useState<number | null>(null);
+  const [airlineId, setAirlineId] = useState<number |null> (null);
+  const [reconciliationData, setReconciliationData] = useState<any[]>([]); //State for list update.
+  const [startDate, setStartDate] = useState<string | null>(null);
+  const [endDate, setEndDate] = useState<string | null>(null);
   const { translate } = useTheme();
   const [goToPageValue, setGoToPageValue] = useState("");
   const [searchText, setSearchText] = useState("");
   const [filterDropdownVisible, setFilterDropdownVisible] = useState(false);
   const filterDropdownRef = useRef<HTMLDivElement>(null);
 
+  // useEffect(()=>{
+  //   reconcilService({page: currentPage, page_size: pageSize, category: selectedCategory}); //Trigering the service
+    
+  // },[currentPage, pageSize, reconcilService, ]);
+  useEffect(() => {
+    if (selectedCategory) {
+      reconcilService({
+        page: currentPage,
+        page_size: pageSize,
+        category:selectedCategory,
+      });
+    }
+  }, [selectedCategory]);
 
-  const filteredData = listBody.filter((item:any) =>
+  const headers = (data as any)?.response?.data?.results?.list_header?.list_header || []; 
+  const listBody = (data as any)?.response?.data?.results?.list_body || [];
+  useEffect(() => {
+    if ((data as any)?.response?.data?.results?.list_body) {
+      setReconciliationData(
+        (data as any).response.data.results.list_body
+      );
+    }
+  }, [data]);
+  const statusCountData = (data as any)?.response?.data?.results?.statusCount;
+  const keys = listBody.length > 0 ? Object.keys(listBody[0]) : [];
+  const matchedHeaders = headers.filter((h: any) => keys.includes(h.template));
+  const count = (data as any)?.response?.data?.count;
+  const menuFilters = (data as any)?.response?.data?.results?.filter;
+  const filteredData = reconciliationData.filter((item:any) =>
   Object.values(item).some((val) =>
     String(val).toLowerCase().includes(searchText.toLowerCase())
   )
 );
 // Step 2: Sort the filtered list (example: by invoice_date)
-const sortedData = [...filteredData].sort((a, b) =>
-  a.invoice_date.localeCompare(b.invoice_date) // ascending
+const sortedData = [...filteredData].sort((a, b) => 
+  (a.invoice_date ?? "").localeCompare(b.invoice_date ?? "")
 );
+// Table data source: use reconciliationData if it has items, else sortedData
+
+const tableData = reconciliationData.length > 0 ? reconciliationData : sortedData;
 
 // Define a type for filter field
 type FilterField = {
   key: string;
-  type: string;
+  type: string | number | null;
   label: string;
   options?: { label: string; value: string }[];
   defaultValue?: string;
@@ -57,30 +80,54 @@ type FilterField = {
 };
 
 const filterFields: FilterField[] = [];
-  menuFilters?.forEach((fieldType: any) => {
-    console.log(fieldType,'fieldType');
-    
-    filterFields.push({
-      key: fieldType.id || fieldType.label?.toLowerCase(),
-      type: fieldType.type === "dropdown" || "text" ? "select" : fieldType.type,
-      label: fieldType.label,
+
+menuFilters?.forEach((fieldType: any) => {
+  let fieldConfig: any = {
+    key: fieldType.id || fieldType.label?.toLowerCase(),
+    label: fieldType.label,
+    placeholder: fieldType.placeholder || "",
+    errorMsg: fieldType.error_msg,
+  };
+
+  if (fieldType.type === "dropdown") {
+    fieldConfig = {
+      ...fieldConfig,
+      type: (fieldType.type === "dropdown" ? "select" : "dropdown"),
       options: fieldType.dropdown?.map((opt: any) => ({
-        label: opt.value,
-        value: opt.value,
+        label: opt.label || opt.value || opt.airline_name,
+        value: opt.value || opt.label || opt.airline_name,
+        optionId: opt.id || opt.airline_id
       })) || [],
       defaultValue: fieldType.value || (fieldType.dropdown?.[0]?.value ?? ""),
-      placeholder: fieldType.placeholder || "",
-    });
-  }); 
+    };
+    
+  } else if (fieldType.type === "calendar") {
+    fieldConfig = {
+      ...fieldConfig,
+      type: "dateRange", // frontend knows it's a range
+    keyStart: fieldType.id || fieldType.formcontrol || "start",
+    keyEnd: fieldType.id1 || "end",
+    placeholderStart: fieldType.placeholder || "Start date",
+    placeholderEnd: fieldType.placeholder1 || "End date",
+    errorMsg: fieldType.error_msg || "",
+    };
+  } else {
+    // fallback (e.g. text, number, etc.)
+    fieldConfig = {
+      ...fieldConfig,
+      type: fieldType.type || "text",
+      defaultValue: fieldType.value || "",
+    };
+  }
 
+  filterFields.push(fieldConfig);
+});
 
   // Click outside to close dropdown
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
-        filterDropdownRef.current &&
-        !filterDropdownRef.current.contains(event.target as Node)
-      ) {
+        filterDropdownRef.current && !filterDropdownRef.current.contains(event.target as Node)) {
         setFilterDropdownVisible(false);
       }
     };
@@ -95,19 +142,59 @@ const filterFields: FilterField[] = [];
   }, [filterDropdownVisible]);
 
   // Column configuration with disabled flags
-  const columnConfig = {
-    supplierName: { disabled: true },
-    pnrTicketNumber: { disabled: true },
-    invoiceNumber: { disabled: true },
-    invoiceDate: { disabled: true },
-    type: { disabled: false },
-    taxClaimable: { disabled: false },
-    status: { disabled: false },
-  };
+  // const columnConfig = {
+  //   supplierName: { disabled: true },
+  //   pnrTicketNumber: { disabled: true },
+  //   invoiceNumber: { disabled: true },
+  //   invoiceDate: { disabled: true },
+  //   type: { disabled: false },
+  //   taxClaimable: { disabled: false },
+  //   status: { disabled: false },
+  // };
 
-  const handleFilterChange = (values: Record<string, any>) => {
-    // dispatch(setFilters(values));
-  };
+
+const handleChange = (values: Record<string, any>) => {  
+  Object.entries(values).forEach(([key, val]) => {
+    const field = filterFields.find(f => f.key === key);
+
+    if (field?.options) {
+      const selectedOption = field.options.find((opt: any) => opt.value === val);      
+      switch (key) {
+        case "status":
+          setStatusId((selectedOption as any)?.optionId ?? null);
+          break;
+        case "type":
+          setTypeId((selectedOption as any)?.optionId ?? null);
+          break;
+        case "travlevendor":
+          setTravelVendorId((selectedOption as any)?.optionId ?? null);
+          break;
+          case "airlineFilter":
+            setAirlineId((selectedOption as any)?.optionId ?? null);
+            break;
+        default:
+          break;
+      }
+    }
+  });
+  const range = values.start;
+    if (Array.isArray(range) && range.length === 2) {
+    const [start, end] = range;
+    const startDate = dayjs(start).format("YYYY-MM-DD");
+    const endDate = dayjs(end).format("YYYY-MM-DD");
+    setStartDate(startDate);
+    setEndDate(endDate);
+  }
+};
+const selectedOptionIds = {
+  category: selectedCategory,
+  status: statusId,
+  type: typeId,
+  travelvendor: travelvendorId,
+  start:startDate,
+  end: endDate,
+  airline: airlineId,
+};
   const totalPages = Math.ceil(count / pageSize); // calculate total pages
 
   const handleGoToPage = () => {
@@ -118,15 +205,6 @@ const filterFields: FilterField[] = [];
       setGoToPageValue("");
     }
   };
-  // Status counts for display below form
-  const statusCounts = {
-    new: 10,
-    matched: 20,
-    pendingToFile: 30,
-    invoiceMissing: 40,
-    additionalInGSTR2A: 917,
-    invoiceReceived: 50,
-  };
 
   const allColumns = matchedHeaders.map((h: any) => ({
     title: h.headerName,
@@ -134,28 +212,19 @@ const filterFields: FilterField[] = [];
     key: h.template,
     render: (text: string) => text || "-",
   }));
-  console.log(allColumns,'allColumns');
-
-  const [visibleColumns, setVisibleColumns] = useState({
-    headerName:true
-  });
-
-  
-  // const visibleColumnsData = allColumns.filter(
-  //   (col:any) => visibleColumns[col.key as keyof typeof visibleColumns],
-  // );
+;
 
   return (
     <div className="slide-up cls-reconciliation-container">
       {/* Breadcrumb */}
       {/* Page Title */}
       <h2 className="cls-reconciliation-title">
-        {translate("reconciliationHistory")}
+        {translate("reconciliationHistory")} <span>{selectedCategory}</span>
       </h2>
 
       {/* Type Selection */}
       <div className="cls-type-selection">
-        <Radio.Group defaultValue="airline" size="large">
+        <Radio.Group defaultValue="agency" size="large" onChange={(e) => setSelectedCategory(e.target.value)}>
           <Radio value="agency">{translate("agency")}</Radio>
           <Radio value="airline">{translate("airline")}</Radio>
         </Radio.Group>
@@ -164,50 +233,21 @@ const filterFields: FilterField[] = [];
       {/* Filters */}
       {isLoading ? (<FilterSkeleton/>) :
       (<Filter  
-        fields={filterFields}
-        pathname="/reconciliation"
-        showButtons={true}
-        onChange={handleFilterChange}
+          fields={filterFields}
+          pathname="/reconciliation"
+          showButtons={true}
+          filterData={selectedOptionIds}
+          setReconciliationData={setReconciliationData}
+          category= {selectedCategory}
+          apiservice= {reconcilService}
+          onChange={(values) => {
+            handleChange(values);
+          }}
+          onReset={() => reconcilService({ page: currentPage, page_size: pageSize, category: selectedCategory })}
         />)
         }
-
-      {/* Status Count Display */}
-      <div className="cls-status-counts">
-        <div className="cls-status">
-          <div className="cls-status-item">
-            <span className="cls-status-label">New :</span>
-            <span className="cls-status-value">{statusCounts.new}</span>
-          </div>
-          <div className="cls-status-item">
-            <span className="cls-status-label">Matched :</span>
-            <span className="cls-status-value">{statusCounts.matched}</span>
-          </div>
-          <div className="cls-status-item">
-            <span className="cls-status-label">Pending to file :</span>
-            <span className="cls-status-value">
-              {statusCounts.pendingToFile}
-            </span>
-          </div>
-          <div className="cls-status-item">
-            <span className="cls-status-label">Invoice missing :</span>
-            <span className="cls-status-value">
-              {statusCounts.invoiceMissing}
-            </span>
-          </div>
-          <div className="cls-status-item">
-            <span className="cls-status-label">Additional in GSTR-2A :</span>
-            <span className="cls-status-value">
-              {statusCounts.additionalInGSTR2A}
-            </span>
-          </div>
-          <div className="cls-status-item">
-            <span className="cls-status-label">Invoice received :</span>
-            <span className="cls-status-value"> 
-              {statusCounts.invoiceReceived}
-            </span>
-          </div>
-        </div>
-      </div>
+        
+      {isLoading ? <StatusCountSkeleton/> : <StatusCount statusApi={statusCountData ?? []}/> }
 
       {/* Data Table */}
       <Card className="cls-data-table-card">
@@ -226,12 +266,12 @@ const filterFields: FilterField[] = [];
               }}
             />
           </div>
-          <FileDownload service={reconcilService} fileName="reconciliation" />
+          <FileDownload service={reconcilService} fileName="reconciliation" filterData={selectedOptionIds}/>
           </div>
           {isLoading ? <TableSkeleton/> : 
           <Table
             columns={allColumns}
-            dataSource={sortedData}
+            dataSource={tableData}
             pagination={false}
             size="middle"
             bordered={false}

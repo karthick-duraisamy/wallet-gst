@@ -5,9 +5,11 @@ import { useCummulativeServiceMutation as useInvoiceService  } from '../services
 import { useTheme } from "../contexts/ThemeContext";
 import "../styles/CumulativeInvoice.scss";
 import Filter from "../components/Filters/Filters";
-import {TableSkeleton, PaginationSkeleton} from '../components/SkeletonLoader/skeletonLoader';
+import {TableSkeleton, PaginationSkeleton, StatusCountSkeleton} from '../components/SkeletonLoader/skeletonLoader';
 import FileDownload from "../components/FileDownload";
-
+import {CumulativeTabsSkeleton, CumulativeFilterskeleton} from "../components/SkeletonLoader/skeletonLoader";
+import StatusCount from "../components/StatusCount/StatusCount";
+import dayjs from "dayjs";
 
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -27,65 +29,30 @@ const CumulativeInvoice: React.FC = () => {
   const [pnrTicketType, setPnrTicketType] = useState("pnr");
   const [getPNRno, setgetPNRno] = useState("");
   const [pnrno, setpnrno] = useState("");
-  const [getTicketno, setgetTicketno] = useState("");
+  const [typeId, settypeId] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<"agency" | "airline">("agency");
+  const [getTicketno, setgetTicketno] = useState("");
+  const [travelMode, settravelMode] = useState<number | null>(null);
+  const [startDate, setStartDate] = useState<string | null>(null);
+  const [endDate, setEndDate] = useState<string | null>(null);
+  const [CumulativeData, setCumulativeData] = useState<any[]>([]); //State for list update.
+
 
   
   const handleInvoiceToggle = () => {
     setIsInvoiceExpanded(!isInvoiceExpanded);
   };
 
-  const handleInvoiceSubmit = () => {
-    setIsInvoiceExpanded(false);
-    cummulativeService({
-      category: selectedCategory,
-      getAirlineInvoiceno
-    });
-  };
 
   const handlePnrDropdownClick = () => {
     setIsPnrDropdownOpen(!isPnrDropdownOpen);
   };
 
-  const handlePnrDropdownSubmit = () => {
-    const payload: any = {
-      category: selectedCategory,
-    };
-    if (pnrTicketType === "pnr") {
-      payload.getPNRno = getPNRno;     // Only PNR
-    } else {
-      payload.getTicketno = getTicketno; // Only Ticket
-    }
-    cummulativeService(payload);
-    setIsPnrDropdownOpen(false);
-  };
-
-
-  // const tabItems = [
-  //   {
-  //     key: "upload-pnr",
-  //     label: translate("uploadPNRTicket"),
-  //   },
-  //   {
-  //     key: "upload-invoice",
-  //     label: translate("uploadInvoiceNo"),
-  //   },
-  //   {
-  //     key: "pnr-ticket",
-  //     label: translate("pnrTicket"),
-  //   },
-  //   {
-  //     key: "tax-invoice-range",
-  //     label: translate("showOnTaxInvoiceRange"),
-  //   },
-  // ];
-
-  
   const [cummulativeService, { data, isLoading}] = useInvoiceService ();
 
-  // console.log(data?.response?.data?.results?.jsonTab?.data,'cumulative data');
   //Tab responese and data set
-  const tabHeader = data?.response?.data?.results?.jsonTab?.data || [];
+  const tabHeader = (data as any)?.response?.data?.results?.jsonTab?.data || [];
+  
   const tabItems = tabHeader.map((item: any) => ({
     key: item.id,
     label: item.name,
@@ -108,16 +75,14 @@ const CumulativeInvoice: React.FC = () => {
       };
     });
   });
-  console.log(tabData,'tabData');
   
   // After creating tabData, you can access the ticketFields
   const allTicketFields = tabData.flatMap((tabArray:any) => 
     tabArray.flatMap((item:any) => item.ticketFields)
   );
-  console.log('All ticketFields:', allTicketFields);
 
   // List header and body data set
-  const info = data?.response?.data?.results;
+  const info = (data as any)?.response?.data?.results;
   const header = info?.list_header.list_header;
   const allColumns = (header ?? []).map((h: any) => ({
     title: h.headerName,
@@ -125,8 +90,18 @@ const CumulativeInvoice: React.FC = () => {
     key: h.template,
     render: (text: string) => text || "-",
   }));
-  const listBody = info?.list_body ?? [];
-  const filteredData = listBody.filter((item:any) =>
+  // const listBody = info?.list_body ?? [];
+  useEffect(() => {
+    if ((data as any)?.response?.data?.results?.list_body) {
+      setCumulativeData(
+        (data as any).response.data.results.list_body
+      );
+    }
+  }, [data]);
+  //Status count api data
+  const statusCountData = (data as any)?.response?.data?.results?.statusCount;
+  
+  const filteredData = CumulativeData.filter((item:any) =>
     Object.values(item).some((val) =>
       String(val).toLowerCase().includes(searchText.toLowerCase())
   )
@@ -138,94 +113,136 @@ const CumulativeInvoice: React.FC = () => {
     return a.invoice_date.localeCompare(b.invoice_date);
     
   });
-  // filter submit btn func
-  const handleSubmit = () => {
-     cummulativeService({ 
-      page: currentPage,
-      page_size: pageSize,
-      category:selectedCategory,   // or "airline"
-      pnr: getPNRno || undefined,
-      Ticketno : getTicketno || undefined,
-      pnrno: pnrno,
+const tableData = CumulativeData.length > 0 ? CumulativeData : sortedData;
 
-      // Type: "All",pnrno: pnrTicketTe
-    });
-  };
   
   const [totalRecords, setTotalRecords] = useState(0);
-
+  type FieldType = "select" | "dropdown" | "text";
   // Define a type for filter field
   type FilterField = {
     key: string;
-    type: string;
+    type: FieldType;
     label: string;
-    options?: { label: string; value: string }[];
+    options?: { label: string; value: string}[];
+    optionId?:number
     defaultValue?: string;
     placeholder?: string;
   };
   
-  // Assuming your JSON is stored in `tabData[3]` or similar
+
 const taxInvoiceTab = tabData?.[3];
-const taxInvoiceFieldsRaw = taxInvoiceTab?.["3"] || [];
 
-const filterFields: FilterField[] = taxInvoiceFieldsRaw.map((field: any) => {
-  if (!field) return null;
+const taxInvoiceFieldsRaw = taxInvoiceTab?.[0]?.ticketFields || [];
 
-  if (field.format === "dropdown") {
-    return {
-      key: field.formcontrol,
-      type: "select",
-      label: field.label,
-      options: field.dropdownData?.map((opt: any) => ({
-        label: opt.label || opt.value,
-        value: opt.value || opt.label
-      })) || [],
-      placeholder: field.placeholder || "",
-      defaultValue: field.dropdownData?.[0]?.value || ""
-    };
-  }
+const filterFields: FilterField[] =
+  (taxInvoiceFieldsRaw
+    .map((field: any) => {
+      if (!field) return null;
 
-  if (field.format === "calendar") {
-    return {
-      key: field.formcontrol,
-      keyEnd: field.formcontrol1 || null,
-      type: "dateRange",
-      label: field.label,
-      placeholderStart: field.placeholder || "",
-      placeholderEnd: field.placeholder1 || ""
-    };
-  }
+      if (field.format === "dropdown") {
+        return {
+          key: field.formcontrol,
+          type: "select" ,
+          label: field.label,
+          errorMsg: field.error_msg,
+          options: field.dropdownData?.map((opt: any) => ({
+            label: opt.label || opt.value,
+            value: opt.value || opt.label || opt.airline_name,
+            optionId : opt.id
+          })) || [],
+          placeholder: field.placeholder || "",
+          defaultValue: field.value || (field.dropdown?.[0]?.value ?? ""),
+        };
+      }
+      if (field.format === "calendar") {
+        return {
+          key: field.formcontrol,
+          keyEnd: field.formcontrol1 || null,
+          type: "dateRange",
+          label: field.label,
+          placeholderStart: field.placeholder || "",
+          placeholderEnd: field.placeholder1 || ""
+        };
+      }
 
-  return null;
-}).filter(Boolean) || []; // <- ensure array
+      return null;
+    })
+    .filter(Boolean) as FilterField[]) || [];
 
-console.log(taxInvoiceTab);
-const filterFieldsSafe = filterFields || [];
-const typeField = filterFieldsSafe.find(f => f.key === "tax_type"); // use actual key
-
-  const handleFilterChange = ()=>{
+  const handleFilterChange = (values: Record<string, any>) => {
     
+    Object.entries(values).forEach(([key, val]) => {
+      const field = filterFields.find((f) => f.key === key);
+      if (field?.options) {
+        const selectedOption = field.options.find((opt) => opt.value === val);
+        switch (key) {
+          case "travelmode":
+            settravelMode((selectedOption as any)?.optionId ?? null);
+            break;
+          case "tax_type":
+            settypeId((selectedOption as any)?.optionId ?? null);
+            break;
+          default:
+          break;
+        }
+      }
+    });
+    const range = values.start;
+      if (Array.isArray(range) && range.length === 2) {
+      const [start, end] = range;
+      const startDate = dayjs(start).format("YYYY-MM-DD");
+      const endDate = dayjs(end).format("YYYY-MM-DD");
+      setStartDate(startDate);
+      setEndDate(endDate);
+    }
+  };
+  const handleTabChange = (key: string) => {
+    setActiveTab(key);
+
+    const defaultVal = filterFields.find((f: any) =>{
+      return f.key === 'tax_type';
+    } );
+    
+    if(defaultVal?.defaultValue){
+      
+      const selectedOption = defaultVal?.defaultValue;
+      
+      settypeId((selectedOption as any)  ?? null);
+      settravelMode((selectedOption as any) ?? null);
+    }
+    // Always reset user inputs
+    setgetPNRno("");
+    setgetTicketno("");
+    setInvoiceText("");
+    setStartDate(null);
+    setEndDate(null);
+    setgetPNRno("");
+    setpnrno("");
+};
+
+  const selectedOptionIds = {
+    category: selectedCategory,
+    typeId: typeId,
+    PNRno: getPNRno,
+    Ticketno: getTicketno,
+    InvoiceNo: getAirlineInvoiceno,
+    PNR:pnrno,
+    travelMode:travelMode,
+    start: startDate,
+    end: endDate
   };
 
-  useEffect(() => {
-     if (selectedCategory) {
-       cummulativeService({ page: currentPage, page_size: pageSize, category: selectedCategory});
-     }
-  }, [currentPage, pageSize]);
+  // useEffect(() => {
+  //    if (selectedCategory) {
+  //      cummulativeService({ page: currentPage, page_size: pageSize, category: selectedCategory});
+  //    }
+  // }, [currentPage, pageSize]);
 
   useEffect(() => {
     if (info) {
-      setTotalRecords(data?.response?.data?.count);
+      setTotalRecords((data as any)?.response?.data?.count);
     }
   }, [data]);
-    useEffect(() => {
-    // set default only once when category data arrives
-    if (!selectedCategory && info?.category && info?.category?.length > 0) {
-      // console.log(selectedCategory,'info?.category[0].name');
-      
-      setSelectedCategory(info?.category[0].name.toLowerCase());
-    }
-  }, [info?.category, selectedCategory]);
 
   useEffect(() => {
     if (selectedCategory) {
@@ -235,7 +252,7 @@ const typeField = filterFieldsSafe.find(f => f.key === "tax_type"); // use actua
         category:selectedCategory,
       });
     }
-  }, [selectedCategory]);
+  }, [currentPage, pageSize, selectedCategory]);
 
   const totalPages = Math.ceil(totalRecords / pageSize);
 
@@ -266,278 +283,291 @@ useEffect(() => {
   }
 }, [allTicketFields]); // no [pnrTicketType] here
 
-   const renderTabContent = () => {
-    switch (activeTab) {
-      case "uploadpnr":
-        return (
-          <div className="cls-tab-content-area">
-            <div className="cls-tab-content-layout">
-              <div className="cls-sprt">
-                {tabData[0]?.[0] && (
-                  <div>
-                    <Button
-                      onClick={handlePnrDropdownClick}
-                      className="cls-upload-button"
-                    >
-                      <span>{tabData[0][0].title}</span>
-                      <span className={isPnrDropdownOpen ? "cls-expanded" : "cls-collapsed"}>
-                        ▲
-                      </span>
-                    </Button>
+  const renderTabContent = () => {
+  switch (activeTab) {
+    case "uploadpnr":
+    case "uploadticket":
+      return (
+        <div className="cls-tab-content-area">
+          {isLoading ? <CumulativeFilterskeleton/> : 
 
-                    {/* Count display */}
-                    <div className="cls-count-display">
-                      <span>{tabData[0][0].submitCount}</span>
-                      <span className="cls-info-icon">i</span>
-                    </div>
+          <div className="cls-tab-content-layout">
+            <div className="cls-sprt">
+              {tabData[0]?.[0] && (
+                <div>
+                  <Button
+                    onClick={handlePnrDropdownClick}
+                    className="cls-upload-button"
+                  >
+                    <span>{tabData[0][0].title}</span>
+                    <span className={isPnrDropdownOpen ? "cls-expanded" : "cls-collapsed"}>
+                      ▲
+                    </span>
+                  </Button>
 
-                    {isPnrDropdownOpen && (
-                      <div className="cls-dropdown-content">
-                        <Button
-                          type="text"
-                          onClick={() => setIsPnrDropdownOpen(false)}
-                          className="cls-close-button"
-                        >
-                          ×
-                        </Button>
-
-                        {/* Radio Section */}
-                        <div className="cls-radio-section">
-                          <Radio.Group
-                            value={pnrTicketType}
-                            onChange={(e) => setPnrTicketType(e.target.value)}
-                          >
-                            {allTicketFields?.map((item: any) =>
-                              item.ticket_details?.map((ticket: any) => {
-                                const normalizedValue = ticket.name?.toLowerCase().includes("pnr")
-                                  ? "pnr"
-                                  : "ticket";
-                                return (
-                                  <Radio key={ticket.ticket_id} value={normalizedValue}>
-                                    {ticket.name}
-                                  </Radio>
-                                );
-                              })
-                            )}
-                          </Radio.Group>
-                        </div>
-
-                        {/* Textarea Section */}
-                        <div className="cls-textarea-section">
-                          <div className="cls-textarea-label">
-                            {pnrTicketType === "pnr" ? "Enter PNR No" : "Enter Ticket Number"}
-                          </div>
-                          <TextArea
-                            value={pnrTicketType === "pnr" ? getPNRno : getTicketno}
-                            onChange={(e) => {
-                              if (pnrTicketType === "pnr") {
-                                setgetPNRno(e.target.value);
-                              } else {
-                                setgetTicketno(e.target.value);
-                              }
-                            }}
-                            placeholder={
-                              pnrTicketType === "pnr"
-                                ? "Enter PNR number"
-                                : "Enter ticket number"
-                            }
-                            rows={6}
-                          />
-                        </div>
-
-                        <div className="cls-example-section">
-                          <div className="cls-example-box">
-                            <span className="cls-example-label">Example : </span>
-                            123456,123456
-                          </div>
-                        </div>
-
-                        <div className="cls-action-buttons">
-                          <Button onClick={() => setIsPnrDropdownOpen(false)}>Cancel</Button>
-                          <Button type="primary" onClick={handlePnrDropdownSubmit}>
-                            Submit
-                          </Button>
-                        </div>
-                      </div>
-                    )}
+                  {/* Count display */}
+                  <div className="cls-count-display">
+                    <span>{tabData[0][0].submitCount}</span>
+                    <span className="cls-info-icon">i</span>
                   </div>
-                )}
 
-               <Filter
-                  fields={[
-                    ...(typeField
-                      ? [{ ...typeField, type: "select" as "select", label: "" }]
-                      : []), // only include if exists
-                  ]}
-                  pathname="/cumulative"
-                  onChange={handleFilterChange}
-              />
-              </div>
-
-              <div className="cls-btnItems">
-                <Button onClick={handleSubmit} className="cls-submitBtn">
-                  Submit
-                </Button>
-                <Button className="cls-resetBtn">Reset all</Button>
-              </div>
-            </div>
-          </div>
-        );
-
-      case "uploadinvoice":
-        return (
-          <div className="cls-wrapper">
-            <div className="cls-header">
-              <div className="cls-sprt">
-                {tabData[1]?.[0] && (
-                  <div>
-                    <Button
-                      onClick={handleInvoiceToggle}
-                      className="cls-toggle-btn"
-                    >
-                      <span className="cls-toggle-text">{tabData[1][0].title}</span>
-                      <span
-                        className={`cls-toggle-icon ${isInvoiceExpanded ? "expanded" : "collapsed"}`}
+                  {isPnrDropdownOpen && (
+                    <div className="cls-dropdown-content">
+                      <Button
+                        type="text"
+                        onClick={() => setIsPnrDropdownOpen(false)}
+                        className="cls-close-button"
                       >
-                        ▲
-                      </span>
-                    </Button>
+                        ×
+                      </Button>
 
-                    {/* Corrected Count display */}
-                    <div className="cls-count">
-                      <span>{tabData[1][0].submitCount}</span>
-                      <span className="cls-count-info">i</span>
-                    </div>
-
-                    {isInvoiceExpanded && (
-                      <div className="cls-expand-box">
-                        <Button
-                          type="text"
-                          onClick={() => setIsInvoiceExpanded(false)}
-                          className="cls-close-btn"
+                      {/* Radio Section */}
+                      <div className="cls-radio-section">
+                        <Radio.Group
+                          value={pnrTicketType}
+                          onChange={(e) => setPnrTicketType(e.target.value)}
                         >
-                          ×
-                        </Button>
+                          {allTicketFields?.map((item: any) =>
+                            item.ticket_details?.map((ticket: any) => {
+                              const normalizedValue = ticket.name?.toLowerCase().includes("pnr")
+                                ? "pnr"
+                                : "ticket";
+                              return (
+                                <Radio key={ticket.ticket_id} value={normalizedValue}>
+                                  {ticket.name}
+                                </Radio>
+                              );
+                            })
+                          )}
+                        </Radio.Group>
+                      </div>
 
-                        <div className="cls-expand-section">
-                          <div className="cls-expand-title">Enter Invoice No</div>
-                          <TextArea
-                            value={getAirlineInvoiceno}
-                            onChange={(e) => setInvoiceText(e.target.value)}
-                            rows={6}
-                            className="cls-textarea"
-                            placeholder="Enter Invoice Number"
-                          />
+                      {/* Textarea Section */}
+                      <div className="cls-textarea-section">
+                        <div className="cls-textarea-label">
+                          {pnrTicketType === "pnr" ? "Enter PNR No" : "Enter Ticket Number"}
                         </div>
+                        <TextArea
+                          value={pnrTicketType === "pnr" ? getPNRno : getTicketno}
+                          onChange={(e) => {
+                            if (pnrTicketType === "pnr") {
+                              setgetPNRno(e.target.value);
+                            } else {
+                              setgetTicketno(e.target.value);
+                            }
+                          }}
+                          placeholder={
+                            pnrTicketType === "pnr"
+                              ? "Enter PNR number"
+                              : "Enter ticket number"
+                          }
+                          rows={6}
+                        />
+                      </div>
 
+                      <div className="cls-example-section">
                         <div className="cls-example-box">
                           <span className="cls-example-label">Example : </span>
                           123456,123456
                         </div>
-
-                        <div className="cls-expand-actions">
-                          <Button
-                            onClick={() => setIsInvoiceExpanded(false)}
-                            className="cls-cancel-btn"
-                          >
-                            Cancel
-                          </Button>
-                          <Button
-                            type="primary"
-                            onClick={handleInvoiceSubmit}
-                            className="cls-submit-btn"
-                          >
-                            Submit
-                          </Button>
-                        </div>
                       </div>
-                    )}
+
+                      {/* <div className="cls-action-buttons">
+                        <Button onClick={() => setIsPnrDropdownOpen(false)}>Cancel</Button>
+                        <Button type="primary" onClick={handlePnrDropdownSubmit}>
+                          Submit
+                        </Button>
+                      </div> */}
+                    </div>
+                  )}
+                </div>
+              )}
+              <Filter
+                key={activeTab}
+                fields={filterFields.filter(f => f.label === "Type")}
+                pathname="/cumulative"
+                apiservice= {cummulativeService}
+                // category= {selectedCategory}
+                setCumulativeData={setCumulativeData}
+                onChange={handleFilterChange}
+                filterData={selectedOptionIds}
+                showButtons={true}
+                onReset={() => cummulativeService({ page: currentPage, page_size: pageSize, category: selectedCategory })}
+              />
+          </div>
+          </div>
+          }
+        </div>
+      );
+
+    case "uploadinvoice":
+    case "upload_invoice":
+      return (
+        <div className="cls-wrapper">
+          <div className="cls-header">
+            <div className="cls-sprt">
+              {tabData[1]?.[0] && (
+                <div>
+                  <Button
+                    onClick={handleInvoiceToggle}
+                    className="cls-toggle-btn"
+                  >
+                    <span className="cls-toggle-text">{tabData[1][0].title}</span>
+                    <span
+                      className={`cls-toggle-icon ${isInvoiceExpanded ? "expanded" : "collapsed"}`}
+                    >
+                      ▲
+                    </span>
+                  </Button>
+
+                  {/* Corrected Count display */}
+                  <div className="cls-count">
+                    <span>{tabData[1][0].submitCount}</span>
+                    <span className="cls-count-info">i</span>
                   </div>
-                )}
 
-               <Filter
-  fields={[
-    ...(typeField
-      ? [{ ...typeField, type: "select" as "select", label: "" }]
-      : []), // only include if exists
-  ]}
-  pathname="/cumulative"
-  onChange={handleFilterChange}
-/>
-              </div>
+                  {isInvoiceExpanded && (
+                    <div className="cls-expand-box">
+                      <Button
+                        type="text"
+                        onClick={() => setIsInvoiceExpanded(false)}
+                        className="cls-close-btn"
+                      >
+                        ×
+                      </Button>
 
-              <div className="cls-btnItems qw">
-                <Button onClick={handleSubmit} className="cls-submitBtn">
-                  Submit
-                </Button>
-                <Button className="cls-resetBtn">Reset all</Button>
-              </div>
+                      <div className="cls-expand-section">
+                        <div className="cls-expand-title">Enter Invoice No</div>
+                        <TextArea
+                          value={getAirlineInvoiceno}
+                          onChange={(e) => setInvoiceText(e.target.value)}
+                          rows={6}
+                          className="cls-textarea"
+                          placeholder="Enter Invoice Number"
+                        />
+                      </div>
+
+                      <div className="cls-example-box">
+                        <span className="cls-example-label">Example : </span>
+                        123456,123456
+                      </div>
+
+                      {/* <div className="cls-expand-actions">
+                        <Button
+                          onClick={() => setIsInvoiceExpanded(false)}
+                          className="cls-cancel-btn"
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          type="primary"
+                          onClick={handleInvoiceSubmit}
+                          className="cls-submit-btn"
+                        >
+                          Submit
+                        </Button>
+                      </div> */}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <Filter
+                key={activeTab}
+                fields={filterFields.filter(f => f.label === "Type")}
+                pathname="/cumulative"
+                apiservice= {cummulativeService}
+                setCumulativeData={setCumulativeData}
+                // category= {selectedCategory}
+                onChange={handleFilterChange}
+                filterData={selectedOptionIds}
+                showButtons={true}
+                onReset={() => cummulativeService({ page: currentPage, page_size: pageSize, category: selectedCategory })}
+              />
             </div>
+
+            {/* <div className="cls-btnItems qw">
+              <Button onClick={handleSubmit} className="cls-submitBtn">
+                Submit
+              </Button>
+              <Button className="cls-resetBtn">Reset all</Button>
+            </div> */}
           </div>
-        );
+        </div>
+      );
 
-      case "ticketno":
-        return (
-          <div className="cls-container">
-            <div className="cls-header">
-              <div className="cls-sprt">
-                {tabData[2]?.[0] && (
-                  <div key={tabData[1][0].id} className={`cls-inputGroup`}>
-                    <span className="cls-label">{tabData[2][0].tabName}</span>
-                    <Input
-                      placeholder={tabData[2][0].ticketFields.map((place: any) => place.placeholder || '').join(', ')}
-                      className="cls-input"
-                      size="large"
-                      value={pnrno}
-                      onChange={(e) => setpnrno(e.target.value)}
-                    />
-                  </div>
-                )}
+    case "ticketno":
+    case "ticket_no":
+      return (
+        <div className="cls-container">
+          <div className="cls-header">
+            <div className="cls-sprt">
+              {tabData[2]?.[0] && (
+                <div key={tabData[1][0].id} className={`cls-inputGroup`}>
+                  <label className="cls-label">{tabData[2][0].tabName}</label>
+                  <Input
+                    placeholder={tabData[2][0].ticketFields.map((place: any) => place.placeholder || '').join(', ')}
+                    className="cls-input"
+                    size="large"
+                    value={pnrno}
+                    onChange={(e) => setpnrno(e.target.value)}
+                  />
+                </div>
+              )}
 
-                <Filter
-  fields={[
-    ...(typeField
-      ? [{ ...typeField, type: "select" as "select", label: "" }]
-      : []), // only include if exists
-  ]}
-  pathname="/cumulative"
-  onChange={handleFilterChange}
-/>
-              </div>
-
-              <div className="cls-btnItems mm">
-                <Button onClick={handleSubmit} className="cls-submitBtn">
-                  Submit
-                </Button>
-                <Button className="cls-resetBtn">Reset all</Button>
-              </div>
+              <Filter
+                fields={filterFields.filter(f => f.label === "Type")}
+                pathname="/cumulative"
+                apiservice= {cummulativeService}
+                setCumulativeData={setCumulativeData}
+                // category= {selectedCategory}
+                onChange={handleFilterChange}
+                filterData={selectedOptionIds}
+                showButtons={true}
+                onReset={() => cummulativeService({ page: currentPage, page_size: pageSize, category: selectedCategory })}
+              />
             </div>
-          </div>
-        );
 
-      case "taxinvoicedate":
-        return (
-          <div className="cls-invoiceRange">
-            <Filter
-              fields={filterFields} // <- safe fallback
-              pathname="/cumulative"
-              showButtons={true}
-              onChange={handleFilterChange}
-            />
+            {/* <div className="cls-btnItems ">
+              <Button onClick={handleSubmit} className="cls-submitBtn">
+                Submit
+              </Button>
+              <Button className="cls-resetBtn">Reset all</Button>
+            </div> */}
           </div>
-        );
+        </div>
+      );
 
-      default:
-        return null;
-    }
+    case "taxinvoicedate":
+    case "tax_invoicedate":
+      return (
+        <div className="cls-invoiceRange">
+          <Filter
+            fields={filterFields} 
+            pathname="/cumulative"
+            showButtons={true}
+            onChange={handleFilterChange}
+            apiservice= {cummulativeService}
+            setCumulativeData={setCumulativeData}
+            // category= {selectedCategory}
+            filterData={selectedOptionIds}
+            onReset={() => cummulativeService({ page: currentPage, page_size: pageSize, category: selectedCategory })}
+          />
+        </div>
+      );
+
+    default:
+    return null;
+  }
   };
 
   return (
+
     <div className="slide-up cls-cumulative-container">
 
       {/* Title */}
       <Title level={3} className="cls-cumulative-title">
-        {translate("cumulativeInvoice")}
+        {translate("cumulativeInvoice")} <span>{selectedCategory}</span>
       </Title>
 
       {/* Entity Type Selection */}
@@ -552,23 +582,19 @@ useEffect(() => {
         </div>
 
       {/* Tabs */}
+      {isLoading ? <CumulativeTabsSkeleton/> : 
       <div className="cls-tabs-section">
+         {/* <CumulativeTabsSkeleton/> */}
         <Tabs
           activeKey={activeTab}
-          onChange={setActiveTab}
+          onChange={handleTabChange}
           items={tabItems}
           type="line"
         />
-      </div>
-
-      {/* Dynamic Tab Content */}
+      </div>}
       {renderTabContent()}
-
-      {/* Data Table Section */}
       <div>
-        {/* Export Buttons and Search */}
-
-
+        {isLoading ? <StatusCountSkeleton/> : <StatusCount statusApi={statusCountData}/> }
         {/* Data Table */}
         <Card className="cls-data-table">
           <div className="cls-table-container">
@@ -586,12 +612,12 @@ useEffect(() => {
                 />
               </div>
 
-              <FileDownload service={(params) => cummulativeService({ ...params, category: selectedCategory })} fileName="cumulative_invoices"/>
+              <FileDownload service={cummulativeService} fileName="cumulative_invoices" filterData={selectedOptionIds}/>
             </div>
             {isLoading ? <TableSkeleton/> : 
             <Table
               columns={allColumns}
-              dataSource={sortedData}
+              dataSource={tableData}
               pagination={false}
               size="middle"
               bordered={false}

@@ -1,43 +1,45 @@
 import React, { useState } from "react";
 import { DownloadOutlined, FilterOutlined } from "@ant-design/icons";
-import { Button, Checkbox } from "antd";
-import dayjs from "dayjs";
+import { Button, Checkbox, Modal } from "antd";
+// import dayjs from "dayjs";
 import { useTheme } from "../contexts/ThemeContext";
-import { downloadCSV, downloadXLS } from "../Utils/commonFunctions";
-import Filter from "../components/Filters/Filters";
+import { downloadCSV, downloadXLS, cleanObject } from "../Utils/commonFunctions";
+
 import "../styles/CumulativeInvoice.scss";
 import "../styles/Reconciliation.scss";
 
 type FileDownloadProps = {
-  service: (param: any) => Promise<any>; // correct typing
+  service: (payload: any) => { unwrap: () =>Promise<any>};
   fileName?: string;
+  filterData?: 
+  { 
+    category?: string | null,
+    status?: number | null; 
+    type?: number | null;
+    travelVendor?: number | null;
+    start?:string | null;
+    end?:string | null;
+    airline?: number | null;
+  }
 };
 
-const FileDownload: React.FC<FileDownloadProps> = ({ service, fileName = "invoice" }) => {
-  const [startDate, setStartDate] = useState<string | null>(null);
-  const [endDate, setEndDate] = useState<string | null>(null);
-  const [dateRangeCond, setDateRangeCond] = useState(false);
+const FileDownload: React.FC<FileDownloadProps> = ({ service, fileName = "invoice", filterData }) => {
   const { translate } = useTheme();
-  const category: "agency" | "airline" = "agency";
-
-  const handleDownload = async (format: "csv" | "xls") => {
-    if (!startDate || !endDate) {
-      console.warn("Please select both start and end dates");
-      return;
-    }
-
-    const response = await service({
-      start: startDate ?? undefined,
-      end: endDate ?? undefined,
-      category,
-      Download: true,
-    }).unwrap?.(); // if using RTK mutation, `.unwrap()` is available
-
-    if (format === "csv") {
+  // Modal ok button functionality
+  const handleOk = async () => {
+   if(!exportFormat) return;
+    const payload = {
+    ...cleanObject(filterData || {}),
+    download: true,
+  };
+  const response = await service(payload).unwrap?.();
+    
+    if (exportFormat  === "csv") {
       downloadCSV(response, `${fileName}.csv`);
-    } else if (format === "xls") {
+    } else if (exportFormat  === "xls") {
       downloadXLS(response, `${fileName}.xls`);
     }
+    setIsModalOpen(false);
   };
 
   // rest of your component unchanged ...
@@ -84,22 +86,20 @@ const FileDownload: React.FC<FileDownloadProps> = ({ service, fileName = "invoic
     travelVendor: true,
     action: true,
   });
-
-  const downloadFile = () => {
-    setDateRangeCond(true);
-  };
-
-  const handleDateRange = (values: any) => {
-    const range = Object.values(values)[0];
-    if (Array.isArray(range) && range.length === 2) {
-      const [start, end] = range;
-      setStartDate(dayjs(start).format("YYYY-MM-DD"));
-      setEndDate(dayjs(end).format("YYYY-MM-DD"));
-    }
-  };
-
   const [filterDropdownVisible, setFilterDropdownVisible] = useState(false);
   const filterDropdownRef = React.useRef(null);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [exportFormat, setExportFormat] = useState<"csv" | "xls" | null>(null);
+
+  const showModal = (type:"csv" | "xls") => {
+    setExportFormat(type);
+    setIsModalOpen(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <div className="cls-table-header-actions">
@@ -110,36 +110,33 @@ const FileDownload: React.FC<FileDownloadProps> = ({ service, fileName = "invoic
       <Button
         icon={<DownloadOutlined />}
         className="cls-export-button cls-xls"
-        onClick={downloadFile}
+        // onClick={downloadFile}
+        onClick={()=>showModal('xls')}
       >
         XLS
       </Button>
       <Button
         icon={<DownloadOutlined />}
         className="cls-export-button cls-csv"
-        onClick={downloadFile}
+        // onClick={downloadFile}
+        onClick={()=>showModal('csv')}
       >
         CSV
       </Button>
-      {dateRangeCond && (
+      {/* Modal design  */}
         <>
-          <Filter
-            fields={[
-              {
-                ...filterFields.find((f) => f.key === "travelDate")!,
-                type: "dateRange",
-                label: "",
-              },
-            ]}
-            pathname="/cumulative"
-            onChange={handleDateRange}
-          />
-
-          <button className="cls-download" onClick={() => handleDownload("csv")}>
-            File <DownloadOutlined />
-          </button>
+          <Modal
+            title="Confirmation Alert"
+            open={isModalOpen} 
+            onOk={handleOk}
+            onCancel={handleCancel}
+            okText="Ok"
+            cancelText="Cancel"
+            className="cls-modal-popup"
+          >
+            <p>Are you sure, you want to download the file!</p>
+          </Modal>
         </>
-      )}
 
       {filterDropdownVisible && (
         <div className="cls-filter-dropdown" ref={filterDropdownRef}>

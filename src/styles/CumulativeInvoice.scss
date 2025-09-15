@@ -20,10 +20,13 @@
   margin: 0 0 24px 0;
   color: $SECONDARYCOLOR;
   font-family: var(--font-semibold);
+  span{
+    text-transform: capitalize;
+  }
 }
 
 .cls-entity-type-section {
-  margin-bottom: 24px;
+  margin-bottom: 12px;
 
   .ant-radio-wrapper {
     font-weight: 500;
@@ -34,7 +37,7 @@
 }
 
 .cls-tabs-section {
-  margin-bottom: 24px;
+  margin-bottom: 12px;
   .ant-tabs-nav-wrap{
     .ant-tabs-tab{
       font-family: var(--font-semibold);
@@ -47,7 +50,6 @@
   border: 1px solid #e9ecef;
   border-radius: 6px;
   padding: 16px;
-  margin-bottom: 24px;
 }
 
 .cls-tab-content-layout {
@@ -194,7 +196,7 @@
   }
 
   .cls-radio-section {
-    margin-bottom: 24px;
+    margin-bottom: 12px;
     margin-top: 8px;
     .ant-radio-group {
       display: flex;
@@ -790,7 +792,7 @@
   border: 1px solid #e9ecef;
   border-radius: 6px;
   padding: 16px;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
 }
 
 .cls-header {
@@ -920,6 +922,7 @@
     display: flex;
     justify-content: flex-end;
     gap: 12px;
+    margin-top: 20px;
 
     .cls-cancel-btn {
       border-radius: 6px;
@@ -947,7 +950,7 @@
   border: 1px solid #e9ecef;
   border-radius: 6px;
   padding: 16px;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
 
   // Dark mode support
   &.cls-dark {
@@ -970,15 +973,13 @@
   gap: 12px;
 }
 
-.cls-inputGroup {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
 
 .cls-label {
-  font-size: $FONT-14;
+  font-size: $FONT-12;
   color: $GREY;
+  display: block;
+  font-family: var(--font-semibold);
+  margin-bottom: 4px;
 
   .cls-dark & {
     color: #aaa;
@@ -1021,7 +1022,7 @@
   border: 1px solid #e9ecef;
   border-radius: 6px;
   padding: 16px;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
 
   // Dark mode / conditional style
   &.cls-dark {

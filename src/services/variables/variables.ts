@@ -1,4 +1,3 @@
-// services/invoice.ts
 import { CommonService } from '../service';
 
 
@@ -11,18 +10,13 @@ export const InvoiceService = CommonService.enhanceEndpoints({ addTagTypes: ['in
     >({
       query: (params) => {
         const queryParams = new URLSearchParams();
-
-        // dynamically add all defined params
         Object.entries(params).forEach(([key, value]) => {
           if (value !== undefined && value !== null) {
             queryParams.append(key, String(value));
           }
         });
-
-        // Optional: adjust endpoint based on category
         const category = params.category === 'agency' ? 'Agency' : params.category === 'airline' ? 'Airline' : '';
         const endpoint = category ? `cummulativeInvoice${category}/` : `cummulativeInvoice/`;
-
         return {
           url: `${endpoint}?${queryParams.toString()}`,
           method: 'GET',
@@ -33,25 +27,41 @@ export const InvoiceService = CommonService.enhanceEndpoints({ addTagTypes: ['in
   }),
   overrideExisting: true,
 });
-
 export const ReconcilService = CommonService.enhanceEndpoints({}).injectEndpoints({
   endpoints: (builder) => ({
     reconcilService: builder.mutation<
-      { records: any[]; count: number; category:any[] },
-      { page: number, page_size: number }                  
+      { records: any[]; count: number; category: any[] },
+      { page?: number; page_size?: number; category?: string; filterData?: Record<string, any> }
     >({
-      query: ({page, page_size}) => ({
-        url: `reconcilationHistoryAgency/?page=${page}&page_size=${page_size}`,
-        method: 'GET',
-        // body:{
+      query: (params) => {
+        // Decide endpoint dynamically from params.category
+        const category = params?.category;
+        const endpoint =
+          category === "agency"
+            ? "reconcilationHistoryAgency/"
+            : category === "airline"
+            ? "reconcilationHistoryAirline/"
+            : "reconcilationHistory/";
 
-        // },
-      }),
+        // Build query params
+        const queryParams = new URLSearchParams();
+
+        Object.entries(params || {}).forEach(([key, value]) => {
+          if (value !== null && value !== undefined && value !== "") {
+            queryParams.append(key, String(value));
+          }
+        });
+
+        return {
+          url: `${endpoint}?${queryParams.toString()}`,
+          method: "GET",
+        };
+      },
+
     }),
   }),
   overrideExisting: true,
 });
-
 export const UploadService = CommonService.enhanceEndpoints({}).injectEndpoints({
   endpoints: (builder) => ({
     uploadFile: builder.mutation<any, FormData>({

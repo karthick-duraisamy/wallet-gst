@@ -67,3 +67,14 @@ export const downloadXLS = (apiResponse: any, filename = "data.xlsx") => {
   // Export as XLSX
   XLSX.writeFile(workbook, filename);
 };
+
+// clean the undefined, null or empty object
+export const cleanObject = <T extends Record<string, any>>(obj: T): Partial<T> => {
+  const cleaned: Partial<T> = {};
+  Object.entries(obj).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "" && value !== "Select") {
+      cleaned[key as keyof T] = value;
+    }
+  });
+  return cleaned;
+};

@@ -630,7 +630,6 @@ const Dashboard: React.FC = () => {
         <Row gutter={[16, 16]} className="cls-overview-grid">
 
           {overviewData.map((item, index) => {
-            console.log(item);
 
             const currentIndex =
               carouselStates[item.carouselKey as keyof typeof carouselStates] ||

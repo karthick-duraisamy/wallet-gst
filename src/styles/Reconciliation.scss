@@ -370,7 +370,6 @@
   gap: 0px;
   padding: 16px 0;
   border-bottom: 1px solid $LIGHTWHITE;
-  margin-bottom: 16px;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: baseline;
@@ -601,6 +600,19 @@
       &:hover {
         background-color: #4338ca;
       }
+    }
+  }
+}
+.cls-modal-popup{
+  .ant-modal-header{
+    font-family: var(--font-semibold);
+  }
+  .ant-modal-body{
+    font-family: var(--font-regular);
+  }
+  .ant-modal-footer{
+    button{
+      font-family: var(--font-regular);
     }
   }
 }

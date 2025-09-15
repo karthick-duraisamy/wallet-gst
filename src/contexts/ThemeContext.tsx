@@ -122,7 +122,7 @@ const translations = {
     airline: "Airline",
 
     // Reconciliation specific
-    reconciliationHistory: "Reconciliation history (Airline)",
+    reconciliationHistory: "Reconciliation history",
     supplierName: "Supplier name",
     pnrTicketNumber: "PNR / Ticket no",
     invoiceNumber: "Invoice/Credit note no",
@@ -146,7 +146,7 @@ const translations = {
     outOf: "Out of",
 
     // Cumulative Invoice specific
-    cumulativeInvoice: "Cumulative Invoice (Airline)",
+    cumulativeInvoice: "Cumulative Invoice",
     uploadPNRTicket: "Upload PNR / Ticket no",
     uploadInvoiceNo: "Upload Invoice no",
     pnrTicket: "PNR / Ticket no",

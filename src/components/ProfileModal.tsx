@@ -18,7 +18,6 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, onClose }) => {
 
   const handleUpdate = () => {
     form.validateFields().then(values => {
-      console.log('Profile updated:', values);
       // Handle update logic here
       onClose();
     });

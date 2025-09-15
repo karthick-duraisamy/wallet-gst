@@ -92,7 +92,6 @@ const Upload: React.FC = () => {
 
   setSelectedFile(uniqueFiles);
 
-  console.log("Current selected files:", uniqueFiles);
 };
 
 
@@ -232,7 +231,7 @@ const handleSubmit = async () => {
 
   const formData = new FormData();
 
-  // ✅ Compare by name+size+lastModified instead of reference
+  // Compare by name+size+lastModified instead of reference
   const filesToUpload = selectedFile.filter(
     (file) =>
       !removedFiles.some(
@@ -243,7 +242,6 @@ const handleSubmit = async () => {
       )
   );
 
-  console.log(filesToUpload, "filesToUpload");
 
   if (filesToUpload.length === 0) {
     message.error("No files to upload (all selected files were removed)");
@@ -252,7 +250,6 @@ const handleSubmit = async () => {
 
   filesToUpload.forEach((file: File) => {
     formData.append("file", file);
-    console.log(file, "fileeeeeee");
   });
 
   try {
@@ -283,7 +280,16 @@ const handleSubmit = async () => {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(0)) + " " + sizes[i];
   };
-
+  const fileUrl = "/assets/nonayp.xls";
+  const fileName = "nonayp.xls";
+  const sampleFileDownload = (fileUrl: string, fileName: string) => {
+    const link = document.createElement("a");
+    link.href = fileUrl;
+    link.download = fileName; // specify the filename
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   const tabItems = [
     {
@@ -406,7 +412,14 @@ const handleSubmit = async () => {
               </div>
 
               {/* Sample File Button */}
-              <Button className="cls-sample-file-btn">
+              <Button
+                className="cls-sample-file-btn"
+                onClick={(e) => {
+                  e.stopPropagation(); // prevent parent click handlers
+                  if (activeTab === 'non-ayp') {
+                    sampleFileDownload(fileUrl, fileName);
+                  } 
+                }}>
                 <DownloadOutlined />
                 Sample file
               </Button>

@@ -2411,10 +2411,11 @@ tr.ant-table-measure-row td {
   }
 }
 .cls-footer-section, .footer-text{
-  background: rgb(245, 245, 245);
+  background: #fff;
   text-align: center;
   padding: 16px 24px;
   border-top: 1px solid rgb(232, 232, 232);
   font-size: 14px;
   color: rgb(102, 102, 102);
+  font-family: var(--font-regular);
 }

@@ -1,5 +1,6 @@
 .cls-select-field{
-    width: 130px;
+    width: 140px;
+    min-width: auto;
 }
 .cls-input-field, .cls-date-field{
     width: 120px;
@@ -11,7 +12,7 @@
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
-    align-items: end;
+    align-items: center;
     width: 100%;
     .cls-filters-cond{
         display: flex;
@@ -19,9 +20,22 @@
         flex-wrap: wrap;
         align-items: end;
         .cls-label{
-            margin-bottom: 4;
+            margin-bottom: 4px;
             font-size: $FONT-12;
             font-weight: 500;
+            padding-left: 5px;
+            text-transform: capitalize;
         }
     }
+}
+.cls-field{
+  position: relative;
+  .cls-error-msg {
+    position: absolute;
+    top: 100%;
+    left: 4px;
+    color: red;
+    font-family: var(--font-regular);
+    font-size: 11px;
+  }
 }
